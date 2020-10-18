@@ -1,0 +1,63 @@
+#navigation {
+  width: 90%;
+  height: 70px;
+  background-color: #ffffff;
+}
+
+#naengpa-logo {
+  font-size: 40px;
+}
+
+#naengpa-logo-button {
+  font-family: BMJUA_TTF;
+  letter-spacing: 5.2px;
+  font-size: 35px;
+  text-align: center;
+  margin:20px;
+  border: none;
+  outline: 0;
+  background-color: transparent;
+  color: #ff8a3d;
+}
+
+#user-notice-button {
+  border: none;
+  outline: 0;
+  background-color: transparent;
+}
+
+#notification-logo {
+  font-size: 25px;
+}
+
+#naengpa-button {
+  font-family: BMJUA_TTF;
+  font-size: 40px;
+  letter-spacing: 5.2px;
+  text-align: center;
+  color: #ff8a3d;
+}
+
+#mypage-button {
+  font-family: BMJUA_TTF;
+  font-size: 15px;
+  color: #707070;
+  margin: 20px, 15px;
+  border: none;
+  outline: 0;
+  background-color: #efefef;
+}
+
+#logout-button {
+  font-family: BMJUA_TTF;
+  font-size: 15px;
+  color: #707070;
+  margin: 20px, 15px;
+  border: none;
+  outline: 0;
+  background-color: transparent;
+}
+
+button:focus{
+  outline: 0 !important;
+}
