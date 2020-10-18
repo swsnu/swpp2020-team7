@@ -15,20 +15,10 @@ interface StateProps {
   foodLike: number; 
 }
 
-type RecipeProps = {
-
-}
-
-const RecipeList: React.FC<RecipeListProps> = (props) => {
-  // userEffect(() => {
-  //   if(recipes){
-  //     setRecipes(data);
-  //   }
-  // }, [recipes])
-
+const RecipeList: React.FC<RecipeListProps> = ({history}) => {
   const onClickRecipeRegister = (e: MouseEvent<HTMLButtonElement>):void => {
     e.preventDefault();
-    props.history.push('/recipe/create');
+    history.push('/recipe/create');
   }
   
   return (

@@ -6,19 +6,18 @@ export const checkLogin = () => ({
   payload: {}
 });
 
-export const doSignup = () => ({
-  type: actionTypes.DO_SIGNUP,
+export const Signup = () => ({
+  type: actionTypes.SIGNUP,
   payload: {}
 });
 
-
-export const doLogin = () => ({
-  type: actionTypes.DO_LOGIN, 
+export const Login = () => ({
+  type: actionTypes.LOGIN, 
   payload: {}
 });
 
-export const doLogout = () => ({
-  type: actionTypes.DO_LOGOUT, 
+export const Logout = () => ({
+  type: actionTypes.LOGOUT, 
   payload: {}
 });
 
@@ -37,7 +36,7 @@ export const deleteUser = () => ({
   payload: {}
 }); 
 
-export const editUserInfo = () => ({
-  type: actionTypes.EDIT_USER_INFO, 
+export const editUser = () => ({
+  type: actionTypes.EDIT_USER, 
   payload: {}
 });

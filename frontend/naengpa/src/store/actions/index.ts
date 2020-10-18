@@ -1,14 +1,14 @@
 
 /* User actions */
 export {
-  checkLogin, doSignup, doLogin, doLogout, getUserList, 
-  getUser, editUserInfo, deleteUser
+  checkLogin, Signup, Login, Logout, getUserList, 
+  getUser, editUser, deleteUser
 } from './user';
 
 /* Freezer actions */
 export {
-  getFreezerList, getFreezer, addFreezer, deleteFreezer, editFreezer, 
-} from './freezer';
+  getFridgeList, getFridge, addFridge, deleteFridge, editFridge, 
+} from './fridge';
 
 /* Recipe actions */
 export {
@@ -30,8 +30,4 @@ export {
   getCommentList, getComment, addComment, deleteComment, editComment,
 } from './comment';
 
-/* Comment actions */
-export {
-  getImageList, getImage, addImage, deleteImage, editImage,
-} from './image';
 

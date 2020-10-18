@@ -1,11 +1,9 @@
 import React from 'react';
 
-class UserNotice extends React.Component {
-  render() {
+const UserNotice: React.FC = () => {
     return (
-      <div>UserNotice</div>
+      <div>User Notice</div>
     ); 
-  };
 };
 
 export default UserNotice;

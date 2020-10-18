@@ -1,11 +1,9 @@
 import React from 'react';
 
-class Signup extends React.Component {
-  render() {
+const Signup: React.FC = () => {
     return (
-      <div>signup</div>
+      <div>Signup</div>
     ); 
-  };
 };
 
 export default Signup;

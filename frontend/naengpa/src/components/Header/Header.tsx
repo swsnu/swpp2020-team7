@@ -6,24 +6,22 @@ interface NavigationProps {
   history: History;
 }
 
-class Header extends React.Component<NavigationProps> {
-  render() {
+const Header: React.FC<NavigationProps> = ({history}) => {
     return (
       <div id="header" className="d-flex justify-content-around">
           <button id="my-freeger-button"
-                  onClick={()=> this.props.history.push('/freezers')}>
+                  onClick={()=> history.push('/fridge')}>
               나의 냉장고
           </button>
           <button id="my-recipe-button" 
-                  onClick={()=> this.props.history.push('/recipes')}>
+                  onClick={()=> history.push('/recipe')}>
               레시피 찾기</button>
           <button id="my-article-button" 
-                  onClick={()=> this.props.history.push('/articles')}>
+                  onClick={()=> history.push('/article')}>
               게시판
           </button>
       </div>
     );
-  }
 };
 
 export default Header; 

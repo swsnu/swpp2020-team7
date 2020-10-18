@@ -1,11 +1,9 @@
 import React from 'react';
 
-class ArticleList extends React.Component {
-  render() {
+const ArticleList: React.FC = () => {
     return (
       <div>ArticleList</div>
     ); 
-  };
 };
 
 export default ArticleList;

@@ -1,11 +1,9 @@
 import React from 'react';
 
-class AddIngredient extends React.Component {
-  render() {
+const AddIngredient: React.FC = () => {
     return (
       <div>Add Ingredient</div>
     ); 
-  };
 };
 
 export default AddIngredient;

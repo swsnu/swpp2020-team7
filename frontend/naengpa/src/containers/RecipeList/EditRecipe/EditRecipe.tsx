@@ -1,11 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 
-class EditRecipe extends React.Component {
-  render() {
+const EditRecipe: React.FC = () => {
     return (
-      <div>Edit Recipe</div>
+      <div>EditRecipe</div>
     ); 
-  };
 };
 
 export default EditRecipe;

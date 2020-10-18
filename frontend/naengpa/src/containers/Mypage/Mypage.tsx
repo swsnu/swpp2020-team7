@@ -1,11 +1,9 @@
 import React from 'react';
 
-class Mypage extends React.Component {
-  render() {
+const Mypage: React.FC = () => {
     return (
-      <div>My page</div>
+      <div>Mypage</div>
     ); 
-  };
 };
 
 export default Mypage;

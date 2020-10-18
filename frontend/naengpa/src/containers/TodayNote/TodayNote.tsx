@@ -1,15 +1,9 @@
 import React from 'react';
 
-class TodayNote extends React.Component {
-  componentDidMount() {
-
-  };
-
-  render() {
+const TodayNote: React.FC = () => {
     return (
-      <div>나의 냉장고</div>
-    ) 
-  }
-}
+      <div>TodayNote</div>
+    ); 
+};
 
 export default TodayNote;

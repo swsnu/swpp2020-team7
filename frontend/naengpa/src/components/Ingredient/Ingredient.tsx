@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Ingredient:  React.FC = (props) => {
+const Ingredient:  React.FC = () => {
   return (
     <div>
       Ingredient

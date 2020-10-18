@@ -1,11 +1,9 @@
 import React from 'react';
 
-class Logout extends React.Component {
-  render() {
+const Logout: React.FC = () => {
     return (
-      <div>logout</div>
+      <div>Logout</div>
     ); 
-  };
 };
 
 export default Logout;

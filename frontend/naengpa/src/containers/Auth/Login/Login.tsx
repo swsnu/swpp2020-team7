@@ -1,11 +1,9 @@
 import React from 'react';
 
-class Login extends React.Component {
-  render() {
+const Login: React.FC = () => {
     return (
-      <div>LOGIN</div>
+      <div>Login</div>
     ); 
-  };
 };
 
 export default Login;

@@ -1,19 +1,19 @@
 // USER related ACTIONS
 export const CHECK_LOGIN = 'CHECK_LOGIN'
-export const DO_SIGNUP = 'DO_SINGUP';
-export const DO_LOGIN = 'DO_LOGIN';
-export const DO_LOGOUT = 'DO_LOGOUT';
+export const SIGNUP = 'SINGUP';
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 export const GET_USER_LIST = 'GET_USER_LIST';
 export const GET_USER = 'GET_USER';
 export const DELETE_USER = 'DELETE_USER'; 
-export const EDIT_USER_INFO = 'EDIT_USER_INFO';
+export const EDIT_USER = 'EDIT_USER';
 
-// FREEZER related ACTIONS
-export const GET_FREEZER_LIST = 'GET_FREEZER_LIST';
-export const GET_FREEZER = 'GET_FREEZER';
-export const ADD_FREEZER = 'ADD_FREEZER';
-export const DELETE_FREEZER = 'DELETE_FREEZER';
-export const EDIT_FREEZER = 'EDIT_FREEZER';
+// FRIDGE related ACTIONS
+export const GET_FRIDGE_LIST = 'GET_FRIDGE_LIST';
+export const GET_FRIDGE = 'GET_FRIDGE';
+export const ADD_FRIDGE = 'ADD_FRIDGE';
+export const DELETE_FRIDGE = 'DELETE_FRIDGE';
+export const EDIT_FRIDGE = 'EDIT_FRIDGE';
 
 // RECIPE related ACTIONS
 export const GET_RECIPE_LIST = 'GET_RECIPE_LIST';
@@ -42,10 +42,3 @@ export const GET_COMMENT = 'GET_COMMENT';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
-
-// IMAGE related ACTIONS 
-export const GET_IMAGE_LIST = 'GET_IMAGE_LIST';
-export const GET_IMAGE = 'GET_IMAGE';
-export const ADD_IMAGE = 'ADD_IMAGE';
-export const EDIT_IMAGE = 'EDIT_IMAGE';
-export const DELETE_IMAGE = 'DELETE_IMAGE';

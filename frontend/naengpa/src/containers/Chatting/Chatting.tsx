@@ -1,11 +1,9 @@
 import React from 'react';
 
-class Chatting extends React.Component {
-  render() {
+const Chatting: React.FC = () => {
     return (
-      <div>chatting</div>
+      <div>Chatting</div>
     ); 
-  };
 };
 
 export default Chatting;

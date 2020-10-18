@@ -1,12 +1,9 @@
 import React from 'react';
 
-class EditArticle extends React.Component {
-
-  render() {
+const EditArticle: React.FC = () => {
     return (
-      <div>Edit Article</div>
+      <div>EditArticle</div>
     ); 
-  };
 };
 
 export default EditArticle;

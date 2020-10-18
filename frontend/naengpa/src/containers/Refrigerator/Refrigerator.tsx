@@ -1,15 +1,9 @@
 import React from 'react';
 
-class Refrigerator extends React.Component {
-  componentDidMount() {
-
-  };
-
-  render() {
+const Refrigerator: React.FC = () => {
     return (
-      <div>나의 냉장고</div>
-    ) 
-  }
-}
+      <div>Refrigerator</div>
+    ); 
+};
 
 export default Refrigerator;

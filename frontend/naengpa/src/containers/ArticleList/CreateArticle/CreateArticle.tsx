@@ -1,12 +1,9 @@
 import React from 'react';
 
-class CreateArticle extends React.Component {
-
-  render() {
+const CreateArticle: React.FC = () => {
     return (
-      <div>create Article</div>
+      <div>CreateArticle</div>
     ); 
-  };
 };
 
 export default CreateArticle;

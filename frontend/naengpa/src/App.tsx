@@ -31,15 +31,14 @@ const App: React.FC<AppProps> = ({history}) => {
           <Switch>
             <Route path="/signup" exact component={Signup}/> 
             <Route path="/login" exact component={Login}/> 
-            <Route path="/freezers" exact component={Refrigerator}/> 
+            <Route path="/logout" exact component={Logout}/>
+            <Route path="/fridge" exact component={Refrigerator}/> 
             <Route path="/userNotice" exact component={UserNotice}/> 
             <Route path="/mypage" exact component={Mypage}/>
-            <Route path="/logout" exact component={Logout}/>
-            <Route path="/recipes" exact component={RecipeList}/>
-            <Route path="/recipes/create" exact component={CreateRecipe}/> 
-            <Route path="/recipes/ingredient" exact component={AddIngredient}/>
-          
-
+            <Route path="/recipe" exact component={RecipeList}/>
+            <Route path="/recipe/create" exact component={CreateRecipe}/> 
+            <Route path="/recipe/ingredient" exact component={AddIngredient}/>
+            
           </Switch>
       </ConnectedRouter>
     </div>
