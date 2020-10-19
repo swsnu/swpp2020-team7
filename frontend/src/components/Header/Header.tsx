@@ -9,15 +9,15 @@ interface NavigationProps {
 const Header: React.FC<NavigationProps> = ({history}) => {
     return (
       <div id="header" className="d-flex justify-content-around">
-          <button id="my-freeger-button"
+          <button id="fridge-tap"
                   onClick={()=> history.push('/fridge')}>
               나의 냉장고
           </button>
-          <button id="my-recipe-button" 
-                  onClick={()=> history.push('/recipe')}>
+          <button id="recipe-tap" 
+                  onClick={()=> history.push('/recipes')}>
               레시피 찾기</button>
-          <button id="my-article-button" 
-                  onClick={()=> history.push('/article')}>
+          <button id="board-tap" 
+                  onClick={()=> history.push('/articles')}>
               게시판
           </button>
       </div>

@@ -17,7 +17,7 @@ interface StateProps {
 const RecipeList: React.FC<RecipeListProps> = ({history}) => {
   const onClickRecipeRegister = (e: MouseEvent<HTMLButtonElement>):void => {
     e.preventDefault();
-    history.push('/recipe/create');
+    history.push('/recipes/create');
   }
   
   return (
