@@ -2,7 +2,7 @@ import React from 'react';
 
 const Logout: React.FC = () => {
     return (
-      <div>Logout</div>
+      <div>Login</div>
     ); 
 };
 

@@ -10,8 +10,8 @@ import Navigation from './components/Header/Header';
 
 import Signup from './containers/Auth/Signup/Signup';
 import Login from './containers/Auth/Login/Login';
-import RegionalSetting from './containers/RegionalSetting/RegionalSetting';
 import Logout from './containers/Auth/Logout/Logout';
+import RegionalSetting from './containers/RegionalSetting/RegionalSetting';
 
 import Fridge from './containers/Fridge/Fridge';
 import AddIngredient from './containers/AddIngredient/AddIngredient';
@@ -23,7 +23,7 @@ import UserInfo from './containers/Mypage/UserInfo/UserInfo';
 import EditUserInfo from './containers/Mypage/EditUserInfo/EditUserInfo';
 import ChangePassword from './containers/Mypage/ChangePassword/ChangePassword';
 import ChatRoomList from './containers/ChatRoomList/ChatRoomList';
-import ChatRoom from './containers/ChatRoomList/ChatRoom/ChatRoom';
+import ChatDetail from './containers/ChatRoomList/ChatDetail/ChatDetail';
 
 import RecipeList from './containers/RecipeList/RecipeList';
 import CreateRecipe from './containers/RecipeList/CreateRecipe/CreateRecipe';
@@ -66,7 +66,7 @@ const App: React.FC<AppProps> = ({history}) => {
             <Route path="/@:username/recipes" exact component={UserRecipe}/>
             <Route path="/notifications" exact component={UserNotification}/>
             <Route path="/chatrooms" exact component={ChatRoomList}/> 
-            <Route path="/chatrooms/:id" exact component={ChatRoom}/>
+            <Route path="/chatrooms/:id" exact component={ChatDetail}/>
 
             {/* Recipe Page */}
             <Route path="/recipes" exact component={RecipeList}/>
