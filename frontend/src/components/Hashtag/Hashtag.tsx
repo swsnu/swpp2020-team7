@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Tag:  React.FC = () => {
+const Hashtag:  React.FC = () => {
     return (
       <div>
-        Tag
+        Hashtag
       </div>
     );
 };
 
-export default Tag; 
+export default Hashtag; 
