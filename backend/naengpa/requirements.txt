@@ -1,0 +1,5 @@
+coverage==5.3
+Django==3.1.2
+django-extensions==1.6.7 
+pylint==2.4.3
+requests==2.24.0
