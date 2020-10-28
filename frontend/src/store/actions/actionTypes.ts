@@ -18,7 +18,7 @@ export const EDIT_FRIDGE = 'EDIT_FRIDGE';
 // RECIPE related ACTIONS
 export const GET_RECIPE_LIST = 'GET_RECIPE_LIST';
 export const GET_RECIPE = 'GET_RECIPE';
-export const ADD_RECIPE = 'ADD_RECIPE';
+export const CREATE_RECIPE = 'CREATE_RECIPE';
 export const DELETE_RECIPE = 'DELETE_RECIPE';
 export const EDIT_RECIPE = 'EDIT_RECIPE';
 
@@ -32,7 +32,7 @@ export const EDIT_INGREDIENT = 'EDIT_INGREDIENT';
 // ARTICLE related ACTIONS
 export const GET_ARTICLE_LIST = 'GET_ARTICLE_LIST';
 export const GET_ARTICLE = 'GET_ARTICLE';
-export const ADD_ARTICLE = 'ADD_ARTICLE';
+export const CREATE_ARTICLE = 'CREATE_ARTICLE';
 export const DELETE_ARTICLE = 'DELETE_ARTICLE';
 export const EDIT_ARTICLE = 'EDIT_ARTICLE';
 

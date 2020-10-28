@@ -1,29 +1,44 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 
-export const getArticleList = () => ({
-  type: actionTypes.GET_ARTICLE_LIST, 
-  payload: {}
-});
+function getArticleList () { 
+  return {
+    type: actionTypes.GET_ARTICLE_LIST, 
+    payload: {}
+  }
+};
 
-export const getArticle = (id: number) => ({
-  type: actionTypes.GET_ARTICLE, 
-  payload: { id }
-});
+function getArticle (id: number) {
+  return {
+    type: actionTypes.GET_ARTICLE, 
+    payload: { id }
+  }
+};
 
-export const addArticle = (article: Array<string>) => ({
-  type: actionTypes.ADD_ARTICLE, 
-  payload: { article }
-});
+function createArticle (article: Array<string>) {
+  return {
+    type: actionTypes.CREATE_ARTICLE, 
+    payload: { article }
+  }
+};
 
-export const deleteArticle = (id: number) => ({
-  type: actionTypes.DELETE_ARTICLE, 
-  payload: { id }
-});
+function deleteArticle (id: number) {
+  return {
+    type: actionTypes.DELETE_ARTICLE, 
+    payload: { id }
+  }
+};
 
-export const editArticle = (id: number, article: Array<string>) => ({
-  type: actionTypes.EDIT_ARTICLE, 
-  payload: { id, article }
-});
+function editArticle (id: number, article: Array<string>) {
+  return {
+    type: actionTypes.EDIT_ARTICLE, 
+    payload: { id, article }
+  }
+};
 
-
+export type ArticleActions =
+  ReturnType<typeof getArticleList>
+  | ReturnType<typeof getArticle>
+  | ReturnType<typeof createArticle>
+  | ReturnType<typeof deleteArticle>
+  | ReturnType<typeof editArticle> 
