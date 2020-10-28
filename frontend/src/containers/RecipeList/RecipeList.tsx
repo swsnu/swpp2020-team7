@@ -1,34 +1,34 @@
-import React, {useEffect, ChangeEvent, Component, MouseEvent, FormEvent, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, {useEffect, MouseEvent} from 'react';
+import { useSelector } from 'react-redux';
 import {History} from 'history';
+import {AppState} from '../../index';
 
 interface RecipeListProps {
   history: History;
 }
-interface StateProps {
-  userName: string;
-  userImage: HTMLImageElement; // or File(as input element) or String(url to image)
-  foodName: string;
-  foodCategory: string; 
-  cookTime: number;
-  foodLike: number; 
-}
 
 const RecipeList: React.FC<RecipeListProps> = ({history}) => {
+  const recipe_list = useSelector((state:AppState) => state.recipes);
+ 
   const onClickRecipeRegister = (e: MouseEvent<HTMLButtonElement>):void => {
     e.preventDefault();
     history.push('/recipes/create');
   }
   
+  useEffect( () => {
+    console.log(recipe_list);
+  }, []);
+
   return (
       <div id="recipe-list">
-        RecipeList
+        {/* TODO: RECIPE compoenet로 list 출력해야함 */}
+        {recipe_list.recipes}
         <button id="recipe-register-button" 
                 onClick={onClickRecipeRegister}>
-          레시피 등록하기
+                레시피 등록하기
         </button>
       </div>
   );
 };
 
-export default RecipeList;
+export default React.memo(RecipeList);
