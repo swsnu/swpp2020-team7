@@ -1,29 +1,46 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 
-export const getRecipeList = () => ({
-  type: actionTypes.GET_RECIPE_LIST, 
-  payload: {}
-});
+function getRecipeList() {
+  return {
+    type: actionTypes.GET_RECIPE_LIST, 
+    payload: {}
+  }
+};
 
-export const getRecipe = (id: number) => ({
-  type: actionTypes.GET_RECIPE, 
-  payload: { id }
-});
+function getRecipe (id: number) {
+  return {
+    type: actionTypes.GET_RECIPE, 
+    payload: { id }
+  }
+};
 
-export const addRecipe = (recipe: Array<string>) => ({
-  type: actionTypes.ADD_RECIPE, 
-  payload: { recipe }
-});
+function createRecipe (recipe: Array<String>) { 
+  const recipe_data = {"food-name": recipe[0], "cook-time": recipe[1], "recipe": recipe[2]}
+  axios.post('/api/recipes/', recipe_data).then (res => console.log(res));
+  return {
+    type: actionTypes.CREATE_RECIPE, 
+    recipe: { recipe }
+  };
+};
 
-export const deleteRecipe = (id: number) => ({
-  type: actionTypes.DELETE_RECIPE, 
-  payload: { id }
-});
+function deleteRecipe (id: number) {
+  return {
+    type: actionTypes.DELETE_RECIPE, 
+    payload: { id }
+  }
+};
 
-export const editRecipe = (id: number, recipe: Array<string>) => ({
-  type: actionTypes.EDIT_RECIPE, 
-  payload: { id, recipe }
-});
+function editRecipe (id: number, recipe: Array<string>) {
+  return {
+    type: actionTypes.EDIT_RECIPE, 
+    payload: { id, recipe }
+  }
+};
 
-
+export type RecipeActions =
+  ReturnType<typeof getRecipeList>
+  | ReturnType<typeof getRecipe>
+  | ReturnType<typeof createRecipe>
+  | ReturnType<typeof deleteRecipe>
+  | ReturnType<typeof editRecipe> 

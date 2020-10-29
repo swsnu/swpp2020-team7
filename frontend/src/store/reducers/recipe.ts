@@ -1,24 +1,50 @@
 import React from 'react';
 import * as actionTypes from '../actions/actionTypes';
+import axios from 'axios';
 
-const RecipeState = {
+export type InitialState = {
+  recipes: Array<Array<String>>;
+  selected_recipe: Array<String> ;
+  todays_recipes: Array<Array<String>>; 
+}
+
+const RecipeState:InitialState = {
     recipes: [],
     selected_recipe: [],
     todays_recipes: [],
 };
 
-const recipe = (state = RecipeState, action:any) => {
+type Action = 
+  | { type: 'GET_RECIPE_LIST'; }
+  | { type: 'GET_RECIPE'; payload: Array<String> }
+  | { type: 'CREATE_RECIPE'; payload: Array<String>}
+  | { type: 'DELETE_RECIPE'; }
+  | { type: 'EDIT_RECIPE'; payload: Array<Array<String>> }
+
+function recipeReducer(state:InitialState = RecipeState, action: Action):InitialState {
   switch(action.type) {
     case actionTypes.GET_RECIPE_LIST: 
-        return {
-          ...state,
-      };
+      return { ...state };
 
     case actionTypes.GET_RECIPE: 
-      return {
-        ...state,
-    };
+      return { ...state };
+
+    case actionTypes.CREATE_RECIPE:
+      const recipe_data = {"food-name": action.payload[0], "cook-time": action.payload[1], "recipe": action.payload[2]}
+      axios.post('/api/recipes/', recipe_data).then (res => console.log(res));
+      
+      /* new recipe created and selected article is now created recipe */
+      return { ...state, recipes: [ ...state.recipes, action.payload ], selected_recipe: action.payload};
+
+    case actionTypes.DELETE_RECIPE: 
+      return { ...state };
+    
+    case actionTypes.EDIT_RECIPE: 
+      return { ...state };
+ 
+    default:
+      return state;
   };
 };
 
-export default recipe; 
+export default recipeReducer; 

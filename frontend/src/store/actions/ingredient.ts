@@ -1,29 +1,45 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 
-export const getIngredientList = () => ({
-  type: actionTypes.GET_INGREDIENT_LIST, 
-  payload: {}
-});
+function getIngredientList () {
+  return {
+    type: actionTypes.GET_INGREDIENT_LIST, 
+    payload: {}
+  }
+};
 
-export const getIngredient = () => ({
-  type: actionTypes.GET_INGREDIENT, 
-  payload: {}
-});
+function getIngredient () {
+  return {
+    type: actionTypes.GET_INGREDIENT, 
+    payload: {}
+  }
+};
 
-export const addIngredient = () => ({
-  type: actionTypes.ADD_INGREDIENT, 
-  payload: {}
-});
+function addIngredient () {
+  return {
+    type: actionTypes.ADD_INGREDIENT, 
+    payload: {}
+  }
+};
 
-export const deleteIngredient = () => ({
-  type: actionTypes.DELETE_INGREDIENT, 
-  payload: {}
-});
+function deleteIngredient () {
+  return {
+    type: actionTypes.DELETE_INGREDIENT, 
+    payload: {}
+  }
+};
 
-export const editIngredient = () => ({
-  type: actionTypes.EDIT_INGREDIENT, 
-  payload: {}
-});
+function editIngredient () {
+  return {
+    type: actionTypes.EDIT_INGREDIENT, 
+    payload: {}
+  }
+};
 
+export type IngredientActions =
+  ReturnType<typeof getIngredientList>
+  | ReturnType<typeof getIngredient>
+  | ReturnType<typeof addIngredient>
+  | ReturnType<typeof deleteIngredient>
+  | ReturnType<typeof editIngredient> 
 

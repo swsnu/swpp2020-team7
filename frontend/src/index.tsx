@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
 import 'bootstrap/dist/css/bootstrap.css'
+import 'semantic-ui-css/semantic.min.css'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
@@ -10,12 +11,15 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history'
 import thunk from 'redux-thunk';
+import recipeReducer from './store/reducers/recipe';
 
 const history = createBrowserHistory();
 const rootReducer = combineReducers({
-  
-  router: connectRouter(history)
-})
+  router: connectRouter(history),
+  recipes: recipeReducer,
+});
+
+export type AppState = ReturnType<typeof rootReducer> 
 
 declare global {
   interface Window {
