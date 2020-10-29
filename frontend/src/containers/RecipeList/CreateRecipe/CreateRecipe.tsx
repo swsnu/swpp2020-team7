@@ -18,7 +18,7 @@ const CreateRecipe: React.FC = () => {
     });
 
     const onClickAddImage = () => {
-
+      // test comment
     }
 
     const onClickDeleteImage = () => {
