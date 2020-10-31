@@ -17,11 +17,15 @@ const CreateRecipe: React.FC = () => {
 		console.log({ foodName, recipe, cookTime });
 	});
 
-	const onClickAddImage = () => {};
-
-	const onClickDeleteImage = () => {};
-
-	const onClickBackToRecipeList = () => {};
+	const onClickAddImage = () => {
+		console.log('add image');
+	};
+	const onClickDeleteImage = () => {
+		console.log('delete image');
+	};
+	const onClickBackToRecipeList = () => {
+		console.log('back to recipe list');
+	};
 	const onClickExtractIngredient = () => {
 		createDispatch({ type: 'CREATE_RECIPE', payload: [foodName, cookTime, recipe] });
 	};
@@ -30,11 +34,15 @@ const CreateRecipe: React.FC = () => {
 		<table className="ui definition table create-recipe m-5 d-flex flex-column justify-content-center">
 			<tbody>
 				<tr id="recipe-create-header" className="d-flex justify-contents-center">
-					<button id="back-to-recipe-list" onClick={onClickBackToRecipeList}>
+					<button
+						id="back-to-recipe-list"
+						type="button"
+						onClick={onClickBackToRecipeList}
+					>
 						취소
 					</button>
 					<div>레시피 등록</div>
-					<button id="add-ingredient" onClick={onClickExtractIngredient}>
+					<button id="add-ingredient" type="button" onClick={onClickExtractIngredient}>
 						재료등록
 					</button>
 				</tr>

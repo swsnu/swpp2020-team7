@@ -16,6 +16,7 @@ const Navigation: React.FC<NavigationProps> = ({ history }) => {
 		>
 			<button
 				id="naengpa-logo-button"
+				type="button"
 				className="align-items-center"
 				onClick={() => history.push('/fridge')}
 			>
@@ -23,18 +24,23 @@ const Navigation: React.FC<NavigationProps> = ({ history }) => {
 				냉파
 			</button>
 			<div id="right-navigation-buttons" className="d-flex">
-				<button id="user-notice-button" onClick={() => history.push('/notifications')}>
+				<button
+					id="user-notice-button"
+					type="button"
+					onClick={() => history.push('/notifications')}
+				>
 					<NotificationsNoneIcon id="notification-logo" />
 				</button>
 				{/* TODO: username 인자 전달 다시 확인 요망 */}
 				<button
 					id="mypage-button"
 					className="btn btn-secondary"
+					type="button"
 					onClick={() => history.push('/@:username')}
 				>
 					MY PAGE
 				</button>
-				<button id="logout-button" onClick={() => history.push('/logout')}>
+				<button id="logout-button" type="button" onClick={() => history.push('/logout')}>
 					LOGOUT
 				</button>
 			</div>

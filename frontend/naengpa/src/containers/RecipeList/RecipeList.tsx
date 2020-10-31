@@ -23,7 +23,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		<div id="recipe-list">
 			{/* TODO: RECIPE compoenet로 list 출력해야함 */}
 			{recipe_list.recipes}
-			<button id="recipe-register-button" onClick={onClickRecipeRegister}>
+			<button id="recipe-register-button" type="button" onClick={onClickRecipeRegister}>
 				레시피 등록하기
 			</button>
 		</div>
