@@ -17,7 +17,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 
 	useEffect(() => {
 		console.log(recipe_list);
-	}, []);
+	}, [recipe_list]);
 
 	return (
 		<div id="recipe-list">
