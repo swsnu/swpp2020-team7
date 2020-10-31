@@ -1,24 +1,24 @@
 matrix:
   include:
     - language: node_js
-      node_js: '12'
+      node_js: "12"
       cache: yarn
       before_install:
         - cd frontend/naengpa
-      install: 
+      install:
         - yarn
-      script: 
+      script:
         - yarn lint
         - yarn test
 
-    - language: python 
-      python: '3.7'
+    - language: python
+      python: "3.7"
       cache: pip
-      before_install: 
+      before_install:
         - cd backend/naengpa
-      install: 
-        - pip install -r requirements.txt 
-      script: 
-        - pylint **/*.py --load-plugins pylint_django 
-        - coverage run --source='.' manage.py test 
-        - coverage xml
+      install:
+        - pip install -r requirements.txt
+      script:
+        #- pylint **/*.py --load-plugins pylint_django
+        #- coverage run --source='.' manage.py test
+        #- coverage xml
