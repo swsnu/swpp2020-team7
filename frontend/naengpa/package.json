@@ -63,6 +63,13 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "collectCoverageFrom": [
+        "src/**/*.{js,jsx,ts,tsx}",
+        "!src/index.tsx",
+        "!src/serviceWorker.ts"
+    ]
+  },
   "devDependencies": {
     "@types/bootstrap": "^5.0.0",
     "@types/enzyme": "^3.10.7",
