@@ -6,6 +6,7 @@ import 'semantic-ui-css/semantic.min.css';
 
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import thunk from 'redux-thunk';
@@ -21,14 +22,6 @@ const rootReducer = combineReducers({
 
 export type AppState = ReturnType<typeof rootReducer>;
 
-declare global {
-	interface Window {
-		__REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-	}
-}
-
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
 // const logger = (typeof store): store => {
 //   return next => {
 //     return action => {
@@ -42,7 +35,7 @@ const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
 
 const store = createStore(
 	rootReducer,
-	composeEnhancers(applyMiddleware(thunk, routerMiddleware(history))),
+	composeWithDevTools(applyMiddleware(thunk, routerMiddleware(history))),
 );
 
 ReactDOM.render(
