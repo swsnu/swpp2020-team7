@@ -13,6 +13,7 @@
     ],
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
-        "@typescript-eslint/camelcase": "off"
+        "@typescript-eslint/camelcase": 0,
+        "import/extensions": 0
     }
 }
