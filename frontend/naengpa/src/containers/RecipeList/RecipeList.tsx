@@ -1,7 +1,7 @@
 import React, { useEffect, MouseEvent } from 'react';
 import { useSelector } from 'react-redux';
 import { History } from 'history';
-import { AppState } from '../../index';
+import { AppState } from '../../store/store';
 
 interface RecipeListProps {
 	history: History;

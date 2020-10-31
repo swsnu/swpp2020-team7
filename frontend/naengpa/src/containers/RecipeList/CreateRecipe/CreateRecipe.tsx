@@ -2,7 +2,7 @@ import React, { useState, useEffect, Dispatch } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import { AppState } from '../../../index';
+import { AppState } from '../../../store/store';
 import { RecipeActions } from '../../../store/actions/recipe';
 
 const CreateRecipe: React.FC = () => {
