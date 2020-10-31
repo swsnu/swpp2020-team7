@@ -5,38 +5,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'semantic-ui-css/semantic.min.css';
 
 import { Provider } from 'react-redux';
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import { connectRouter, routerMiddleware } from 'connected-react-router';
-import { createBrowserHistory } from 'history';
-import thunk from 'redux-thunk';
 import * as serviceWorker from './serviceWorker';
 import App from './App';
-import recipeReducer from './store/reducers/recipe';
 
-const history = createBrowserHistory();
-const rootReducer = combineReducers({
-	router: connectRouter(history),
-	recipes: recipeReducer,
-});
-
-export type AppState = ReturnType<typeof rootReducer>;
-
-// const logger = (typeof store): store => {
-//   return next => {
-//     return action => {
-//       console.log('[Middleware] Dispatching', action);
-//       const reusult = next(action);
-//       console.log('[Middleware] Next State', store.getState());
-//       return reusult;
-//     }
-//   }
-// }
-
-const store = createStore(
-	rootReducer,
-	composeWithDevTools(applyMiddleware(thunk, routerMiddleware(history))),
-);
+import store, { history } from './store/store';
 
 ReactDOM.render(
 	<Provider store={store}>
