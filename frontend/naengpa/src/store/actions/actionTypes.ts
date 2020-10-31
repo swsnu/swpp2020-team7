@@ -1,11 +1,11 @@
 // USER related ACTIONS
-export const CHECK_LOGIN = 'CHECK_LOGIN'
+export const CHECK_LOGIN = 'CHECK_LOGIN';
 export const SIGNUP = 'SINGUP';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const GET_USER_LIST = 'GET_USER_LIST';
 export const GET_USER = 'GET_USER';
-export const DELETE_USER = 'DELETE_USER'; 
+export const DELETE_USER = 'DELETE_USER';
 export const EDIT_USER = 'EDIT_USER';
 
 // FRIDGE related ACTIONS
@@ -36,7 +36,7 @@ export const CREATE_ARTICLE = 'CREATE_ARTICLE';
 export const DELETE_ARTICLE = 'DELETE_ARTICLE';
 export const EDIT_ARTICLE = 'EDIT_ARTICLE';
 
-// COMMENT related ACTIONS 
+// COMMENT related ACTIONS
 export const GET_COMMENT_LIST = 'GET_COMMENT_LIST';
 export const GET_COMMENT = 'GET_COMMENT';
 export const ADD_COMMENT = 'ADD_COMMENT';

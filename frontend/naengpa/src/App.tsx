@@ -1,8 +1,7 @@
 import React from 'react';
 import './App.scss';
-import { Route, Redirect, Switch} from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
-import { connect } from 'react-redux'; 
 import { History } from 'history';
 
 import Header from './components/Navigation/Navigation';
@@ -36,56 +35,56 @@ import ArticleDetail from './containers/ArticleList/ArticleDetail/ArticleDetail'
 import EditArticle from './containers/ArticleList/EditArticle/EditArticle';
 
 interface AppProps {
-  history: History;
+	history: History;
 }
 
-const App: React.FC<AppProps> = ({history}) => {
-  return (
-    <div id="App">
-      <ConnectedRouter history={history}>
-          <div id="naengpa-header">
-            <Header history={history}/>
-            <Navigation history={history}/>
-          </div>
-          <Switch>
-            {/* User Authentication */}
-            <Route path="/signup" exact component={Signup}/> 
-            <Route path="/login" exact component={Login}/> 
-            <Route path="/regional-setting" exact component={RegionalSetting}/>
-            <Route path="/logout" exact component={Logout}/>
+const App: React.FC<AppProps> = ({ history }) => {
+	return (
+		<div id="App">
+			<ConnectedRouter history={history}>
+				<div id="naengpa-header">
+					<Header history={history} />
+					<Navigation history={history} />
+				</div>
+				<Switch>
+					{/* User Authentication */}
+					<Route path="/signup" exact component={Signup} />
+					<Route path="/login" exact component={Login} />
+					<Route path="/regional-setting" exact component={RegionalSetting} />
+					<Route path="/logout" exact component={Logout} />
 
-            {/* Fridge Page */}
-            <Route path="/fridge" exact component={Fridge}/> 
-            <Route path="/ingredients/add" exact component={AddIngredient}/>
+					{/* Fridge Page */}
+					<Route path="/fridge" exact component={Fridge} />
+					<Route path="/ingredients/add" exact component={AddIngredient} />
 
-            {/* Mypage */}
-            <Route path="/@:username" exact component={Mypage}/>
-            <Route path="/@:username/info" exact component={UserInfo}/>
-            <Route path="/@:username/edit" exact component={EditUserInfo}/>
-            <Route path="/@:username/password" exact component={ChangePassword}/>
-            <Route path="/@:username/recipes" exact component={UserRecipe}/>
-            <Route path="/notifications" exact component={UserNotification}/>
-            <Route path="/chatrooms" exact component={ChatRoomList}/> 
-            <Route path="/chatrooms/:id" exact component={ChatDetail}/>
+					{/* Mypage */}
+					<Route path="/@:username" exact component={Mypage} />
+					<Route path="/@:username/info" exact component={UserInfo} />
+					<Route path="/@:username/edit" exact component={EditUserInfo} />
+					<Route path="/@:username/password" exact component={ChangePassword} />
+					<Route path="/@:username/recipes" exact component={UserRecipe} />
+					<Route path="/notifications" exact component={UserNotification} />
+					<Route path="/chatrooms" exact component={ChatRoomList} />
+					<Route path="/chatrooms/:id" exact component={ChatDetail} />
 
-            {/* Recipe Page */}
-            <Route path="/recipes" exact component={RecipeList}/>
-            <Route path="/recipes/create" exact component={CreateRecipe}/> 
-            <Route path="/recipes/:id" exact component={RecipeDetail}/> 
-            <Route path="/recipes/:id/edit" exact component={EditRecipe}/> 
-            <Route path="/ingredients/extract" exact component={ExtractIngredient}/>
+					{/* Recipe Page */}
+					<Route path="/recipes" exact component={RecipeList} />
+					<Route path="/recipes/create" exact component={CreateRecipe} />
+					<Route path="/recipes/:id" exact component={RecipeDetail} />
+					<Route path="/recipes/:id/edit" exact component={EditRecipe} />
+					<Route path="/ingredients/extract" exact component={ExtractIngredient} />
 
-            {/* Article Page */}
-            <Route path="/articles" exact component={ArticleList}/>
-            <Route path="/articles/create" exact component={CreateArticle}/>
-            <Route path="/articles/:id" exact component={ArticleDetail}/>
-            <Route path="/articles/edit" exact component={EditArticle}/>
+					{/* Article Page */}
+					<Route path="/articles" exact component={ArticleList} />
+					<Route path="/articles/create" exact component={CreateArticle} />
+					<Route path="/articles/:id" exact component={ArticleDetail} />
+					<Route path="/articles/edit" exact component={EditArticle} />
 
-            <Redirect exact to="/fridge"/>
-          </Switch>
-      </ConnectedRouter>
-    </div>
-  );
-}
+					<Redirect exact to="/fridge" />
+				</Switch>
+			</ConnectedRouter>
+		</div>
+	);
+};
 
 export default App;
