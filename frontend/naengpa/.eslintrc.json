@@ -15,10 +15,11 @@
         "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
         "@typescript-eslint/camelcase": 0,
         "import/extensions": 0,
-        "no-param-reassign": [2, { "props": false }]
+        "no-param-reassign": [2, { "props": false }],
+        "react/prop-types": 0
     },
     "overrides": [{
-        "files": ["*.ts"],
+        "files": ["**/*.ts"],
         "rules": {
             "@typescript-eslint/explicit-function-return-type": 0
         }
