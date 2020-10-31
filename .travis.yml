@@ -22,3 +22,4 @@ matrix:
         #- pylint **/*.py --load-plugins pylint_django
         #- coverage run --source='.' manage.py test
         #- coverage xml
+        - true
