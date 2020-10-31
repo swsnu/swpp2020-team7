@@ -24,31 +24,26 @@ function recipeReducer(state: InitialState = RecipeState, action: Action): Initi
 	switch (action.type) {
 		case actionTypes.GET_RECIPE_LIST:
 			return { ...state };
-
 		case actionTypes.GET_RECIPE:
 			return { ...state };
-
-		case actionTypes.CREATE_RECIPE:
+		case actionTypes.CREATE_RECIPE: {
 			const recipe_data = {
 				'food-name': action.payload[0],
 				'cook-time': action.payload[1],
 				recipe: action.payload[2],
 			};
 			axios.post('/api/recipes/', recipe_data).then((res) => console.log(res));
-
 			/* new recipe created and selected article is now created recipe */
 			return {
 				...state,
 				recipes: [...state.recipes, action.payload],
 				selected_recipe: action.payload,
 			};
-
+		}
 		case actionTypes.DELETE_RECIPE:
 			return { ...state };
-
 		case actionTypes.EDIT_RECIPE:
 			return { ...state };
-
 		default:
 			return state;
 	}
