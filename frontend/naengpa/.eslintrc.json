@@ -16,6 +16,12 @@
         "@typescript-eslint/camelcase": 0,
         "import/extensions": 0
     },
+    "overrides": [{
+        "files": ["*.ts"],
+        "rules": {
+            "@typescript-eslint/explicit-function-return-type": 0
+        }
+    }],
     "settings": {
         "import/resolver": {
             "node": {
