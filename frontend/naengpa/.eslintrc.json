@@ -15,5 +15,12 @@
         "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
         "@typescript-eslint/camelcase": 0,
         "import/extensions": 0
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
+            }
+        }
     }
 }
