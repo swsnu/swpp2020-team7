@@ -1,7 +1,13 @@
 matrix:
   include:
     - language: node_js
-      node_js: "12"
+      node_js: 
+        - "12"
+        addons:
+          sonarcloud:
+            organization: "swsnu"
+            token: 
+              secure: "ULwF6hrABUMe0LJa5ZWuq1lyLw0fmb62rKbmbT8CR8+/ovIoYcPIUX0iEMG1xNeUMSngwpDXbzCtSRiqMa1cakXYf5YjUhcwfz8rTmOzgiFXzIxLRjCnuVljYZ6HEKQvWOA7kQJhS1ICo0f4D20D1r5BRKIeRTC/7qw6MzrMIl0xyPX44DJsQw2/M8bKLWPR8LU6CCeCw82Xb+YXJWv++Og7FH1PCbpRP/OI6lDFgCHXKmcG6dC/zyZhq9PY4DyFGK7Ye67T+YMnR16pTznlA27XJYM+d2n+3942XwXxyIXCyP3BuJaWP2gejDLBJ1Fl7vVjsdYzo0mwcUQ4j/PfCxBNmGPcWcZ3LJktjhZkpoOKHNdlDzyHukLPnRVtkn/BPQhjb8b9q+0rXWJ7JCEZwS+LCHN6OuNPOBx5n/V7cM/dva8lf155+6291GvgFwsS8n6sevRttYOtsT52liE00DIXtTiqYhkgGBd5dc8HxiTgMjUwacmsSGciYQTFEu/+v/hpFygybPFC0VKFejVbx+2lw1KuAmS0wUWP2iFrZgYuLtgh09rvWx9zgYB4OWByLKRUH7pKo1SrrX/IBnb2/8VCGK57WFkat/1oP31AcLRRCdjBZ0ZFo/WHuzcYJAgJwXqRxx1tS2qtL+PdBn0yL8aqnbytanykAGeWIsXxym8="
       cache: yarn
       before_install:
         - cd frontend/naengpa
@@ -10,6 +16,7 @@ matrix:
       script:
         - yarn lint
         - yarn test
+        - cd .. && sonar-scanner
 
     - language: python
       python: "3.7"
