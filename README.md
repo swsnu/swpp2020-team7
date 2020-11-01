@@ -5,15 +5,15 @@
 ### run  
 ```
 cd frontend/naengpa
-yarn install
+yarn
 yarn start
 ```
 
 ### test
 ```
 cd frontend/naengpa
-yarn install
-yarn test --coverage --watchAll=false 
+yarn
+yarn test
 ```
 
 # Backend
