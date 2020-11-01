@@ -10,20 +10,16 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ history }) => {
 	return (
-		<div
-			id="navigation"
-			className="d-flex pl-5 pr-5 justify-content-between align-items-center"
-		>
+		<div id="navigation">
 			<button
 				id="naengpa-logo-button"
 				type="button"
-				className="align-items-center"
 				onClick={() => history.push('/fridge')}
 			>
 				<LocalDiningIcon id="naengpa-logo" />
 				냉파
 			</button>
-			<div id="right-navigation-buttons" className="d-flex">
+			<div id="right-navigation-buttons">
 				<button
 					id="user-notice-button"
 					type="button"
@@ -34,13 +30,16 @@ const Navigation: React.FC<NavigationProps> = ({ history }) => {
 				{/* TODO: username 인자 전달 다시 확인 요망 */}
 				<button
 					id="mypage-button"
-					className="btn btn-secondary"
 					type="button"
 					onClick={() => history.push('/@:username')}
 				>
 					MY PAGE
 				</button>
-				<button id="logout-button" type="button" onClick={() => history.push('/logout')}>
+				<button 
+					id="logout-button" 
+					type="button" 
+					onClick={() => history.push('/logout')}
+				>
 					LOGOUT
 				</button>
 			</div>
