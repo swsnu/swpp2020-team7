@@ -30,7 +30,7 @@ const CreateRecipe: React.FC = () => {
 	return (
 		<table>
 			<tbody>
-				<tr id="recipe-create-header" >
+				<tr id="recipe-create-header">
 					<button
 						id="back-to-recipe-list"
 						type="button"

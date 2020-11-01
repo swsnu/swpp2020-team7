@@ -11,11 +11,7 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ history }) => {
 	return (
 		<div id="navigation">
-			<button
-				id="naengpa-logo-button"
-				type="button"
-				onClick={() => history.push('/fridge')}
-			>
+			<button id="naengpa-logo-button" type="button" onClick={() => history.push('/fridge')}>
 				<LocalDiningIcon id="naengpa-logo" />
 				냉파
 			</button>
@@ -35,11 +31,7 @@ const Navigation: React.FC<NavigationProps> = ({ history }) => {
 				>
 					MY PAGE
 				</button>
-				<button 
-					id="logout-button" 
-					type="button" 
-					onClick={() => history.push('/logout')}
-				>
+				<button id="logout-button" type="button" onClick={() => history.push('/logout')}>
 					LOGOUT
 				</button>
 			</div>
