@@ -3,14 +3,16 @@
   height: 70px;
   border: solid 1px #e3e3e3;
   background-color: #efefef;
+  display: flex;
+  justify-content: space-around;
 }
 
 button {
+  font-size: 20px;
   border: none;
   outline: 0;
   color: #696464;
   font-weight: bold;
-  font-family: BMJUA_TTF;
 }
 
 button:focus{

@@ -1,8 +1,12 @@
  #navigation {
-  font-family: BMJUA_TTF;
   width: 100%;
   height: 70px;
   background-color: #ffffff;
+  display: flex;
+  padding: 0px, 10px;
+  justify-content: space-between;
+  margin: 10px;
+  align-items: center;
 
   button {
     border: none;
@@ -18,12 +22,18 @@
     font-size: 40px;
   }
 
-
   #naengpa-logo-button {
+    display: flex;
+    align-items: center;
     letter-spacing: 5.2px;
     font-size: 35px;
     background-color: transparent;
     color: #ff8a3d;
+  }
+
+  #right-navigation-buttons {
+    display: flex;
+    margin-right: 30px;
   }
 
   #user-notice-button {

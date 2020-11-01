@@ -1,16 +1,13 @@
 import React, { useState, useEffect, Dispatch } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import { AppState } from '../../../store/store';
 import { RecipeActions } from '../../../store/actions/recipe';
 
 const CreateRecipe: React.FC = () => {
 	const [foodName, setFoodName] = useState('');
 	const [recipe, setRecipe] = useState('');
 	const [cookTime, setCookTime] = useState('');
-
-	// const createdRecipe = useSelector((state: AppState) => state.recipes.selected_recipe);
 	const createDispatch = useDispatch<Dispatch<RecipeActions>>();
 
 	useEffect(() => {
@@ -20,9 +17,9 @@ const CreateRecipe: React.FC = () => {
 	const onClickAddImage = () => {
 		console.log('add image');
 	};
-	const onClickDeleteImage = () => {
-		console.log('delete image');
-	};
+	// const onClickDeleteImage = () => {
+	// 	console.log('delete image');
+	// };
 	const onClickBackToRecipeList = () => {
 		console.log('back to recipe list');
 	};
@@ -31,9 +28,9 @@ const CreateRecipe: React.FC = () => {
 	};
 
 	return (
-		<table className="ui definition table create-recipe m-5 d-flex flex-column justify-content-center">
+		<table>
 			<tbody>
-				<tr id="recipe-create-header" className="d-flex justify-contents-center">
+				<tr id="recipe-create-header">
 					<button
 						id="back-to-recipe-list"
 						type="button"
