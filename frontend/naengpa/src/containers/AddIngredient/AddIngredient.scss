@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+#add-ingredient-header {
+    button {
+        min-width: 130px;
+        min-height: 40px;
+        width: 100%;
+        height: 100%;
+        border: solid 2px #ffdda1;
+        border-radius: 0;
+        background-color: #fff0d5;
+        font-family: 'Jua', sans-serif;
+        font-size: 18px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1;
+        letter-spacing: 2px;
+        text-align: center;
+        color: #ffa43c;
+    }
+}
+
+button#food-ingredient {
+        width: 80px;
+        height: 24px;
+        border-radius: 42px;
+        background-color: #efefef;
+        font-size: 13px;
+        font-family: 'Jua', sans-serif;
+        text-align: center;
+        margin: {
+            top: 10px;
+            bottom: 6px;
+            left: 10px;
+            right: 10px;
+        }
+        padding: 0px;
+}
+
+button#food-ingredient.selected {
+    background-color: #ef777b;
+}
+
+.selected {
+    background-color: #ef777b;
+}
+
+.right {
+    margin-right: 10px;
+}
+
+.flex-container {
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    .space-between {
+        justify-content: space-between;
+    }
+
+    #food-category {
+        align-items: flex-start;
+    }
+}
+
+div#food-category {
+    font-size: 8;
+    font-family: 'Jua', sans-serif;
+
+    span {
+        font-size: inherit;
+        font-family: inherit;
+    }
+}
+
+.flex-item {
+    max-width: 200px;
+    margin: auto;
+}
+
+#add-ingredient-list.flex-container {
+    flex-direction: column;
+    justify-content: safe center;
+    overflow: auto;
+    margin: auto;
+    max-width: 300px;
+    max-height: 200px;
+}
+
+#add-ingredient-category-list.flex-container{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: safe center;
+    overflow: auto;
+}
