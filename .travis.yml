@@ -16,7 +16,7 @@ matrix:
       script:
         - yarn lint
         - yarn test
-        - cd .. && sonar-scanner
+        - cd ../.. && sonar-scanner
 
     - language: python
       python: "3.7"
