@@ -1,35 +1,37 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
 
-function getIngredientList() {
+export function getIngredientList() {
 	return {
 		type: actionTypes.GET_INGREDIENT_LIST,
 		payload: {},
 	};
 }
 
-function getIngredient() {
+export function getIngredient() {
 	return {
 		type: actionTypes.GET_INGREDIENT,
 		payload: {},
 	};
 }
 
-function addIngredient() {
+export function addIngredient(ingredient: string, category: string) {
+	const recipe_data = {};
+	// axios.post('/users/1/', recipe_data).then((res) => console.log(res));
 	return {
 		type: actionTypes.ADD_INGREDIENT,
 		payload: {},
 	};
 }
 
-function deleteIngredient() {
+export function deleteIngredient() {
 	return {
 		type: actionTypes.DELETE_INGREDIENT,
 		payload: {},
 	};
 }
 
-function editIngredient() {
+export function editIngredient() {
 	return {
 		type: actionTypes.EDIT_INGREDIENT,
 		payload: {},
