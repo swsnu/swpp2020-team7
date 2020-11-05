@@ -1,25 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import { getIngredientList } from '../../store/actions/ingredient';
-import {
-	Table,
-	TableHead,
-	TableBody,
-	TableRow,
-	TableCell,
-	Button,
-	Input,
-	List,
-	ListItem,
-	ListItemText,
-} from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
-import {
-	createStyles,
-	Theme,
-	withStyles,
-	makeStyles,
-	createMuiTheme,
-} from '@material-ui/core/styles';
+import { createStyles, Theme, withStyles, makeStyles } from '@material-ui/core/styles';
 import { addIngredient } from '../../store/actions/ingredient';
 import './AddIngredient.scss';
 
@@ -36,8 +17,11 @@ const getIngredientList = async () => {
 			', ',
 		),
 		유제품: '우유, 요거트, 요구르트, 두유, 버터, 생크림, 파마산 치즈, 슬라이스치즈, 모짜렐라치즈, 크림치즈, 과일치즈'.split(
-			',',
+			', ',
 		),
+		'장류/양념': '소금, 설탕, 후추, 간장, 고추장, 된장'.split(', '),
+		'계란/알류': '계란, 메추리알'.split(', '),
+		가공육: '소시지, 햄, 베이컨'.split(', '),
 	};
 	const ingredientList = Object.keys(ingredientDict).map((category, categoryIndex) =>
 		ingredientDict[category].sort().map((item, index) => ({
@@ -49,51 +33,6 @@ const getIngredientList = async () => {
 	return ingredientList.reduce((a, b) => a.concat(b), []);
 };
 
-const StyledTableCell = withStyles((theme) => ({
-	head: {
-		backgroundColor: '#fffefe',
-		padding: theme.spacing(0),
-		margin: theme.spacing(0),
-		minWidth: 100,
-		minHeight: 30,
-	},
-	body: {
-		backgroundColor: '#fffefe',
-		padding: theme.spacing(0),
-		margin: theme.spacing(0),
-	},
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-	head: {
-		// border: 'solid 2px #e3e3e3',
-		backgroundColor: theme.palette.common.white,
-		color: theme.palette.common.white,
-		margin: 0,
-	},
-}))(TableRow);
-
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		table: {
-			width: '30%',
-			height: '20%',
-			border: 'solid 3px #e3e3e3',
-		},
-		listItemText: {
-			fontFamily: 'inherit',
-			typography: theme.typography,
-			textAlign: 'left',
-			padding: 0,
-			paddingLeft: 10,
-		},
-		input: {
-			backgroundColor: '#fffefe',
-			width: '80%',
-		},
-	}),
-);
-
 export interface IngredientEntity {
 	id: number;
 	category: string;
@@ -103,6 +42,7 @@ export interface IngredientEntity {
 const useIngredientCollection = () => {
 	const [categoryCollection, setCategoryCollection] = useState<string[]>([]);
 	const [ingredientCollection, setIngredientCollection] = useState<IngredientEntity[]>([]);
+	const [selectedCategory, setSelectedCategory] = useState<string>('');
 
 	const loadIngredientCollection = async () => {
 		const ingredientCollection = await getIngredientList();
@@ -113,21 +53,27 @@ const useIngredientCollection = () => {
 			.filter((item, pos, self) => self.indexOf(item) === pos) // remove duplicates
 			.sort(); // sort in ascending order
 		setCategoryCollection(categoryList);
+		setSelectedCategory(categoryList[0]);
 	};
-	return { categoryCollection, ingredientCollection, loadIngredientCollection };
+	return {
+		categoryCollection,
+		ingredientCollection,
+		selectedCategory,
+		setSelectedCategory,
+		loadIngredientCollection,
+	};
 };
 
 const AddIngredient: React.FC = () => {
 	const {
 		categoryCollection,
 		ingredientCollection,
+		selectedCategory,
+		setSelectedCategory,
 		loadIngredientCollection,
 	} = useIngredientCollection();
-	const [selectedCategory, setSelectedCategory] = useState<string>('');
 	const [selectedIngredient, setSelectedIngredient] = useState<string>('');
-	const [searchText, setSearchText] = useState<string>('');
 	const [isIngredientSelected, setIsIngredientSelected] = useState<boolean>(false);
-	const classes = useStyles();
 
 	useEffect(() => {
 		loadIngredientCollection();
@@ -135,30 +81,30 @@ const AddIngredient: React.FC = () => {
 
 	const onClickFoodCategory = (category: string) => {
 		setSelectedCategory(category);
-		setSearchText(`분류: ${category}`);
+		setSelectedIngredient('');
 		setIsIngredientSelected(false);
 	};
 	const onClickIngredient = (ingredientName: string) => {
 		setSelectedIngredient(ingredientName);
-		setSearchText(`분류: ${selectedCategory}\t이름: ${ingredientName}`);
 		setIsIngredientSelected(true);
 	};
-	const onClickAddIngredientToFridge = (ingredient: string, category: string) => {
-		addIngredient(ingredient, category);
+	const onClickAddIngredientToFridge = () => {
+		addIngredient(selectedIngredient, selectedCategory);
 	};
 
-	const IngredientList = ({
+	const IngredientGrid = ({
 		ingredientCollection,
 		selectedCategory,
 	}: {
 		ingredientCollection: IngredientEntity[];
 		selectedCategory: string;
 	}) => (
-		<List id="add-ingredient-list" className="flex-container flex-item">
+		<div id="add-ingredient-grid" className="grid-container">
 			{ingredientCollection
 				.filter((ingredient) => ingredient.category === selectedCategory)
 				.map((ingredient) => (
-					<Button
+					<button
+						type="button"
 						id="food-ingredient"
 						key={ingredient.id}
 						className={`flex-item${
@@ -167,98 +113,57 @@ const AddIngredient: React.FC = () => {
 						onClick={() => onClickIngredient(ingredient.name)}
 					>
 						{ingredient.name}
-					</Button>
-				))
-				.reduce(
-					(res, elem) => {
-						if (res[res.length - 1].length === 3) {
-							res.push([]);
-						}
-						res[res.length - 1].push(elem);
-						return res;
-					},
-					[[]] as any[],
-				)
-				.map((triple, index) => (
-					<ListItem
-						key={triple[0]?.id || index}
-						id="add-ingredient-row"
-						className="flex-container"
-					>
-						{triple}
-					</ListItem>
+					</button>
 				))}
-		</List>
+		</div>
 	);
 
 	return (
-		<div id="add-ingredient">
-			<Table id="add-ingredient" className={classes.table}>
-				<TableHead id="add-ingredient-header">
-					<StyledTableRow>
-						<StyledTableCell width="25%">
-							<Button
-								id="add-ingredient"
-								onClick={() =>
-									onClickAddIngredientToFridge(
-										selectedIngredient,
-										selectedCategory,
-									)
-								}
-							>
-								재료&nbsp;추가하기
-							</Button>
-						</StyledTableCell>
-						<StyledTableCell align="left">
-							<div className="flex-container space-between">
-								<Input
-									id="search-input"
-									className={classes.input}
-									value={searchText}
-									onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-										setSearchText(e.target.value)
-									}
-								/>
-								<SearchIcon color="primary" />
-							</div>
-						</StyledTableCell>
-					</StyledTableRow>
-				</TableHead>
-				<TableBody id="add-ingredient-body">
-					<StyledTableRow>
-						<StyledTableCell>
-							<List id="add-ingredient-category-list" className="flex-container">
-								{/* List of food categories */}
-								{categoryCollection.map((category, index) => (
-									<ListItem
-										key={category}
-										id="food-category"
-										className={`flex-item${
-											category === selectedCategory ? ' selected' : ''
-										}`}
-										onClick={() => onClickFoodCategory(category)}
-									>
-										<ListItemText
-											id="food-category"
-											className={classes.listItemText}
-											primary={category}
-										/>
-									</ListItem>
-								))}
-							</List>
-						</StyledTableCell>
-						<StyledTableCell>
-							{/* List of ingredient list for selected category */}
-							<div className="flex-container">
-								<IngredientList
-									ingredientCollection={ingredientCollection}
-									selectedCategory={selectedCategory}
-								/>
-							</div>
-						</StyledTableCell>
-					</StyledTableRow>
-				</TableBody>
-			</Table>
+		<div id="add-ingredient" className="grid-container">
+			<button
+				type="submit"
+				id="add-ingredient"
+				onClick={() => onClickAddIngredientToFridge()}
+			>
+				재료&nbsp;추가하기
+			</button>
+			<div id="selected-status" className="grid-container">
+				<div id="selected-status" className="grid-item">
+					{selectedCategory && (
+						<button
+							type="button"
+							id="selected-category"
+						>{`분류: ${selectedCategory}`}</button>
+					)}
+				</div>
+				<div id="selected-status" className="grid-item">
+					{selectedIngredient && (
+						<button
+							type="button"
+							id="selected-ingredient"
+						>{`이름: ${selectedIngredient}`}</button>
+					)}
+				</div>
+			</div>
+			<div id="add-ingredient-category-list" className="grid-container">
+				{/* List of food categories */}
+				{categoryCollection.map((category) => (
+					<button
+						type="button"
+						key={category}
+						id="food-category"
+						className={`flex-item${category === selectedCategory ? ' selected' : ''}`}
+						onClick={() => onClickFoodCategory(category)}
+					>
+						{category}
+					</button>
+				))}
+			</div>
+			{/* grid of ingredient collection for selected category */}
+			<IngredientGrid
+				ingredientCollection={ingredientCollection}
+				selectedCategory={selectedCategory}
+			/>
 		</div>
 	);
 };
