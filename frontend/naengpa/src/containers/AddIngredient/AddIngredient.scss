@@ -13,7 +13,7 @@
 #add-ingredient.grid-container {
     grid-template-rows: 1fr 4fr;
     grid-template-columns: 1fr 3fr;
-    width: 35%;
+    width: 100%;
     height: 100%;
     max-width: 450px;
     max-height: 250px;
@@ -35,13 +35,9 @@
     align-items: center;
     box-sizing: border-box;
     position: relative;
-    font-size: 20px;
+    font-size: 125%;
     font-weight: 900;
     text-shadow: 3px 0 0 rgba(white, .5);
-
-    #add-ingredient-grid {
-        padding: 20px;
-    }
 }
 
 button#add-ingredient {
@@ -53,7 +49,7 @@ button#add-ingredient {
     border-radius: 0;
     background-color: #fff0d5;
     font-family: 'Jua', sans-serif;
-    font-size: 18px;
+    font-size: 110%;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
@@ -89,23 +85,13 @@ div#selected-status {
         border-radius: 42px;
         background-color: #efc477;
         font-family: 'Jua', sans-serif;
-        font-size: 12px;
+        font-size: 60%;
         font-weight: 100;
         font-stretch: condensed;
-        letter-spacing: 1.5px;
+        letter-spacing: 1.2px;
         color: #000000;
         font-style: normal;
         text-align: center;
-    }
-}
-
-#food-category {
-    font-size: 8px;
-    font-family: 'Jua', sans-serif;
-
-    span {
-        font-size: inherit;
-        font-family: inherit;
     }
 }
 
@@ -120,16 +106,16 @@ div#selected-status {
     border-right: solid 1px #e3e3e3;
 
     button {
-        font-size: 14px;
+        font-size: 88%;
         font-family: inherit;
         text-align: left;
         max-height: 32px;
         margin: 0;
         padding: {
-            top: 3px;
-            bottom: 3px;
-            left: 20px;
-            right: 0px;
+            top: 2.5%;
+            bottom: 2.5%;
+            left: 17%;
+            right: 0;
         }
         color: #505050;
         background-color: #fffefe;
@@ -143,14 +129,14 @@ button#food-category.selected {
 
 #add-ingredient-grid.grid-container {
     grid-template-columns: repeat(3, 1fr);
-    width: 94%;
-    height: 100%;
+    width: 90%;
+    height: 90%;
     overflow: auto;
     padding: {
-        left: 14px;
-        right: 10px;
+        left: 7%;
+        right: 3%;
     }
-    justify-content: flex-start;
+    justify-content: space-around;
     align-content: flex-start;
 }
 
@@ -160,13 +146,13 @@ button#food-ingredient {
     border-radius: 42px;
     color: #000000;
     background-color: #efefef;
-    font-size: 13px;
+    font-size: 75%;
     font-family: 'Jua', sans-serif;
     text-align: center;
     font-weight: normal;
     margin: {
-        top: 13px;
-        bottom: 13px;
+        top: 16%;
+        bottom: 16%;
     }
     padding: 0px;
 }
