@@ -1,0 +1,27 @@
+div#my-fridge {
+    display: grid;
+    grid-template-columns: 3fr 4fr 3fr;
+    align-content: flex-start;
+    justify-content: space-between;
+    text-align: center;
+    gap: 0;
+    margin: {
+        top: 30px;
+        left: 30px;
+        right: 30px;
+    }
+
+    #fridge-left-part {
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
+        align-content: flex-start;
+        justify-content: flex-start;
+    }
+
+    #fridge-right-part {
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
+        align-content: flex-start;
+        justify-content: flex-start;
+    }
+}
