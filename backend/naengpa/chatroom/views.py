@@ -1,3 +1,4 @@
-from django.shortcuts import render
+"""admin for chatroom"""
+# from django.shortcuts import render
 
 # Create your views here.
