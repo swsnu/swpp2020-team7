@@ -19,7 +19,7 @@ export function getRecipeList() {
 }
 
 /* GET RECIPE */
-function getRecipe(id: number) {
+export function getRecipe(id: number) {
 	return async (dispatch: any) => {
 		const response: any = await axios.get(`/api/recipes/${id}`).then((res) => console.log(res));
 
@@ -43,7 +43,7 @@ export function createRecipe(recipe: RecipeEntity) {
 }
 
 /* DELETE RECIPE */
-function deleteRecipe(id: number) {
+export function deleteRecipe(id: number) {
 	return async (dispatch: any) => {
 		await axios.delete(`/api/recipes/${id}`).then((res) => console.log(res));
 

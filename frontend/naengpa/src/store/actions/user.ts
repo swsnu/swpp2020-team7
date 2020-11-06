@@ -6,17 +6,17 @@ export const checkLogin = () => ({
 	payload: {},
 });
 
-export const Signup = () => ({
+export const signup = () => ({
 	type: actionTypes.SIGNUP,
 	payload: {},
 });
 
-export const Login = () => ({
+export const login = () => ({
 	type: actionTypes.LOGIN,
 	payload: {},
 });
 
-export const Logout = () => ({
+export const logout = () => ({
 	type: actionTypes.LOGOUT,
 	payload: {},
 });
