@@ -1,31 +1,51 @@
-import React, { useEffect, MouseEvent } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState, MouseEvent, Dispatch } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
+
+import Recipe from '../../components/Recipe/Recipe';
 import { AppState } from '../../store/store';
+import { getRecipeList } from '../../store/actions/recipe';
+
+import './RecipeList.scss';
 
 interface RecipeListProps {
 	history: History;
 }
 
 const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
-	const recipe_list = useSelector((state: AppState) => state.recipes);
+	const recipe_list = useSelector((state: AppState) => state.recipes.recipes);
+	const dispatch = useDispatch();
 
-	const onClickRecipeRegister = (e: MouseEvent<HTMLButtonElement>): void => {
+	const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {
 		e.preventDefault();
 		history.push('/recipes/create');
 	};
 
+	const recipe = recipe_list.map((item: any) => {
+		return <Recipe recipe={item} />;
+	});
+
 	useEffect(() => {
-		console.log(recipe_list);
-	}, [recipe_list]);
+		dispatch(getRecipeList());
+	}, [dispatch]);
 
 	return (
 		<div id="recipe-list">
-			{/* TODO: RECIPE compoenet로 list 출력해야함 */}
-			{recipe_list.recipes}
-			<button id="recipe-register-button" type="button" onClick={onClickRecipeRegister}>
-				레시피 등록하기
-			</button>
+			<div id="recipe-list-buttons">
+				<button id="most-recent-filter" type="button">
+					최신
+				</button>
+				<button id="most-popular-filter" type="button">
+					인기
+				</button>
+				<button id="most-recommended-filter" type="button">
+					추천
+				</button>
+				<button id="create-recipe-button" type="button" onClick={onClickCreateRecipe}>
+					레시피 등록
+				</button>
+			</div>
+			<div id="recipe-cards">{recipe}</div>
 		</div>
 	);
 };

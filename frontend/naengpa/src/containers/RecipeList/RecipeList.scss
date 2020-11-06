@@ -1,0 +1,58 @@
+#recipe-list {
+  margin: 5% 10%;
+
+  #create-recipe-button {
+    display: flex;
+    justify-content: flex-end;
+    border-radius: 35px;
+    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(30px);
+    background-color: #ff8a3d;
+
+    font: {
+      size: 15px;
+      weight: bold;
+      stretch: normal;
+      style: normal;
+    };
+
+    line-height: 2.63;
+    letter-spacing: normal;
+    text-align: center;
+    color: #fbfbfb;
+    border: none;
+  }
+
+  #recipe-list-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  #recipe-cards {
+    display: flex;
+    flex-flow: wrap;
+    margin: 5%;
+    padding: 10px;
+  }
+
+  button {
+    border: none {
+      border-radius: 20px;
+    };
+
+    background-color: white;
+
+    font: {
+      size: 100%;
+      weight: bold;
+    }
+    
+    color: #707070;
+    margin-right: 1%;
+  }
+  
+  button:focus {
+    outline: 0 !important;
+    color: #408bf9
+  }
+}
