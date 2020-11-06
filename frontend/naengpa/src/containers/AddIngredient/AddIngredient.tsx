@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 // import { getIngredientList } from '../../store/actions/ingredient';
 import { createStyles, Theme, withStyles, makeStyles } from '@material-ui/core/styles';
 import { addIngredient } from '../../store/actions/ingredient';
+import { IngredientEntity } from '../../model/ingredient';
 import './AddIngredient.scss';
 
 const getIngredientList = async () => {
@@ -32,12 +33,6 @@ const getIngredientList = async () => {
 	);
 	return ingredientList.reduce((a, b) => a.concat(b), []);
 };
-
-export interface IngredientEntity {
-	id: number;
-	category: string;
-	name: string;
-}
 
 const useIngredientCollection = () => {
 	const [categoryCollection, setCategoryCollection] = useState<string[]>([]);
@@ -95,10 +90,7 @@ const AddIngredient: React.FC = () => {
 	const IngredientGrid = ({
 		ingredientCollection,
 		selectedCategory,
-	}: {
-		ingredientCollection: IngredientEntity[];
-		selectedCategory: string;
-	}) => (
+	}: {ingredientCollection: IngredientEntity[];selectedCategory: string;}) => (
 		<div id="add-ingredient-grid" className="grid-container">
 			{ingredientCollection
 				.filter((ingredient) => ingredient.category === selectedCategory)
