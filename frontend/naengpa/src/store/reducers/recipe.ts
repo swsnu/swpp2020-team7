@@ -1,49 +1,57 @@
-import axios from 'axios';
 import * as actionTypes from '../actions/actionTypes';
+import { Dictionary } from '../interface';
 
 export type InitialState = {
-	recipes: Array<Array<string>>;
-	selected_recipe: Array<string>;
-	todays_recipes: Array<Array<string>>;
+	recipes: Array<Dictionary<string | Array<string> | number>>;
+	selected_recipe: Dictionary<string | Array<string> | number>;
+	todays_recipes: Array<Dictionary<string | Array<string> | number>>;
 };
 
 const RecipeState: InitialState = {
 	recipes: [],
-	selected_recipe: [],
+	selected_recipe: {},
 	todays_recipes: [],
 };
 
 type Action =
-	| { type: 'GET_RECIPE_LIST' }
-	| { type: 'GET_RECIPE'; payload: Array<string> }
-	| { type: 'CREATE_RECIPE'; payload: Array<string> }
-	| { type: 'DELETE_RECIPE' }
-	| { type: 'EDIT_RECIPE'; payload: Array<Array<string>> };
+	| { type: 'GET_RECIPE_LIST'; recipe_list: Array<Dictionary<string | Array<string> | number>> }
+	| { type: 'GET_RECIPE'; recipe: Dictionary<string | Array<string> | number> }
+	| { type: 'CREATE_RECIPE'; recipe: Dictionary<string | Array<string> | number> }
+	| { type: 'DELETE_RECIPE'; target_id: number }
+	| {
+			type: 'EDIT_RECIPE';
+			recipe: Array<Dictionary<string | Array<string> | number>>;
+			target_id: number;
+	  };
 
 function recipeReducer(state: InitialState = RecipeState, action: Action): InitialState {
 	switch (action.type) {
+		/* GET RECIPE LIST */
 		case actionTypes.GET_RECIPE_LIST:
-			return { ...state };
+			return { ...state, recipes: action.recipe_list };
+
+		/* GET RECIPE */
 		case actionTypes.GET_RECIPE:
-			return { ...state };
+			return { ...state, selected_recipe: action.recipe };
+
+		/* CREATE RECIPE */
 		case actionTypes.CREATE_RECIPE: {
-			const recipe_data = {
-				'food-name': action.payload[0],
-				'cook-time': action.payload[1],
-				recipe: action.payload[2],
-			};
-			axios.post('/api/recipes/', recipe_data).then((res) => console.log(res));
-			/* new recipe created and selected article is now created recipe */
 			return {
 				...state,
-				recipes: [...state.recipes, action.payload],
-				selected_recipe: action.payload,
+				recipes: [...state.recipes, action.recipe],
 			};
 		}
+
+		/* DELETE RECIPE */
 		case actionTypes.DELETE_RECIPE:
 			return { ...state };
+
+		/* EDIT RECIPE */
 		case actionTypes.EDIT_RECIPE:
-			return { ...state };
+			return {
+				...state,
+			};
+
 		default:
 			return state;
 	}
