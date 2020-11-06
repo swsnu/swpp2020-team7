@@ -1,3 +1,4 @@
+"""admin for recipe"""
 from django.contrib import admin
 from .models import Recipe
 
