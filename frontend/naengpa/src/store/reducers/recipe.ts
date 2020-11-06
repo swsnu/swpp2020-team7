@@ -1,10 +1,10 @@
 import * as actionTypes from '../actions/actionTypes';
-import { Dictionary } from '../../../model/recipe';
+import { Dictionary } from '../../model/general';
 
 export type InitialState = {
-	recipes: Array<Dictionary<string | Array<string> | number>>;
-	selected_recipe: Dictionary<string | Array<string> | number>;
-	todays_recipes: Array<Dictionary<string | Array<string> | number>>;
+	recipes: Dictionary<string | string[] | number>[];
+	selected_recipe: Dictionary<string | string[] | number>;
+	todays_recipes: Dictionary<string | string[] | number>[];
 };
 
 const RecipeState: InitialState = {
@@ -14,13 +14,13 @@ const RecipeState: InitialState = {
 };
 
 type Action =
-	| { type: 'GET_RECIPE_LIST'; recipe_list: Array<Dictionary<string | Array<string> | number>> }
-	| { type: 'GET_RECIPE'; recipe: Dictionary<string | Array<string> | number> }
-	| { type: 'CREATE_RECIPE'; recipe: Dictionary<string | Array<string> | number> }
+	| { type: 'GET_RECIPE_LIST'; recipe_list: Dictionary<string | string[] | number>[] }
+	| { type: 'GET_RECIPE'; recipe: Dictionary<string | string[] | number> }
+	| { type: 'CREATE_RECIPE'; recipe: Dictionary<string | string[] | number> }
 	| { type: 'DELETE_RECIPE'; target_id: number }
 	| {
 			type: 'EDIT_RECIPE';
-			recipe: Array<Dictionary<string | Array<string> | number>>;
+			recipe: Dictionary<string | string[] | number>[];
 			target_id: number;
 	  };
 

@@ -17,7 +17,9 @@
         "import/extensions": 0,
         "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
         "no-param-reassign": [2, { "props": false }],
-        "react/prop-types": 0
+        "react/prop-types": 0,
+        "no-shadow": "off",
+        "react-hooks/exhaustive-deps": "warn"
     },
     "overrides": [{
         "files": ["**/*.ts"],

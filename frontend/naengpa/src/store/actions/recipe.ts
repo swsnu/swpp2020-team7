@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
-import { RecipeType } from '../../../model/recipe';
+import { RecipeEntity } from '../../model/recipe';
 
 /* CSRF TOKEN */
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -31,13 +31,13 @@ function getRecipe(id: number) {
 }
 
 /* CREATE RECIPE */
-export function createRecipe(recipe: RecipeType) {
+export function createRecipe(recipe: RecipeEntity) {
 	return async (dispatch: any) => {
 		await axios.post('/api/recipes/', recipe).then((res) => console.log(res));
 
 		dispatch({
 			type: actionTypes.CREATE_RECIPE,
-			recipe: recipe,
+			recipe,
 		});
 	};
 }
@@ -55,7 +55,7 @@ function deleteRecipe(id: number) {
 }
 
 /* EDIT RECIPE */
-export function editRecipe(id: number, recipe: RecipeType) {
+export function editRecipe(id: number, recipe: RecipeEntity) {
 	return async (dispatch: any) => {
 		await axios.put(`/api/recipes/${id}`, recipe).then((res) => console.log(res));
 

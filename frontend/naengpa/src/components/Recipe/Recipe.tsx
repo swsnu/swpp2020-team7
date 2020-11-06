@@ -5,16 +5,16 @@ import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import './Recipe.scss';
-import { Dictionary } from '../../../model/recipe';
+import { Dictionary } from '../../model/general';
 
 interface RecipeProps {
-	recipe: Dictionary<string | Array<Dictionary<string>> | number>;
+	recipe: Dictionary<string | Dictionary<string>[] | number>;
 }
 
 const Recipe: React.FC<RecipeProps> = ({ recipe }) => {
 	// Thumnail Image for Recipes
 	console.log(recipe);
-	const images = recipe['food-images'] as Array<Dictionary<string>>;
+	const images = recipe['food-images'] as Dictionary<string>[];
 	const thumnail = images[0] as Dictionary<string>;
 
 	// Cook-Time Unit set for minute and hour

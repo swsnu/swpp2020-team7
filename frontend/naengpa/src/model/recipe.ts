@@ -1,10 +1,5 @@
-/* DICTIONARY INTERFACE */
-export interface Dictionary<T> {
-	[key: string]: T;
-}
-
 /* RECIPE INTERFACE */
-export interface RecipeType {
+export interface RecipeEntity {
 	'food-name': string;
 	'cook-time': string;
 	'recipe-content': string;
