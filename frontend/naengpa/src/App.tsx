@@ -12,7 +12,7 @@ import Login from './containers/Auth/Login/Login';
 import Logout from './containers/Auth/Logout/Logout';
 import RegionalSetting from './containers/RegionalSetting/RegionalSetting';
 
-import Fridge from './containers/Fridge/Fridge';
+import MyFridge from './containers/MyFridge/MyFridge';
 import AddIngredient from './containers/AddIngredient/AddIngredient';
 
 import Mypage from './containers/Mypage/Mypage';
@@ -53,8 +53,8 @@ const App: React.FC<AppProps> = ({ history }) => {
 					<Route path="/regional-setting" exact component={RegionalSetting} />
 					<Route path="/logout" exact component={Logout} />
 
-					{/* Fridge Page */}
-					<Route path="/fridge" exact component={Fridge} />
+					{/* MyFridge Page */}
+					<Route path="/fridge" exact component={MyFridge} />
 					<Route path="/ingredients/add" exact component={AddIngredient} />
 
 					{/* Mypage */}
