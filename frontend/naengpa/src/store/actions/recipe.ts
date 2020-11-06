@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
-import { RecipeType } from '../interface';
+import { RecipeType } from '../../../model/recipe';
 
 /* CSRF TOKEN */
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -37,7 +37,7 @@ export function createRecipe(recipe: RecipeType) {
 
 		dispatch({
 			type: actionTypes.CREATE_RECIPE,
-			recipe,
+			recipe: recipe,
 		});
 	};
 }

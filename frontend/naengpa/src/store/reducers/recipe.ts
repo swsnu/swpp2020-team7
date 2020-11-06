@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { Dictionary } from '../interface';
+import { Dictionary } from '../../../model/recipe';
 
 export type InitialState = {
 	recipes: Array<Dictionary<string | Array<string> | number>>;
