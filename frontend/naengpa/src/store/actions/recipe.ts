@@ -1,46 +1,68 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
+import { RecipeType } from '../../../model/recipe';
 
-function getRecipeList() {
-	return {
-		type: actionTypes.GET_RECIPE_LIST,
-		payload: {},
+/* CSRF TOKEN */
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+/* GET RECIPE LIST */
+export function getRecipeList() {
+	return async (dispatch: any) => {
+		const response: any = await axios.get('/api/recipes/');
+
+		dispatch({
+			type: actionTypes.GET_RECIPE_LIST,
+			recipe_list: response.data,
+		});
 	};
 }
 
+/* GET RECIPE */
 function getRecipe(id: number) {
-	return {
-		type: actionTypes.GET_RECIPE,
-		payload: { id },
+	return async (dispatch: any) => {
+		const response: any = await axios.get(`/api/recipes/${id}`).then((res) => console.log(res));
+
+		dispatch({
+			type: actionTypes.GET_RECIPE,
+			recipe: response.data,
+		});
 	};
 }
 
-function createRecipe(recipe: Array<string>) {
-	const recipe_data = { 'food-name': recipe[0], 'cook-time': recipe[1], recipe: recipe[2] };
-	axios.post('/api/recipes/', recipe_data).then((res) => console.log(res));
-	return {
-		type: actionTypes.CREATE_RECIPE,
-		recipe: { recipe },
+/* CREATE RECIPE */
+export function createRecipe(recipe: RecipeType) {
+	return async (dispatch: any) => {
+		await axios.post('/api/recipes/', recipe).then((res) => console.log(res));
+
+		dispatch({
+			type: actionTypes.CREATE_RECIPE,
+			recipe: recipe,
+		});
 	};
 }
 
+/* DELETE RECIPE */
 function deleteRecipe(id: number) {
-	return {
-		type: actionTypes.DELETE_RECIPE,
-		payload: { id },
+	return async (dispatch: any) => {
+		await axios.delete(`/api/recipes/${id}`).then((res) => console.log(res));
+
+		dispatch({
+			type: actionTypes.DELETE_RECIPE,
+			target_id: { id },
+		});
 	};
 }
 
-function editRecipe(id: number, recipe: Array<string>) {
-	return {
-		type: actionTypes.EDIT_RECIPE,
-		payload: { id, recipe },
+/* EDIT RECIPE */
+export function editRecipe(id: number, recipe: RecipeType) {
+	return async (dispatch: any) => {
+		await axios.put(`/api/recipes/${id}`, recipe).then((res) => console.log(res));
+
+		dispatch({
+			type: actionTypes.EDIT_RECIPE,
+			target_id: { id },
+			recipe,
+		});
 	};
 }
-
-export type RecipeActions =
-	| ReturnType<typeof getRecipeList>
-	| ReturnType<typeof getRecipe>
-	| ReturnType<typeof createRecipe>
-	| ReturnType<typeof deleteRecipe>
-	| ReturnType<typeof editRecipe>;

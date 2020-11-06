@@ -1,0 +1,207 @@
+#container {
+  margin: 0% 10% 10% 10%;
+  width: 80%;
+  height: 90%;
+  border: solid 1px #dcdcdc;
+}
+
+#create-recipe-alert {
+  width: 55%;
+  height: 40%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: absolute;
+  margin: 20%;
+  margin-top: 35%;
+  min-height: 300px;
+  z-index: 1;
+  padding: 10px;
+  background-color: #ffffff;
+  border: solid 1px #707070; 
+
+  #naengpa-logo-box {
+    display: flex;
+    margin-bottom: 20%;
+    justify-content: space-between;
+
+    #naengpa-logo {
+      display: flex;
+      align-items: center;
+      letter-spacing: 5.2px;
+      font-size: 35px;
+      background-color: transparent;
+      color: #ff8a3d;
+
+      #naengpa-logo-image {
+        font: {
+          size: 40px;
+          family: 'BMJUA';
+          weight: bold;
+        }
+      }
+    }
+    #close-alert-button {
+      font-size: 30px;
+      color:#ff6767;
+    }
+   }
+
+   #alert-content {
+    font: {
+      family: HelveticaNeue;
+      size: 20px;
+      weight: normal;
+      stretch: normal;
+      style: normal;
+    }
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: left;
+    color: #707070;
+  }
+
+   #confirm-alert-button-box {
+    margin-top: 10%;
+    display: flex;
+    justify-content: flex-end;
+
+    #confirm-alert-button {
+      font: {
+        size: 15px;
+        weight: bold;
+        stretch: normal;
+        style: normal;
+      }
+      letter-spacing: normal;
+      text-align: left;
+      color: #ff8a3d;
+      border-radius: 25px;
+      border: solid 1px #ffa43c;
+      background-color: #ffffff;
+      right:0;
+    }
+  }
+}
+
+#create-recipe-mention {
+  font: {
+    size: 15px;
+    weight: bold;
+    stretch: normal;
+    style: normal;
+  }
+  line-height: 3.69;
+  letter-spacing: normal;
+  color: #ff8a3d;
+  display: flex;
+  justify-content: center;
+  margin-top: 5%;
+}
+
+#container-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+#back-to-recipe-list {
+  font-size: 15px;
+  border: solid 1px #707070;
+  border-radius: 25px;
+  background-color: #ffffff;
+}
+
+#create-recipe-title {
+  font: {
+    weight: bold;
+    style: normal;
+    size: 20px;
+  }
+  margin-top: 10px;
+  letter-spacing: normal;
+  text-align: left;
+  color: #696464;
+}
+
+#extract-ingredient-button {
+  font: {
+    size: 15px;
+    weight: bold;
+    stretch: normal;
+    style: normal;
+  }
+  letter-spacing: normal;
+  text-align: left;
+  color: #ff8a3d;
+  border-radius: 25px;
+  border: solid 1px #ffa43c;
+  background-color: #ffffff;
+}
+
+#image-box {
+  display: flex;
+}
+
+#add-image-icon-box {
+  background-color: #dcdcdc;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  float: left;
+}
+
+#file-input {
+  display:none;
+}
+
+#add-image-button {
+  position: absolute;
+  color: #69e88e;
+  top: 0;
+  right: 0;
+
+  margin-top: -11px;
+  margin-right: -11px;
+  border-radius: 25px;
+  background-color: #ffffff;
+}
+
+#add-image-icon {
+  font-size: 45px;
+  color: #ffffff;
+}
+
+
+#delete-image-icon-box {
+  background-color: #dcdcdc;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  float: left;
+  margin-right: 13px;
+}
+
+#delete-image-button {
+  position: absolute;
+  color:#ff6767;
+  top: 0;
+  right: 0;
+
+  margin: {
+    top: -11px;
+    right: -11px;
+  }
+  border-radius: 20px;
+  background-color: #ffffff;
+}
+
+#delete-image-icon {
+  font-size: 45px;
+  color: #ffffff;
+}

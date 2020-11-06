@@ -3,11 +3,11 @@ matrix:
     - language: node_js
       node_js: 
         - 'lts/*'
-        addons:
-          sonarcloud:
-            organization: "swsnu"
-            token: 
-              secure: "ULwF6hrABUMe0LJa5ZWuq1lyLw0fmb62rKbmbT8CR8+/ovIoYcPIUX0iEMG1xNeUMSngwpDXbzCtSRiqMa1cakXYf5YjUhcwfz8rTmOzgiFXzIxLRjCnuVljYZ6HEKQvWOA7kQJhS1ICo0f4D20D1r5BRKIeRTC/7qw6MzrMIl0xyPX44DJsQw2/M8bKLWPR8LU6CCeCw82Xb+YXJWv++Og7FH1PCbpRP/OI6lDFgCHXKmcG6dC/zyZhq9PY4DyFGK7Ye67T+YMnR16pTznlA27XJYM+d2n+3942XwXxyIXCyP3BuJaWP2gejDLBJ1Fl7vVjsdYzo0mwcUQ4j/PfCxBNmGPcWcZ3LJktjhZkpoOKHNdlDzyHukLPnRVtkn/BPQhjb8b9q+0rXWJ7JCEZwS+LCHN6OuNPOBx5n/V7cM/dva8lf155+6291GvgFwsS8n6sevRttYOtsT52liE00DIXtTiqYhkgGBd5dc8HxiTgMjUwacmsSGciYQTFEu/+v/hpFygybPFC0VKFejVbx+2lw1KuAmS0wUWP2iFrZgYuLtgh09rvWx9zgYB4OWByLKRUH7pKo1SrrX/IBnb2/8VCGK57WFkat/1oP31AcLRRCdjBZ0ZFo/WHuzcYJAgJwXqRxx1tS2qtL+PdBn0yL8aqnbytanykAGeWIsXxym8="
+      addons:
+        sonarcloud:
+          organization: "swsnu"
+          token: 
+            secure: "FJ3gXitz8KWhOeJIECTpAxcF8yaiU33BLrfD405pKBjp0vhSKBRorOwoU4hvNIAxE9StgsJ6HYdlt6S2mNZVnMbVibuzMi0xaikKKah9Yq+LfWxwixJ2TcsRSFSzcYiGWQ/P+Lna4eFH0l5IqrYNx0zlu0vzm+x/VBWIR+wziQV+jjLPi/hOkG+sqgFB/+UwbNfGPY+17x2A1D09p/LziEzB5kTtP/c1vdL1L1l+LDDQoq5dtbGEyEWWyDEr1sQEe8utTxnk2hDVgqO4j4q4nYrsIdqeZnF0/agjouY5ppeGLXuxQon8X6igT3o5CpgzhK/qeXclC1yvbdxB+WnhggGm1Kq90FfpDjzoO0pu+jlqA/6OBOgoCWv8RclxaD98yBy2bBR3bcCFtKIvMtC3wUvTAVVboUdmxL8x92h4MKqgCeqoU6SzQcBN4ZYoD2iUledR1ObD+FmWRjOONRMyjHtFLr3F7sZnLNAD376x6cxgNgwTZzopLAI8J8cBZOsydch1ud9qfmVIpBqMmZK2XFNqQk94Ob2MzS4SUlzODj2MMcoTBsIFxUdui4nedDRDGs0CRucN6n1tmVVOquYIQzL+h+2F1E3wNY76kXO1Kdn9qt3Akoj6soW4KUFpEB/FEJqD3itAgWx+uMtr3Mgp0hH9y1fs7aybsSivlM2+OIE="
       cache: yarn
       before_install:
         - cd frontend/naengpa
@@ -16,7 +16,7 @@ matrix:
       script:
         - yarn lint
         - yarn test
-        - cd .. && sonar-scanner
+        - cd ../.. && sonar-scanner
 
     - language: python
       python: "3.7"
