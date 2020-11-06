@@ -35,4 +35,3 @@ export function editArticle(id: number, article: Array<string>) {
 		payload: { id, article },
 	};
 }
-

@@ -1,8 +1,6 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
 
-
-
 export function getFridge() {
 	return {
 		type: typeof actionTypes.GET_FRIDGE,
