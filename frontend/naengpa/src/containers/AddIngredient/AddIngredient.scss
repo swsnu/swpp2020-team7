@@ -8,6 +8,12 @@
     justify-content: space-evenly;
     gap: 0;
     overflow: auto;
+
+    button {
+        border: none;
+        outline: 0;
+        font-family: 'Jua', sans-serif;
+    }
 }
 
 #add-ingredient.grid-container {
@@ -111,6 +117,9 @@ div#selected-status {
         text-align: left;
         max-height: 32px;
         margin: 0;
+        border: none;
+        font-family: 'Jua', sans-serif;
+
         padding: {
             top: 2.5%;
             bottom: 2.5%;
@@ -119,6 +128,10 @@ div#selected-status {
         }
         color: #505050;
         background-color: #fffefe;
+        
+        :focus {
+            outline: 0 !important;
+        }
     }
 }
 
