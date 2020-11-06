@@ -66,7 +66,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		if (foodImages === [] || foodName === '' || cookTime === '' || recipeContent === '') {
 			setAlert(true);
 			setAlertContent(
-				'음리 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
+				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
 			dispatch(

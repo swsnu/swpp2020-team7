@@ -5,7 +5,7 @@ import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import './Recipe.scss';
-import { Dictionary } from '../../store/interface';
+import { Dictionary } from '../../../model/recipe';
 
 interface RecipeProps {
 	recipe: Dictionary<string | Array<Dictionary<string>> | number>;
