@@ -37,7 +37,7 @@ export function createRecipe(recipe: RecipeEntity) {
 
 		dispatch({
 			type: actionTypes.CREATE_RECIPE,
-			recipe: recipe,
+			recipe,
 		});
 	};
 }

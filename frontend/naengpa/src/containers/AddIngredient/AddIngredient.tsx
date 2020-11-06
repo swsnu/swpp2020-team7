@@ -90,7 +90,10 @@ const AddIngredient: React.FC = () => {
 	const IngredientGrid = ({
 		ingredientCollection,
 		selectedCategory,
-	}: {ingredientCollection: IngredientEntity[];selectedCategory: string;}) => (
+	}: {
+		ingredientCollection: IngredientEntity[];
+		selectedCategory: string;
+	}) => (
 		<div id="add-ingredient-grid" className="grid-container">
 			{ingredientCollection
 				.filter((ingredient) => ingredient.category === selectedCategory)
@@ -145,7 +148,9 @@ const AddIngredient: React.FC = () => {
 							type="button"
 							key={category}
 							id="food-category"
-							className={`flex-item${category === selectedCategory ? ' selected' : ''}`}
+							className={`flex-item${
+								category === selectedCategory ? ' selected' : ''
+							}`}
 							onClick={() => onClickFoodCategory(category)}
 						>
 							{category}
