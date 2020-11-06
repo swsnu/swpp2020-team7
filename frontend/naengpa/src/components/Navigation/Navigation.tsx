@@ -13,7 +13,7 @@ const Navigation: React.FC<NavigationProps> = ({ history }) => {
 		<div id="navigation">
 			<button id="naengpa-logo-button" type="button" onClick={() => history.push('/fridge')}>
 				<LocalDiningIcon id="naengpa-logo" />
-				냉파
+				<div id="naengpa-logo-name">냉파</div>
 			</button>
 			<div id="right-navigation-buttons">
 				<button
