@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 // import { getIngredientList } from '../../store/actions/ingredient';
-import { createStyles, Theme, withStyles, makeStyles } from '@material-ui/core/styles';
 import { addIngredient } from '../../store/actions/ingredient';
 import { IngredientEntity } from '../../model/ingredient';
+import { Dictionary } from '../../model/general';
 import './AddIngredient.scss';
 
 const getIngredientList = async () => {
-	const ingredientDict: { [keys: string]: string[] } = {
+	const ingredientDict: Dictionary<string[]> = {
 		과일: '사과, 배, 귤, 바나나, 망고, 복숭아, 파인애플, 포도, 자두, 감, 수박, 멜론, 참외, 딸기, 키위, 블루베리, 체리, 석류'.split(
 			', ',
 		),
@@ -111,51 +111,53 @@ const AddIngredient: React.FC = () => {
 	);
 
 	return (
-		<div id="add-ingredient" className="grid-container">
-			<button
-				type="submit"
-				id="add-ingredient"
-				onClick={() => onClickAddIngredientToFridge()}
-			>
-				재료&nbsp;추가하기
-			</button>
-			<div id="selected-status" className="grid-container">
-				<div id="selected-status" className="grid-item">
-					{selectedCategory && (
+		<div id="">
+			<div id="add-ingredient" className="grid-container">
+				<button
+					type="submit"
+					id="add-ingredient"
+					onClick={() => onClickAddIngredientToFridge()}
+				>
+					재료&nbsp;추가하기
+				</button>
+				<div id="selected-status" className="grid-container">
+					<div id="selected-status" className="grid-item">
+						{selectedCategory && (
+							<button
+								type="button"
+								id="selected-category"
+							>{`분류: ${selectedCategory}`}</button>
+						)}
+					</div>
+					<div id="selected-status" className="grid-item">
+						{selectedIngredient && (
+							<button
+								type="button"
+								id="selected-ingredient"
+							>{`이름: ${selectedIngredient}`}</button>
+						)}
+					</div>
+				</div>
+				<div id="add-ingredient-category-list" className="grid-container">
+					{/* List of food categories */}
+					{categoryCollection.map((category) => (
 						<button
 							type="button"
-							id="selected-category"
-						>{`분류: ${selectedCategory}`}</button>
-					)}
+							key={category}
+							id="food-category"
+							className={`flex-item${category === selectedCategory ? ' selected' : ''}`}
+							onClick={() => onClickFoodCategory(category)}
+						>
+							{category}
+						</button>
+					))}
 				</div>
-				<div id="selected-status" className="grid-item">
-					{selectedIngredient && (
-						<button
-							type="button"
-							id="selected-ingredient"
-						>{`이름: ${selectedIngredient}`}</button>
-					)}
-				</div>
+				{/* grid of ingredient collection for selected category */}
+				<IngredientGrid
+					ingredientCollection={ingredientCollection}
+					selectedCategory={selectedCategory}
+				/>
 			</div>
-			<div id="add-ingredient-category-list" className="grid-container">
-				{/* List of food categories */}
-				{categoryCollection.map((category) => (
-					<button
-						type="button"
-						key={category}
-						id="food-category"
-						className={`flex-item${category === selectedCategory ? ' selected' : ''}`}
-						onClick={() => onClickFoodCategory(category)}
-					>
-						{category}
-					</button>
-				))}
-			</div>
-			{/* grid of ingredient collection for selected category */}
-			<IngredientGrid
-				ingredientCollection={ingredientCollection}
-				selectedCategory={selectedCategory}
-			/>
 		</div>
 	);
 };
