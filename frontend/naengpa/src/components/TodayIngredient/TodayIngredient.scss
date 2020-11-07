@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+div#today-ingredient {
+    display: flex;
+    justify-content: center;
+
+    img {
+      width: 70%;
+      height: 50%;
+    }
+    align-items: center;
+
+    #today-ingredient-header {
+      font-family: 'Jua', sans-serif;
+      position: absolute;
+    }
+}
+
