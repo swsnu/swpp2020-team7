@@ -1,7 +1,12 @@
 {
+    "env": {
+        "jest": true
+    },
     "parser": "@typescript-eslint/parser",
     "plugins": ["@typescript-eslint"],
     "extends": [
+        "plugin:react/recommended",
+        "plugin:jest/recommended",
         "react-app",
         "prettier",
         "airbnb",
