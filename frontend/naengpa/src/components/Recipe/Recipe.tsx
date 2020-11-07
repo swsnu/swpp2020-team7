@@ -9,13 +9,17 @@ import { Dictionary } from '../../model/general';
 
 interface RecipeProps {
 	recipe: Dictionary<string | Dictionary<string>[] | number>;
+	attribute: string;
 }
 
-const Recipe: React.FC<RecipeProps> = ({ recipe }) => {
+const Recipe: React.FC<RecipeProps> = ({ recipe, attribute }) => {
 	// Thumnail Image for Recipes
 	console.log(recipe);
 	const images = recipe['food-images'] as Dictionary<string>[];
 	const thumnail = images[0] as Dictionary<string>;
+	const titleSize = attribute === 'todays-recipe-child' ? 'caption' : 'subtitle2';
+	const fontSize = attribute === 'todays-recipe-child' ? 'small' : 'default';
+	const subheader = attribute === 'todays-recipe-child' ? '' : 'Nov 3, 2020';
 
 	// Cook-Time Unit set for minute and hour
 	let cookTime = `${recipe['cook-time']}M`;
@@ -24,8 +28,9 @@ const Recipe: React.FC<RecipeProps> = ({ recipe }) => {
 
 	return (
 		// TODO: should be modified as User Info
-		<Card id="recipe-card">
+		<Card id={attribute}>
 			<CardHeader
+				id="recipe-card-header"
 				avatar={<Avatar aria-label="recipe">R</Avatar>}
 				action={
 					<IconButton aria-label="settings">
@@ -33,7 +38,8 @@ const Recipe: React.FC<RecipeProps> = ({ recipe }) => {
 					</IconButton>
 				}
 				title="Jellyjuju"
-				subheader="Nov 3, 2020"
+				subheaderTypographyProps={{ variant: titleSize }}
+				subheader={subheader}
 			/>
 			<CardMedia image={thumnail.file_path} id="recipe-image" />
 			<div id="recipe-card-footer">
@@ -44,14 +50,14 @@ const Recipe: React.FC<RecipeProps> = ({ recipe }) => {
 				</CardContent>
 				<div id="recipe-icons">
 					<div id="recipe-cook-time">
-						<AccessAlarmIcon id="recipe-cook-time-icon" />
+						<AccessAlarmIcon id="recipe-cook-time-icon" fontSize={fontSize} />
 						{cookTime}
 					</div>
 					<div id="recipe-like-count">
 						{recipe['recipe-like'] > 0 ? (
-							<FavoriteIcon id="recipe-like-count-icon" />
+							<FavoriteIcon id="recipe-like-count-icon" fontSize={fontSize} />
 						) : (
-							<FavoriteBorderIcon id="recipe-like-count-icon" />
+							<FavoriteBorderIcon id="recipe-like-count-icon" fontSize={fontSize} />
 						)}
 						{recipe['recipe-like']}
 					</div>
