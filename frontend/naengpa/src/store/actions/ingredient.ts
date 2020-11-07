@@ -69,10 +69,3 @@ export function editIngredient() {
 		payload: {},
 	};
 }
-
-export type IngredientActions =
-	| ReturnType<typeof getIngredientList>
-	| ReturnType<typeof getIngredient>
-	| ReturnType<typeof addIngredient>
-	| ReturnType<typeof deleteIngredient>
-	| ReturnType<typeof editIngredient>;
