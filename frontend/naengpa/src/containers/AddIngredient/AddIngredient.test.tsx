@@ -4,7 +4,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Provider } from 'react-redux';
 import store, { history } from '../../store/store';
 import { Dictionary } from '../../model/general';
-import * as ingredientActionCreators from '../../store/actions/ingredient';
+import * as ingredientActionCreators from '../../store/actions/index';
 import AddIngredient from './AddIngredient';
 
 async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount = 0) {

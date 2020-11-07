@@ -22,7 +22,7 @@ import {
 } from '@material-ui/core';
 import './CreateRecipe.scss';
 import { makeStyles } from '@material-ui/core/styles';
-import { createRecipe } from '../../../store/actions/recipe';
+import { createRecipe } from '../../../store/actions/index';
 
 interface CreateRecipeProps {
 	history: History;

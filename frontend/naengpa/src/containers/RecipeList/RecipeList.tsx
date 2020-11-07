@@ -4,7 +4,7 @@ import { History } from 'history';
 
 import Recipe from '../../components/Recipe/Recipe';
 import { AppState } from '../../store/store';
-import { getRecipeList } from '../../store/actions/recipe';
+import { getRecipeList } from '../../store/actions/index';
 
 import './RecipeList.scss';
 
