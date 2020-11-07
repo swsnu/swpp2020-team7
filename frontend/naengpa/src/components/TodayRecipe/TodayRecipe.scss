@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+div#today-recipe {
+  padding: 5%;
+
+  div#today-recipe-header {
+    text-align: left;
+    padding-bottom: 5%;
+    font-family: 'Jua', sans-serif;
+  }
+
+  div#today-recipe-list {
+    display: grid;
+    grid-template-columns: 5fr 5fr;
+    grid-template-rows: repeat(2, 1fr);
+    font-weight: bold;
+    justify-content: cneter;
+    gap:5%;
+  }
+}
