@@ -17,8 +17,8 @@ const MyFridge: React.FC = () => {
 				<Fridge />
 			</div>
 			<div id="fridge-right-part">
-				<TodayRecipe />
 				<TodayStar />
+				<TodayRecipe />
 			</div>
 		</div>
 	);

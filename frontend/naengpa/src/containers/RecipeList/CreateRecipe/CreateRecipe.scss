@@ -1,48 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
 #container {
   margin: 0% 10% 10% 10%;
   width: 80%;
-  height: 90%;
+  height: 80%;
   border: solid 1px #dcdcdc;
+  align-items: center;
+  // display: flex;
+  // justify-content: center;
 }
 
 #create-recipe-alert {
-  width: 55%;
-  height: 40%;
-  align-items: center;
-  justify-content: center;
-  display: flex;
   position: absolute;
-  margin: 20%;
-  margin-top: 35%;
-  min-height: 300px;
   z-index: 1;
-  padding: 10px;
+  padding: 2%;
+  text-align: center;
+  left: 50%; 
+  transform: translateX(-50%); 
+  margin-top:20%;
   background-color: #ffffff;
   border: solid 1px #707070; 
 
   #naengpa-logo-box {
     display: flex;
-    margin-bottom: 20%;
+    margin-bottom: 10%;
     justify-content: space-between;
+    font-family: 'Jua', sans-serif;
 
     #naengpa-logo {
       display: flex;
       align-items: center;
       letter-spacing: 5.2px;
-      font-size: 35px;
+      font-size: 200%;
       background-color: transparent;
       color: #ff8a3d;
 
       #naengpa-logo-image {
         font: {
-          size: 40px;
-          family: 'BMJUA';
+          size: 110%;
           weight: bold;
         }
       }
     }
     #close-alert-button {
-      font-size: 30px;
       color:#ff6767;
     }
    }
@@ -50,7 +50,7 @@
    #alert-content {
     font: {
       family: HelveticaNeue;
-      size: 20px;
+      size: 120%;
       weight: normal;
       stretch: normal;
       style: normal;
@@ -62,13 +62,12 @@
   }
 
    #confirm-alert-button-box {
-    margin-top: 10%;
     display: flex;
     justify-content: flex-end;
-
+    margin-top:15%;
     #confirm-alert-button {
       font: {
-        size: 15px;
+        size: 90%;
         weight: bold;
         stretch: normal;
         style: normal;

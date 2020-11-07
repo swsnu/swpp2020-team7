@@ -1,13 +1,12 @@
 """views for recipe"""
 import json
-from django.shortcuts import render
-from django.contrib.auth import get_user_model
-from django.contrib.auth import authenticate as django_authenticate
+# from django.contrib.auth import get_user_model
+# from django.contrib.auth import authenticate as django_authenticate
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
-from .models import *
+from .models import Recipe, Image
 
-User = get_user_model()
+# User = get_user_model()
 
 
 @ensure_csrf_cookie
@@ -56,8 +55,8 @@ def recipe_list(request):
 
         return JsonResponse(response_dict, status=201)
 
-    # else:
-    #     return HttpResponse(status=401)
+    else:
+        return HttpResponse(status=401)
 
 
 def recipe_info(request):

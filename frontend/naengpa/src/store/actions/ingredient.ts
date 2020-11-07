@@ -33,12 +33,6 @@ export const getIngredientList = async () => {
 	);
 	return ingredientList.reduce((a, b) => a.concat(b), []);
 };
-// export function getIngredientList_() {
-// 	return {
-// 		type: actionTypes.GET_INGREDIENT_LIST,
-// 		payload: {},
-// 	};
-// }
 
 export function getIngredient() {
 	return {

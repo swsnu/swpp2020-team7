@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getIngredientList, addIngredient } from '../../store/actions/ingredient';
+import { getIngredientList, addIngredient } from '../../store/actions/index';
 
 import { IngredientEntity } from '../../model/ingredient';
 import { Dictionary } from '../../model/general';
