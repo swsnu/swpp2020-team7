@@ -4,11 +4,13 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import thunk from 'redux-thunk';
 import recipeReducer from './reducers/recipe';
+import userReducer from './reducers/user';
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
 	router: connectRouter(history),
 	recipes: recipeReducer,
+	user: userReducer,
 });
 
 export type AppState = ReturnType<typeof rootReducer>;
