@@ -1,0 +1,29 @@
+div#ingredient {
+  width: 33%;
+  height:auto;
+  img#ingredient-image {
+    width:100%;
+  }
+  padding-bottom: 25%;
+  #ingredient-image-box {
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    float: left;
+  }
+}
+
+#delete-ingredient-button {
+  position: absolute;
+  color:#ff6767;
+  top: 0;
+  right: 0;
+
+  margin: {
+    
+  }
+  border-radius: 20px;
+}
