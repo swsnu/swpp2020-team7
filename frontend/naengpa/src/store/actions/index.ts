@@ -1,6 +1,6 @@
 /* User actions */
 export {
-	checkLogin,
+	/* checkLogin, */
 	signup,
 	login,
 	logout,

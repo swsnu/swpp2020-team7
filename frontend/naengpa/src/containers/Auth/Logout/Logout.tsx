@@ -1,6 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { History } from 'history';
+import { logout } from '../../../store/actions/index';
 
-const Logout: React.FC = () => {
+interface LogoutProps {
+	history: History;
+}
+
+const Logout: React.FC<LogoutProps> = ({ history }) => {
+	const dispatch = useDispatch();
+	useEffect(() => {
+		dispatch(logout());
+		history.push('/fridge');
+	}, [dispatch]);
+
 	return <div>Login</div>;
 };
 
