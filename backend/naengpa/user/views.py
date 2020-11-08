@@ -3,14 +3,16 @@
 import json
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout#, update_session_auth_hash
+# , update_session_auth_hash
+from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import Profile
 # from django.contrib import auth
-
 #from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
+
+
 def signup(request):
     """signup"""
     if request.method == 'POST':
@@ -19,15 +21,16 @@ def signup(request):
         name = req_data['name']
         password = req_data['password']
         date_of_birth = req_data['date_of_birth']
-        #email = req_data['email']
+        email = req_data['email']
+
         user = User.objects.create_user(
-            username=username, password=password)
-        # user.set_password(password)
+            username=username, password=password, email=email)
         user.profile.name = name
         user.profile.date_of_birth = date_of_birth
         user.save()
-        # login_user = django_authenticate(username=username, password=password)
-        checked_user = authenticate(request, username=username, password=password)
+
+        checked_user = authenticate(
+            request, username=username, password=password)
         login(request, checked_user)
         print(user)
         print(User.objects.all())
@@ -41,9 +44,11 @@ def signin(request):
         req_data = json.loads(request.body.decode())
         username = req_data['username']
         password = req_data['password']
+
         print(req_data, "received data")
         user = authenticate(
             request, username=username, password=password)
+
         if user is not None:
             login(request, user)
             print(user)
@@ -68,13 +73,13 @@ def signout(request):
 def user_list(request):
     """user_list"""
     user_collection = [{
-        "username": profile.user.username,
-        "name": profile.name,
-        "password": profile.user.password,
-        "email": profile.user.email,
-        "date_of_birth": profile.date_of_birth,
-        "is_logged_in": profile.user.is_authenticated,
-    } for profile in Profile.objects.all()] if len(Profile.objects.all()) != 0 else []
+        "username": user.username,
+        "name": user.profile.name,
+        "password": user.password,
+        "email": user.email,
+        "date_of_birth": user.profile.date_of_birth,
+        "is_logged_in": user.is_authenticated,
+    } for user in User.objects.all()] if len(User.objects.all()) != 0 else []
     print(user_collection)
     print(User.objects.all())
     # GET USER LIST
@@ -82,6 +87,7 @@ def user_list(request):
         return JsonResponse(user_collection, safe=False)
 
     return JsonResponse([], safe=False)
+
 
 @ensure_csrf_cookie
 def token(request):
