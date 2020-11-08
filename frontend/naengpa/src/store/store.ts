@@ -5,12 +5,14 @@ import { createBrowserHistory } from 'history';
 import thunk from 'redux-thunk';
 import recipeReducer from './reducers/recipe';
 import userReducer from './reducers/user';
+import fridgeReducer from './reducers/fridge';
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
 	router: connectRouter(history),
 	recipes: recipeReducer,
 	user: userReducer,
+	fridge: fridgeReducer,
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

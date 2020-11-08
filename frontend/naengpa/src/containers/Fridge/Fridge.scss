@@ -1,0 +1,27 @@
+#fridge {
+  background:url('/icons/fridge.png') center center / contain no-repeat;
+  height: 85vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  #prev-page {
+    font-size: 200%;
+  }
+
+  #next-page {
+    font-size: 200%;
+    padding-right: 5%;
+  }
+
+  div#ingredients {
+    padding:10%;
+    padding-right:17%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+  }
+}
