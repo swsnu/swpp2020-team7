@@ -29,5 +29,7 @@ matrix:
         - pylint **/*.py --load-plugins pylint_django --errors-only
         - coverage run --source='.' manage.py test
         - coverage xml
+        - cd .. && cd ..
+        - sonar-scanner
       after_success:
         - coveralls
