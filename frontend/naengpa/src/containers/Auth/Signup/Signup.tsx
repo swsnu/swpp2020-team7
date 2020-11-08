@@ -73,7 +73,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 					<div>
 						<input
 							id="password"
-							type="text"
+							type="password"
 							placeholder="PASSWORD"
 							onChange={(e) => setPassword(e.target.value)}
 						/>
@@ -81,7 +81,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 					<div>
 						<input
 							id="passwordComfirm"
-							type="text"
+							type="password"
 							placeholder="PASSWORD CONFIRM"
 							onChange={(e) => setPasswordConfirm(e.target.value)}
 						/>
