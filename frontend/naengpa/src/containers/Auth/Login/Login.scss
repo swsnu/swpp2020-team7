@@ -45,30 +45,36 @@
     }
 
     #username {
-        margin: 5%;
+        margin-top: 20%;
+        margin-bottom: 10%;
+        //margin-ri: 0%;
+        //margin: 5%;
         //margin-right: 2%;
-        width: 200%;
+        width: 100%;
         align-content: center;
         border-left: none;
         border-right: none;
         border-top: none;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
         font-weight: bold;
-        font-size: 100%;
+        font-size: 200%;
         border-bottom-color: #bbbbbb;
+        outline: none;
     }
 
     #password {
-        margin: 5%;
-        width: 200%;
+        margin-top: 20%;
+        margin-bottom: 5%;
+        width: 100%;
         align-content: center;
         border-left: none;
         border-right: none;
         border-top: none;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
         font-weight: bold;
-        font-size: 100%;
+        font-size: 200%;
         border-bottom-color: #bbbbbb;
+        outline: none;
     }
 
     #login-button {
@@ -83,8 +89,8 @@
         background-color: #ffffff;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
         font-weight: bold;
-        //font-family: 'Arial';
         font-size: 160%;
         color: #b4b4b4;
+        outline: none;
     }
 }

@@ -48,10 +48,10 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 
 	return (
 		<div id="signup">
-			<div id="naengpa">
+			<button id="naengpa" type="button" onClick={() => history.push('/fridge')}>
 				<LocalDiningIcon id="naengpa-logo" />
-				냉파
-			</div>
+				<div id="naengpa-logo-name">냉파</div>
+			</button>
 			<div id="signup-part">
 				<div id="input-list">
 					<div>
@@ -103,7 +103,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 						/>
 					</div>
 				</div>
-				<button type="button" onClick={onClickSignup}>
+				<button id="signup-button" type="button" onClick={onClickSignup}>
 					SIGN UP
 				</button>
 			</div>

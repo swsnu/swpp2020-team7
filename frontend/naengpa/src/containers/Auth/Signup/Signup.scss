@@ -3,93 +3,161 @@
     margin: 0;
     height: 100vh;
     width: 100%;
-  
-    #signup-part {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
+    //this matter
+    display: flex;
+    flex-direction: row;
+    
     #naengpa {
+        margin-top: 20%;
+        //margin-bottom: 1%;
+        margin-left: 22%;
         font-family: 'Jua';
-        width: 355px;
-        height: 247px;
-        font-size: 500%;
+        width: 20%;
+        height: 15%;
+        font-size: 800%;
         font-weight: normal;
         font-stretch: normal;
         font-style: normal;
-        line-height: 0.38;
         letter-spacing: normal;
         color: #ffffff;
         display: flex;
-        flex-direction: row;
+        //flex-direction: row;
         align-items: center;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+
+
+    #signup-part {
+        //margin-left: 40%;
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        //margin-left: 20%;
     }
 
     //flex, row, column
     #input-list {
-        margin-left: 20%;
-        margin-right: 30%;
-        width: 50%;
-        height: 200%;
+        margin-top: 20%;
+        margin-left: 50%;
+        width: 150%;
+        height: 70%;
         border-radius: 17px;
         box-shadow: 10px 10px 10px 0 rgba(21, 21, 21, 0.34);
         background-color: #ffffff;
+        /*
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        */
+        font-family: 'Arial';
+        /*
+        margin-left: 20%;
+        margin-right: 30%;
+        width: 50%;
+        height: 500%;
+        border-radius: 17px;
+        box-shadow: 10px 10px 10px 0 rgba(21, 21, 21, 0.34);
+        background-color: #ffffff;
+        */
     }
 
     #name {
-        width: 90%;
+        margin-top: 7.5%;
+        margin-bottom: 10%;
+        margin-left: 10%;
+        width: 80%;
         align-content: center;
         border-left: none;
         border-right: none;
         border-top: none;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 200%;
         border-bottom-color: #bbbbbb;
-        border-bottom-width: 1.5px;
+        outline: none;
     }
 
     #username {
-        width: 90%;
+        //margin-top: 20%;
+        margin-bottom: 10%;
+        margin-left: 10%;
+        width: 80%;
         align-content: center;
         border-left: none;
         border-right: none;
         border-top: none;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 200%;
         border-bottom-color: #bbbbbb;
+        outline: none;
     }
 
     #password {
-        width: 90%;
+        //margin-top: 20%;
+        margin-bottom: 10%;
+        margin-left: 10%;
+        width: 80%;
         align-content: center;
         border-left: none;
         border-right: none;
         border-top: none;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 200%;
         border-bottom-color: #bbbbbb;
+        outline: none;
     }
     
     #passwordComfirm {
-        width: 90%;
+        //margin-top: 20%;
+        margin-bottom: 10%;
+        margin-left: 10%;
+        width: 80%;
         align-content: center;
         border-left: none;
         border-right: none;
         border-top: none;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 200%;
         border-bottom-color: #bbbbbb;
+        outline: none;
     }
 
     #date_of_birth {
-        width: 90%;
+        //margin-top: 20%;
+        margin-bottom: 10%;
+        margin-left: 10%;
+        width: 80%;
         align-content: center;
         border-left: none;
         border-right: none;
         border-top: none;
-        border-bottom-color: #bbbbbb;   
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 200%;
+        border-bottom-color: #bbbbbb;
+        outline: none;
     }
     
     #email {
-        width: 90%;
+        //margin-top: 20%;
+        margin-bottom: 5%;
+        margin-left: 10%;
+        width: 80%;
         align-content: center;
         border-left: none;
         border-right: none;
         border-top: none;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 200%;
         border-bottom-color: #bbbbbb;
+        outline: none;
     }
 
     font: {
@@ -106,16 +174,20 @@
         color: #b4b4b4;
     }
 
-    button {
-        width: 15%;
-        height: 50%;
+    #signup-button {
+        margin-top: 10%;
+        margin-bottom: 1%;
+        margin-left: 150%;
+        width: 50%;
+        height: 10%;
         border-radius: 100px;
         border: none;
         box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.27);
         background-color: #ffffff;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
-        //font-family: 'Arial';
+        font-weight: bold;
         font-size: 160%;
         color: #b4b4b4;
+        outline: none;
     }
 }
