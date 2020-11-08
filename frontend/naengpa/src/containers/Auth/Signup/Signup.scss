@@ -1,0 +1,121 @@
+#signup {
+    background-color: #ff8a3d;
+    margin: 0;
+    height: 100vh;
+    width: 100%;
+  
+    #signup-part {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #naengpa {
+        font-family: 'Jua';
+        width: 355px;
+        height: 247px;
+        font-size: 500%;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 0.38;
+        letter-spacing: normal;
+        color: #ffffff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    //flex, row, column
+    #input-list {
+        margin-left: 20%;
+        margin-right: 30%;
+        width: 50%;
+        height: 200%;
+        border-radius: 17px;
+        box-shadow: 10px 10px 10px 0 rgba(21, 21, 21, 0.34);
+        background-color: #ffffff;
+    }
+
+    #name {
+        width: 90%;
+        align-content: center;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom-color: #bbbbbb;
+        border-bottom-width: 1.5px;
+    }
+
+    #username {
+        width: 90%;
+        align-content: center;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom-color: #bbbbbb;
+    }
+
+    #password {
+        width: 90%;
+        align-content: center;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom-color: #bbbbbb;
+    }
+    
+    #passwordComfirm {
+        width: 90%;
+        align-content: center;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom-color: #bbbbbb;
+    }
+
+    #date_of_birth {
+        width: 90%;
+        align-content: center;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom-color: #bbbbbb;   
+    }
+    
+    #email {
+        width: 90%;
+        align-content: center;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom-color: #bbbbbb;
+    }
+
+    font: {
+        width: 119px;
+        height: 48px;
+        font-family: HelveticaNeue;
+        font-size: 40px;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 28.63;
+        letter-spacing: normal;
+        text-align: left;
+        color: #b4b4b4;
+    }
+
+    button {
+        width: 15%;
+        height: 50%;
+        border-radius: 100px;
+        border: none;
+        box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.27);
+        background-color: #ffffff;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        //font-family: 'Arial';
+        font-size: 160%;
+        color: #b4b4b4;
+    }
+}

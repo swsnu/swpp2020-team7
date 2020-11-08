@@ -31,13 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'user.apps.UserConfig',
+    'django.contrib.admin',
     'django.contrib.auth',
     'recipe.apps.RecipeConfig',
     'article.apps.ArticleConfig',
     'chatroom.apps.ChatroomConfig',
     'comment.apps.CommentConfig',
     'ingredient.apps.IngredientConfig',
-    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',

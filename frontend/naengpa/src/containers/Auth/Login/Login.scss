@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+#login {
+    background-color: #fec555;
+    margin: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    #naengpa {
+        margin-top: 7%;
+        margin-bottom: 1%;
+        font-family: 'Jua';
+        width: 20%;
+        height: 15%;
+        font-size: 800%;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        //line-height: 0.38;
+        letter-spacing: normal;
+        color: #ffffff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+    
+    #inputList {
+        margin-top: 2%;
+        margin-bottom: 1%;
+        width: 30%;
+        height: 40%;
+        border-radius: 17px;
+        box-shadow: 10px 10px 10px 0 rgba(21, 21, 21, 0.34);
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: 'Arial';
+    }
+
+    #username {
+        margin: 5%;
+        //margin-right: 2%;
+        width: 200%;
+        align-content: center;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 100%;
+        border-bottom-color: #bbbbbb;
+    }
+
+    #password {
+        margin: 5%;
+        width: 200%;
+        align-content: center;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 100%;
+        border-bottom-color: #bbbbbb;
+    }
+
+    #login-button {
+        margin-top: 1.5%;
+        margin-bottom: 1%;
+        margin-left: 18%;
+        width: 12%;
+        height: 8%;
+        border-radius: 100px;
+        border: none;
+        box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.27);
+        background-color: #ffffff;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        //font-family: 'Arial';
+        font-size: 160%;
+        color: #b4b4b4;
+    }
+}
