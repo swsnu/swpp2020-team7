@@ -11,12 +11,12 @@ class Profile(models.Model):
     date_of_birth = models.CharField(max_length=30)
 
     @receiver(post_save, sender=User)
-    def create_user_profile(self, instance, created):
+    def create_user_profile(self, sender, instance, created, **kwargs):
         ''' create user profile '''
         if created:
             Profile.objects.create(user=instance)
 
     @receiver(post_save, sender=User)
-    def save_user_profile(self, instance):
+    def save_user_profile(self, sender, instance, **kwargs):
         ''' save user profile '''
         instance.profile.save()
