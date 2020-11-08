@@ -5,12 +5,6 @@ import { UserEntity } from '../../model/user';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-/* CHECK LOGIN */
-/* export functioin checkLogin = () => ({
-	type: actionTypes.CHECK_LOGIN,
-	payload: {},
-}); */
-
 /* SIGNUP */
 export function signup(user: UserEntity) {
 	return async (dispatch: any) => {
@@ -34,7 +28,7 @@ export function login(user: UserEntity) {
 		dispatch({
 			type: actionTypes.LOGIN,
 			user,
-			is_logged: true,
+			is_logged_in: true,
 		});
 	};
 }
@@ -51,7 +45,7 @@ export function logout() {
 		}
 		dispatch({
 			type: actionTypes.LOGOUT,
-			is_logged: logged_in,
+			is_logged_in: logged_in,
 		});
 	};
 }
@@ -67,13 +61,6 @@ export function getUserList() {
 		});
 	};
 }
-
-/*
-export const getUserList = () => ({
-	type: actionTypes.GET_USER_LIST,
-	payload: {},
-});
-*/
 
 export const getUser = () => ({
 	type: actionTypes.GET_USER,

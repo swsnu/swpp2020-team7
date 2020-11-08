@@ -1,14 +1,5 @@
 /* User actions */
-export {
-	/* checkLogin, */
-	signup,
-	login,
-	logout,
-	getUserList,
-	getUser,
-	editUser,
-	deleteUser,
-} from './user';
+export { signup, login, logout, getUserList, getUser, editUser, deleteUser } from './user';
 
 /* Fridge actions */
 export {
