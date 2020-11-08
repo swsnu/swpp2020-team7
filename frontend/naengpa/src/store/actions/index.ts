@@ -11,7 +11,13 @@ export {
 } from './user';
 
 /* Fridge actions */
-export { getFridge, addFridge, editFridge } from './fridge';
+export {
+	getFridge,
+	addIngredientToFridge,
+	deleteIngredientFromFridge,
+	toggleTodayIngredient,
+	addIngredientToTodayIngredient,
+} from './fridge';
 
 /* Recipe actions */
 export { getRecipeList, getRecipe, createRecipe, deleteRecipe, editRecipe } from './recipe';

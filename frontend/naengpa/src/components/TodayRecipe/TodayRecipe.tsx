@@ -14,7 +14,7 @@ const TodayRecipe: React.FC = () => {
 	}, [dispatch]);
 
 	const recipe = recipe_list.map((item: any) => {
-		return <Recipe recipe={item} attribute="todays-recipe-child" />;
+		return <Recipe key={item.id} recipe={item} attribute="todays-recipe-child" />;
 	});
 
 	return (
