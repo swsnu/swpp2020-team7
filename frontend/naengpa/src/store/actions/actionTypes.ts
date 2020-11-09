@@ -1,6 +1,6 @@
 // USER related ACTIONS
 export const CHECK_LOGIN = 'CHECK_LOGIN';
-export const SIGNUP = 'SINGUP';
+export const SIGNUP = 'SIGNUP';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const GET_USER_LIST = 'GET_USER_LIST';

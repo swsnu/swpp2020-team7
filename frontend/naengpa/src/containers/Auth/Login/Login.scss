@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+#login {
+    background-color: #fec555;
+    margin: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    #naengpa {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        color: #ffffff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 7%;
+        margin-bottom: 1%;
+        font-family: 'Jua';
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        letter-spacing: normal;  
+        
+        #naengpa-logo {
+            font-size: 800%;
+        }
+        #naengpa-logo-name {
+            font-size: 800%;
+            margin-top: 5%;
+        }
+    }
+    
+    #inputList {
+        margin-top: 2%;
+        margin-bottom: 1%;
+        padding: 2%;
+        width: 30%;
+        height: 40%;
+        border-radius: 17px;
+        // TODO: min-width - temporary set for web! should be modified 
+        min-width: 400px;
+        min-height: 350px;
+        box-shadow: 10px 10px 10px 0 rgba(21, 21, 21, 0.34);
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: 'Arial';
+    }
+
+    #username {
+        margin-top: 20%;
+        margin-bottom: 10%;
+        width: 100%;
+        align-content: center;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 200%;
+        border-bottom-color: #bbbbbb;
+        outline: none;
+    }
+
+    #password {
+        margin-top: 20%;
+        margin-bottom: 5%;
+        width: 100%;
+        align-content: center;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 200%;
+        border-bottom-color: #bbbbbb;
+        outline: none;
+    }
+
+    #buttons {
+        display: flex;
+        justify-content: center;
+        margin-left: 10%;
+        padding: 3%;
+    }
+
+    #login-button, #signup-button {
+        margin-top: 1.5%;
+        margin-bottom: 1%;
+        margin-left: 5%;
+        height: 190%;
+        border-radius: 100px;
+        min-width: 150px;
+        border: none;
+        box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.27);
+        background-color: #ffffff;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 160%;
+        color: #b4b4b4;
+        outline: none;
+    }
+}
