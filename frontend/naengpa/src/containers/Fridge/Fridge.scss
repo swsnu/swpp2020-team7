@@ -1,15 +1,15 @@
 #fridge {
-  background:url('/icons/fridge.png') center center / contain no-repeat;
+  background: url('/icons/fridge.png') center center / contain no-repeat;
   height: 85vh;
   display: flex;
   flex-direction: row;
   align-items: center;
 
-  #prev-page {
+  #prev-fridge {
     font-size: 200%;
   }
 
-  #next-page {
+  #next-fridge {
     font-size: 200%;
     padding-right: 5%;
   }

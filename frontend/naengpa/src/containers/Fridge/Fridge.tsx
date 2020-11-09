@@ -21,16 +21,15 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 		dispatch(getFridge(2));
 	}, []);
 
-	console.log(ingredient_list);
 	const ingredients = ingredient_list.map((ingredient: any) => {
 		return <Ingredient key={ingredient.id} history={history} ingredient={ingredient} />;
 	});
 
 	return (
 		<div id="fridge">
-			<ArrowBackIosIcon id="prev-page" />
+			<ArrowBackIosIcon id="prev-fridge" />
 			<div id="ingredients">{ingredients}</div>
-			<ArrowForwardIosIcon id="next-page" />
+			<ArrowForwardIosIcon id="next-fridge" />
 		</div>
 	);
 };

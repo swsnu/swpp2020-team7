@@ -2,7 +2,7 @@
 
 footer#footer {
     font-family: 'Jua', sans-serif;
-    text-align: left;
+    text-align: center;
     color: gray;
     font-size: 10px;
     padding-top: 10px;
@@ -15,17 +15,17 @@ a:link {
     color: gray;
 }
 
-a.visited {
+a:visited {
     text-decoration: none;
     color: gray;
 }
 
-a.active {
+a:active {
     text-decoration: none;
     color: gray;
 }
 
-a.hover {
+a:hover {
     text-decoration: none;
     color: gray;
 }
