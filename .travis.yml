@@ -19,7 +19,7 @@ matrix:
         - yarn test
         - cd ../.. && sonar-scanner
       after_success:
-        - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+        - cat frontend/naengpa/coverage/lcov.info | frontend/naengpa/node_modules/coveralls/bin/coveralls.js
 
     - language: python
       python: "3.7"
