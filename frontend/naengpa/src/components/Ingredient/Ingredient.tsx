@@ -5,9 +5,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { Dictionary } from '../../model/general';
 import {
 	deleteIngredientFromFridge,
-	addIngredientToTodayIngredient,
 } from '../../store/actions/index';
-import { AppState } from '../../store/store';
 import './Ingredient.scss';
 
 interface IngredientProps {
@@ -18,18 +16,16 @@ interface IngredientProps {
 const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	const { category } = ingredient;
 	const [deleteIngredient, setDeleteIngredient] = useState(false);
-	const set_today_ingredient = useSelector(
-		(state: AppState) => state.fridge.set_today_ingredient,
-	);
+
 	const dispatch = useDispatch();
 
 	const foodCategory: Dictionary<string> = {
-		채소: 'vegetable.png',
-		고기: 'meat.png',
-		과일: 'fruit.png',
-		수산물: 'seafood.png',
-		유제품: 'milk.png',
-		가공육: 'ham.png',
+		'채소': 'vegetable.png',
+		'고기': 'meat.png',
+		'과일': 'fruit.png',
+		'수산물': 'seafood.png',
+		'유제품': 'milk.png',
+		'가공육': 'ham.png',
 		'장류/양념': 'sauces.png',
 		'계란/알류': 'egg.png',
 	};
@@ -51,14 +47,6 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 		setDeleteIngredient(true);
 	};
 
-	/* CLICK EVENT - ADD INGREDIENT TO TODAY INGREDIENT */
-	const onClickIngredient = () => {
-		if (set_today_ingredient === true) {
-			dispatch(addIngredientToTodayIngredient(1, ingredient.id as number));
-			history.push('/fridge');
-		}
-	};
-
 	/* CLICK EVENT - DELETE IMAGE */
 	const onClickDeleteIngredient = () => {
 		const target_id = ingredient.id as number;
@@ -76,7 +64,6 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 				onMouseOver={onMouseOverIngredient}
 				onMouseLeave={onMouseLeaveIngredient}
 				onFocus={onFocusIngredient}
-				onClick={onClickIngredient}
 			>
 				{deleteIngredient && (
 					<CancelIcon
