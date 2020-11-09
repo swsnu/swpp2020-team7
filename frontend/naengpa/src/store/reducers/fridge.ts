@@ -17,7 +17,7 @@ type Action =
 	  }
 	| { type: 'ADD_INGREDIENT_TO_FRIDGE' }
 	| { type: 'DELETE_INGREDIENT_FROM_FRIDGE'; id: number }
-	| { type: 'TOGGLE_TODAY_INGREDIENT' }
+	| { type: 'TOGGLE_TODAY_INGREDIENT'; id: number }
 	| { type: 'ADD_INGREDIENT_TO_TODAY_INGREDIENT'; id: number };
 
 function fridgeReducer(state: InitialState = FridgeState, action: Action): InitialState {
@@ -39,13 +39,14 @@ function fridgeReducer(state: InitialState = FridgeState, action: Action): Initi
 			});
 			return { ...state, ingredient_list };
 
-		/* TOGGEL TODAY INGREDIENT */
+		/* TOGGLE TODAY INGREDIENT */
 		case actionTypes.TOGGLE_TODAY_INGREDIENT:
-			console.log(state, 'state');
-			return {
-				...state,
-				set_today_ingredient: !state.set_today_ingredient,
-			};
+			ingredient_list = state.ingredient_list.map((ingredient) => {
+				return (ingredient.id as number) === action.id
+					? { ...ingredient, today_ingredient: false }
+					: ingredient;
+			});
+			return { ...state, ingredient_list };
 
 		/* ADD INGREDIENT TO TODAY INGREDIENT */
 		case actionTypes.ADD_INGREDIENT_TO_TODAY_INGREDIENT:

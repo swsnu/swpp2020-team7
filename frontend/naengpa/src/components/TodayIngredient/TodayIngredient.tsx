@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './TodayIngredient.scss';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { History } from 'history';
-import { toggleTodayIngredient, getFridge } from '../../store/actions/index';
+import Alert from '@material-ui/lab/Alert';
+import { Button, Collapse } from '@material-ui/core';
+import {
+	toggleTodayIngredient,
+	getFridge,
+	addIngredientToTodayIngredient,
+} from '../../store/actions/index';
 import { AppState } from '../../store/store';
 
 interface TodayIngredientProps {
@@ -17,31 +23,68 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	const todays_ingredient = ingredient_list.filter((ingredient: any) => {
 		return ingredient.today_ingredient === true;
 	});
+	const not_todays_ingredient = ingredient_list.filter((ingredient: any) => {
+		return ingredient.today_ingredient === false;
+	});
+
+	const [alert, setAlert] = useState(false);
+	useEffect(() => {
+		// TODO: argument should be user id!
+		dispatch(getFridge(1));
+	}, []);
 
 	console.log(todays_ingredient, '오늘의 재료');
 
 	/* CLICK EVENT - ADD INGREDIENT TO TODAY INGREDIENT */
 	// TODO: should be modified -> 아직 안됨
-	const onClickToggleTodayIngredient = () => {
-		console.log('today_ingredient');
-		dispatch(toggleTodayIngredient());
+
+	const onClickAddTodayIngredient = (target_id: number) => {
+		dispatch(addIngredientToTodayIngredient(1, target_id));
+		setAlert(false);
 		history.push('/fridge');
 	};
 
 	// onClickDeleteTodayIngredient();
 	// TODO: 구현 필요
+	const onClickDeleteTodayIngredient = (target_id: number) => {
+		dispatch(toggleTodayIngredient(1, target_id));
+		history.push('/fridge');
+	};
+
+	const alert_contents = not_todays_ingredient.map((ingredient: any) => {
+		return (
+			<Button onClick={() => onClickAddTodayIngredient(ingredient.id)}>
+				{ingredient.ingredient}
+			</Button>
+		);
+	});
+
+	const todays_ingredient_contents = todays_ingredient.map((ingredient: any) => {
+		return (
+			<Button onClick={() => onClickDeleteTodayIngredient(ingredient.id)}>
+				{ingredient.ingredient}X
+			</Button>
+		);
+	});
 
 	return (
 		<div id="today-ingredient">
-			<img src="/icons/memo.png" alt="/api/images" />
 			<div id="today-ingredient-header">-오늘의 재료-</div>
-			<AddCircleIcon
-				type="button"
-				id="add-today-ingredient"
-				onClick={onClickToggleTodayIngredient}
-			/>
-			<CancelIcon id="close-alert-button" />
-			{todays_ingredient}
+			<AddCircleIcon type="button" id="add-today-ingredient" onClick={() => setAlert(true)} />
+			<Collapse in={alert}>
+				<Alert id="add-today-ingredient-alert" icon={false}>
+					<div id="naengpa-logo-box">
+						<CancelIcon
+							id="close-alert-button"
+							onClick={() => {
+								setAlert(false);
+							}}
+						/>
+					</div>
+					<div id="alert-contents">{alert_contents}</div>
+				</Alert>
+			</Collapse>
+			<div id="today-ingredient-contents">{todays_ingredient_contents}</div>
 		</div>
 	);
 };

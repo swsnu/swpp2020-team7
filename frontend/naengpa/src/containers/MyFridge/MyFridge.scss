@@ -12,7 +12,8 @@ div#my-fridge {
 
     #fridge-left-part {
         display: grid;
-        grid-template-rows: repeat(2, 1fr);
+        grid-template-rows: 4fr 6fr;
+        gap: 4%;
     }
 
     #fridge-right-part {
@@ -27,11 +28,4 @@ div#my-fridge {
 
 #fridge-icon {
     font-size: 4px;
-}
-
-#my-fridge-footer {
-    text-align: left;
-    color: gray;
-    font-size: 10px;
-    padding-bottom: 5px;;
 }

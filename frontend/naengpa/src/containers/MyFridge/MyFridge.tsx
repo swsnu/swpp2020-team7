@@ -5,6 +5,7 @@ import AddIngredient from '../AddIngredient/AddIngredient';
 import TodayRecipe from '../../components/TodayRecipe/TodayRecipe';
 import TodayStar from '../../components/TodayStar/TodayStar';
 import Fridge from '../Fridge/Fridge';
+import Footer from '../../components/Footer/Footer';
 import './MyFridge.scss';
 
 interface MyFridgeProps {
@@ -13,17 +14,22 @@ interface MyFridgeProps {
 
 const MyFridge: React.FC<MyFridgeProps> = ({ history }) => {
 	return (
-		<div id="my-fridge">
-			<div id="fridge-left-part">
-				<TodayIngredient history={history} />
-				<AddIngredient />
+		<div>
+			<div id="my-fridge">
+				<div id="fridge-left-part">
+					<TodayIngredient history={history} />
+					<AddIngredient />
+				</div>
+				<div id="frige-middle-part">
+					<Fridge history={history} />
+				</div>
+				<div id="fridge-right-part">
+					<TodayStar />
+					<TodayRecipe />
+				</div>
 			</div>
-			<div id="frige-middle-part">
-				<Fridge history={history} />
-			</div>
-			<div id="fridge-right-part">
-				<TodayStar />
-				<TodayRecipe />
+			<div id="fridge-footer">
+				<Footer />
 			</div>
 		</div>
 	);
