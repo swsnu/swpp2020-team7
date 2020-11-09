@@ -61,9 +61,15 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 
 	const todays_ingredient_contents = todays_ingredient.map((ingredient: any) => {
 		return (
-			<Button onClick={() => onClickDeleteTodayIngredient(ingredient.id)}>
-				{ingredient.ingredient}X
-			</Button>
+			<div>
+				<text>{ingredient.ingredient}</text>
+				<Button
+					id="today-ingredient-delete"
+					onClick={() => onClickDeleteTodayIngredient(ingredient.id)}
+				>
+					X
+				</Button>
+			</div>
 		);
 	});
 
