@@ -1,1 +1,7 @@
-disable=no-self-use 
+[MASTER]
+ignore=migrations,tests
+load-plugins=pylint_django
+
+[MESSAGES CONTROL]
+
+disable=E0213
