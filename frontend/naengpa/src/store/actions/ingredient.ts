@@ -7,14 +7,18 @@ export const getIngredientList_ = (ingredients:IngredientEntity[]) => ({
 	type: actionTypes.GET_INGREDIENT_LIST,
 	payload: ingredients
 });
-export const getIngredientList = async () => {
-	const response = await axios.get('/api/ingredients/');
-	const response_data: IngredientEntity[] = response.data;
+export const getIngredientList = () => {
+	return async (dispatch: any) => {
+		const response = await axios.get('/api/ingredients/');
+		const response_data: IngredientEntity[] = response.data;
 
-	const ingredientList = response_data
-		.sort((a, b) => a.name.localeCompare(b.name))
-		.sort((a, b) => a.category.localeCompare(b.category));
-	return getIngredientList_(ingredientList);
+		const ingredientList = response_data
+			.sort((a, b) => a.name.localeCompare(b.name))
+			.sort((a, b) => a.category.localeCompare(b.category));
+		
+		dispatch(getIngredientList_(ingredientList));
+		return Promise.resolve();
+	};
 };
 
 export function getIngredient() {

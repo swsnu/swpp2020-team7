@@ -2,51 +2,42 @@ import React, { useState, useEffect, Dispatch, MouseEventHandler } from 'react';
 import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
-import { Dictionary } from '../../../model/general';
 
 import { login, getUserList } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import './Login.scss';
+
+const useUserList = () => {
+	const dispatch = useDispatch();
+
+	const loadUserList = async () => {
+		dispatch(getUserList());
+	};
+	return {
+		loadUserList,
+	};
+};
 
 interface LoginProps {
 	history: History;
 }
 
 const Login: React.FC<LoginProps> = ({ history }) => {
-	const [username, setUserName] = useState('');
-	const [password, setPassword] = useState('');
-
+	const [username, setUserName] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+	const { loadUserList } = useUserList();
+	const userList = useSelector((state: AppState) => state.user.user_list);
 	const dispatch = useDispatch();
+
 	useEffect(() => {
-		dispatch(getUserList());
-	}, [dispatch]);
-	const user_list = useSelector((state: AppState) => state.user.user_list);
-	console.log(user_list);
+		loadUserList();
+	}, []);
 
 	const onClickLogin = () => {
 		if (username === '' || password === '') {
-			alert('blink');
-		} else {
-			console.log('userlist', user_list);
-			// let user:any = {'name': '', 'username': '', 'password': '', 'date_of_birth': '', 'email': ''};
-			const user = user_list.find((user: Dictionary<string>) => {
-				return user.username === username;
-			});
-			console.log(user);
-			if (!user) alert('user does not exist');
-			else {
-				dispatch(
-					login({
-						name: user.name,
-						username: user.username,
-						password: user.password,
-						date_of_birth: user.date_of_birth,
-						email: user.email,
-					}),
-				);
-			}
-			history.push('/fridge');
+			return;
 		}
+		dispatch(login({username,password}));
 	};
 	return (
 		<div id="login">
