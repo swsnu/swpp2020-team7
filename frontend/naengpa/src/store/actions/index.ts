@@ -17,7 +17,6 @@ export { getRecipeList, getRecipe, createRecipe, deleteRecipe, editRecipe } from
 export {
 	getIngredientList,
 	getIngredient,
-	addIngredient,
 	deleteIngredient,
 	editIngredient,
 } from './ingredient';

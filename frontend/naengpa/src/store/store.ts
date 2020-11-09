@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import recipeReducer from './reducers/recipe';
 import userReducer from './reducers/user';
 import fridgeReducer from './reducers/fridge';
+import ingredientReducer from './reducers/ingredient';
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
 	recipes: recipeReducer,
 	user: userReducer,
 	fridge: fridgeReducer,
+	ingredient: ingredientReducer,
 });
 
 export type AppState = ReturnType<typeof rootReducer>;
