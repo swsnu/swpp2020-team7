@@ -37,7 +37,7 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 		if (username === '' || password === '') {
 			return;
 		}
-		dispatch(login({username,password}));
+		dispatch(login({ username, password }));
 	};
 	return (
 		<div id="login">

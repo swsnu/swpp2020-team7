@@ -14,12 +14,7 @@ export {
 export { getRecipeList, getRecipe, createRecipe, deleteRecipe, editRecipe } from './recipe';
 
 /* Ingredient actions */
-export {
-	getIngredientList,
-	getIngredient,
-	deleteIngredient,
-	editIngredient,
-} from './ingredient';
+export { getIngredientList, getIngredient, deleteIngredient, editIngredient } from './ingredient';
 
 /* Article actions */
 export { getArticleList, getArticle, createArticle, deleteArticle, editArticle } from './article';
