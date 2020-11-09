@@ -2,15 +2,15 @@
 #from django.shortcuts import render
 import json
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 # , update_session_auth_hash
 from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from .models import Profile
 # from django.contrib import auth
 #from django.core.serializers.json import DjangoJSONEncoder
 
-# Create your views here.
+User = get_user_model()
 
 
 def signup(request):
@@ -32,6 +32,7 @@ def signup(request):
         checked_user = authenticate(
             request, username=username, password=password)
         login(request, checked_user)
+        print(checked_user)
         print(user)
         print(User.objects.all())
         return HttpResponse(status=201)
@@ -45,17 +46,19 @@ def signin(request):
         username = req_data['username']
         password = req_data['password']
 
-        print(req_data, "received data")
-        user = authenticate(
+        print('hi', username)
+        print(username, password, "received data")
+        current_user = authenticate(
             request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            print(user)
-            print(User.objects.all())
+        if current_user is not None:
+            print(current_user)
+            login(request, current_user)
+            print(current_user)
             return HttpResponse(status=204)
-        print("error")
-        return HttpResponse(status=403)
+        else:
+            print("error")
+            print(current_user)
+            return HttpResponse(status=403)
     return HttpResponseNotAllowed(['POST'])
 
 
