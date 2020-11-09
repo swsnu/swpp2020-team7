@@ -5,12 +5,16 @@ import { IngredientEntity } from '../../model/ingredient';
 import './AddIngredient.scss';
 import { AppState } from '../../store/store';
 
-const useIngredientCollection = () => {
+const useIngredientList = () => {
 	const ingredientCollection = useSelector((state: AppState) => state.ingredient.ingredient_list);
 	const [categoryCollection, setCategoryCollection] = useState<string[]>([]);
 	const [selectedCategory, setSelectedCategory] = useState<string>('');
+	const dispatch = useDispatch();
 
-	const loadCategoryCollection = async () => {
+	const loadIngredientList = async () => {
+		dispatch(getIngredientList());
+	};
+	const loadCategoryList = async () => {
 		const categoryList = ingredientCollection
 			.map((ingredient) => ingredient.category) // get categories
 			.filter((item, pos, self) => self.indexOf(item) === pos) // remove duplicates
@@ -23,7 +27,8 @@ const useIngredientCollection = () => {
 		ingredientCollection,
 		selectedCategory,
 		setSelectedCategory,
-		loadCategoryCollection,
+		loadIngredientList,
+		loadCategoryList,
 	};
 };
 
@@ -33,14 +38,19 @@ const AddIngredient: React.FC = () => {
 		ingredientCollection,
 		selectedCategory,
 		setSelectedCategory,
-		loadCategoryCollection,
-	} = useIngredientCollection();
+		loadIngredientList,
+		loadCategoryList,
+	} = useIngredientList();
 	const [selectedIngredient, setSelectedIngredient] = useState<string>('');
 	const [isIngredientSelected, setIsIngredientSelected] = useState<boolean>(false);
 
 	useEffect(() => {
-		loadCategoryCollection();
+		loadIngredientList();
 	}, []);
+
+	useEffect(() => {
+		loadCategoryList();
+	}, [ingredientCollection]);
 
 	const onClickFoodCategory = (category: string) => {
 		setSelectedCategory(category);
