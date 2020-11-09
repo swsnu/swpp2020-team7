@@ -24,7 +24,8 @@
         "no-param-reassign": [2, { "props": false }],
         "react/prop-types": 0,
         "no-shadow": "off",
-        "react-hooks/exhaustive-deps": "warn"
+        "react-hooks/exhaustive-deps": "warn",
+        "no-underscore-dangle": "warn"
     },
     "overrides": [{
         "files": ["**/*.ts"],
