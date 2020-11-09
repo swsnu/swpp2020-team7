@@ -11,10 +11,9 @@ const Logout: React.FC<LogoutProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch(logout());
-		history.push('/fridge');
+		history.push('/login');
 	}, [dispatch]);
-
-	return <div>Login</div>;
+	return <></>;
 };
 
 export default Logout;

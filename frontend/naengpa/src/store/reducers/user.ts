@@ -6,27 +6,27 @@ import { Dictionary } from '../../model/general';
 export type InitialState = {
 	user: Dictionary<string>;
 	user_list: Dictionary<string>[];
-	is_logged: boolean;
+	is_logged_in: boolean;
 };
 
 const UserState: InitialState = {
 	user: {},
 	user_list: [],
-	is_logged: false,
+	is_logged_in: false,
 };
 
 type Action =
-	| { type: 'CHECK_LOGIN'; is_logged: boolean }
+	| { type: 'CHECK_LOGIN'; is_logged_in: boolean }
 	| { type: 'SIGNUP'; user: Dictionary<string> }
-	| { type: 'LOGIN'; user: Dictionary<string>; is_logged: boolean }
-	| { type: 'LOGOUT'; user: Dictionary<string>; is_logged: boolean }
+	| { type: 'LOGIN'; user: Dictionary<string>; is_logged_in: boolean }
+	| { type: 'LOGOUT'; user: Dictionary<string>; is_logged_in: boolean }
 	| { type: 'GET_USER_LIST'; user_list: Dictionary<string>[] };
 
 function userReducer(state: InitialState = UserState, action: Action): InitialState {
 	switch (action.type) {
 		/* CHECK LOGIN */
 		case actionTypes.CHECK_LOGIN:
-			return { ...state, is_logged: action.is_logged };
+			return { ...state, is_logged_in: action.is_logged_in };
 
 		/* SIGNUP */
 		case actionTypes.SIGNUP:
@@ -34,16 +34,16 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 				...state,
 				user: action.user,
 				user_list: [...state.user_list, action.user],
-				is_logged: true,
+				is_logged_in: true,
 			};
 
 		/* LOGIN */
 		case actionTypes.LOGIN:
-			return { ...state, user: action.user, is_logged: true };
+			return { ...state, user: action.user, is_logged_in: true };
 
 		/* LOGOUT */
 		case actionTypes.LOGOUT:
-			return { ...state, is_logged: false, user: {} };
+			return { ...state, is_logged_in: false, user: {} };
 
 		/* GET USER LIST */
 		case actionTypes.GET_USER_LIST:

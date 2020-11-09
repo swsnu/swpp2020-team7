@@ -10,32 +10,40 @@
     align-items: center;
 
     #naengpa {
-        margin-top: 7%;
-        margin-bottom: 1%;
-        font-family: 'Jua';
-        width: 20%;
-        height: 15%;
-        font-size: 800%;
-        font-weight: normal;
-        font-stretch: normal;
-        font-style: normal;
-        //line-height: 0.38;
-        letter-spacing: normal;
+        background-color: transparent;
+        border: none;
+        outline: none;
         color: #ffffff;
         display: flex;
         flex-direction: row;
         align-items: center;
-        background-color: transparent;
-        border: none;
-        outline: none;
+        margin-top: 7%;
+        margin-bottom: 1%;
+        font-family: 'Jua';
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        letter-spacing: normal;  
+        
+        #naengpa-logo {
+            font-size: 800%;
+        }
+        #naengpa-logo-name {
+            font-size: 800%;
+            margin-top: 5%;
+        }
     }
     
     #inputList {
         margin-top: 2%;
         margin-bottom: 1%;
+        padding: 2%;
         width: 30%;
         height: 40%;
         border-radius: 17px;
+        // TODO: min-width - temporary set for web! should be modified 
+        min-width: 400px;
+        min-height: 350px;
         box-shadow: 10px 10px 10px 0 rgba(21, 21, 21, 0.34);
         background-color: #ffffff;
         display: flex;
@@ -47,9 +55,6 @@
     #username {
         margin-top: 20%;
         margin-bottom: 10%;
-        //margin-ri: 0%;
-        //margin: 5%;
-        //margin-right: 2%;
         width: 100%;
         align-content: center;
         border-left: none;
@@ -77,13 +82,20 @@
         outline: none;
     }
 
-    #login-button {
+    #buttons {
+        display: flex;
+        justify-content: center;
+        margin-left: 10%;
+        padding: 3%;
+    }
+
+    #login-button, #signup-button {
         margin-top: 1.5%;
         margin-bottom: 1%;
-        margin-left: 18%;
-        width: 12%;
-        height: 8%;
+        margin-left: 5%;
+        height: 190%;
         border-radius: 100px;
+        min-width: 150px;
         border: none;
         box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.27);
         background-color: #ffffff;
