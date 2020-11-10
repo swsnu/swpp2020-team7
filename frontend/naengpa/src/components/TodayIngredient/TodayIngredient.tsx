@@ -54,7 +54,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	const alert_contents = not_todays_ingredient.map((ingredient: any) => {
 		return (
 			<Button onClick={() => onClickAddTodayIngredient(ingredient.id)}>
-				{ingredient.ingredient}
+				{ingredient.name}
 			</Button>
 		);
 	});
@@ -62,7 +62,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	const todays_ingredient_contents = todays_ingredient.map((ingredient: any) => {
 		return (
 			<div id="today-ingredient-content-each">
-				<text>{ingredient.ingredient}</text>
+				<text>{ingredient.name}</text>
 				<Button
 					id="today-ingredient-delete"
 					onClick={() => onClickDeleteTodayIngredient(ingredient.id)}
