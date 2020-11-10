@@ -1,20 +1,24 @@
 """views for ingredient"""
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
-from .models import Ingredient
+from .models import Ingredient, IngredientCategory
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
+@ensure_csrf_cookie
 def ingredient_list(request):
     """/api/ingredients/ Get article list"""
     if request.method == 'GET':
         if not request.user.is_authenticated:
             return HttpResponse(status=401)
-        ingredient_all_list = [
-            ingredient for ingredient in Ingredient.objects.all().values()]
-        return JsonResponse(ingredient_all_list, safe=False)
+        return_data = {category.name: [
+            item for item in category.ingredients.all().values('id', 'name')]
+            for category in IngredientCategory.objects.all()}
+        return JsonResponse(return_data, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
 
 
+@ ensure_csrf_cookie
 def create_ingredients(request):
     """makes up database"""
     ingredient_dict = {}
@@ -34,10 +38,18 @@ def create_ingredients(request):
 
     print('[start]')
     for category, name_list in ingredient_dict.items():
+        try:
+            ingredient_category = IngredientCategory.objects.get(name=category)
+        except IngredientCategory.DoesNotExist:
+            ingredient_category = IngredientCategory.objects.create(
+                name=category)
+            print(f'IngredientCategory [{ingredient_category}] created')
+
         for name in name_list:
             try:
                 Ingredient.objects.get(name=name)
             except Ingredient.DoesNotExist:
-                print(Ingredient.objects.create(category=category, name=name))
+                print(Ingredient.objects.create(
+                    category=ingredient_category, name=name))
 
     return HttpResponse()
