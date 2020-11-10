@@ -44,14 +44,19 @@ export function getFridge(id: number) {
 /* ADD INGREDIENT TO FRIDGE */
 export function addIngredientToFridge(id: number, ingredient: IngredientEntity) {
 	return async (dispatch: any) => {
-		const response = await axios.post(`/api/users/${id}/fridge/`, {ingredient_id: ingredient.id});
+		const response = await axios.post(`/api/users/${id}/fridge/`, {
+			ingredient_id: ingredient.id,
+		});
 		const storedIngredientList: UserIngredientEntity[] = response.data;
-		const ingredientList: IngredientEntity[] = storedIngredientList
-			.map((item) => ({'id': item.ingredient__id, 'name': item.ingredient__name, 'isTodayIngredient': item.is_today_ingredient}));
-		
+		const ingredientList: IngredientEntity[] = storedIngredientList.map((item) => ({
+			id: item.ingredient__id,
+			name: item.ingredient__name,
+			isTodayIngredient: item.is_today_ingredient,
+		}));
+
 		dispatch({
 			type: actionTypes.ADD_INGREDIENT_TO_FRIDGE,
-			ingredientList: ingredientList,
+			ingredientList,
 		});
 	};
 }
