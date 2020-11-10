@@ -25,13 +25,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ history }) => {
 	const [username, setUserName] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
-	const { loadUserList } = useUserList();
-	const userList = useSelector((state: AppState) => state.user.user_list);
 	const dispatch = useDispatch();
-
-	useEffect(() => {
-		loadUserList();
-	}, []);
 
 	const onClickLogin = () => {
 		if (username === '' || password === '') {

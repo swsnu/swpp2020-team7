@@ -19,11 +19,11 @@ interface TodayIngredientProps {
 
 const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	const dispatch = useDispatch();
-	const ingredient_list = useSelector((state: AppState) => state.fridge.ingredient_list);
-	const todays_ingredient = ingredient_list.filter((ingredient: any) => {
+	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
+	const todays_ingredient = ingredientList.filter((ingredient: any) => {
 		return ingredient.today_ingredient === true;
 	});
-	const not_todays_ingredient = ingredient_list.filter((ingredient: any) => {
+	const not_todays_ingredient = ingredientList.filter((ingredient: any) => {
 		return ingredient.today_ingredient === false;
 	});
 
