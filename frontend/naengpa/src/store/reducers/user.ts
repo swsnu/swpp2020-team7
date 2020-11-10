@@ -1,6 +1,6 @@
 import React from 'react';
 import * as actionTypes from '../actions/actionTypes';
-import { UserEntity, UserSignupInputDTO } from '../../model/user';
+import { UserEntity } from '../../model/user';
 
 export type InitialState = {
 	user: UserEntity | null;
@@ -12,7 +12,7 @@ const UserState: InitialState = {
 
 type Action =
 	| { type: 'CHECK_LOGIN' }
-	| { type: 'SIGNUP'; user: UserSignupInputDTO }
+	| { type: 'SIGNUP'; user: UserEntity }
 	| { type: 'LOGIN'; user: UserEntity }
 	| { type: 'LOGOUT' };
 
@@ -20,7 +20,7 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 	switch (action.type) {
 		/* SIGNUP */
 		case actionTypes.SIGNUP:
-			return state;
+			return { ...state, user: action.user };
 
 		/* LOGIN */
 		case actionTypes.LOGIN:
