@@ -6,6 +6,7 @@ import TodayRecipe from '../../components/TodayRecipe/TodayRecipe';
 import TodayStar from '../../components/TodayStar/TodayStar';
 import Fridge from '../Fridge/Fridge';
 import Footer from '../../components/Footer/Footer';
+import { Grid } from '@material-ui/core';
 import './MyFridge.scss';
 
 interface MyFridgeProps {
@@ -14,23 +15,23 @@ interface MyFridgeProps {
 
 const MyFridge: React.FC<MyFridgeProps> = ({ history }) => {
 	return (
-		<div>
-			<div id="my-fridge">
-				<div id="fridge-left-part">
+		<div id="my-fridge-page">
+			<Grid id="my-fridge" container spacing={5}>
+				<Grid id="fridge-left-part" item xs={12} sm={3}>
 					<TodayIngredient history={history} />
 					<AddIngredient />
-				</div>
-				<div id="frige-middle-part">
+				</Grid>
+				<Grid id="frige-middle-part" item xs={12} sm={4}>
 					<Fridge history={history} />
-				</div>
-				<div id="fridge-right-part">
-					<TodayStar />
-					<TodayRecipe />
-				</div>
-			</div>
-			<div id="fridge-footer">
-				<Footer />
-			</div>
+				</Grid>
+				<Grid id="fridge-right-part" item xs={12} sm={3}>
+						<TodayStar />
+						<TodayRecipe />
+				</Grid>
+				<Grid id="fridge-footer" item xs={12} sm={12}>
+					<Footer />
+				</Grid>
+			</Grid>
 		</div>
 	);
 };
