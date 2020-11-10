@@ -41,12 +41,12 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({ history }) => {
-	const is_logged_in = useSelector((state: AppState) => state.user.is_logged_in);
+	const user = useSelector((state: AppState) => state.user.user);
 
 	return (
 		<div id="App">
 			<ConnectedRouter history={history}>
-				{!is_logged_in ? (
+				{!user ? (
 					<Switch>
 						<Route path="/signup" exact component={Signup} />
 						<Route path="/login" exact component={Login} />

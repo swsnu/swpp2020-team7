@@ -9,11 +9,11 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 export function signup(user: UserSignupInputDTO) {
 	return async (dispatch: any) => {
 		const response: any = await axios.post('/api/signup/', user);
-		console.log('signup ', response.data);
+		const currentUser: UserEntity = response.data;
 
 		dispatch({
 			type: actionTypes.SIGNUP,
-			user,
+			user: currentUser,
 		});
 	};
 }
@@ -21,14 +21,12 @@ export function signup(user: UserSignupInputDTO) {
 /* LOGIN */
 export function login(user: UserLoginInputDTO) {
 	return async (dispatch: any) => {
-		console.log(user, 'want to login');
 		const response: any = await axios.post('/api/login/', user);
-		console.log('login', response.data);
+		const currentUser: UserEntity = response.data;
 
 		dispatch({
 			type: actionTypes.LOGIN,
-			user,
-			is_logged_in: true,
+			user: currentUser,
 		});
 	};
 }
@@ -37,16 +35,14 @@ export function login(user: UserLoginInputDTO) {
 export function logout() {
 	return async (dispatch: any) => {
 		const response: any = await axios.get('/api/logout/');
-		let logged_in = true;
 		console.log(response, 'tried to logout');
 
 		if (response.status === 204) {
-			logged_in = false;
+			dispatch({
+				type: actionTypes.LOGOUT,
+			});
 		}
-		dispatch({
-			type: actionTypes.LOGOUT,
-			is_logged_in: logged_in,
-		});
+		
 	};
 }
 
