@@ -54,49 +54,45 @@ const App: React.FC<AppProps> = ({ history }) => {
 						<Redirect exact to="/login" />
 					</Switch>
 				) : (
-					<>
-						<div id="naengpa-header">
-							<Header history={history} />
-							<Navigation history={history} />
-						</div>
-						<Switch>
-							{/* User Authentication */}
-							<Route path="/logout" exact component={Logout} />
+						<>
+							<div id="naengpa-header">
+								<Header history={history} />
+								<Navigation history={history} />
+							</div>
+							<Switch>
+								{/* User Authentication */}
+								<Route path="/logout" exact component={Logout} />
 
-							{/* MyFridge Page */}
-							<Route path="/fridge" exact component={MyFridge} />
-							<Route path="/ingredients/add" exact component={AddIngredient} />
+								{/* MyFridge Page */}
+								<Route path="/fridge" exact component={MyFridge} />
+								<Route path="/ingredients/add" exact component={AddIngredient} />
 
-							{/* Mypage */}
-							<Route path="/@:username" exact component={Mypage} />
-							<Route path="/@:username/info" exact component={UserInfo} />
-							<Route path="/@:username/edit" exact component={EditUserInfo} />
-							<Route path="/@:username/password" exact component={ChangePassword} />
-							<Route path="/@:username/recipes" exact component={UserRecipe} />
-							<Route path="/notifications" exact component={UserNotification} />
-							<Route path="/chatrooms" exact component={ChatRoomList} />
-							<Route path="/chatrooms/:id" exact component={ChatDetail} />
+								{/* Mypage */}
+								<Route path="/@:username" exact component={Mypage} />
+								<Route path="/@:username/info" exact component={UserInfo} />
+								<Route path="/@:username/edit" exact component={EditUserInfo} />
+								<Route path="/@:username/password" exact component={ChangePassword} />
+								<Route path="/@:username/recipes" exact component={UserRecipe} />
+								<Route path="/notifications" exact component={UserNotification} />
+								<Route path="/chatrooms" exact component={ChatRoomList} />
+								<Route path="/chatrooms/:id" exact component={ChatDetail} />
 
-							{/* Recipe Page */}
-							<Route path="/recipes" exact component={RecipeList} />
-							<Route path="/recipes/create" exact component={CreateRecipe} />
-							<Route path="/recipes/:id" exact component={RecipeDetail} />
-							<Route path="/recipes/:id/edit" exact component={EditRecipe} />
-							<Route
-								path="/ingredients/extract"
-								exact
-								component={ExtractIngredient}
-							/>
+								{/* Recipe Page */}
+								<Route path="/recipes" exact component={RecipeList} />
+								<Route path="/recipes/create" exact component={CreateRecipe} />
+								<Route path="/recipes/:id" exact component={RecipeDetail} />
+								<Route path="/recipes/:id/edit" exact component={EditRecipe} />
+								<Route path="/ingredients/extract" exact component={ExtractIngredient} />
 
-							{/* Article Page */}
-							<Route path="/articles" exact component={ArticleList} />
-							<Route path="/articles/create" exact component={CreateArticle} />
-							<Route path="/articles/:id" exact component={ArticleDetail} />
-							<Route path="/articles/edit" exact component={EditArticle} />
-							<Redirect exact to="/fridge" />
-						</Switch>
-					</>
-				)}
+								{/* Article Page */}
+								<Route path="/articles" exact component={ArticleList} />
+								<Route path="/articles/create" exact component={CreateArticle} />
+								<Route path="/articles/:id" exact component={ArticleDetail} />
+								<Route path="/articles/edit" exact component={EditArticle} />
+								<Redirect exact to="/fridge" />
+							</Switch>
+						</>
+					)}
 			</ConnectedRouter>
 		</div>
 	);
