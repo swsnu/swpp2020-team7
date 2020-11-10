@@ -11,29 +11,31 @@ export function getFridge(id: number) {
 	return async (dispatch: any) => {
 		// const response: any = await axios.get(`/api/users/${id}/fridge/`).then((res) => console.log(res));
 		const mockIngredient = [
-			{ user_id: 1, id: 1, ingredient: '사과', category: '과일', today_ingredient: false },
+			{ user_id: 1, id: 1, name: '사과', category: '과일', today_ingredient: false },
 			{
 				user_id: 1,
 				id: 2,
-				ingredient: '돼지고기',
+				name: '돼지고기',
 				category: '고기',
 				today_ingredient: false,
 			},
-			{ user_id: 1, id: 3, ingredient: '시금치', category: '채소', today_ingredient: false },
-			{ user_id: 1, id: 4, ingredient: '우유', category: '유제품', today_ingredient: false },
-			{ user_id: 1, id: 5, ingredient: '참치', category: '수산물', today_ingredient: false },
+			{ user_id: 1, id: 3, name: '시금치', category: '채소', today_ingredient: false },
+			{ user_id: 1, id: 4, name: '우유', category: '우유/유제품', today_ingredient: false },
+			{ user_id: 1, id: 5, name: '참치', category: '수산물/건해산', today_ingredient: false },
 			{
 				user_id: 1,
 				id: 6,
-				ingredient: '계란',
+				name: '계란',
 				category: '계란/알류',
 				today_ingredient: false,
 			},
+			{ user_id: 1, id: 7, name: '두부', category: '두부/콩류', today_ingredient: false },
+			{ user_id: 1, id: 8, name: '햄', category: '가공육', today_ingredient: false },
+			{ user_id: 1, id: 9, name: '고추장', category: '장류/양념', today_ingredient: false },
 		];
 
 		dispatch({
 			type: actionTypes.GET_FRIDGE,
-			// Fridge: response.data,
 			ingredient_list: mockIngredient,
 		});
 	};

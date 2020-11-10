@@ -94,8 +94,8 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				<img
 					id="delete-image-icon"
 					src={item}
-					height="100px"
-					width="100px"
+					height="150px"
+					width="150px"
 					alt="/api/images" // TODO: check alt path
 				/>
 			</div>
@@ -214,7 +214,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 						</TableRow>
 						<TableRow>
 							<TableCell>
-								<div>필수재료</div>
+								<div id="ingredient-name">필수재료</div>
 							</TableCell>
 						</TableRow>
 						<TableRow id="recipe-row-box">
@@ -235,7 +235,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 						</TableRow>
 						<TableRow>
 							<TableCell>
-								<div>#hash_tag</div>
+								<div id="hash-tag">#hash_tag</div>
 							</TableCell>
 						</TableRow>
 					</TableBody>
