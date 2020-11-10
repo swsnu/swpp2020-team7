@@ -1,12 +1,12 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
-import { UserEntity } from '../../model/user';
+import { UserEntity, UserLoginInputDTO, UserSignupInputDTO } from '../../model/user';
 /* CSRF TOKEN */
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 /* SIGNUP */
-export function signup(user: UserEntity) {
+export function signup(user: UserSignupInputDTO) {
 	return async (dispatch: any) => {
 		const response: any = await axios.post('/api/signup/', user);
 		console.log('signup ', response.data);
@@ -19,7 +19,7 @@ export function signup(user: UserEntity) {
 }
 
 /* LOGIN */
-export function login(user: UserEntity) {
+export function login(user: UserLoginInputDTO) {
 	return async (dispatch: any) => {
 		console.log(user, 'want to login');
 		const response: any = await axios.post('/api/login/', user);

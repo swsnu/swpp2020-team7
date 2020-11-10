@@ -2,25 +2,26 @@ import React from 'react';
 import { start } from 'repl';
 import * as actionTypes from '../actions/actionTypes';
 import { Dictionary } from '../../model/general';
+import { UserEntity, UserLoginInputDTO, UserSignupInputDTO } from '../../model/user';
 
 export type InitialState = {
-	user: Dictionary<string>;
-	user_list: Dictionary<string>[];
+	user: UserEntity | UserLoginInputDTO | UserSignupInputDTO | null;
+	user_list: (UserEntity | UserLoginInputDTO | UserSignupInputDTO)[];
 	is_logged_in: boolean;
 };
 
 const UserState: InitialState = {
-	user: {},
+	user: null,
 	user_list: [],
 	is_logged_in: false,
 };
 
 type Action =
 	| { type: 'CHECK_LOGIN'; is_logged_in: boolean }
-	| { type: 'SIGNUP'; user: Dictionary<string> }
-	| { type: 'LOGIN'; user: Dictionary<string>; is_logged_in: boolean }
-	| { type: 'LOGOUT'; user: Dictionary<string>; is_logged_in: boolean }
-	| { type: 'GET_USER_LIST'; user_list: Dictionary<string>[] };
+	| { type: 'SIGNUP'; user: UserSignupInputDTO }
+	| { type: 'LOGIN'; user: UserLoginInputDTO; is_logged_in: boolean }
+	| { type: 'LOGOUT'; user: UserEntity; is_logged_in: boolean }
+	| { type: 'GET_USER_LIST'; user_list: UserEntity[] };
 
 function userReducer(state: InitialState = UserState, action: Action): InitialState {
 	switch (action.type) {
@@ -43,7 +44,7 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 
 		/* LOGOUT */
 		case actionTypes.LOGOUT:
-			return { ...state, is_logged_in: false, user: {} };
+			return { ...state, is_logged_in: false, user: null };
 
 		/* GET USER LIST */
 		case actionTypes.GET_USER_LIST:
