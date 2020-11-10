@@ -5,8 +5,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { History } from 'history';
 import Alert from '@material-ui/lab/Alert';
-import { Button, Collapse, Grid } from '@material-ui/core';
-
+import { Button, Collapse } from '@material-ui/core';
 import {
 	toggleTodayIngredient,
 	getFridge,
@@ -32,17 +31,21 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	useEffect(() => {
 		// TODO: argument should be user id!
 		dispatch(getFridge(1));
-	}, [dispatch]);
+	}, []);
+
 	console.log(todays_ingredient, '오늘의 재료');
 
-	/* CLICK EVENT - add ingredient to today's ingredient */
+	/* CLICK EVENT - ADD INGREDIENT TO TODAY INGREDIENT */
+	// TODO: should be modified -> 아직 안됨
+
 	const onClickAddTodayIngredient = (target_id: number) => {
 		dispatch(addIngredientToTodayIngredient(1, target_id));
 		setAlert(false);
 		history.push('/fridge');
 	};
 
-	/* CLICK EVENT - delete ingredient from today's ingredient */
+	// onClickDeleteTodayIngredient();
+	// TODO: 구현 필요
 	const onClickDeleteTodayIngredient = (target_id: number) => {
 		dispatch(toggleTodayIngredient(1, target_id));
 		history.push('/fridge');
@@ -58,7 +61,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 
 	const todays_ingredient_contents = todays_ingredient.map((ingredient: any) => {
 		return (
-			<div>
+			<div id="today-ingredient-content-each">
 				<text>{ingredient.ingredient}</text>
 				<Button
 					id="today-ingredient-delete"
@@ -71,8 +74,9 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	});
 
 	return (
-		<Grid id="today-ingredient" container spacing={2}>
+		<div id="today-ingredient">
 			<div id="today-ingredient-header">-오늘의 재료-</div>
+			<AddCircleIcon type="button" id="add-today-ingredient" onClick={() => setAlert(true)} />
 			<Collapse in={alert}>
 				<Alert id="add-today-ingredient-alert" icon={false}>
 					<div id="naengpa-logo-box">
@@ -83,20 +87,11 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 							}}
 						/>
 					</div>
-					{alert_contents.length !== 0 ? (
-						<div id="alert-contents">{alert_contents}</div>
-					) : (
-						<div id="today-ingredient-contents-none">
-							추가 가능한 재료가 없습니다!
-							<br />
-							냉장고에 재료를 추가하세요.
-						</div>
-					)}
+					<div id="alert-contents">{alert_contents}</div>
 				</Alert>
 			</Collapse>
 			<div id="today-ingredient-contents">{todays_ingredient_contents}</div>
-			<AddCircleIcon type="button" id="add-today-ingredient" onClick={() => setAlert(true)} />
-		</Grid>
+		</div>
 	);
 };
 

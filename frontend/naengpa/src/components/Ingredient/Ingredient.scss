@@ -1,9 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
 div#ingredient {
   width: 30%;
   height: auto;
   margin-left: 3%;
   img#ingredient-image {
-    width:130%;
+    width: 100%;
+    height: 100%;
+    align-self: bottom;
   }
   padding-bottom: 28%;
   #ingredient-image-box {
@@ -14,6 +18,8 @@ div#ingredient {
     justify-content: center;
     position: relative;
     float: left;
+    height: 100%;
+    width: 100%;
   }
   button:focus {
       outline: 0 !important;
@@ -30,4 +36,15 @@ div#ingredient {
     top: -10px;
   }
   border-radius: 20px;
+}
+
+#ingredient-inbox {
+  display: flex;
+  flex-direction: column;
+}
+#ingredient-tag {
+  background-color: #FFEFD5;
+  font-family: 'Jua', sans-serif;
+  padding: 2%;
+  border-radius: 35px;
 }

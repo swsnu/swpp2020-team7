@@ -1,12 +1,29 @@
 #profile {
   background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
   height: auto;
   width: auto;
-  margin: 1%;
+  flex: 1;
+  margin-left: 0;
+  margin-right: 0;
+  box-shadow: none;
 
-  #profile-card-header {
-    font-weight: bolder;
+  #profile-title {
+    font-size: 100%;
+    font-weight: bold;
+  }
+
+  #profile-subheader {
+    font-size: 90%;
+    font-weight: bold;
+    color: #ff4ec4;
+    float: left;
+  }
+
+  #profile-star {
+    padding-top: 2%;
+    padding-right: 2%;
+    width: 15px;
+    height: 15px;
+    float: left;
   }
 }
