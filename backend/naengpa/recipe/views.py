@@ -18,11 +18,14 @@ def recipe_list(request):
     # if request.user.is_authenticated:
     recipe_collection = [{
         "id": recipe.id,
+        "author_id": recipe.author.id,
+        "author": recipe.author.username,
         "food-name": recipe.food_name,
         "cook-time": recipe.cook_time,
         "recipe-content": recipe.recipe_content,
         "food-images": list(Image.objects.filter(recipes_id=recipe.id).values()),
-        "recipe-like": 0
+        "recipe-like": 0,
+        "created_at": recipe.created_at.strftime("%Y.%m.%d")
     } for recipe in Recipe.objects.all()] if len(Recipe.objects.all()) != 0 else []
 
     # GET RECIPE LIST
@@ -38,6 +41,7 @@ def recipe_list(request):
         food_images = req_data['food-images']
         # recipe_like = req_data['recipe-like']
         recipe = Recipe.objects.create(
+            author=request.user,
             food_name=food_name,
             cook_time=cook_time,
             recipe_content=recipe_content)
@@ -47,11 +51,15 @@ def recipe_list(request):
 
         response_dict = {
             "id": recipe.id,
+            "author_id": recipe.author.id,
+            "author": recipe.author.username,
             "food-name": food_name,
             "cook-time": cook_time,
             "recipe-content": recipe_content,
             "food-images": food_images,
-            "recipe_like": 0}
+            "recipe_like": 0,
+            "created_at": recipe.created_at,
+        }
 
         return JsonResponse(response_dict, status=201)
 

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Dispatch, MouseEventHandler } from 'react';
+import React, { useState } from 'react';
 import { History } from 'history';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -23,6 +23,7 @@ import {
 import './CreateRecipe.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import { createRecipe } from '../../../store/actions/index';
+// import { AppState } from '../../store/store';
 
 interface CreateRecipeProps {
 	history: History;

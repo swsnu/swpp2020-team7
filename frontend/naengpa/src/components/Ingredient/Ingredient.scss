@@ -1,10 +1,11 @@
 div#ingredient {
-  width: 33%;
-  height:auto;
+  width: 30%;
+  height: auto;
+  margin-left: 3%;
   img#ingredient-image {
-    width:100%;
+    width:130%;
   }
-  padding-bottom: 25%;
+  padding-bottom: 28%;
   #ingredient-image-box {
     border: none;
     background: none;
@@ -26,7 +27,7 @@ div#ingredient {
   right: 0;
 
   margin: {
-    
+    top: -10px;
   }
   border-radius: 20px;
 }
