@@ -14,7 +14,7 @@ interface FridgeProps {
 }
 
 const Fridge: React.FC<FridgeProps> = ({ history }) => {
-	const ingredient_list = useSelector((state: AppState) => state.fridge.ingredient_list);
+	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -22,7 +22,7 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 		dispatch(getFridge(2));
 	}, []);
 
-	const ingredients = ingredient_list.map((ingredient: any) => {
+	const ingredients = ingredientList.map((ingredient: any) => {
 		return <Ingredient key={ingredient.id} history={history} ingredient={ingredient} />;
 	});
 
