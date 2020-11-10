@@ -1,12 +1,12 @@
 import React from 'react';
 import { History } from 'history';
+import { Grid } from '@material-ui/core';
 import TodayIngredient from '../../components/TodayIngredient/TodayIngredient';
 import AddIngredient from '../AddIngredient/AddIngredient';
 import TodayRecipe from '../../components/TodayRecipe/TodayRecipe';
 import TodayStar from '../../components/TodayStar/TodayStar';
 import Fridge from '../Fridge/Fridge';
 import Footer from '../../components/Footer/Footer';
-import { Grid } from '@material-ui/core';
 import './MyFridge.scss';
 
 interface MyFridgeProps {
@@ -25,8 +25,8 @@ const MyFridge: React.FC<MyFridgeProps> = ({ history }) => {
 					<Fridge history={history} />
 				</Grid>
 				<Grid id="fridge-right-part" item xs={12} sm={3}>
-						<TodayStar />
-						<TodayRecipe />
+					<TodayStar />
+					<TodayRecipe />
 				</Grid>
 				<Grid id="fridge-footer" item xs={12} sm={12}>
 					<Footer />

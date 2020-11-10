@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { History } from 'history';
+import { Box } from '@material-ui/core';
 import Ingredient from '../../components/Ingredient/Ingredient';
 import { AppState } from '../../store/store';
 import { getFridge } from '../../store/actions/index';
-import { Box } from '@material-ui/core';
 import './Fridge.scss';
 
 interface FridgeProps {
