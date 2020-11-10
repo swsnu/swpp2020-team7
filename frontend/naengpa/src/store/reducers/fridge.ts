@@ -3,11 +3,9 @@ import { Dictionary } from '../../model/general';
 
 export type InitialState = {
 	ingredient_list: Dictionary<string | number | boolean>[];
-	set_today_ingredient: boolean;
 };
 const FridgeState: InitialState = {
 	ingredient_list: [],
-	set_today_ingredient: false,
 };
 
 type Action =
