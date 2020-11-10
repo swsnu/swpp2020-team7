@@ -66,7 +66,9 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 				<Button
 					id="today-ingredient-delete"
 					onClick={() => onClickDeleteTodayIngredient(ingredient.id)}
-				>X</Button>
+				>
+					X
+				</Button>
 			</div>
 		);
 	});
