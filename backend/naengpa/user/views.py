@@ -1,18 +1,16 @@
 """views for user"""
-# from django.shortcuts import render
-import json
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth import get_user_model
-# , update_session_auth_hash
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
-from .models import Profile
-# from django.contrib import auth
-# from django.core.serializers.json import DjangoJSONEncoder
+from django.views.decorators.csrf import ensure_csrf_cookie
+
+import json
 
 User = get_user_model()
 
 
+@ensure_csrf_cookie
 def signup(request):
     """signup"""
     if request.method == 'POST':
@@ -27,9 +25,11 @@ def signup(request):
             return HttpResponseBadRequest()
 
         user = User.objects.create_user(
-            username=username, password=password, email=email)
-        user.profile.name = name
-        user.profile.date_of_birth = date_of_birth
+            username=username,
+            password=password,
+            email=email,
+            name=name,
+            date_of_birth=date_of_birth)
         user.save()
 
         checked_user = authenticate(
@@ -37,18 +37,19 @@ def signup(request):
 
         if checked_user is not None:
             login(request, checked_user)
-            return JsonResponse({
+            return JsonResponse(data={
                 'id': checked_user.id,
                 'username': checked_user.username,
                 'email': checked_user.email,
-                'name': checked_user.profile.name,
-                'dateOfBirth': checked_user.profile.date_of_birth
-            }, status=204)
+                'name': checked_user.name,
+                'dateOfBirth': checked_user.date_of_birth
+            }, status=201)
         else:
-            return HttpResponse(status=201)
+            return HttpResponse(status=500)
     return HttpResponseNotAllowed(['POST'])
 
 
+@ensure_csrf_cookie
 def signin(request):
     """signin"""
     if request.method == 'POST':
@@ -63,15 +64,15 @@ def signin(request):
             request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return JsonResponse({
+            return JsonResponse(data={
                 'id': user.id,
                 'username': user.username,
                 'email': user.email,
-                'name': user.profile.name,
-                'dateOfBirth': user.profile.date_of_birth
-            }, status=204)
+                'name': user.name,
+                'dateOfBirth': user.date_of_birth
+            }, status=200)
         else:
-            return HttpResponse(status=403)
+            return HttpResponse(status=401)
     return HttpResponseNotAllowed(['POST'])
 
 
@@ -80,12 +81,12 @@ def signout(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
             logout(request)
-            print(request.user.is_authenticated, "logout done")
             return HttpResponse(status=204)
         return HttpResponse(status=401)
     return HttpResponseNotAllowed(['GET'])
 
 
+@ensure_csrf_cookie
 def user_list(request):
     """user_list"""
     user_collection = [{
@@ -93,8 +94,7 @@ def user_list(request):
         "name": user.profile.name,
         "password": user.password,
         "email": user.email,
-        "dateOfBirth": user.profile.date_of_birth,
-        "is_logged_in": user.is_authenticated,
+        "dateOfBirth": user.date_of_birth,
     } for user in User.objects.all()] if len(User.objects.all()) != 0 else []
     print(user_collection)
     print(User.objects.all())
