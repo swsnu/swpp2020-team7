@@ -7,7 +7,7 @@ div#today-ingredient {
     flex-direction: column;
     min-height: 200px;
     padding: 25% 20%;
-    padding-left: 25%;
+    padding-left: 30%;
     padding-bottom: 5%;
     
     #today-ingredient-header {
@@ -22,7 +22,14 @@ div#today-ingredient {
       text-align: center;
       font-size: 3vh;
       font-family: 'Nanum Pen Script', cursive;
+      align-items: center;
+
+      #today-ingredient-content-each {
+        height: 4vh;
+        align-items: center;
+      }
     }
+    
 
     #today-ingredient-delete {
       font-size: 3vh;
