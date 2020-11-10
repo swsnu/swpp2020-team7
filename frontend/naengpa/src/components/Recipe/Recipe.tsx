@@ -19,7 +19,7 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute }) => {
 	const thumnail = images[0] as Dictionary<string>;
 	const titleSize = attribute === 'todays-recipe-child' ? 'caption' : 'subtitle2';
 	const fontSize = attribute === 'todays-recipe-child' ? 'small' : 'default';
-	const subheader = attribute === 'todays-recipe-child' ? '' : 'Nov 3, 2020';
+	const subheader = attribute === 'todays-recipe-child' ? '' : recipe.created_at;
 
 	// Cook-Time Unit set for minute and hour
 	let cookTime = `${recipe['cook-time']}M`;
@@ -37,7 +37,7 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute }) => {
 						<MoreVertIcon />
 					</IconButton>
 				}
-				title="Jellyjuju"
+				title={recipe.author}
 				subheaderTypographyProps={{ variant: titleSize }}
 				subheader={subheader}
 			/>
@@ -46,7 +46,7 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute }) => {
 				<CardContent id="recipe-content">
 					<div id="recipe-food-name">{recipe['food-name']}</div>
 					{/* TODO: should be replaced with food category */}
-					<div id="recipe-food-category">카테고리</div>
+					<div id="recipe-food-category">한식</div>
 				</CardContent>
 				<div id="recipe-icons">
 					<div id="recipe-cook-time">

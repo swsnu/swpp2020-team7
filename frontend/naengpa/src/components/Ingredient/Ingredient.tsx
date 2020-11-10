@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { History } from 'history';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { Dictionary } from '../../model/general';
-import {
-	deleteIngredientFromFridge,
-} from '../../store/actions/index';
+import { deleteIngredientFromFridge } from '../../store/actions/index';
 import './Ingredient.scss';
 
 interface IngredientProps {
@@ -20,12 +18,12 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	const dispatch = useDispatch();
 
 	const foodCategory: Dictionary<string> = {
-		'채소': 'vegetable.png',
-		'고기': 'meat.png',
-		'과일': 'fruit.png',
-		'수산물': 'seafood.png',
-		'유제품': 'milk.png',
-		'가공육': 'ham.png',
+		채소: 'vegetable.png',
+		고기: 'meat.png',
+		과일: 'fruit.png',
+		수산물: 'seafood.png',
+		유제품: 'milk.png',
+		가공육: 'ham.png',
 		'장류/양념': 'sauces.png',
 		'계란/알류': 'egg.png',
 	};
