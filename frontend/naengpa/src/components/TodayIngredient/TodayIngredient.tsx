@@ -61,7 +61,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 
 	const todays_ingredient_contents = todays_ingredient.map((ingredient: any) => {
 		return (
-			<div>
+			<div id="today-ingredient-content-each">
 				<text>{ingredient.ingredient}</text>
 				<Button
 					id="today-ingredient-delete"
