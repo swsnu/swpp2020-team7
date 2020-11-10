@@ -42,7 +42,7 @@ export function getFridge(id: number) {
 /* ADD INGREDIENT TO FRIDGE */
 export function addIngredientToFridge(id: number, ingredient: IngredientEntity) {
 	return async (dispatch: any) => {
-		// await axios.post(`/api/users/${id}/fridge/`, ingredient).then((res) => console.log(res));
+		await axios.post(`/api/users/${id}/fridge/`, ingredient);
 
 		dispatch({
 			type: actionTypes.ADD_INGREDIENT_TO_FRIDGE,

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getIngredientList, addIngredientToFridge } from '../../store/actions/index';
-import { IngredientEntity } from '../../model/ingredient';
+import { IngredientCategoryCollection, IngredientEntity } from '../../model/ingredient';
 import './AddIngredient.scss';
 import { AppState } from '../../store/store';
 
 const useIngredientList = () => {
-	const ingredientCollection = useSelector((state: AppState) => state.ingredient.ingredient_list);
-	const [categoryCollection, setCategoryCollection] = useState<string[]>([]);
+	const ingredientList = useSelector((state: AppState) => state.ingredient.ingredientList);
+	const [categoryList, setCategoryList] = useState<string[]>([]);
 	const [selectedCategory, setSelectedCategory] = useState<string>('');
 	const dispatch = useDispatch();
 
@@ -15,16 +15,13 @@ const useIngredientList = () => {
 		dispatch(getIngredientList());
 	};
 	const loadCategoryList = async () => {
-		const categoryList = ingredientCollection
-			.map((ingredient) => ingredient.category) // get categories
-			.filter((item, pos, self) => self.indexOf(item) === pos) // remove duplicates
-			.sort(); // sort in ascending order
-		setCategoryCollection(categoryList);
+		const categoryList = Object.keys(ingredientList).sort();
+		setCategoryList(categoryList);
 		setSelectedCategory(categoryList[0]);
 	};
 	return {
-		categoryCollection,
-		ingredientCollection,
+		categoryList,
+		ingredientList,
 		selectedCategory,
 		setSelectedCategory,
 		loadIngredientList,
@@ -34,56 +31,57 @@ const useIngredientList = () => {
 
 const AddIngredient: React.FC = () => {
 	const {
-		categoryCollection,
-		ingredientCollection,
+		categoryList,
+		ingredientList,
 		selectedCategory,
 		setSelectedCategory,
 		loadIngredientList,
 		loadCategoryList,
 	} = useIngredientList();
-	const [selectedIngredient, setSelectedIngredient] = useState<string>('');
-	const [isIngredientSelected, setIsIngredientSelected] = useState<boolean>(false);
+	const [selectedIngredient, setSelectedIngredient] = useState<IngredientEntity | null>(null);
+	const user = useSelector((state: AppState) => state.user.user);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		loadIngredientList();
 	}, []);
 
 	useEffect(() => {
+		console.log(ingredientList);
 		loadCategoryList();
-	}, [ingredientCollection]);
+	}, [ingredientList]);
 
 	const onClickFoodCategory = (category: string) => {
 		setSelectedCategory(category);
-		setSelectedIngredient('');
-		setIsIngredientSelected(false);
+		setSelectedIngredient(null);
 	};
-	const onClickIngredient = (ingredientName: string) => {
-		setSelectedIngredient(ingredientName);
-		setIsIngredientSelected(true);
+	const onClickIngredient = (ingredient: IngredientEntity) => {
+		setSelectedIngredient(ingredient);
 	};
 	const onClickAddIngredientToFridge = () => {
-		// addIngredientToFridge(selectedCategory, selectedIngredient);
+		if (selectedIngredient) {
+			dispatch(addIngredientToFridge(user!.id, selectedIngredient));
+		}
 	};
 
 	const IngredientGrid = ({
-		ingredientCollection,
+		ingredientList,
 		selectedCategory,
 	}: {
-		ingredientCollection: IngredientEntity[];
+		ingredientList: IngredientCategoryCollection;
 		selectedCategory: string;
 	}) => (
 		<div id="add-ingredient-grid" className="grid-container">
-			{ingredientCollection
-				.filter((ingredient) => ingredient.category === selectedCategory)
-				.map((ingredient) => (
+			{ingredientList[selectedCategory] &&
+				ingredientList[selectedCategory].map((ingredient: IngredientEntity) => (
 					<button
 						type="button"
 						id="food-ingredient"
 						key={ingredient.id}
 						className={`flex-item${
-							ingredient.name === selectedIngredient ? ' selected' : ''
+							ingredient === selectedIngredient ? ' selected' : ''
 						}`}
-						onClick={() => onClickIngredient(ingredient.name)}
+						onClick={() => onClickIngredient(ingredient)}
 					>
 						{ingredient.name}
 					</button>
@@ -92,13 +90,9 @@ const AddIngredient: React.FC = () => {
 	);
 
 	return (
-		<div id="">
-			<div id="add-ingredient" className="grid-container">
-				<button
-					type="submit"
-					id="add-ingredient"
-					onClick={() => onClickAddIngredientToFridge()}
-				>
+		<div id="add-ingredient">
+			<div id="add-ingredient-body" className="grid-container">
+				<button type="button" id="add-ingredient-tag">
 					재료&nbsp;추가하기
 				</button>
 				<div id="selected-status" className="grid-container">
@@ -115,13 +109,13 @@ const AddIngredient: React.FC = () => {
 							<button
 								type="button"
 								id="selected-ingredient"
-							>{`이름: ${selectedIngredient}`}</button>
+							>{`이름: ${selectedIngredient.name}`}</button>
 						)}
 					</div>
 				</div>
 				<div id="add-ingredient-category-list" className="grid-container">
 					{/* List of food categories */}
-					{categoryCollection.map((category) => (
+					{categoryList.map((category) => (
 						<button
 							type="button"
 							key={category}
@@ -137,10 +131,18 @@ const AddIngredient: React.FC = () => {
 				</div>
 				{/* grid of ingredient collection for selected category */}
 				<IngredientGrid
-					ingredientCollection={ingredientCollection}
+					ingredientList={ingredientList}
 					selectedCategory={selectedCategory}
 				/>
 			</div>
+			<button
+				type="submit"
+				id="add-ingredient"
+				disabled={!selectedIngredient}
+				onClick={() => onClickAddIngredientToFridge()}
+			>
+				재료&nbsp;추가하기
+			</button>
 		</div>
 	);
 };

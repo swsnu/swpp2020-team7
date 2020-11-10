@@ -1,18 +1,15 @@
 import * as actionTypes from '../actions/actionTypes';
-import { Dictionary } from '../../model/general';
+import { IngredientEntity } from '../../model/ingredient';
 
 export type InitialState = {
-	ingredient_list: Dictionary<string | number | boolean>[];
+	ingredient_list: IngredientEntity[];
 };
 const FridgeState: InitialState = {
 	ingredient_list: [],
 };
 
 type Action =
-	| {
-			type: 'GET_FRIDGE';
-			ingredient_list: Dictionary<string | number | boolean>[];
-	  }
+	| { type: 'GET_FRIDGE'; ingredient_list: IngredientEntity[] }
 	| { type: 'ADD_INGREDIENT_TO_FRIDGE' }
 	| { type: 'DELETE_INGREDIENT_FROM_FRIDGE'; id: number }
 	| { type: 'TOGGLE_TODAY_INGREDIENT'; id: number }

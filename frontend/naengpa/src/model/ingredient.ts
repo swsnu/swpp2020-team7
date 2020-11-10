@@ -1,5 +1,10 @@
+import { Dictionary } from './general';
+
 export interface IngredientEntity {
 	id: number;
-	category: string;
 	name: string;
+}
+
+export interface IngredientCategoryCollection {
+	[key: string]: IngredientEntity[];
 }
