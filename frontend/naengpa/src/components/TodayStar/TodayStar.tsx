@@ -2,7 +2,7 @@ import React from 'react';
 import './TodayStar.scss';
 import { History } from 'history';
 
-import Profile from '../../components/Profile/Profile';
+import Profile from '../Profile/Profile';
 
 interface TodayStarProps {
 	history: History;
