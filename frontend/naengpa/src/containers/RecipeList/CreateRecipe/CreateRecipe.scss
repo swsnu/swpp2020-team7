@@ -1,11 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
 #container {
-  margin: 0% 10% 10% 10%;
-  width: 80%;
+  margin: 0% 10% 10% 15%;
+  width: 70%;
   height: 80%;
   border: solid 1px #dcdcdc;
   align-items: center;
+
+  #food-name {
+    font-size: 120%;
+  }
+  #cook-time {
+    font-size: 120%;
+  }
+  #ingredient-name {
+    font-size: 120%;
+  }
+  #hash-tag {
+    font-size: 120%;
+  }
 }
 
 #create-recipe-alert {
@@ -83,7 +96,7 @@
 
 #create-recipe-mention {
   font: {
-    size: 15px;
+    size: 20px;
     weight: bold;
     stretch: normal;
     style: normal;
@@ -102,7 +115,7 @@
 }
 
 #back-to-recipe-list {
-  font-size: 15px;
+  font-size: 120%;
   border: solid 1px #707070;
   border-radius: 25px;
   background-color: #ffffff;
@@ -112,7 +125,7 @@
   font: {
     weight: bold;
     style: normal;
-    size: 20px;
+    size: 25px;
   }
   margin-top: 10px;
   letter-spacing: normal;
@@ -122,7 +135,7 @@
 
 #extract-ingredient-button {
   font: {
-    size: 15px;
+    size: 120%;
     weight: bold;
     stretch: normal;
     style: normal;
@@ -141,8 +154,8 @@
 
 #add-image-icon-box {
   background-color: #dcdcdc;
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -174,8 +187,8 @@
 
 #delete-image-icon-box {
   background-color: #dcdcdc;
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -201,4 +214,8 @@
 #delete-image-icon {
   font-size: 45px;
   color: #ffffff;
+}
+
+#recipe {
+  font-size: 18px;
 }
