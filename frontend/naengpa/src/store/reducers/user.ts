@@ -24,7 +24,6 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 
 		/* LOGIN */
 		case actionTypes.LOGIN:
-			console.log('login reducer');
 			return { ...state, user: action.user };
 
 		/* LOGOUT */

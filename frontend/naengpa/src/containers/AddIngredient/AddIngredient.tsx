@@ -47,7 +47,6 @@ const AddIngredient: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log(ingredientList);
 		loadCategoryList();
 	}, [ingredientList]);
 

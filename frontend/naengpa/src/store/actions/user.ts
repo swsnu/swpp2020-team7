@@ -37,7 +37,6 @@ export const login = (user: UserLoginInputDTO) => {
 export function logout() {
 	return async (dispatch: any) => {
 		const response: any = await axios.get('/api/logout/');
-		console.log(response, 'tried to logout');
 
 		if (response.status === 204) {
 			dispatch({
@@ -50,7 +49,6 @@ export function logout() {
 export function getUserList() {
 	return async (dispatch: any) => {
 		const response: any = await axios.get('/api/users/');
-		console.log('userlist', response.data);
 
 		dispatch({
 			type: actionTypes.GET_USER_LIST,
