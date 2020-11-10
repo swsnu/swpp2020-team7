@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
-import { IngredientEntity } from '../../model/ingredient';
+import { IngredientEntity, UserIngredientEntity } from '../../model/ingredient';
 
 /* CSRF TOKEN */
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -34,7 +34,7 @@ export function getFridge(id: number) {
 		dispatch({
 			type: actionTypes.GET_FRIDGE,
 			// Fridge: response.data,
-			ingredient_list: mockIngredient,
+			ingredientList: mockIngredient,
 		});
 	};
 }
@@ -42,11 +42,14 @@ export function getFridge(id: number) {
 /* ADD INGREDIENT TO FRIDGE */
 export function addIngredientToFridge(id: number, ingredient: IngredientEntity) {
 	return async (dispatch: any) => {
-		await axios.post(`/api/users/${id}/fridge/`, ingredient);
-
+		const response = await axios.post(`/api/users/${id}/fridge/`, {ingredient_id: ingredient.id});
+		const storedIngredientList: UserIngredientEntity[] = response.data;
+		const ingredientList: IngredientEntity[] = storedIngredientList
+			.map((item) => ({'id': item.ingredient__id, 'name': item.ingredient__name, 'isTodayIngredient': item.is_today_ingredient}));
+		
 		dispatch({
 			type: actionTypes.ADD_INGREDIENT_TO_FRIDGE,
-			ingredient,
+			ingredientList: ingredientList,
 		});
 	};
 }
