@@ -20,34 +20,45 @@ div#today-ingredient {
 
     #today-ingredient-contents {
       text-align: center;
+      font-size: 3vh;
+      font-family: 'Nanum Pen Script', cursive;
+    }
+
+    #today-ingredient-delete {
+      font-size: 3vh;
+      font-family: 'Nanum Pen Script', cursive;
     }
 
     #add-today-ingredient {
       margin-top: 10%;
       margin-left: 13%;
-      color: #69e88e;
+      color: yellowgreen;
       position: absolute;
     }
 
     #add-today-ingredient-alert {
       position: absolute;
-      max-width: 250px;
-      margin-left: 5%;
-      margin-top: 4%;
-      padding-right: 1%;
+      max-width: 200px;
+      margin-left: 6%;
+      //margin-right: 5%;
+      margin-top: 3%;
+      //padding-right: 1%;
       padding: 2%;
       z-index: 1;
       background-color: #ffffff;
-      border: solid 1px #707070; 
+      border: solid 0.5px #707070; 
+      align-items: center;
 
       #close-alert-button {
         display: flex;
         padding: 2%;
+        //margin-right: 5%;
         top: 0;
         right: 0;
-        align-items: flex-end;
         position: absolute;
+        color: yellowgreen;
       }
+      
       #alert-contents {
         text-align: left;
       }
