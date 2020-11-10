@@ -15,7 +15,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 	const [username, setUserName] = useState('');
 	const [password, setPassword] = useState('');
 	const [passwordConfirm, setPasswordConfirm] = useState('');
-	const [date_of_birth, setDateOfBirth] = useState('');
+	const [dateOfBirth, setDateOfBirth] = useState('');
 	const [email, setEmail] = useState('');
 
 	const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 			username === '' ||
 			password === '' ||
 			passwordConfirm === '' ||
-			date_of_birth === '' ||
+			dateOfBirth === '' ||
 			email === ''
 		) {
 			alert('blink');
@@ -38,7 +38,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 					name,
 					username,
 					password,
-					date_of_birth,
+					dateOfBirth,
 					email,
 				}),
 			);
@@ -88,7 +88,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 					</div>
 					<div>
 						<input
-							id="date_of_birth"
+							id="dateOfBirth"
 							type="text"
 							placeholder="DATE OF BIRTH"
 							onChange={(e) => setDateOfBirth(e.target.value)}
