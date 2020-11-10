@@ -8,7 +8,7 @@ User = get_user_model()
 
 class Recipe(models.Model):
     """Recipe model"""
-    author = models.OneToOneField(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     food_name = models.CharField(max_length=50)
     food_category = models.CharField(max_length=50)
     cook_time = models.CharField(max_length=50)
