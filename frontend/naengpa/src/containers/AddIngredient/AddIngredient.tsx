@@ -134,14 +134,16 @@ const AddIngredient: React.FC = () => {
 					selectedCategory={selectedCategory}
 				/>
 			</div>
-			<button
-				type="submit"
-				id="add-ingredient"
-				disabled={!selectedIngredient}
-				onClick={() => onClickAddIngredientToFridge()}
-			>
-				재료&nbsp;추가하기
-			</button>
+			<div id="add-ingredient-footer">
+				<button
+					type="submit"
+					id="add-ingredient"
+					disabled={!selectedIngredient}
+					onClick={() => onClickAddIngredientToFridge()}
+				>
+					재료&nbsp;추가하기
+				</button>
+			</div>
 		</div>
 	);
 };
