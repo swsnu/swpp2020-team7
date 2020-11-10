@@ -18,18 +18,19 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	const dispatch = useDispatch();
 
 	const foodCategory: Dictionary<string> = {
-		채소: 'vegetable.png',
-		고기: 'meat.png',
-		과일: 'fruit.png',
-		수산물: 'seafood.png',
-		유제품: 'milk.png',
-		가공육: 'ham.png',
+		'과일': 'fruit.png',
+		'채소': 'vegetable.png',
+		'고기': 'meat.png',
+		'수산물/건해산': 'seafood.png',
+		'우유/유제품': 'milk.png',
 		'장류/양념': 'sauces.png',
 		'계란/알류': 'egg.png',
+		'가공육': 'ham.png',
+		'두부/콩류': 'tofu.png',
 	};
 
 	// TODO: noodles.png spices.png tofu.png 추가해야함.
-	const imageUrl: string = '/foodCategory/'.concat(foodCategory[category]);
+	const imageUrl: string = 'foodCategory/'.concat(foodCategory[category]);
 
 	/* MOUSEOVER EVENT */
 	const onMouseOverIngredient = () => {
@@ -70,7 +71,10 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 						onClick={onClickDeleteIngredient}
 					/>
 				)}
-				<img id="ingredient-image" src={imageUrl} alt="/icons/fridge.png" />
+				<div id="ingredient-inbox"> 
+					<img id="ingredient-image" src={imageUrl} alt="/icons/meat.png" />
+					<div id="ingredient-tag">{ingredient['name']}</div>
+				</div>
 			</button>
 		</div>
 	);

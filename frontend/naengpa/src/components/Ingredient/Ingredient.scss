@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
 div#ingredient {
   width: 30%;
   height: auto;
@@ -34,4 +36,15 @@ div#ingredient {
     top: -10px;
   }
   border-radius: 20px;
+}
+
+#ingredient-inbox {
+  display: flex;
+  flex-direction: column;
+}
+#ingredient-tag {
+  background-color: #FFEFD5;
+  font-family: 'Jua', sans-serif;
+  padding: 2%;
+  border-radius: 35px;
 }
