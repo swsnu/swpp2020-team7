@@ -6,6 +6,7 @@ import { History } from 'history';
 import Ingredient from '../../components/Ingredient/Ingredient';
 import { AppState } from '../../store/store';
 import { getFridge } from '../../store/actions/index';
+import { Box } from '@material-ui/core';
 import './Fridge.scss';
 
 interface FridgeProps {
@@ -26,11 +27,11 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 	});
 
 	return (
-		<div id="fridge">
-			<ArrowBackIosIcon id="prev-fridge" />
+		<Box id="fridge">
+			{/* <ArrowBackIosIcon id="prev-fridge" /> */}
 			<div id="ingredients">{ingredients}</div>
-			<ArrowForwardIosIcon id="next-fridge" />
-		</div>
+			{/* <ArrowForwardIosIcon id="next-fridge" /> */}
+		</Box>
 	);
 };
 

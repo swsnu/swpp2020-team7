@@ -1,18 +1,20 @@
 #fridge {
   background: url('/icons/fridge.png') center center / contain no-repeat;
-  height: 85vh;
   display: flex;
+  min-height: 600px;
   flex-direction: row;
+  padding: 20%;
+  padding-left: 0;
   align-items: center;
 
-  #prev-fridge {
-    font-size: 200%;
-  }
+  // #prev-fridge {
+  //   font-size: 200%;
+  // }
 
-  #next-fridge {
-    font-size: 200%;
-    padding-right: 5%;
-  }
+  // #next-fridge {
+  //   font-size: 200%;
+  //   padding-right: 5%;
+  // }
 
   div#ingredients {
     padding:10%;
