@@ -8,12 +8,13 @@ div#my-fridge {
 
     #fridge-left-part {
         display: grid;
-        gap: 1%;
+        gap: 2%;
         grid-template-rows: 4fr 6fr;
     }
 
     #fridge-right-part {
         display: grid;
+        margin-bottom: 10%;
         grid-template-rows: 3fr 7fr;
         border: solid 2px #e3e3e3;
         background-color: #fffefe;
