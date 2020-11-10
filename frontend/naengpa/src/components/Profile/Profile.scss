@@ -1,0 +1,12 @@
+#profile {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: auto;
+  margin: 1%;
+
+  #profile-card-header {
+    font-weight: bolder;
+  }
+}

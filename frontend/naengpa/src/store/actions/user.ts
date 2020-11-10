@@ -53,7 +53,7 @@ export function logout() {
 export function getUserList() {
 	return async (dispatch: any) => {
 		const response: any = await axios.get('/api/users/');
-		console.log('uselist', response.data);
+		console.log('userlist', response.data);
 
 		dispatch({
 			type: actionTypes.GET_USER_LIST,

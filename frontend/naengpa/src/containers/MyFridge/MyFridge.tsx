@@ -24,7 +24,7 @@ const MyFridge: React.FC<MyFridgeProps> = ({ history }) => {
 					<Fridge history={history} />
 				</div>
 				<div id="fridge-right-part">
-					<TodayStar />
+					<TodayStar history={history} />
 					<TodayRecipe />
 				</div>
 			</div>
