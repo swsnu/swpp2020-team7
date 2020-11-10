@@ -1,28 +1,23 @@
 div#my-fridge {
-    display: grid;
-    grid-template-rows: 15fr 1fr;
-    grid-template-columns: 3fr 4fr 3fr;
     text-align: center;
-    gap: 4%;
+    gap: 3%;
     margin: {
         top: 30px;
-        left: 20px;
-        right: 20px;
+        left: 3%;
     }
 
     #fridge-left-part {
         display: grid;
+        gap: 2%;
         grid-template-rows: 4fr 6fr;
-        gap: 4%;
     }
 
     #fridge-right-part {
         display: grid;
+        margin-bottom: 10%;
         grid-template-rows: 3fr 7fr;
         border: solid 2px #e3e3e3;
         background-color: #fffefe;
-        padding: 2%;
-        padding-bottom: 10%;
     }
 }
 

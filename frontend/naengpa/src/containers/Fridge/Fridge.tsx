@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { History } from 'history';
+import { Box } from '@material-ui/core';
 import Ingredient from '../../components/Ingredient/Ingredient';
 import { AppState } from '../../store/store';
 import { getFridge } from '../../store/actions/index';
@@ -26,11 +27,11 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 	});
 
 	return (
-		<div id="fridge">
-			<ArrowBackIosIcon id="prev-fridge" />
+		<Box id="fridge">
+			{/* <ArrowBackIosIcon id="prev-fridge" /> */}
 			<div id="ingredients">{ingredients}</div>
-			<ArrowForwardIosIcon id="next-fridge" />
-		</div>
+			{/* <ArrowForwardIosIcon id="next-fridge" /> */}
+		</Box>
 	);
 };
 
