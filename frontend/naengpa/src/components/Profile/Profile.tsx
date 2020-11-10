@@ -12,9 +12,9 @@ const Profile: React.FC<ProfileProps> = ({ profile }) => {
 		<Card id="profile">
 			<CardHeader
 				id="profile-card-header"
-				avatar={<Avatar aria-label="user-image" src='/icons/boy.png'></Avatar>}
-				title={profile['username']}
-				subheader={profile['naengpa_score']}
+				avatar={<Avatar aria-label="user-image" src="/icons/boy.png" />}
+				title={profile.username}
+				subheader={profile.naengpa_score}
 			/>
 		</Card>
 	);
