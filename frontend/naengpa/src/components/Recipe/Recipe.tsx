@@ -41,7 +41,7 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute }) => {
 				subheaderTypographyProps={{ variant: titleSize }}
 				subheader={subheader}
 			/>
-			<CardMedia image={thumnail.file_path} id="recipe-image" />
+			{thumnail ? <CardMedia image={thumnail.file_path} id="recipe-image" /> : <></>}
 			<div id="recipe-card-footer">
 				<CardContent id="recipe-content">
 					<div id="recipe-food-name">{recipe['food-name']}</div>
