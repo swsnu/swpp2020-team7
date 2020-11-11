@@ -38,7 +38,7 @@ function fridgeReducer(state: InitialState = FridgeState, action: Action): Initi
 		case actionTypes.TOGGLE_TODAY_INGREDIENT:
 			ingredientList = state.ingredientList.map((ingredient) => {
 				return (ingredient.id as number) === action.id
-					? { ...ingredient, today_ingredient: false }
+					? { ...ingredient, isTodayIngredient: false }
 					: ingredient;
 			});
 			return { ...state, ingredientList };
@@ -47,7 +47,7 @@ function fridgeReducer(state: InitialState = FridgeState, action: Action): Initi
 		case actionTypes.ADD_INGREDIENT_TO_TODAY_INGREDIENT:
 			ingredientList = state.ingredientList.map((ingredient) => {
 				return (ingredient.id as number) === action.id
-					? { ...ingredient, today_ingredient: true }
+					? { ...ingredient, isTodayIngredient: true }
 					: ingredient;
 			});
 			return { ...state, ingredientList };
