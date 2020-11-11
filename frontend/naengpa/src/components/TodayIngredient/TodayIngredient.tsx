@@ -22,7 +22,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
 	const user = useSelector((state: AppState) => state.user.user);
 	const todays_ingredient = ingredientList.filter((ingredient: any) => {
-		return ingredient.today_ingredient === true;
+		return ingredient.isTodayIngredient === true;
 	});
 	const not_todays_ingredient = ingredientList.filter((ingredient: any) => {
 		return ingredient.isTodayIngredient === false;
