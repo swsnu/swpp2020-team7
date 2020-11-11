@@ -24,5 +24,5 @@ class Recipe(models.Model):
 
 class Image(models.Model):
     """Image model for Recipe"""
-    recipes = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     file_path = models.TextField(null=True)

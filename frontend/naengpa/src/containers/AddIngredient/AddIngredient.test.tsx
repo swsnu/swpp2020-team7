@@ -2,10 +2,12 @@ import React from 'react';
 import { act } from '@testing-library/react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Provider } from 'react-redux';
-import store, { history } from '../../store/store';
+import getMockStore from '../../test-utils/mocks';
 import { Dictionary } from '../../model/general';
 import * as ingredientActionCreators from '../../store/actions/ingredient';
+import * as fridgeActionCreators from '../../store/actions/fridge';
 import AddIngredient from './AddIngredient';
+import { IngredientState } from '../../store/reducers/ingredient';
 
 async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount = 0) {
 	await act(async () => {
@@ -17,7 +19,7 @@ async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount 
 /**
  * makes up mocking data for ingredient list
  */
-const getIngredientListMocked = async () => {
+const getIngredientListMocked = () => async (dispatch: any) => {
 	const ingredientDict: Dictionary<string[]> = {
 		과일: '사과, 배, 귤, 바나나, 망고, 복숭아, 파인애플, 포도, 자두, 감, 수박, 멜론, 참외, 딸기, 키위, 블루베리, 체리, 석류'.split(
 			', ',
@@ -43,8 +45,16 @@ const getIngredientListMocked = async () => {
 			name: item,
 		})),
 	);
-	return ingredientList.reduce((a, b) => a.concat(b), []);
+	dispatch({
+		type: 'GET_INGREDIENT_LIST',
+		payload: ingredientList.reduce((a, b) => a.concat(b), []),
+	});
 };
+
+const stubInitialState: IngredientState = {
+	ingredientList: {},
+};
+const mockStore = getMockStore(stubInitialState);
 
 describe('AddIngredient', () => {
 	let addIngredient: any;
@@ -53,7 +63,7 @@ describe('AddIngredient', () => {
 
 	beforeEach(() => {
 		addIngredient = (
-			<Provider store={store}>
+			<Provider store={mockStore}>
 				<AddIngredient />
 			</Provider>
 		);
@@ -61,7 +71,7 @@ describe('AddIngredient', () => {
 			.spyOn(ingredientActionCreators, 'getIngredientList')
 			.mockImplementation(getIngredientListMocked);
 		spyAddIngredient = jest
-			.spyOn(ingredientActionCreators, 'addIngredient')
+			.spyOn(fridgeActionCreators, 'addIngredientToFridge')
 			.mockImplementation(jest.fn());
 	});
 

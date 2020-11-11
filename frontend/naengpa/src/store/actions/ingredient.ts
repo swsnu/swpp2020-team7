@@ -1,22 +1,17 @@
 import axios from 'axios';
-import { IngredientEntity } from '../../model/ingredient';
+import { IngredientCategoryCollection } from '../../model/ingredient';
 import * as actionTypes from './actionTypes';
 
-export const getIngredientList_ = (ingredients: IngredientEntity[]) => ({
+export const getIngredientList_ = (ingredients: IngredientCategoryCollection) => ({
 	type: actionTypes.GET_INGREDIENT_LIST,
 	payload: ingredients,
 });
 export const getIngredientList = () => {
 	return async (dispatch: any) => {
 		const response = await axios.get('/api/ingredients/');
-		const response_data: IngredientEntity[] = response.data;
-
-		const ingredientList = response_data
-			.sort((a, b) => a.name.localeCompare(b.name))
-			.sort((a, b) => a.category.localeCompare(b.category));
+		const ingredientList: IngredientCategoryCollection = response.data;
 
 		dispatch(getIngredientList_(ingredientList));
-		return Promise.resolve();
 	};
 };
 

@@ -1,14 +1,14 @@
 import React from 'react';
-import { IngredientEntity } from '../../model/ingredient';
+import { IngredientCategoryCollection } from '../../model/ingredient';
 import { IngredientActions } from '../actions/ingredient';
 import * as actionTypes from '../actions/actionTypes';
 
 export type IngredientState = {
-	ingredient_list: IngredientEntity[];
+	ingredientList: IngredientCategoryCollection;
 };
 
 const initialState: IngredientState = {
-	ingredient_list: [],
+	ingredientList: {},
 };
 
 function ingredient_reducer(
@@ -17,7 +17,7 @@ function ingredient_reducer(
 ): IngredientState {
 	switch (action.type) {
 		case actionTypes.GET_INGREDIENT_LIST:
-			return { ...state, ingredient_list: action.payload };
+			return { ...state, ingredientList: action.payload };
 		default:
 			return state;
 	}

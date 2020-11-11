@@ -3,8 +3,7 @@ export interface UserEntity {
 	id: number;
 	name: string;
 	username: string;
-	password: string;
-	date_of_birth: string;
+	dateOfBirth: string;
 	email: string;
 }
 
@@ -17,6 +16,6 @@ export interface UserSignupInputDTO {
 	name: string;
 	username: string;
 	password: string;
-	date_of_birth: string;
+	dateOfBirth: string;
 	email: string;
 }
