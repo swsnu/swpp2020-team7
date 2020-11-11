@@ -8,6 +8,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 def ingredient_list(request):
     """/api/ingredients/ Get article list"""
     if request.method == 'GET':
+        create_ingredients(request)
         if not request.user.is_authenticated:
             return HttpResponse(status=401)
         return_data = {category.name: [
