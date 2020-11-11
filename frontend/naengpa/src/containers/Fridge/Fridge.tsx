@@ -15,11 +15,12 @@ interface FridgeProps {
 
 const Fridge: React.FC<FridgeProps> = ({ history }) => {
 	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
+	const user = useSelector((state: AppState) => state.user.user);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		// TODO: argument should be user id!
-		dispatch(getFridge(2));
+		dispatch(getFridge(user!.id));
 	}, []);
 
 	const ingredients = ingredientList.map((ingredient: any) => {
