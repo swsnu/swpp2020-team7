@@ -23,7 +23,7 @@ def recipe_list(request):
         "food-name": recipe.food_name,
         "cook-time": recipe.cook_time,
         "recipe-content": recipe.recipe_content,
-        "food-images": list(Image.objects.filter(recipes_id=recipe.id).values()),
+        "food-images": list(Image.objects.filter(recipe_id=recipe.id).values()),
         "recipe-like": 0,
         "created_at": recipe.created_at.strftime("%Y.%m.%d")
     } for recipe in Recipe.objects.all()] if len(Recipe.objects.all()) != 0 else []
@@ -47,7 +47,7 @@ def recipe_list(request):
             recipe_content=recipe_content)
 
         for item in food_images:
-            Image.objects.create(file_path=item, recipes_id=recipe.id)
+            Image.objects.create(file_path=item, recipe_id=recipe.id)
 
         response_dict = {
             "id": recipe.id,
