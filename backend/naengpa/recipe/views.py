@@ -16,6 +16,7 @@ def recipe_list(request):
         return HttpResponse(status=405)
 
     # if request.user.is_authenticated:
+    sorted_list = Recipe.objects.all().order_by('-created_at')
     recipe_collection = [{
         "id": recipe.id,
         "author_id": recipe.author.id,
@@ -26,7 +27,7 @@ def recipe_list(request):
         "food-images": list(Image.objects.filter(recipe_id=recipe.id).values()),
         "recipe-like": 0,
         "created_at": recipe.created_at.strftime("%Y.%m.%d")
-    } for recipe in Recipe.objects.all()] if len(Recipe.objects.all()) != 0 else []
+    } for recipe in sorted_list] if len(sorted_list) != 0 else []
 
     # GET RECIPE LIST
     if request.method == 'GET':
