@@ -59,7 +59,9 @@ const AddIngredient: React.FC = () => {
 	};
 	const onClickAddIngredientToFridge = () => {
 		if (selectedIngredient) {
-			dispatch(addIngredientToFridge(user!.id, selectedIngredient));
+			if (user !== null) {
+				dispatch(addIngredientToFridge(user.id, selectedIngredient));
+			}
 		}
 	};
 
