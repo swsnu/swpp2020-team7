@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { Dictionary } from '../../model/general';
 import { deleteIngredientFromFridge } from '../../store/actions/index';
 import './Ingredient.scss';
+import { AppState } from '../../store/store';
 
 interface IngredientProps {
 	history: History;
@@ -14,7 +15,7 @@ interface IngredientProps {
 const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	const { category } = ingredient;
 	const [deleteIngredient, setDeleteIngredient] = useState(false);
-
+	const user = useSelector((state: AppState) => state.user.user);
 	const dispatch = useDispatch();
 
 	const foodCategory: Dictionary<string> = {
@@ -50,7 +51,7 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	const onClickDeleteIngredient = () => {
 		const target_id = ingredient.id as number;
 		console.log(target_id, 'target_id');
-		dispatch(deleteIngredientFromFridge(1, target_id));
+		dispatch(deleteIngredientFromFridge(user!.id, target_id));
 		console.log(target_id, 'target');
 		history.push('/fridge');
 	};
