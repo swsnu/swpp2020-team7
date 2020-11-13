@@ -13,7 +13,8 @@ interface RecipeListProps {
 }
 
 const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
-	const recipe_list = useSelector((state: AppState) => state.recipes.recipes);
+	const recipe_list = useSelector((state: AppState) => state.recipes.recipeList);
+
 	const dispatch = useDispatch();
 
 	const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {

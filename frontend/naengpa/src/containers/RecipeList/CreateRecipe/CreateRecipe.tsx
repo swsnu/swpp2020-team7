@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { History } from 'history';
 import { useDispatch, useSelector } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -6,7 +6,6 @@ import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Alert from '@material-ui/lab/Alert';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
-import { RecipeEntity } from '../../../model/recipe';
 
 import {
 	Button,
@@ -23,6 +22,7 @@ import {
 } from '@material-ui/core';
 import './CreateRecipe.scss';
 import { makeStyles } from '@material-ui/core/styles';
+import { RecipeEntity } from '../../../model/recipe';
 import { createRecipe } from '../../../store/actions/index';
 // import { AppState } from '../../store/store';
 
@@ -71,13 +71,13 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
-			const newRecipe:RecipeEntity = {
+			const newRecipe: RecipeEntity = {
 				'food-name': foodName,
 				'cook-time': cookTime,
 				'recipe-content': recipeContent,
 				'food-images': foodImages,
 				'recipe-like': 0,
-			}
+			};
 			dispatch(createRecipe(newRecipe));
 			history.push('/recipes');
 		}
@@ -85,8 +85,12 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	const image_list = foodImages.map((item, i) => {
 		return (
-			<div key={item} id="delete-image-icon-box" data-testid="
-			delete-image-icon-box">
+			<div
+				key={item}
+				id="delete-image-icon-box"
+				data-testid="
+			delete-image-icon-box"
+			>
 				<CancelIcon
 					id="delete-image-button"
 					data-testid="delete-image-button"
@@ -205,7 +209,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 							<TableCell id="image-box">
 								{image_list}
 								<Box id="add-image-icon-box">
-									<label htmlFor="food-image">
+									<label aria-label="food-image-label" htmlFor="food-image">
 										<AddCircleIcon id="add-image-button" type="button" />
 										<Input
 											type="file"
@@ -213,7 +217,9 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											data-testid="food-image"
 											required
 											disabled={alert}
-											onChange={(e) => onClickAddImage(e)}
+											onChange={(e: ChangeEvent<HTMLInputElement>) =>
+												onClickAddImage(e)
+											}
 										/>
 									</label>
 									<PhotoCameraIcon id="add-image-icon" />
