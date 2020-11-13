@@ -21,14 +21,14 @@ const getIngredientListMocked = () => {
 	};
 	let ingredientList: IngredientEntity[] = [];
 	Object.keys(rawData).map((category, categoryIndex) => {
-		return ingredientList = ingredientList.concat(
+		return (ingredientList = ingredientList.concat(
 			rawData[category].sort().map((item, index) => ({
 				id: categoryIndex * 20 + index,
 				name: item,
 				category,
 				isTodayIngredient: categoryIndex === 1, // '고기' 카테고리의 재료만 오늘의 재료
 			})),
-		);
+		));
 	});
 	return ingredientList;
 };
