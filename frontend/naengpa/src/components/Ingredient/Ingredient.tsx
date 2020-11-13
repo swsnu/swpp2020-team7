@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { Dictionary } from '../../model/general';
 import { deleteIngredientFromFridge } from '../../store/actions/index';
 import './Ingredient.scss';
 import { AppState } from '../../store/store';
+import { IngredientEntity } from '../../model/ingredient';
+import { Dictionary } from '../../model/general';
 
 interface IngredientProps {
 	history: History;
-	ingredient: Dictionary<string | number>;
+	ingredient: IngredientEntity;
 }
 
 const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
-	const { category } = ingredient;
+	const category: string = ingredient.category!;
 	const [deleteIngredient, setDeleteIngredient] = useState(false);
 	const user = useSelector((state: AppState) => state.user.user);
 	const dispatch = useDispatch();
@@ -41,18 +42,14 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	const onMouseLeaveIngredient = () => {
 		setDeleteIngredient(false);
 	};
-
 	/* FOCUS EVENT */
 	const onFocusIngredient = () => {
 		setDeleteIngredient(true);
 	};
-
 	/* CLICK EVENT - DELETE IMAGE */
 	const onClickDeleteIngredient = () => {
-		const target_id = ingredient.id as number;
-		console.log(target_id, 'target_id');
+		const target_id: number = ingredient.id;
 		dispatch(deleteIngredientFromFridge(user!.id, target_id));
-		console.log(target_id, 'target');
 		history.push('/fridge');
 	};
 
