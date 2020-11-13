@@ -75,7 +75,7 @@ describe('Ingredient', () => {
 
 	it('delete-ingredient-button should dispatch deleteIngredientFromFridge correctly', () => {
         const component = mount(ingredient);
-        const ingredientBox = component.find('button#ingredient-image-box');
+        const ingredientBox = component.find('div#ingredient-image-box');
         ingredientBox.simulate('focus');
 
         const deleteButton = component.find('button#delete-ingredient-button');

@@ -55,8 +55,7 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 
 	return (
 		<div id="ingredient">
-			<button
-				type="button"
+			<div
 				id="ingredient-image-box"
 				onMouseOver={onMouseOverIngredient}
 				onMouseLeave={onMouseLeaveIngredient}
@@ -73,7 +72,7 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 					<img id="ingredient-image" src={imageUrl} alt="/icons/meat.png" />
 					<div id="ingredient-tag">{ingredient.name}</div>
 				</div>
-			</button>
+			</div>
 		</div>
 	);
 };
