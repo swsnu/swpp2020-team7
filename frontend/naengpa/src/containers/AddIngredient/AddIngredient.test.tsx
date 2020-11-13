@@ -1,26 +1,23 @@
 import React from 'react';
-import { act } from '@testing-library/react';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
-import getMockStore from '../../test-utils/mocks';
 import { Dictionary } from '../../model/general';
 import * as ingredientActionCreators from '../../store/actions/ingredient';
 import * as fridgeActionCreators from '../../store/actions/fridge';
 import AddIngredient from './AddIngredient';
-import { IngredientState } from '../../store/reducers/ingredient';
+import { IngredientCategoryCollection } from '../../model/ingredient';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk'
+import waitForComponentToPaint from '../../../utils/waitForComponentToPaint';
 
-async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount = 0) {
-	await act(async () => {
-		await new Promise((resolve) => setTimeout(resolve, 0));
-		wrapper.update();
-	});
-}
+const middlewares = [thunk];
+const store = configureStore(middlewares);
 
 /**
  * makes up mocking data for ingredient list
  */
-const getIngredientListMocked = () => async (dispatch: any) => {
-	const ingredientDict: Dictionary<string[]> = {
+const getIngredientListMocked = () => {
+	const rawData: Dictionary<string[]> = {
 		과일: '사과, 배, 귤, 바나나, 망고, 복숭아, 파인애플, 포도, 자두, 감, 수박, 멜론, 참외, 딸기, 키위, 블루베리, 체리, 석류'.split(
 			', ',
 		),
@@ -38,23 +35,32 @@ const getIngredientListMocked = () => async (dispatch: any) => {
 		'계란/알류': '계란, 메추리알'.split(', '),
 		가공육: '소시지, 햄, 베이컨'.split(', '),
 	};
-	const ingredientList = Object.keys(ingredientDict).map((category, categoryIndex) =>
-		ingredientDict[category].sort().map((item, index) => ({
-			id: categoryIndex * 20 + index,
-			category,
-			name: item,
-		})),
-	);
-	dispatch({
-		type: 'GET_INGREDIENT_LIST',
-		payload: ingredientList.reduce((a, b) => a.concat(b), []),
+	const ingredientList: IngredientCategoryCollection = {};
+	Object.keys(rawData).forEach((category, categoryIndex) => {
+		ingredientList[category] = rawData[category]
+			.sort()
+			.map((item, index) => ({
+				id: categoryIndex * 20 + index,
+				name: item,
+			}));
 	});
+	return ingredientList;
 };
 
-const stubInitialState: IngredientState = {
-	ingredientList: {},
+const stubInitialState = {
+	user: {
+		user: {
+			id: "c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55",
+			username: "test",
+			email: "test@snu.ac.kr",
+			name: "테스트",
+			dateOfBirth: "20201112",
+		},
+	},
+	ingredient: {
+		ingredientList: getIngredientListMocked(),
+	},
 };
-const mockStore = getMockStore(stubInitialState);
 
 describe('AddIngredient', () => {
 	let addIngredient: any;
@@ -62,21 +68,32 @@ describe('AddIngredient', () => {
 	let spyGetIngredientList: any;
 
 	beforeEach(() => {
+		const mockStore = store(stubInitialState);
+		
+		jest.mock("react-redux", () => ({
+			useSelector: jest.fn(fn => fn(mockStore.getState())),
+			useDispatch: () => jest.fn(),
+			connect: () => jest.fn(),
+		}));
+
 		addIngredient = (
 			<Provider store={mockStore}>
 				<AddIngredient />
 			</Provider>
 		);
+
 		spyGetIngredientList = jest
 			.spyOn(ingredientActionCreators, 'getIngredientList')
-			.mockImplementation(getIngredientListMocked);
+			.mockImplementation(() => jest.fn());
 		spyAddIngredient = jest
 			.spyOn(fridgeActionCreators, 'addIngredientToFridge')
-			.mockImplementation(jest.fn());
+			.mockImplementation(() => jest.fn());
 	});
-
 	afterEach(() => {
 		jest.clearAllMocks();
+	});
+	afterAll(() => {
+		jest.restoreAllMocks();
 	});
 
 	it('AddIngredient renders without crashing', async () => {
@@ -143,10 +160,30 @@ describe('AddIngredient', () => {
 		wrapper.find('button').at(3).simulate('click'); // 4번째: 과일
 		wrapper = component.find('div#add-ingredient-grid');
 		wrapper.find('button').at(2).simulate('click'); // 3번째: 딸기
-		const selectedStatusButton = component.find('button#add-ingredient');
-		expect(selectedStatusButton.length).toBe(1);
+		const addIngredientButton = component.find('button#add-ingredient');
+		expect(addIngredientButton.length).toBe(1);
 
-		selectedStatusButton.simulate('click');
-		expect(spyAddIngredient).toHaveBeenCalledWith('과일', '딸기');
+		addIngredientButton.simulate('click');
+		expect(spyAddIngredient).toBeCalledWith("c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55", {"id": 2, "name": "딸기"});
+	});
+
+	it('should not dispatch addIngredient if ingredient not selected', async () => {
+		const component = mount(addIngredient);
+		await waitForComponentToPaint(component);
+
+		// button should be deactivated when only category is selected
+		const categoryList = component.find('div#add-ingredient-category-list');
+		categoryList.find('button').at(3).simulate('click'); // 4번째: 과일
+		const addIngredientButton = component.find('button#add-ingredient');
+		expect(spyAddIngredient).toBeCalledTimes(0);
+		// if ingredient selected, button should be activated
+		const ingredientGrid = component.find('div#add-ingredient-grid');
+		ingredientGrid.find('button').at(2).simulate('click'); // 3번째: 딸기
+		addIngredientButton.simulate('click');
+		expect(spyAddIngredient).toBeCalledTimes(1);
+		// if category reselected, button should be deactivated again
+		categoryList.find('button').at(0).simulate('click'); // 1번째: 가공육
+		addIngredientButton.simulate('click');
+		expect(spyAddIngredient).toBeCalledTimes(1);
 	});
 });

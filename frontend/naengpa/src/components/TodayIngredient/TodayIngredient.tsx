@@ -34,8 +34,6 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 		dispatch(getFridge(user!.id));
 	}, []);
 
-	console.log(todays_ingredient, '오늘의 재료');
-
 	/* CLICK EVENT - ADD INGREDIENT TO TODAY INGREDIENT */
 	// TODO: should be modified -> 아직 안됨
 
@@ -54,7 +52,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 
 	const alert_contents = not_todays_ingredient.map((ingredient: any) => {
 		return (
-			<Button onClick={() => onClickAddTodayIngredient(ingredient.id)}>
+			<Button key={ingredient.id} onClick={() => onClickAddTodayIngredient(ingredient.id)}>
 				{ingredient.name}
 			</Button>
 		);
@@ -62,9 +60,10 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 
 	const todays_ingredient_contents = todays_ingredient.map((ingredient: any) => {
 		return (
-			<div id="today-ingredient-content-each">
-				<text>{ingredient.name}</text>
+			<div key={ingredient.id} id="today-ingredient-content-each">
+				{ingredient.name}
 				<Button
+					key={ingredient.id}
 					id="today-ingredient-delete"
 					onClick={() => onClickDeleteTodayIngredient(ingredient.id)}
 				>

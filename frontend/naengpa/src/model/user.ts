@@ -1,6 +1,6 @@
 /* USER INTERFACE */
 export interface UserEntity {
-	id: number;
+	id: string;
 	name: string;
 	username: string;
 	dateOfBirth: string;

@@ -1,7 +1,7 @@
 export interface IngredientEntity {
 	id: number;
 	name: string;
-	category: string;
+	category?: string;
 	isTodayIngredient?: boolean;
 }
 
