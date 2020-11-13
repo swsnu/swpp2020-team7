@@ -20,17 +20,18 @@ interface TodayIngredientProps {
 const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
+	const user = useSelector((state: AppState) => state.user.user);
 	const todays_ingredient = ingredientList.filter((ingredient: any) => {
-		return ingredient.today_ingredient === true;
+		return ingredient.isTodayIngredient === true;
 	});
 	const not_todays_ingredient = ingredientList.filter((ingredient: any) => {
-		return ingredient.today_ingredient === false;
+		return ingredient.isTodayIngredient === false;
 	});
 
 	const [alert, setAlert] = useState(false);
 	useEffect(() => {
 		// TODO: argument should be user id!
-		dispatch(getFridge(1));
+		dispatch(getFridge(user!.id));
 	}, []);
 
 	console.log(todays_ingredient, '오늘의 재료');
@@ -39,7 +40,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	// TODO: should be modified -> 아직 안됨
 
 	const onClickAddTodayIngredient = (target_id: number) => {
-		dispatch(addIngredientToTodayIngredient(1, target_id));
+		dispatch(addIngredientToTodayIngredient(user!.id, target_id));
 		setAlert(false);
 		history.push('/fridge');
 	};
@@ -47,7 +48,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	// onClickDeleteTodayIngredient();
 	// TODO: 구현 필요
 	const onClickDeleteTodayIngredient = (target_id: number) => {
-		dispatch(toggleTodayIngredient(1, target_id));
+		dispatch(toggleTodayIngredient(user!.id, target_id));
 		history.push('/fridge');
 	};
 
@@ -87,7 +88,15 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 							}}
 						/>
 					</div>
-					<div id="alert-contents">{alert_contents}</div>
+					{alert_contents.length !== 0 ? (
+						<div id="alert-contents">{alert_contents}</div>
+					) : (
+						<div id="today-ingredient-contents-none">
+							추가 가능한 재료가 없습니다!
+							<br />
+							냉장고에 재료를 추가하세요.
+						</div>
+					)}
 				</Alert>
 			</Collapse>
 			<div id="today-ingredient-contents">{todays_ingredient_contents}</div>
