@@ -1,13 +1,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 import { Dictionary } from '../../model/general';
 import * as ingredientActionCreators from '../../store/actions/ingredient';
 import * as fridgeActionCreators from '../../store/actions/fridge';
 import AddIngredient from './AddIngredient';
 import { IngredientCategoryCollection } from '../../model/ingredient';
-import configureStore from 'redux-mock-store';
-import thunk from 'redux-thunk'
 import waitForComponentToPaint from '../../../utils/waitForComponentToPaint';
 
 const middlewares = [thunk];
@@ -37,12 +37,10 @@ const getIngredientListMocked = () => {
 	};
 	const ingredientList: IngredientCategoryCollection = {};
 	Object.keys(rawData).forEach((category, categoryIndex) => {
-		ingredientList[category] = rawData[category]
-			.sort()
-			.map((item, index) => ({
-				id: categoryIndex * 20 + index,
-				name: item,
-			}));
+		ingredientList[category] = rawData[category].sort().map((item, index) => ({
+			id: categoryIndex * 20 + index,
+			name: item,
+		}));
 	});
 	return ingredientList;
 };
@@ -50,11 +48,11 @@ const getIngredientListMocked = () => {
 const stubInitialState = {
 	user: {
 		user: {
-			id: "c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55",
-			username: "test",
-			email: "test@snu.ac.kr",
-			name: "테스트",
-			dateOfBirth: "20201112",
+			id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
+			username: 'test',
+			email: 'test@snu.ac.kr',
+			name: '테스트',
+			dateOfBirth: '20201112',
 		},
 	},
 	ingredient: {
@@ -69,9 +67,9 @@ describe('AddIngredient', () => {
 
 	beforeEach(() => {
 		const mockStore = store(stubInitialState);
-		
-		jest.mock("react-redux", () => ({
-			useSelector: jest.fn(fn => fn(mockStore.getState())),
+
+		jest.mock('react-redux', () => ({
+			useSelector: jest.fn((fn) => fn(mockStore.getState())),
 			useDispatch: () => jest.fn(),
 			connect: () => jest.fn(),
 		}));
@@ -164,7 +162,10 @@ describe('AddIngredient', () => {
 		expect(addIngredientButton.length).toBe(1);
 
 		addIngredientButton.simulate('click');
-		expect(spyAddIngredient).toBeCalledWith("c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55", {"id": 2, "name": "딸기"});
+		expect(spyAddIngredient).toBeCalledWith('c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55', {
+			id: 2,
+			name: '딸기',
+		});
 	});
 
 	it('should not dispatch addIngredient if ingredient not selected', async () => {
