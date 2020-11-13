@@ -1,23 +1,10 @@
-import React, { useState, useEffect, Dispatch, MouseEventHandler } from 'react';
+import React, { useState } from 'react';
 import { History } from 'history';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 
-import { login, getUserList } from '../../../store/actions/index';
-import { AppState } from '../../../store/store';
+import { login } from '../../../store/actions/index';
 import './Login.scss';
-
-const useUserList = () => {
-	const dispatch = useDispatch();
-
-	const loadUserList = async () => {
-		dispatch(getUserList());
-	};
-	return {
-		loadUserList,
-	};
-};
-
 interface LoginProps {
 	history: History;
 }
@@ -39,7 +26,7 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 				<LocalDiningIcon id="naengpa-logo" />
 				<div id="naengpa-logo-name">냉파</div>
 			</button>
-			<div id="inputList">
+			<div id="input-list">
 				<div>
 					<input
 						id="username"
@@ -57,7 +44,7 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 					/>
 				</div>
 			</div>
-			<div id="buttons">
+			<div id="button-list">
 				<button id="signup-button" type="button" onClick={() => history.push('/signup')}>
 					SIGNUP
 				</button>

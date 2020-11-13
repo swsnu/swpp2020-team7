@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Dispatch, MouseEventHandler } from 'react';
+import React, { useState } from 'react';
 import { History } from 'history';
 import { useDispatch } from 'react-redux';
 
@@ -42,7 +42,6 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 					email,
 				}),
 			);
-			history.push('/fridge');
 		}
 	};
 
@@ -80,7 +79,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 					</div>
 					<div>
 						<input
-							id="passwordComfirm"
+							id="password-confirm"
 							type="password"
 							placeholder="PASSWORD CONFIRM"
 							onChange={(e) => setPasswordConfirm(e.target.value)}
@@ -88,7 +87,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 					</div>
 					<div>
 						<input
-							id="dateOfBirth"
+							id="date-of-birth"
 							type="text"
 							placeholder="DATE OF BIRTH"
 							onChange={(e) => setDateOfBirth(e.target.value)}
@@ -103,7 +102,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 						/>
 					</div>
 				</div>
-				<button id="signup-button" type="button" onClick={onClickSignup}>
+				<button id="signup-button" type="submit" onClick={onClickSignup}>
 					SIGN UP
 				</button>
 			</div>
