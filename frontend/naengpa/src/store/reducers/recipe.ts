@@ -1,14 +1,14 @@
 import * as actionTypes from '../actions/actionTypes';
 import { Dictionary } from '../../model/general';
 
-export type InitialState = {
-	recipes: Dictionary<string | string[] | number>[];
+export type RecipeState = {
+	recipeList: Dictionary<string | string[] | number>[];
 	selected_recipe: Dictionary<string | string[] | number>;
 	todays_recipes: Dictionary<string | string[] | number>[];
 };
 
-const RecipeState: InitialState = {
-	recipes: [],
+const InitialState: RecipeState = {
+	recipeList: [],
 	selected_recipe: {},
 	todays_recipes: [],
 };
@@ -24,11 +24,11 @@ type Action =
 			target_id: number;
 	  };
 
-function recipeReducer(state: InitialState = RecipeState, action: Action): InitialState {
+function recipeReducer(state: RecipeState = InitialState, action: Action): RecipeState {
 	switch (action.type) {
 		/* GET RECIPE LIST */
 		case actionTypes.GET_RECIPE_LIST:
-			return { ...state, recipes: action.recipe_list };
+			return { ...state, recipeList: action.recipe_list };
 
 		/* GET RECIPE */
 		case actionTypes.GET_RECIPE:
@@ -38,7 +38,7 @@ function recipeReducer(state: InitialState = RecipeState, action: Action): Initi
 		case actionTypes.CREATE_RECIPE: {
 			return {
 				...state,
-				recipes: [...state.recipes, action.recipe],
+				recipeList: [...state.recipeList, action.recipe],
 			};
 		}
 

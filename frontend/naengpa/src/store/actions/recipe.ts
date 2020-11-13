@@ -66,3 +66,9 @@ export function editRecipe(id: number, recipe: RecipeEntity) {
 		});
 	};
 }
+
+export type RecipeActions = 
+	| ReturnType<typeof getRecipeList>
+	| ReturnType<typeof getRecipe> 
+	| ReturnType<typeof deleteRecipe>
+	| ReturnType<typeof editRecipe>
