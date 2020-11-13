@@ -13,7 +13,7 @@ export function getRecipeList() {
 
 		dispatch({
 			type: actionTypes.GET_RECIPE_LIST,
-			recipe_list: response.data,
+			recipeList: response.data,
 		});
 	};
 }
@@ -21,8 +21,7 @@ export function getRecipeList() {
 /* GET RECIPE */
 export function getRecipe(id: number) {
 	return async (dispatch: any) => {
-		const response: any = await axios.get(`/api/recipes/${id}`).then((res) => console.log(res));
-
+		const response: any = await axios.get(`/api/recipes/${id}`);
 		dispatch({
 			type: actionTypes.GET_RECIPE,
 			recipe: response.data,
@@ -33,8 +32,7 @@ export function getRecipe(id: number) {
 /* CREATE RECIPE */
 export function createRecipe(recipe: RecipeEntity) {
 	return async (dispatch: any) => {
-		await axios.post('/api/recipes/', recipe).then((res) => console.log(res));
-
+		await axios.post('/api/recipes/', recipe);
 		dispatch({
 			type: actionTypes.CREATE_RECIPE,
 			recipe,
@@ -45,11 +43,11 @@ export function createRecipe(recipe: RecipeEntity) {
 /* DELETE RECIPE */
 export function deleteRecipe(id: number) {
 	return async (dispatch: any) => {
-		await axios.delete(`/api/recipes/${id}`).then((res) => console.log(res));
+		await axios.delete(`/api/recipes/${id}`);
 
 		dispatch({
 			type: actionTypes.DELETE_RECIPE,
-			target_id: { id },
+			target_id: id,
 		});
 	};
 }
@@ -57,18 +55,18 @@ export function deleteRecipe(id: number) {
 /* EDIT RECIPE */
 export function editRecipe(id: number, recipe: RecipeEntity) {
 	return async (dispatch: any) => {
-		await axios.put(`/api/recipes/${id}`, recipe).then((res) => console.log(res));
+		await axios.put(`/api/recipes/${id}`, recipe);
 
 		dispatch({
 			type: actionTypes.EDIT_RECIPE,
-			target_id: { id },
+			target_id: id,
 			recipe,
 		});
 	};
 }
 
-export type RecipeActions = 
+export type RecipeActions =
 	| ReturnType<typeof getRecipeList>
-	| ReturnType<typeof getRecipe> 
+	| ReturnType<typeof getRecipe>
 	| ReturnType<typeof deleteRecipe>
-	| ReturnType<typeof editRecipe>
+	| ReturnType<typeof editRecipe>;
