@@ -6,14 +6,14 @@ import { getRecipeList } from '../../store/actions/recipe';
 import './TodayRecipe.scss';
 
 const TodayRecipe: React.FC = () => {
-	const recipe_list = useSelector((state: AppState) => state.recipes.recipes);
+	const recipeList = useSelector((state: AppState) => state.recipes.recipeList);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dispatch(getRecipeList());
 	}, [dispatch]);
 
-	const recipe = recipe_list.map((item: any) => {
+	const recipe = recipeList.map((item: any) => {
 		return <Recipe key={item.id} recipe={item} attribute="todays-recipe-child" />;
 	});
 
