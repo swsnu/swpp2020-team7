@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import * as fridgeActionCreators from '../../store/actions/fridge';
 import TodayIngredient from './TodayIngredient';
 import { history } from '../../store/store';
@@ -36,7 +36,7 @@ const getIngredientListMocked = () => {
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
-const stubInitialState = {
+const stubInitialState = (isFridgeEmpty: boolean) => ({
 	user: {
 		user: {
 			id: "c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55",
@@ -47,9 +47,9 @@ const stubInitialState = {
 		},
     },
     fridge: {
-        ingredientList: getIngredientListMocked(),
+        ingredientList: isFridgeEmpty ? [] : getIngredientListMocked(),
     }
-};
+});
 
 jest.mock("@material-ui/icons/AddCircle", () => {
     return jest.fn(props => {
@@ -76,7 +76,7 @@ describe('TodayIngredient', () => {
 	let spyHistoryPush: any;
 
 	beforeEach(() => {
-        const mockStore = store(stubInitialState);
+        const mockStore = store(stubInitialState(false));
 
         jest.mock("react-redux", () => ({
             useSelector: jest.fn(fn => fn(mockStore.getState())),
@@ -130,36 +130,51 @@ describe('TodayIngredient', () => {
         deleteButton.simulate('click'); //chicken id:20
 
 		expect(spyToggleTodayIngredient).toBeCalledTimes(1);
-        expect(spyToggleTodayIngredient).toBeCalledWith(stubInitialState.user.user.id, 20);
+        expect(spyToggleTodayIngredient).toBeCalledWith(stubInitialState(true).user.user.id, 20);
         expect(spyHistoryPush).toBeCalledWith('/fridge')
     });
     
-    // it('Collapse should pop up and out correctly', () => {
-    //     const component = shallow(todayIngredient);
-    //     console.log(component.find(TodayIngredient).state())
-    //     let closeButtonWrapper = component.find('div#naengpa-logo-box');
-    //     console.log(component.debug())
-    //     expect(closeButtonWrapper.length).toBe(1);
+    it('Collapse should pop up and out correctly', () => {
+        const component = mount(todayIngredient);
+        let collapseWrapper = component.find(Collapse);
+        expect(collapseWrapper.props().in).toBe(false);
 
-    //     const addTodayIngredientButton = component.find('div.spyAddCircleIcon').find("button#add-today-ingredient");
-    //     addTodayIngredientButton.simulate('click');
-    //     console.log(component.debug())
-    //     closeButtonWrapper = component.find('div#naengpa-logo-box');
-    //     expect(closeButtonWrapper.length).toBe(1);
+        const addTodayIngredientButton = component.find('div.spyAddCircleIcon').find("button#add-today-ingredient");
+        addTodayIngredientButton.simulate('click');
+        collapseWrapper = component.find(Collapse);
+        expect(collapseWrapper.props().in).toBe(true);
 
-    //     closeButtonWrapper.find('button#close-alert-button').simulate('click');
-    //     closeButtonWrapper = component.find('div#naengpa-logo-box');
-    //     expect(closeButtonWrapper.length).toBe(0);
-    // });
+        collapseWrapper.find('button#close-alert-button').simulate('click');
+        collapseWrapper = component.find(Collapse);
+        expect(collapseWrapper.props().in).toBe(false);
+    });
     
-    // it('add-today-ingredient-button should dispatch addIngredientToTodayIngredient correctly', () => {
-    //     const component = mount(todayIngredient);
-    //     const addTodayIngredientButton = component.find('div.spyAddCircleIcon').find("button#add-today-ingredient");
-    //     addTodayIngredientButton.simulate('click');
+    it('add-today-ingredient-button should dispatch addIngredientToTodayIngredient correctly', () => {
+        const component = mount(todayIngredient);
+        const addTodayIngredientButton = component.find('div.spyAddCircleIcon').find("button#add-today-ingredient");
+        addTodayIngredientButton.simulate('click');
+    
+        const alertContentsWrapper = component.find('div#alert-contents');
+        alertContentsWrapper.find('button').at(1).simulate('click'); //apple
+        expect(spyAddIngredientToTodayIngredient).toBeCalledTimes(1);
+        expect(spyAddIngredientToTodayIngredient).toBeCalledWith(stubInitialState(true).user.user.id, 1);
+        expect(spyHistoryPush).toBeCalledWith('/fridge')
+    });
+    
+    it('renders today-ingredients-contents-none if no item in fridge', () => {
+        const mockEmptyStore = store(stubInitialState(true));
+        jest.mock("react-redux", () => ({
+            useSelector: jest.fn(fn => fn(mockEmptyStore.getState())),
+            useDispatch: () => jest.fn(),
+            connect: () => jest.fn(),
+        }));
+        todayIngredient = (
+			<Provider store={mockEmptyStore}>
+				<TodayIngredient history={history} />
+			</Provider>
+        );
 
-	// 	expect(spyToggleTodayIngredient).toBeCalledTimes(1);
-    //     expect(spyToggleTodayIngredient).toBeCalledWith(stubInitialState.user.user.id, 20);
-       
-    //     expect(spyHistoryPush).toBeCalledWith('/fridge')
-	// });
+        const component = mount(todayIngredient);
+        expect(component.find('div#today-ingredient-contents-none').length).toBe(1);
+	});
 });
