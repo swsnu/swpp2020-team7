@@ -49,7 +49,7 @@ export function addIngredientToFridge(id: string, ingredient: IngredientEntity) 
 /* ADD INGREDIENT TO TODAY INGREDIENT */
 export function addIngredientToTodayIngredient(id: string, ingredient_id: number) {
 	return async (dispatch: any) => {
-		// await axios.post(`/api/users/${id}/fridge/`, ingredient).then((res) => console.log(res));
+		// await axios.put(`/api/users/${id}/ingredients/${ingredient_id}/`).then((res) => console.log(res));
 
 		dispatch({
 			type: actionTypes.ADD_INGREDIENT_TO_TODAY_INGREDIENT,
@@ -74,7 +74,7 @@ export function deleteIngredientFromFridge(user_id: string, id: number) {
 /*  TOGGLE TODAY INGREDIENT */
 export function toggleTodayIngredient(id: string, ingredient_id: number) {
 	return async (dispatch: any) => {
-		// await axios.post(`/api/users/${id}/fridge/`, ingredient).then((res) => console.log(res));
+		// await axios.put(`/api/users/${id}/ingredients/${ingredient_id}/`).then((res) => console.log(res));
 
 		dispatch({
 			type: actionTypes.TOGGLE_TODAY_INGREDIENT,
