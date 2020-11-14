@@ -9,7 +9,7 @@ import EnzymeAdapter from 'enzyme-adapter-react-16';
 if (typeof window.URL.createObjectURL === 'undefined') {
 	Object.defineProperty(window.URL, 'createObjectURL', {
 		value: () => {
-			console.log('empty');
+			let value: any;
 		},
 	});
 }

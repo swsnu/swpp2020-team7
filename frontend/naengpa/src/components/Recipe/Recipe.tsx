@@ -14,16 +14,15 @@ interface RecipeProps {
 
 const Recipe: React.FC<RecipeProps> = ({ recipe, attribute }) => {
 	// Thumnail Image for Recipes
-	const images = recipe['food-images'] as Dictionary<string>[];
-	const thumnail = images[0] as Dictionary<string>;
+	const images = recipe.foodImages as Dictionary<string>[];
+	const thumnail = images ? (images[0] as Dictionary<string>) : undefined;
 	const titleSize = attribute === 'todays-recipe-child' ? 'caption' : 'subtitle2';
 	const fontSize = attribute === 'todays-recipe-child' ? 'small' : 'default';
-	const subheader = attribute === 'todays-recipe-child' ? '' : recipe.created_at;
+	const subheader = attribute === 'todays-recipe-child' ? '' : recipe.createdAt;
 
 	// Cook-Time Unit set for minute and hour
-	let cookTime = `${recipe['cook-time']}M`;
-	if (recipe['cook-time'] >= 60)
-		cookTime = `${Math.round((recipe['cook-time'] as number) / 60)}H`;
+	let cookTime = `${recipe.cookTime}M`;
+	if (recipe.cookTime >= 60) cookTime = `${Math.round((recipe.cookTime as number) / 60)}H`;
 
 	return (
 		// TODO: should be modified as User Info
@@ -43,7 +42,7 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute }) => {
 			{thumnail ? <CardMedia image={thumnail.file_path} id="recipe-image" /> : <></>}
 			<div id="recipe-card-footer">
 				<CardContent id="recipe-content">
-					<div id="recipe-food-name">{recipe['food-name']}</div>
+					<div id="recipe-food-name">{recipe.foodName}</div>
 					{/* TODO: should be replaced with food category */}
 					<div id="recipe-food-category">한식</div>
 				</CardContent>
@@ -53,12 +52,12 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute }) => {
 						{cookTime}
 					</div>
 					<div id="recipe-like-count">
-						{recipe['recipe-like'] > 0 ? (
+						{recipe.recipeLike > 0 ? (
 							<FavoriteIcon id="recipe-like-count-icon" fontSize={fontSize} />
 						) : (
 							<FavoriteBorderIcon id="recipe-like-count-icon" fontSize={fontSize} />
 						)}
-						{recipe['recipe-like']}
+						{recipe.recipeLike}
 					</div>
 				</div>
 			</div>
