@@ -14,10 +14,10 @@ export {
 export { getRecipeList, getRecipe, createRecipe, deleteRecipe, editRecipe } from './recipe';
 
 /* Ingredient actions */
-export { getIngredientList, getIngredient, deleteIngredient, editIngredient } from './ingredient';
+export { getIngredientList } from './ingredient';
 
 /* Article actions */
-export { getArticleList, getArticle, createArticle, deleteArticle, editArticle } from './article';
+// export { getArticleList, getArticle, createArticle, deleteArticle, editArticle } from './article';
 
 /* Comment actions */
-export { getCommentList, getComment, addComment, deleteComment, editComment } from './comment';
+// export { getCommentList, getComment, addComment, deleteComment, editComment } from './comment';

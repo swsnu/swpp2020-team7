@@ -6,7 +6,8 @@ const Footer: React.FC = () => {
 		<footer id="footer">
 			<p>Copyrightⓒ 2020. Naengpa. All Rights Reserved.</p>
 			<p>
-				Food category icons from <a href="https://www.flaticon.com/">www.flaticon.com</a>
+				Food category & Profile icons from{' '}
+				<a href="https://www.flaticon.com/">www.flaticon.com</a>
 			</p>
 		</footer>
 	);

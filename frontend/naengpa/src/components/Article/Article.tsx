@@ -7,7 +7,7 @@ interface ArticleProps {
 
 const Article: React.FC<ArticleProps> = ({ title, content }) => {
 	return (
-		<div>
+		<div id="article">
 			Article title = {title}
 			content = {content}
 		</div>

@@ -5,6 +5,7 @@ import LocalDiningIcon from '@material-ui/icons/LocalDining';
 
 import { login } from '../../../store/actions/index';
 import './Login.scss';
+
 interface LoginProps {
 	history: History;
 }

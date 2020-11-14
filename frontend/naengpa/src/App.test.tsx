@@ -8,45 +8,43 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import App from './App';
 
 jest.mock('./containers/Auth/Login/Login', () => {
-	return jest.fn(() => (<div className="spyLogin">Login</div>));
+	return jest.fn(() => <div className="spyLogin">Login</div>);
 });
 jest.mock('./components/Navigation/Navigation', () => {
-	return jest.fn(() => (<div className="spyHeader">Header</div>));
+	return jest.fn(() => <div className="spyHeader">Header</div>);
 });
 jest.mock('./components/Header/Header', () => {
-	return jest.fn(() => (<div className="spyNavigation">Navigation</div>));
+	return jest.fn(() => <div className="spyNavigation">Navigation</div>);
 });
 jest.mock('./containers/MyFridge/MyFridge', () => {
-	return jest.fn(() => (<div className="spyMyFridge">MyFridge</div>));
+	return jest.fn(() => <div className="spyMyFridge">MyFridge</div>);
 });
-jest.mock('./containers/Auth/Logout/Logout', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/Auth/Signup/Signup', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/RegionalSetting/RegionalSetting', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/AddIngredient/AddIngredient', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/UserRecipe/UserRecipe', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/UserNotification/UserNotification', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/MyPage/UserInfo/UserInfo', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/MyPage/EditUserInfo/EditUserInfo', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/MyPage/ChangePassword/ChangePassword', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/ChatRoomList/ChatRoomList', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/ChatRoomList/ChatDetail/ChatDetail', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/RecipeList/RecipeList', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/RecipeList/CreateRecipe/CreateRecipe', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/RecipeList/RecipeDetail/RecipeDetail', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/RecipeList/EditRecipe/EditRecipe', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/ExtractIngredient/ExtractIngredient', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/ArticleList/ArticleList', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/ArticleList/CreateArticle/CreateArticle', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/ArticleList/ArticleDetail/ArticleDetail', () => jest.fn(()=>(<div />)));
-jest.mock('./containers/ArticleList/EditArticle/EditArticle', () => jest.fn(()=>(<div />)));
+jest.mock('./containers/Auth/Logout/Logout', () => jest.fn(() => <div />));
+jest.mock('./containers/Auth/Signup/Signup', () => jest.fn(() => <div />));
+jest.mock('./containers/RegionalSetting/RegionalSetting', () => jest.fn(() => <div />));
+jest.mock('./containers/AddIngredient/AddIngredient', () => jest.fn(() => <div />));
+jest.mock('./containers/UserRecipe/UserRecipe', () => jest.fn(() => <div />));
+jest.mock('./containers/UserNotification/UserNotification', () => jest.fn(() => <div />));
+jest.mock('./containers/MyPage/UserInfo/UserInfo', () => jest.fn(() => <div />));
+jest.mock('./containers/MyPage/EditUserInfo/EditUserInfo', () => jest.fn(() => <div />));
+jest.mock('./containers/MyPage/ChangePassword/ChangePassword', () => jest.fn(() => <div />));
+jest.mock('./containers/ChatRoomList/ChatRoomList', () => jest.fn(() => <div />));
+jest.mock('./containers/ChatRoomList/ChatDetail/ChatDetail', () => jest.fn(() => <div />));
+jest.mock('./containers/RecipeList/RecipeList', () => jest.fn(() => <div />));
+jest.mock('./containers/RecipeList/CreateRecipe/CreateRecipe', () => jest.fn(() => <div />));
+jest.mock('./containers/RecipeList/RecipeDetail/RecipeDetail', () => jest.fn(() => <div />));
+jest.mock('./containers/RecipeList/EditRecipe/EditRecipe', () => jest.fn(() => <div />));
+jest.mock('./containers/ExtractIngredient/ExtractIngredient', () => jest.fn(() => <div />));
+jest.mock('./containers/ArticleList/ArticleList', () => jest.fn(() => <div />));
+jest.mock('./containers/ArticleList/CreateArticle/CreateArticle', () => jest.fn(() => <div />));
+jest.mock('./containers/ArticleList/ArticleDetail/ArticleDetail', () => jest.fn(() => <div />));
+jest.mock('./containers/ArticleList/EditArticle/EditArticle', () => jest.fn(() => <div />));
 
-jest.mock("react-redux", () => {
-	const actualTracker = jest.requireActual("react-redux");
+jest.mock('react-redux', () => {
+	const actualTracker = jest.requireActual('react-redux');
 	return {
-	  ...actualTracker,
-	  useSelector: jest.fn()
-		  .mockReturnValueOnce(null)
-		  .mockReturnValueOnce('mockUser'),
+		...actualTracker,
+		useSelector: jest.fn().mockReturnValueOnce(null).mockReturnValueOnce('mockUser'),
 	};
 });
 
@@ -61,7 +59,8 @@ describe('App', () => {
 				router: connectRouter(history),
 				user: (state = {}, action) => state,
 			}),
-			applyMiddleware(thunk, routerMiddleware(history)));
+			applyMiddleware(thunk, routerMiddleware(history)),
+		);
 
 		app = (
 			<Provider store={mockStore}>

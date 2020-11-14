@@ -18,7 +18,7 @@ type Action =
 function fridgeReducer(state: InitialState = FridgeState, action: Action): InitialState {
 	let ingredientList = [];
 	switch (action.type) {
-		/* GET RECIPE LIST */
+		/* GET INGREDIENT LIST */
 		case actionTypes.GET_FRIDGE:
 			return { ...state, ingredientList: action.ingredientList };
 		// return { ...state ingredientList:action.ingredientList};
