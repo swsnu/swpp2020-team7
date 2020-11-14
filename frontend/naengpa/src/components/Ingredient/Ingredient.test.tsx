@@ -92,4 +92,14 @@ describe('Ingredient', () => {
 		);
 		expect(spyHistoryPush).toBeCalledWith('/fridge');
 	});
+
+	it('mouse-over and mouse-leave works correctly for image box', () => {
+		const component = mount(ingredient);
+		const ingredientBox = component.find('div#ingredient-image-box');
+		ingredientBox.simulate('mouseover');
+
+		expect(component.find('button#delete-ingredient-button').length).toBe(1);
+		ingredientBox.simulate('mouseleave');
+		expect(component.find('button#delete-ingredient-button').length).toBe(0);
+	});
 });

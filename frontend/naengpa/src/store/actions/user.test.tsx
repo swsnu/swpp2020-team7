@@ -8,113 +8,143 @@ import * as actionCreators from './user';
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
+const stubInitialState = {
+	user: {
+		user: {
+			id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
+			username: 'test',
+			email: 'test@snu.ac.kr',
+			name: '테스트',
+			dateOfBirth: '20201112',
+		},
+	},
+};
+const mockStore = store(stubInitialState);
+
 describe('ActionCreators', () => {
 	afterEach(() => {
 		jest.clearAllMocks();
 	});
-});
 
-const stubInitialState = {
-	user: {
-		user: null,
-	},
-};
-
-const mockStore = store(stubInitialState);
-
-it('should return signup action correctly', () => {
-	const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
-		return new Promise((resolve, reject) => {
-			const result = {
-				status: 200,
-				data: stubInitialState,
-			};
-			resolve(result);
-		});
+	it('should return correct actionType for signup_', () => {
+		const returnAction = actionCreators.signup_(stubInitialState.user.user);
+		expect(returnAction.type).toBe(actionTypes.SIGNUP);
+		expect(returnAction.user).toBe(stubInitialState.user.user);
 	});
-	mockStore.dispatch<any>(
-		actionCreators.signup({
-			username: 'test',
-			password: 'test',
-			email: 'test@snu.ac.kr',
-			name: '테스트',
-			dateOfBirth: '20201112',
-		}),
-	);
-	expect(spy).toBeCalled();
-});
 
-it('should return login action correctly', () => {
-	const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
-		return new Promise((resolve, reject) => {
-			const result = {
-				status: 200,
-				data: stubInitialState,
-			};
-			resolve(result);
+	it('should return signup action correctly', () => {
+		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: stubInitialState.user.user,
+				};
+				resolve(result);
+			});
 		});
+		mockStore.dispatch<any>(
+			actionCreators.signup({
+				username: 'test',
+				password: 'test',
+				email: 'test@snu.ac.kr',
+				name: '테스트',
+				dateOfBirth: '20201112',
+			}),
+		);
+		expect(spy).toBeCalled();
 	});
-	mockStore.dispatch<any>(
-		actionCreators.login({
-			username: 'test',
-			password: 'test',
-		}),
-	);
-	expect(spy).toBeCalled();
-});
 
-it('should return logout action correctly, case 1', () => {
-	const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
-		return new Promise((resolve, reject) => {
-			const result = {
-				status: 204,
-				data: stubInitialState,
-			};
-			resolve(result);
-		});
+	it('should return correct actionType for login_', () => {
+		const returnAction = actionCreators.login_(stubInitialState.user.user);
+		expect(returnAction.type).toBe(actionTypes.LOGIN);
+		expect(returnAction.user).toBe(stubInitialState.user.user);
 	});
-	mockStore.dispatch<any>(actionCreators.logout());
-	expect(spy).toBeCalled();
-});
 
-it('should return logout action correctly, case 2', () => {
-	const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
-		return new Promise((resolve, reject) => {
-			const result = {
-				status: 200,
-				data: stubInitialState,
-			};
-			resolve(result);
+	it('should return login action correctly', () => {
+		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: stubInitialState,
+				};
+				resolve(result);
+			});
 		});
+		mockStore.dispatch<any>(
+			actionCreators.login({
+				username: 'test',
+				password: 'test',
+			}),
+		);
+		expect(spy).toBeCalled();
 	});
-	mockStore.dispatch<any>(actionCreators.logout());
-	expect(spy).toBeCalled();
-});
 
-it('should return getUserList action correctly', () => {
-	const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
-		return new Promise((resolve, reject) => {
-			const result = {
-				status: 200,
-				data: stubInitialState,
-			};
-			resolve(result);
+	it('should return logout action correctly, case 1', () => {
+		const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 204,
+					data: stubInitialState,
+				};
+				resolve(result);
+			});
 		});
+		mockStore.dispatch<any>(actionCreators.logout());
+		expect(spy).toBeCalled();
 	});
-	mockStore.dispatch<any>(actionCreators.getUserList());
-	expect(spy).toBeCalled();
-});
 
-it('should return getUser action correctly', () => {
-	const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
-		return new Promise((resolve, reject) => {
-			const result = {
-				status: 200,
-				data: stubInitialState,
-			};
-			resolve(result);
+	it('should return logout action correctly, case 2', () => {
+		const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: stubInitialState,
+				};
+				resolve(result);
+			});
 		});
+		mockStore.dispatch<any>(actionCreators.logout());
+		expect(spy).toBeCalled();
 	});
-	mockStore.dispatch<any>(actionCreators.getUser());
-	expect(spy).toBeCalled();
+
+	it('should return getUserList action correctly', () => {
+		const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: stubInitialState,
+				};
+				resolve(result);
+			});
+		});
+		mockStore.dispatch<any>(actionCreators.getUserList());
+		expect(spy).toBeCalled();
+	});
+
+	it('should return getUser action correctly', () => {
+		const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: stubInitialState,
+				};
+				resolve(result);
+			});
+		});
+		mockStore.dispatch<any>(actionCreators.getUser());
+		// expect(spy).toBeCalled();
+
+		const returnAction = actionCreators.getUser();
+		expect(returnAction.type).toBe(actionTypes.GET_USER);
+	});
+
+	it('should return correct actionType for deleteUser', () => {
+		const returnAction = actionCreators.deleteUser();
+		expect(returnAction.type).toBe(actionTypes.DELETE_USER);
+	});
+
+	it('should return correct actionType for editUser', () => {
+		const returnAction = actionCreators.editUser();
+		expect(returnAction.type).toBe(actionTypes.EDIT_USER);
+	});
 });

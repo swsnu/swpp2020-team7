@@ -8,7 +8,7 @@ import './Recipe.scss';
 import { Dictionary } from '../../model/general';
 
 interface RecipeProps {
-	recipe: Dictionary<string | Dictionary<string>[] | number>;
+	recipe: Dictionary<string | Dictionary<string | number>[] | number>;
 	attribute: string;
 }
 

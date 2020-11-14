@@ -61,9 +61,7 @@ export function addIngredientToTodayIngredient(id: string, ingredient_id: number
 /* DELETE INGREDIENT FROM FRIDGE */
 export function deleteIngredientFromFridge(user_id: string, id: number) {
 	return async (dispatch: any) => {
-		await axios
-			.delete(`/api/users/${user_id}/ingredients/${id}/`)
-			.then((res) => console.log(res));
+		await axios.delete(`/api/users/${user_id}/ingredients/${id}/`);
 		dispatch({
 			type: actionTypes.DELETE_INGREDIENT_FROM_FRIDGE,
 			id,

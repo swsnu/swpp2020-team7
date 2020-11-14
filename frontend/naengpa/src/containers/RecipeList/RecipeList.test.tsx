@@ -22,6 +22,7 @@ const stubInitialState = {
 	recipes: {
 		recipeList: [
 			{
+				id: 0,
 				'food-name': 'foodName',
 				'cook-time': 100,
 				'recipe-content': 'recipeContent',
@@ -29,6 +30,7 @@ const stubInitialState = {
 				'recipe-like': 0,
 			},
 			{
+				id: 1,
 				'food-name': 'foodName',
 				'cook-time': 40,
 				'recipe-content': 'recipeContent',
@@ -38,6 +40,10 @@ const stubInitialState = {
 		],
 	},
 };
+
+jest.mock('../../components/Recipe/Recipe', () =>
+	jest.fn(({ recipe }) => <div className="spyRecipe">Recipe-{recipe.foodName}</div>),
+);
 
 describe('RecipeList', () => {
 	let getRecipeList: any;
@@ -82,14 +88,7 @@ describe('RecipeList', () => {
 		const component = mount(getRecipeList);
 		await waitForComponentToPaint(component);
 		const wrapper = component.find('#create-recipe-button');
-		wrapper
-			.find('button')
-			.at(0)
-			.simulate('click', {
-				preventDefault: (e) => {
-					console.log(e);
-				},
-			});
+		wrapper.find('button').at(0).simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/recipes/create');
 	});
 });
