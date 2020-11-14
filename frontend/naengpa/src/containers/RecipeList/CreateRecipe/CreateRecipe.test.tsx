@@ -63,7 +63,7 @@ describe('CreateRecipe', () => {
 		expect(wrapper.find('#create-recipe').length).toBe(1);
 	});
 
-	it('should work well with the input changes', () => {
+	it('should work well with the input changes', async () => {
 		const { getByTestId } = render(createRecipe);
 		const confirmAlertButton = getByTestId('confirm-alert-button');
 		fireEvent.click(confirmAlertButton);
@@ -92,7 +92,7 @@ describe('CreateRecipe', () => {
 
 		const extractIngredientButton = getByTestId('extract-ingredient-button');
 		fireEvent.click(extractIngredientButton);
-		expect(spyCreateRecipe).toBeCalled();
+		await expect(spyCreateRecipe).toBeCalled();
 		expect(spyHistoryPush).toBeCalledWith('/recipes');
 	});
 

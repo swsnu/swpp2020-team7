@@ -15,7 +15,7 @@ interface RecipeProps {
 const Recipe: React.FC<RecipeProps> = ({ recipe, attribute }) => {
 	// Thumnail Image for Recipes
 	const images = recipe.foodImages as Dictionary<string>[];
-	const thumnail = images[0] as Dictionary<string>;
+	const thumnail = images ? (images[0] as Dictionary<string>) : undefined;
 	const titleSize = attribute === 'todays-recipe-child' ? 'caption' : 'subtitle2';
 	const fontSize = attribute === 'todays-recipe-child' ? 'small' : 'default';
 	const subheader = attribute === 'todays-recipe-child' ? '' : recipe.createdAt;
