@@ -1,85 +1,47 @@
 import React from 'react';
-import { act } from '@testing-library/react';
-import { mount, ReactWrapper } from 'enzyme';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import configureStore from 'redux-mock-store';
+import { mount } from 'enzyme';
 import MyFridge from './MyFridge';
-import '@testing-library/jest-dom';
-import * as recipeActionCreators from '../../store/actions/recipe';
 import { history } from '../../store/store';
 
-const middlewares = [thunk];
-const store = configureStore(middlewares);
+jest.mock('../../components/TodayIngredient/TodayIngredient', () =>
+	jest.fn(() => <div className="spyTodayIngredient">TodayIngredient</div>),
+);
+jest.mock('../AddIngredient/AddIngredient', () =>
+	jest.fn(() => <div className="spyAddIngredient">AddIngredient</div>),
+);
+jest.mock('../../components/TodayRecipe/TodayRecipe', () =>
+	jest.fn(() => <div className="spyTodayRecipe">TodayRecipe</div>),
+);
+jest.mock('../../components/TodayStar/TodayStar', () =>
+	jest.fn(() => <div className="spyTodayStar">TodayStar</div>),
+);
+jest.mock('../Fridge/Fridge', () => jest.fn(() => <div className="spyFridge">Fridge</div>));
+jest.mock('../../components/Footer/Footer', () =>
+	jest.fn(() => <div className="spyFooter">Footer</div>),
+);
 
-async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount = 0) {
-	await act(async () => {
-		await new Promise((resolve) => setTimeout(resolve, 0));
-		wrapper.update();
-	});
-}
-const image = import('../../../public/icons/boy.png');
-const stubInitialState = {
-	recipes: {
-		recipeList: [
-			{
-				'food-name': 'foodName',
-				'cook-time': 100,
-				'recipe-content': 'recipeContent',
-				'food-images': [URL.createObjectURL(image)],
-				'recipe-like': 0,
-			},
-			{
-				'food-name': 'foodName',
-				'cook-time': 40,
-				'recipe-content': 'recipeContent',
-				'food-images': [URL.createObjectURL(image)],
-				'recipe-like': 10,
-			},
-		],
-	},
-	user: {
-		user: {
-			id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
-			username: 'test',
-			email: 'test@snu.ac.kr',
-			name: '테스트',
-			dateOfBirth: '20201112',
-		},
-	},
-	ingredient: {
-		ingredientList: [],
-	},
-
-	fridge: {
-		ingredientList: [],
-	},
-};
-describe('CreateRecipe', () => {
+describe('MyFridge', () => {
 	let myFridge: any;
-	let spyHistoryPush: any;
 
 	beforeEach(() => {
-		const mockStore = store(stubInitialState);
-
-		myFridge = (
-			<Provider store={mockStore}>
-				<MyFridge history={history} />
-			</Provider>
-		);
-
-		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
+		myFridge = <MyFridge history={history} />;
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
 	});
-
 	afterAll(() => {
 		jest.restoreAllMocks();
 	});
 
-	it('CreateRecipe renders without crashing', async () => {
+	it('MyFridge renders without crashing', () => {
 		const wrapper = mount(myFridge);
+
 		expect(wrapper.find('#my-fridge-page').length).toBe(1);
+		expect(wrapper.find('.spyTodayIngredient').length).toBe(1);
+		expect(wrapper.find('.spyAddIngredient').length).toBe(1);
+		expect(wrapper.find('.spyTodayRecipe').length).toBe(1);
+		expect(wrapper.find('.spyTodayStar').length).toBe(1);
+		expect(wrapper.find('.spyFridge').length).toBe(1);
+		expect(wrapper.find('.spyFooter').length).toBe(1);
 	});
 });
