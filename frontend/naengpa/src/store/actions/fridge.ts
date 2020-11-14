@@ -7,7 +7,7 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 /* GET FRIDGE */
-export function getFridge(id: number) {
+export function getFridge(id: string) {
 	return async (dispatch: any) => {
 		const response = await axios.get(`/api/users/${id}/fridge/`);
 		const storedIngredientList: UserIngredientEntity[] = response.data;
@@ -26,7 +26,7 @@ export function getFridge(id: number) {
 }
 
 /* ADD INGREDIENT TO FRIDGE */
-export function addIngredientToFridge(id: number, ingredient: IngredientEntity) {
+export function addIngredientToFridge(id: string, ingredient: IngredientEntity) {
 	return async (dispatch: any) => {
 		const response = await axios.post(`/api/users/${id}/fridge/`, {
 			ingredient_id: ingredient.id,
@@ -47,7 +47,7 @@ export function addIngredientToFridge(id: number, ingredient: IngredientEntity) 
 }
 
 /* ADD INGREDIENT TO TODAY INGREDIENT */
-export function addIngredientToTodayIngredient(id: number, ingredient_id: number) {
+export function addIngredientToTodayIngredient(id: string, ingredient_id: number) {
 	return async (dispatch: any) => {
 		// await axios.post(`/api/users/${id}/fridge/`, ingredient).then((res) => console.log(res));
 
@@ -59,7 +59,7 @@ export function addIngredientToTodayIngredient(id: number, ingredient_id: number
 }
 
 /* DELETE INGREDIENT FROM FRIDGE */
-export function deleteIngredientFromFridge(user_id: number, id: number) {
+export function deleteIngredientFromFridge(user_id: string, id: number) {
 	return async (dispatch: any) => {
 		await axios
 			.delete(`/api/users/${user_id}/ingredients/${id}/`)
@@ -72,7 +72,7 @@ export function deleteIngredientFromFridge(user_id: number, id: number) {
 }
 
 /*  TOGGLE TODAY INGREDIENT */
-export function toggleTodayIngredient(id: number, ingredient_id: number) {
+export function toggleTodayIngredient(id: string, ingredient_id: number) {
 	return async (dispatch: any) => {
 		// await axios.post(`/api/users/${id}/fridge/`, ingredient).then((res) => console.log(res));
 
