@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import { History } from 'history';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -78,32 +78,34 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				foodImages,
 				recipeLike: 0,
 			};
-			await dispatch(createRecipe(newRecipe));
+			dispatch(createRecipe(newRecipe));
 			history.push('/recipes');
 		}
 	};
 
-	const image_list = foodImages.map((item, i) => {
-		return (
-			<div key={item} id="delete-image-icon-box" data-testid="delete-image-icon-box">
-				<CancelIcon
-					key={item}
-					id="delete-image-button"
-					data-testid="delete-image-button"
-					type="button"
-					onClick={() => onClickDeleteImage(i)}
-				/>
-				<img
-					key={item}
-					id="delete-image-icon"
-					src={item}
-					height="150px"
-					width="150px"
-					alt="/api/images" // TODO: check alt path
-				/>
-			</div>
-		);
-	});
+	const image_list = !foodImages.length
+		? []
+		: foodImages.map((item, i) => {
+				return (
+					<div key={item} id="delete-image-icon-box" data-testid="delete-image-icon-box">
+						<CancelIcon
+							key={item}
+							id="delete-image-button"
+							data-testid="delete-image-button"
+							type="button"
+							onClick={() => onClickDeleteImage(i)}
+						/>
+						<img
+							key={item}
+							id="delete-image-icon"
+							src={item}
+							height="150px"
+							width="150px"
+							alt="/api/images" // TODO: check alt path
+						/>
+					</div>
+				);
+		  });
 
 	const useStyles = makeStyles({
 		underline: {
@@ -204,7 +206,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 						</TableRow>
 						<TableRow>
 							<TableCell id="image-box">
-								{image_list}
+								{image_list.length && image_list}
 								<Box id="add-image-icon-box">
 									<label aria-label="food-image-label" htmlFor="food-image">
 										<AddCircleIcon id="add-image-button" type="button" />
