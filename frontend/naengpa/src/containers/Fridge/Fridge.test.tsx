@@ -10,13 +10,6 @@ import { IngredientEntity } from '../../model/ingredient';
 import Fridge from './Fridge';
 import { history } from '../../store/store';
 
-async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>) {
-	await act(async () => {
-		await new Promise((resolve) => setTimeout(resolve, 0));
-		wrapper.update();
-	});
-}
-
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
@@ -76,7 +69,6 @@ describe('Fridge', () => {
 
 	it('Fridge renders without crashing', async () => {
 		const component = mount(fridge);
-		await waitForComponentToPaint(component);
 
 		expect(component.find('Fridge').length).toBe(1);
 		expect(spyGetFridge).toBeCalledTimes(1);

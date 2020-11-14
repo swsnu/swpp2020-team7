@@ -22,7 +22,7 @@ const store = configureStore(middlewares);
 const getRecipeListMocked = () => {
 	const recipeList = [
 		{
-			'id': '100-12921',
+			id: '100-12921',
 			'food-name': 'foodName',
 			'cook-time': 100,
 			'recipe-content': 'recipeContent',
@@ -30,7 +30,7 @@ const getRecipeListMocked = () => {
 			'recipe-like': 0,
 		},
 		{
-			'id': '123-241',
+			id: '123-241',
 			'food-name': 'foodName',
 			'cook-time': 40,
 			'recipe-content': 'recipeContent',
@@ -43,7 +43,7 @@ const getRecipeListMocked = () => {
 
 const stubInitialState = {
 	recipes: {
-		recipes: getRecipeListMocked(),
+		recipeList: getRecipeListMocked(),
 	},
 };
 
