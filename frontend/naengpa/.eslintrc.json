@@ -28,12 +28,20 @@
         "no-underscore-dangle": 1,
         "jsx-a11y/label-has-associated-control": 1
     },
-    "overrides": [{
-        "files": ["**/*.ts"],
-        "rules": {
-            "@typescript-eslint/explicit-function-return-type": 0
+    "overrides": [
+        {
+            "files": ["**/*.ts"],
+            "rules": {
+                "@typescript-eslint/explicit-function-return-type": 0
+            }
+        },
+        {
+            "files": ["**/*.test.tsx"],
+            "rules": {
+                "react/jsx-props-no-spreading": 0
+            }
         }
-    }],
+    ],
     "settings": {
         "import/resolver": {
             "node": {
