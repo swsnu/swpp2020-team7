@@ -28,15 +28,12 @@ def recipe_list(request):
     } for recipe in sorted_list] if len(sorted_list) != 0 else []
 
     if request.user.is_authenticated:
-        # GET RECIPE LIST
-        """GET /api/recipes/ get recipe list"""
-
         if request.method == 'GET':
+            ''' GET /api/recipes/ get recipe list '''
             return JsonResponse(recipe_collection, safe=False)
 
-        # CREATE NEW RECIPE 'POST' METHOD
-        """POST /api/recipes/ post new recipe"""
         else:
+            ''' POST /api/recipes/ post new recipe '''
             req_data = json.loads(request.body.decode())
             food_name = req_data['foodName']
             cook_time = req_data['cookTime']
