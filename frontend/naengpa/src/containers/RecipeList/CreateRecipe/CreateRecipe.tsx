@@ -85,11 +85,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	const image_list = foodImages.map((item, i) => {
 		return (
-			<div
-				key={item}
-				id="delete-image-icon-box"
-				data-testid="delete-image-icon-box"
-			>
+			<div key={item} id="delete-image-icon-box" data-testid="delete-image-icon-box">
 				<CancelIcon
 					key={item}
 					id="delete-image-button"

@@ -153,7 +153,7 @@ describe('AddIngredient', () => {
 	it('should dispatch addIngredient only if ingredient selected', async () => {
 		const component = mount(addIngredient);
 		await waitForComponentToPaint(component);
-	
+
 		// button should be deactivated at first
 		const footerWrapper = component.find('div#add-ingredient-footer');
 		const addIngredientButton = footerWrapper.find('button#add-ingredient');

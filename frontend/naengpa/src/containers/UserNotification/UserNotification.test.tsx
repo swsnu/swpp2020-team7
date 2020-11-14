@@ -6,7 +6,7 @@ describe('UserNotification', () => {
 	let userNotification: any;
 
 	beforeEach(() => {
-		userNotification = (<UserNotification />);
+		userNotification = <UserNotification />;
 	});
 	afterEach(() => {
 		jest.clearAllMocks();

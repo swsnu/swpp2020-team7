@@ -6,7 +6,7 @@ describe('User', () => {
 	let user: any;
 
 	beforeEach(() => {
-		user = (<User />);
+		user = <User />;
 	});
 	afterEach(() => {
 		jest.clearAllMocks();

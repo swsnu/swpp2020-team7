@@ -6,7 +6,7 @@ describe('ArticleList', () => {
 	let articleDetail: any;
 
 	beforeEach(() => {
-		articleDetail = (<ArticleDetail />);
+		articleDetail = <ArticleDetail />;
 	});
 	afterEach(() => {
 		jest.clearAllMocks();

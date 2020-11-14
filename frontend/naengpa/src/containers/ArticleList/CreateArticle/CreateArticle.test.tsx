@@ -6,7 +6,7 @@ describe('CreateArticle', () => {
 	let createArticle: any;
 
 	beforeEach(() => {
-		createArticle = (<CreateArticle />);
+		createArticle = <CreateArticle />;
 	});
 	afterEach(() => {
 		jest.clearAllMocks();

@@ -6,7 +6,7 @@ describe('RegionalSetting', () => {
 	let regionalSetting: any;
 
 	beforeEach(() => {
-		regionalSetting = (<RegionalSetting />);
+		regionalSetting = <RegionalSetting />;
 	});
 	afterEach(() => {
 		jest.clearAllMocks();

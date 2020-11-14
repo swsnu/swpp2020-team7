@@ -6,7 +6,7 @@ describe('EditRecipe', () => {
 	let editRecipe: any;
 
 	beforeEach(() => {
-		editRecipe = (<EditRecipe />);
+		editRecipe = <EditRecipe />;
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
