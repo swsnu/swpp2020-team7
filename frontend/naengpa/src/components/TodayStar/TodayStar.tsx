@@ -15,7 +15,7 @@ const TodayStar: React.FC<TodayStarProps> = ({ history }) => {
 	];
 
 	const user = mock_user_list.map((item: any) => {
-		return <Profile profile={item} />;
+		return <Profile key={item.id} profile={item} />;
 	});
 
 	return (
