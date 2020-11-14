@@ -20,12 +20,13 @@
         "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
         "@typescript-eslint/camelcase": 0,
         "import/extensions": 0,
-        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+        "import/no-extraneous-dependencies": [2, {"devDependencies": true}],
         "no-param-reassign": [2, { "props": false }],
         "react/prop-types": 0,
-        "no-shadow": "off",
-        "react-hooks/exhaustive-deps": "warn",
-        "no-underscore-dangle": "warn"
+        "no-shadow": 0,
+        "react-hooks/exhaustive-deps": 1,
+        "no-underscore-dangle": 1,
+        "jsx-a11y/label-has-associated-control": 1
     },
     "overrides": [{
         "files": ["**/*.ts"],
