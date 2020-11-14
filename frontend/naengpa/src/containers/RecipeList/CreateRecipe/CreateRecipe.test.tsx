@@ -8,7 +8,7 @@ import configureStore from 'redux-mock-store';
 import CreateRecipe from './CreateRecipe';
 import '@testing-library/jest-dom';
 import * as recipeActionCreators from '../../../store/actions/recipe';
-import { RecipeState } from '../../../store/reducers/recipe';
+import { InitialState as RecipeState } from '../../../store/reducers/recipe';
 import { history } from '../../../store/store';
 
 const middlewares = [thunk];
@@ -23,6 +23,7 @@ async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount 
 
 const stubInitialState: RecipeState = {
 	recipeList: [],
+	selectedRecipe: {},
 };
 const image = import('../../../../public/icons/boy.png');
 
