@@ -10,57 +10,57 @@ const middlewares = [thunk];
 const store = configureStore(middlewares);
 
 describe('Navigation', () => {
-    let navigation: any;
-    let spyHistoryPush: any;
+	let navigation: any;
+	let spyHistoryPush: any;
 
-    beforeEach(() => {
-        const mockStore = store([]);
+	beforeEach(() => {
+		const mockStore = store([]);
 
-        navigation = (
-            <Provider store={mockStore}>
-                <Navigation history={history} />
-            </Provider>
-        );
+		navigation = (
+			<Provider store={mockStore}>
+				<Navigation history={history} />
+			</Provider>
+		);
 
-        spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
-    });
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
-    afterAll(() => {
-        jest.restoreAllMocks();
-    });
+		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
+	});
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+	afterAll(() => {
+		jest.restoreAllMocks();
+	});
 
-    it('TodayIngredient renders without crashing', () => {
-        const component = mount(navigation);
-        expect(component.find('#navigation').length).toBe(1);
-    });
+	it('TodayIngredient renders without crashing', () => {
+		const component = mount(navigation);
+		expect(component.find('#navigation').length).toBe(1);
+	});
 
-    it('naengpa-logo-button should be clicked correctly', () => {
-        const component = mount(navigation);
-        const ingredientContentsWrapper = component.find('button#naengpa-logo-button').at(0);
-        ingredientContentsWrapper.simulate('click');
-        expect(spyHistoryPush).toBeCalledWith('/fridge');
-    });
+	it('naengpa-logo-button should be clicked correctly', () => {
+		const component = mount(navigation);
+		const ingredientContentsWrapper = component.find('button#naengpa-logo-button').at(0);
+		ingredientContentsWrapper.simulate('click');
+		expect(spyHistoryPush).toBeCalledWith('/fridge');
+	});
 
-    it('user-notice-button should be clicked correctly', () => {
-        const component = mount(navigation);
-        const ingredientContentsWrapper = component.find('button#user-notice-button').at(0);
-        ingredientContentsWrapper.simulate('click');
-        expect(spyHistoryPush).toBeCalledWith('/notifications');
-    });
+	it('user-notice-button should be clicked correctly', () => {
+		const component = mount(navigation);
+		const ingredientContentsWrapper = component.find('button#user-notice-button').at(0);
+		ingredientContentsWrapper.simulate('click');
+		expect(spyHistoryPush).toBeCalledWith('/notifications');
+	});
 
-    it('mypage-button should be clicked correctly', () => {
-        const component = mount(navigation);
-        const ingredientContentsWrapper = component.find('button#mypage-button').at(0);
-        ingredientContentsWrapper.simulate('click');
-        expect(spyHistoryPush).toBeCalledWith('/@:username');
-    });
+	it('mypage-button should be clicked correctly', () => {
+		const component = mount(navigation);
+		const ingredientContentsWrapper = component.find('button#mypage-button').at(0);
+		ingredientContentsWrapper.simulate('click');
+		expect(spyHistoryPush).toBeCalledWith('/@:username');
+	});
 
-    it('logout-button should be clicked correctly', () => {
-        const component = mount(navigation);
-        const ingredientContentsWrapper = component.find('button#logout-button').at(0);
-        ingredientContentsWrapper.simulate('click');
-        expect(spyHistoryPush).toBeCalledWith('/logout');
-    });
+	it('logout-button should be clicked correctly', () => {
+		const component = mount(navigation);
+		const ingredientContentsWrapper = component.find('button#logout-button').at(0);
+		ingredientContentsWrapper.simulate('click');
+		expect(spyHistoryPush).toBeCalledWith('/logout');
+	});
 });

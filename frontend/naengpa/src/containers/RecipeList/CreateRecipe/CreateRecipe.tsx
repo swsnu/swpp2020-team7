@@ -64,7 +64,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	};
 
 	// TODO: need to be directed to extract ingredient page, current => recipelist
-	const onClickExtractIngredient = () => {
+	const onClickExtractIngredient = async () => {
 		if (foodImages === [] || foodName === '' || cookTime === '' || recipeContent === '') {
 			setAlert(true);
 			setAlertContent(
@@ -72,13 +72,13 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 			);
 		} else {
 			const newRecipe: RecipeEntity = {
-				'food-name': foodName,
-				'cook-time': cookTime,
-				'recipe-content': recipeContent,
-				'food-images': foodImages,
-				'recipe-like': 0,
+				foodName,
+				cookTime,
+				recipeContent,
+				foodImages,
+				recipeLike: 0,
 			};
-			dispatch(createRecipe(newRecipe));
+			await dispatch(createRecipe(newRecipe));
 			history.push('/recipes');
 		}
 	};
