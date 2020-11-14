@@ -5,7 +5,6 @@ import json
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseForbidden,  HttpResponseNotFound, HttpResponseNotAllowed
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import Recipe, Image
-
 # User = get_user_model()
 
 
@@ -15,7 +14,6 @@ def recipe_list(request):
     if request.method != 'GET' and request.method != 'POST':
         return HttpResponseNotAllowed(['POST'])
 
-    # if request.user.is_authenticated:
     sorted_list = Recipe.objects.all().order_by('-created_at')
     recipe_collection = [{
         "id": recipe.id,
@@ -31,10 +29,13 @@ def recipe_list(request):
 
     if request.user.is_authenticated:
         # GET RECIPE LIST
+        """GET /api/recipes/ get recipe list"""
+
         if request.method == 'GET':
             return JsonResponse(recipe_collection, safe=False)
 
         # CREATE NEW RECIPE 'POST' METHOD
+        """POST /api/recipes/ post new recipe"""
         else:
             req_data = json.loads(request.body.decode())
             food_name = req_data['foodName']
