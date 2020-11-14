@@ -150,38 +150,27 @@ describe('AddIngredient', () => {
 		expect(selectedStatusButton.last().text()).toBe('이름: 딸기');
 	});
 
-	it('should dispatch addIngredient correctly', async () => {
+	it('should dispatch addIngredient only if ingredient selected', async () => {
 		const component = mount(addIngredient);
 		await waitForComponentToPaint(component);
-
-		let wrapper = component.find('div#add-ingredient-category-list');
-		wrapper.find('button').at(3).simulate('click'); // 4번째: 과일
-		wrapper = component.find('div#add-ingredient-grid');
-		wrapper.find('button').at(2).simulate('click'); // 3번째: 딸기
-		const addIngredientButton = component.find('button#add-ingredient');
-		expect(addIngredientButton.length).toBe(1);
-
-		addIngredientButton.simulate('click');
-		expect(spyAddIngredient).toBeCalledWith('c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55', {
-			id: 2,
-			name: '딸기',
-		});
-	});
-
-	it('should not dispatch addIngredient if ingredient not selected', async () => {
-		const component = mount(addIngredient);
-		await waitForComponentToPaint(component);
+	
+		// button should be deactivated at first
+		const footerWrapper = component.find('div#add-ingredient-footer');
+		const addIngredientButton = footerWrapper.find('button#add-ingredient');
+		expect(spyAddIngredient).toBeCalledTimes(0);
 
 		// button should be deactivated when only category is selected
 		const categoryList = component.find('div#add-ingredient-category-list');
 		categoryList.find('button').at(3).simulate('click'); // 4번째: 과일
-		const addIngredientButton = component.find('button#add-ingredient');
+		addIngredientButton.simulate('click');
 		expect(spyAddIngredient).toBeCalledTimes(0);
+
 		// if ingredient selected, button should be activated
 		const ingredientGrid = component.find('div#add-ingredient-grid');
 		ingredientGrid.find('button').at(2).simulate('click'); // 3번째: 딸기
 		addIngredientButton.simulate('click');
 		expect(spyAddIngredient).toBeCalledTimes(1);
+
 		// if category reselected, button should be deactivated again
 		categoryList.find('button').at(0).simulate('click'); // 1번째: 가공육
 		addIngredientButton.simulate('click');
