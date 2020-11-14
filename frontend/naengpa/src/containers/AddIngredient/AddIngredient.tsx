@@ -58,9 +58,7 @@ const AddIngredient: React.FC = () => {
 		setSelectedIngredient(ingredient);
 	};
 	const onClickAddIngredientToFridge = () => {
-		if (selectedIngredient) {
-			dispatch(addIngredientToFridge(user!.id, selectedIngredient));
-		}
+		dispatch(addIngredientToFridge(user!.id, selectedIngredient!));
 	};
 
 	const IngredientGrid = ({
