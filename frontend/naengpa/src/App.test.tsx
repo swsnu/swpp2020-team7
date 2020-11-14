@@ -25,9 +25,9 @@ jest.mock('./containers/RegionalSetting/RegionalSetting', () => jest.fn(() => <d
 jest.mock('./containers/AddIngredient/AddIngredient', () => jest.fn(() => <div />));
 jest.mock('./containers/UserRecipe/UserRecipe', () => jest.fn(() => <div />));
 jest.mock('./containers/UserNotification/UserNotification', () => jest.fn(() => <div />));
-jest.mock('./containers/MyPage/UserInfo/UserInfo', () => jest.fn(() => <div />));
-jest.mock('./containers/MyPage/EditUserInfo/EditUserInfo', () => jest.fn(() => <div />));
-jest.mock('./containers/MyPage/ChangePassword/ChangePassword', () => jest.fn(() => <div />));
+jest.mock('./containers/Mypage/UserInfo/UserInfo', () => jest.fn(() => <div />));
+jest.mock('./containers/Mypage/EditUserInfo/EditUserInfo', () => jest.fn(() => <div />));
+jest.mock('./containers/Mypage/ChangePassword/ChangePassword', () => jest.fn(() => <div />));
 jest.mock('./containers/ChatRoomList/ChatRoomList', () => jest.fn(() => <div />));
 jest.mock('./containers/ChatRoomList/ChatDetail/ChatDetail', () => jest.fn(() => <div />));
 jest.mock('./containers/RecipeList/RecipeList', () => jest.fn(() => <div />));
