@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { History } from 'history';
 import { useDispatch, useSelector } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -22,6 +22,7 @@ import {
 } from '@material-ui/core';
 import './CreateRecipe.scss';
 import { makeStyles } from '@material-ui/core/styles';
+import { RecipeEntity } from '../../../model/recipe';
 import { createRecipe } from '../../../store/actions/index';
 // import { AppState } from '../../store/store';
 
@@ -70,24 +71,29 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
-			dispatch(
-				createRecipe({
-					'food-name': foodName,
-					'cook-time': cookTime,
-					'recipe-content': recipeContent,
-					'food-images': foodImages,
-					'recipe-like': 0,
-				}),
-			);
+			const newRecipe: RecipeEntity = {
+				'food-name': foodName,
+				'cook-time': cookTime,
+				'recipe-content': recipeContent,
+				'food-images': foodImages,
+				'recipe-like': 0,
+			};
+			dispatch(createRecipe(newRecipe));
 			history.push('/recipes');
 		}
 	};
 
 	const image_list = foodImages.map((item, i) => {
 		return (
-			<div key={item} id="delete-image-icon-box">
+			<div
+				key={item}
+				id="delete-image-icon-box"
+				data-testid="
+			delete-image-icon-box"
+			>
 				<CancelIcon
 					id="delete-image-button"
+					data-testid="delete-image-button"
 					type="button"
 					onClick={() => onClickDeleteImage(i)}
 				/>
@@ -112,9 +118,9 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const classes = useStyles();
 
 	return (
-		<div id="create-recipe">
-			<Collapse in={alert}>
-				<Alert id="create-recipe-alert" icon={false}>
+		<div id="create-recipe" data-testid="create-recipe">
+			<Collapse className="collapse" in={alert}>
+				<Alert id="create-recipe-alert" data-testid="create-recipe-alert" icon={false}>
 					<div id="naengpa-logo-box">
 						<div id="naengpa-logo">
 							<LocalDiningIcon id="naengpa-logo-image" />
@@ -122,6 +128,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 						</div>
 						<CancelIcon
 							id="close-alert-button"
+							data-testid="close-alert-button"
 							onClick={() => {
 								setAlert(false);
 							}}
@@ -131,6 +138,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 					<div id="confirm-alert-button-box">
 						<Button
 							id="confirm-alert-button"
+							data-testid="confirm-alert-button"
 							onClick={() => {
 								setAlert(false);
 							}}
@@ -159,6 +167,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 								<div id="create-recipe-title">레시피 등록</div>
 								<Button
 									id="extract-ingredient-button"
+									data-testid="extract-ingredient-button"
 									onClick={onClickExtractIngredient}
 									disabled={alert}
 								>
@@ -177,6 +186,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 									disabled={alert}
 									placeholder="요리명"
 									id="food-name"
+									data-testid="food-name"
 									onChange={(e) => setFoodName(e.target.value)}
 								/>
 							</TableCell>
@@ -190,6 +200,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 									type="number"
 									placeholder="조리시간 (분)"
 									id="cook-time"
+									data-testid="cook-time"
 									onChange={(e) => setCookTime(e.target.value)}
 								/>
 							</TableCell>
@@ -198,14 +209,17 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 							<TableCell id="image-box">
 								{image_list}
 								<Box id="add-image-icon-box">
-									<label htmlFor="file-input">
+									<label aria-label="food-image-label" htmlFor="food-image">
 										<AddCircleIcon id="add-image-button" type="button" />
-										<input
+										<Input
 											type="file"
-											id="file-input"
+											id="food-image"
+											data-testid="food-image"
 											required
 											disabled={alert}
-											onChange={(e) => onClickAddImage(e)}
+											onChange={(e: ChangeEvent<HTMLInputElement>) =>
+												onClickAddImage(e)
+											}
 										/>
 									</label>
 									<PhotoCameraIcon id="add-image-icon" />
@@ -221,7 +235,8 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 							<TableCell width="100%" id="recipe-row">
 								<TextField
 									placeholder="레시피"
-									id="recipe"
+									id="recipe-content"
+									data-testid="recipe-content"
 									fullWidth
 									required
 									disabled={alert}
@@ -244,4 +259,4 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		</div>
 	);
 };
-export default React.memo(CreateRecipe);
+export default CreateRecipe;

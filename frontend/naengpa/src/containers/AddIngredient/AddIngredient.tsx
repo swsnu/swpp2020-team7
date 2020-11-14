@@ -10,7 +10,7 @@ const useIngredientList = () => {
 	const [categoryList, setCategoryList] = useState<string[]>([]);
 	const [selectedCategory, setSelectedCategory] = useState<string>('');
 	const dispatch = useDispatch();
-	
+
 	const loadIngredientList = async () => {
 		dispatch(getIngredientList());
 	};

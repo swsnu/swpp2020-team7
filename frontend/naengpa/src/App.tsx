@@ -80,11 +80,7 @@ const App: React.FC<AppProps> = ({ history }) => {
 						<Route path="/recipes/create" exact component={CreateRecipe} />
 						<Route path="/recipes/:id" exact component={RecipeDetail} />
 						<Route path="/recipes/:id/edit" exact component={EditRecipe} />
-						<Route
-							path="/ingredients/extract"
-							exact
-							component={ExtractIngredient}
-						/>
+						<Route path="/ingredients/extract" exact component={ExtractIngredient} />
 						{/* Article Page */}
 						<Route path="/articles" exact component={ArticleList} />
 						<Route path="/articles/create" exact component={CreateArticle} />

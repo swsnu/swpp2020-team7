@@ -4,7 +4,7 @@ import * as userActionCreators from '../../../store/actions/user';
 import Logout from './Logout';
 import { history } from '../../../store/store';
 
-jest.mock("react-redux", () => ({
+jest.mock('react-redux', () => ({
 	useDispatch: () => jest.fn(),
 	connect: () => jest.fn(),
 }));
@@ -15,12 +15,11 @@ describe('Logout', () => {
 	let spyHistoryPush: any;
 
 	beforeEach(() => {
-		logout = (<Logout history={history} />);
+		logout = <Logout history={history} />;
 		spyLogoutAction = jest
 			.spyOn(userActionCreators, 'logout')
 			.mockImplementation(() => jest.fn());
-		spyHistoryPush = jest.spyOn(history, 'push')
-			.mockImplementation(jest.fn());
+		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();

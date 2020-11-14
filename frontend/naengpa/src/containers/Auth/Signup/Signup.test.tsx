@@ -5,7 +5,7 @@ import Signup from './Signup';
 import { history } from '../../../store/store';
 import { UserSignupInputDTO } from '../../../model/user';
 
-jest.mock("react-redux", () => ({
+jest.mock('react-redux', () => ({
 	useDispatch: () => jest.fn(),
 	connect: () => jest.fn(),
 }));
@@ -20,19 +20,16 @@ describe('Signup', () => {
 		username: 'test',
 		password: 'test',
 		dateOfBirth: '20201111',
-		email: 'test@snu.ac.kr'
+		email: 'test@snu.ac.kr',
 	};
 
 	beforeEach(() => {
-		signup = (<Signup history={history} />);
+		signup = <Signup history={history} />;
 		spySignupAction = jest
 			.spyOn(userActionCreators, 'signup')
 			.mockImplementation(() => jest.fn());
-		spyAlert = jest
-			.spyOn(window, 'alert')
-			.mockImplementation(jest.fn());
-		spyHistoryPush = jest.spyOn(history, 'push')
-			.mockImplementation(jest.fn());
+		spyAlert = jest.spyOn(window, 'alert').mockImplementation(jest.fn());
+		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -50,12 +47,16 @@ describe('Signup', () => {
 	it('Signup should dispatch signup correctly', () => {
 		const component = mount(signup);
 		const inputList = component.find('div#input-list').find('input');
-		inputList.find('#name').simulate('change', {target: {value: mockUser.name}}); //name
-		inputList.find('#username').simulate('change', {target: {value: mockUser.username}}); //username
-		inputList.find('#password').simulate('change', {target: {value: mockUser.password}}); //password
-		inputList.find('#password-confirm').simulate('change', {target: {value: mockUser.password}}); //password-confirm
-		inputList.find('#date-of-birth').simulate('change', {target: {value: mockUser.dateOfBirth}}); //date-of-birth
-		inputList.find('#email').simulate('change', {target: {value: mockUser.email}}); //email
+		inputList.find('#name').simulate('change', { target: { value: mockUser.name } }); // name
+		inputList.find('#username').simulate('change', { target: { value: mockUser.username } }); // username
+		inputList.find('#password').simulate('change', { target: { value: mockUser.password } }); // password
+		inputList
+			.find('#password-confirm')
+			.simulate('change', { target: { value: mockUser.password } }); // password-confirm
+		inputList
+			.find('#date-of-birth')
+			.simulate('change', { target: { value: mockUser.dateOfBirth } }); // date-of-birth
+		inputList.find('#email').simulate('change', { target: { value: mockUser.email } }); // email
 
 		const signupButton = component.find('button#signup-button');
 		signupButton.simulate('click');
@@ -68,17 +69,21 @@ describe('Signup', () => {
 		const inputList = component.find('div#input-list').find('input');
 		const signupButton = component.find('button#signup-button');
 
-		inputList.find('#name').simulate('change', {target: {value: mockUser.name}}); //name
-		inputList.find('#username').simulate('change', {target: {value: mockUser.username}}); //username
-		inputList.find('#date-of-birth').simulate('change', {target: {value: mockUser.dateOfBirth}}); //date-of-birth
-		inputList.find('#email').simulate('change', {target: {value: mockUser.email}}); //email
+		inputList.find('#name').simulate('change', { target: { value: mockUser.name } }); // name
+		inputList.find('#username').simulate('change', { target: { value: mockUser.username } }); // username
+		inputList
+			.find('#date-of-birth')
+			.simulate('change', { target: { value: mockUser.dateOfBirth } }); // date-of-birth
+		inputList.find('#email').simulate('change', { target: { value: mockUser.email } }); // email
 		signupButton.simulate('click');
 		expect(spySignupAction).toBeCalledTimes(0);
 		expect(spyAlert).toBeCalledTimes(1);
 		expect(spyAlert).toBeCalledWith('blink');
 
-		inputList.find('#password').simulate('change', {target: {value: mockUser.password}}); //password
-		inputList.find('#password-confirm').simulate('change', {target: {value: 'wrongPassword'}}); //password-confirm
+		inputList.find('#password').simulate('change', { target: { value: mockUser.password } }); // password
+		inputList
+			.find('#password-confirm')
+			.simulate('change', { target: { value: 'wrongPassword' } }); // password-confirm
 		signupButton.simulate('click');
 		expect(spySignupAction).toBeCalledTimes(0);
 		expect(spyAlert).toBeCalledTimes(2);
