@@ -39,6 +39,10 @@ const stubInitialState = {
 	},
 };
 
+jest.mock('../../components/Recipe/Recipe', () =>
+	jest.fn(({ recipe }) => <div className="spyRecipe">Recipe-{recipe.foodName}</div>),
+);
+
 describe('RecipeList', () => {
 	let getRecipeList: any;
 	let spyGetRecipeList: any;
@@ -86,7 +90,7 @@ describe('RecipeList', () => {
 			.find('button')
 			.at(0)
 			.simulate('click', {
-				preventDefault: (e) => {
+				preventDefault: (e: any) => {
 					console.log(e);
 				},
 			});
