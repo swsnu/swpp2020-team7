@@ -11,6 +11,19 @@ import * as recipeActionCreators from '../../../store/actions/recipe';
 import { InitialState as RecipeState } from '../../../store/reducers/recipe';
 import { history } from '../../../store/store';
 
+jest.mock('@material-ui/icons/AddCircle', () =>
+	jest.fn((props) => <div {...props} className="spyAddCircleIcon" />),
+);
+jest.mock('@material-ui/icons/PhotoCamera', () =>
+	jest.fn((props) => <div {...props} className="spyPhotoCameraIcon" />),
+);
+jest.mock('@material-ui/icons/Cancel', () =>
+	jest.fn((props) => <div {...props} className="spyCancelIcon" />),
+);
+jest.mock('@material-ui/icons/LocalDining', () =>
+	jest.fn((props) => <div {...props} className="spyLocalDiningIcon" />),
+);
+
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
@@ -25,7 +38,7 @@ const stubInitialState: RecipeState = {
 	recipeList: [],
 	selectedRecipe: {},
 };
-const image = import('../../../../public/icons/boy.png');
+const image = 'sample_img';
 
 describe('CreateRecipe', () => {
 	let createRecipe: any;
@@ -93,7 +106,7 @@ describe('CreateRecipe', () => {
 
 		const extractIngredientButton = getByTestId('extract-ingredient-button');
 		fireEvent.click(extractIngredientButton);
-		await expect(spyCreateRecipe).toBeCalled();
+		expect(spyCreateRecipe).toBeCalled();
 		expect(spyHistoryPush).toBeCalledWith('/recipes');
 	});
 
