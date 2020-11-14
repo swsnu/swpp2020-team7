@@ -88,16 +88,17 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 			<div
 				key={item}
 				id="delete-image-icon-box"
-				data-testid="
-			delete-image-icon-box"
+				data-testid="delete-image-icon-box"
 			>
 				<CancelIcon
+					key={item}
 					id="delete-image-button"
 					data-testid="delete-image-button"
 					type="button"
 					onClick={() => onClickDeleteImage(i)}
 				/>
 				<img
+					key={item}
 					id="delete-image-icon"
 					src={item}
 					height="150px"
