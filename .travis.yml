@@ -37,7 +37,7 @@ matrix:
         - pylint **/*.py
         - coverage run --source='.' manage.py test
         - coverage xml
-        - cd .. && cd ..
+        - cd ../.. && sonar-scanner
       after_success:
-        - sonar-scanner
+        - cd backend/naengpa
         - coveralls
