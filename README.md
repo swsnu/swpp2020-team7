@@ -3,14 +3,16 @@
 
 # Frontend  
 ### run  
-```
+> start-front.sh
+
+```Bash
 cd frontend/naengpa
 yarn
 yarn start
 ```
 
 ### test
-```
+```Bash
 cd frontend/naengpa
 yarn
 yarn test
@@ -18,7 +20,9 @@ yarn test
 
 # Backend
 ### run
-```
+> ./start-back.sh
+
+```Bash
 cd backend/naengpa 
 pip install -r requirements.txt 
 python manage.py makemigrations
@@ -27,7 +31,9 @@ python manage.py runserver
 ```
 
 ### test 
-```
+> ./test-back.sh
+
+```Bash
 cd backend/naengpa 
 pip install -r requirements.txt 
 python manage.py makemigrations 
