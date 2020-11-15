@@ -3,7 +3,7 @@
 
 # Frontend  
 ### run  
-> start-front.sh
+> ./start-front.sh
 
 ```Bash
 cd frontend/naengpa
