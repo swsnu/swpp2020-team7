@@ -69,11 +69,14 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
+			const images = foodImages.map((item) => {
+				return item.image as string;
+			});
 			const newRecipe: RecipeEntity = {
 				foodName,
 				cookTime,
 				recipeContent,
-				foodImages,
+				foodImages: images,
 				recipeLike: 0,
 			};
 			dispatch(createRecipe(newRecipe));

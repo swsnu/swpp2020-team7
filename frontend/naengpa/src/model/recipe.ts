@@ -6,6 +6,6 @@ export interface RecipeEntity {
 	foodName: string;
 	cookTime: string;
 	recipeContent: string;
-	foodImages?: Dictionary<string | number>[]; // current image state -> 'file path'
+	foodImages?: string[]; // current image state -> 'file path'
 	recipeLike: number;
 }

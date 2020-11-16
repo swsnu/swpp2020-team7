@@ -31,7 +31,7 @@ def recipe_list(request):
 
         else:
             ''' POST /api/recipes/ post new recipe '''
-            req_data = json.loads(request.body.decode())
+            req_data = json.loads(request.body.decode("utf-8"))
             food_name = req_data['foodName']
             cook_time = req_data['cookTime']
             recipe_content = req_data['recipeContent']
@@ -44,7 +44,7 @@ def recipe_list(request):
 
             for item in food_images:
                 Image.objects.create(
-                    file_path=item['image'], recipe_id=recipe.id)
+                    file_path=item, recipe_id=recipe.id)
 
             return JsonResponse(data={
                 "id": recipe.id,
