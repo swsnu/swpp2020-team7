@@ -1,11 +1,8 @@
 """views for recipe"""
 import json
-# from django.contrib.auth import get_user_model
-# from django.contrib.auth import authenticate as django_authenticate
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseForbidden,  HttpResponseNotFound, HttpResponseNotAllowed
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import Recipe, Image
-# User = get_user_model()
 
 
 @ensure_csrf_cookie
@@ -39,7 +36,6 @@ def recipe_list(request):
             cook_time = req_data['cookTime']
             recipe_content = req_data['recipeContent']
             food_images = req_data['foodImages']
-            # recipe_like = req_data['recipe-like']
             recipe = Recipe.objects.create(
                 author=request.user,
                 food_name=food_name,
@@ -67,5 +63,4 @@ def recipe_list(request):
 
 def recipe_info(request, id):
     """get recipe of given id"""
-    # if request.method != 'GET' and request.method != 'POST':
     return HttpResponse(status=405)

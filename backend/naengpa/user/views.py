@@ -112,8 +112,6 @@ def user_list(request):
 def user_fridge(request, id):
     """GET /api/users/:id/fridge/ Get Ingredient list in the fridge of the given user"""
     """POST /api/users/:id/fridge/ Add new ingredient to the fridge of the given user"""
-    # if request.user.id != id:
-    #     return HttpResponseForbidden()
     if request.method == 'GET':
         if not request.user.is_authenticated:
             return HttpResponse(status=401)
@@ -149,8 +147,6 @@ def user_fridge(request, id):
 @ensure_csrf_cookie
 def user_ingredient(request, user_id, id):
     """DELETE /api/users/:user_id/ingredients/:id/ Delete ingredient from the fridge of the given user"""
-    # if request.user.id != id:
-    #     return HttpResponseForbidden()
     if request.method == 'DELETE':
         if not request.user.is_authenticated:
             return HttpResponse(status=401)
