@@ -53,9 +53,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	/* CLICK EVENT - DELETE IMAGE */
 	const onClickDeleteImage = (target_id: number) => {
-		if (!alert) {
-			setFoodImages(foodImages.filter((item, i) => i !== target_id));
-		}
+		setFoodImages(foodImages.filter((item, i) => i !== target_id));
 	};
 
 	// TODO: need to alert that the content could be lost
@@ -93,6 +91,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 							id="delete-image-button"
 							data-testid="delete-image-button"
 							type="button"
+							disabled={alert}
 							onClick={() => onClickDeleteImage(i)}
 						/>
 						<img
@@ -209,7 +208,11 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 								{image_list.length && image_list}
 								<Box id="add-image-icon-box">
 									<label aria-label="food-image-label" htmlFor="food-image">
-										<AddCircleIcon id="add-image-button" type="button" />
+										<AddCircleIcon
+											id="add-image-button"
+											data-testid="add-image-button"
+											type="button"
+										/>
 										<Input
 											type="file"
 											id="food-image"
