@@ -144,6 +144,8 @@ describe('CreateRecipe', () => {
 		await fireEvent.change(foodImage as HTMLInputElement, { target: { files: [image] } });
 		const deleteImageButton = getByTestId('delete-image-button');
 		fireEvent.click(deleteImageButton);
+		fireEvent.click(addFoodImageButton);
+		await fireEvent.change(foodImage as HTMLInputElement, { target: { files: [image] } });
 		const extractIngredientButton = getByTestId('extract-ingredient-button');
 		fireEvent.click(extractIngredientButton);
 		fireEvent.click(deleteImageButton);
