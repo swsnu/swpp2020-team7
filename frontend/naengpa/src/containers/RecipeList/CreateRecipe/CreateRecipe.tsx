@@ -24,7 +24,7 @@ import './CreateRecipe.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import { RecipeEntity } from '../../../model/recipe';
 import { createRecipe } from '../../../store/actions/index';
-// import { AppState } from '../../store/store';
+import { Dictionary } from '../../../model/general';
 
 interface CreateRecipeProps {
 	history: History;
@@ -33,7 +33,7 @@ interface CreateRecipeProps {
 const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const [foodName, setFoodName] = useState('');
 	const [recipeContent, setRecipeContent] = useState('');
-	const [foodImages, setFoodImages] = useState<Array<string>>([]);
+	const [foodImages, setFoodImages] = useState<Dictionary<string | number>[]>([]);
 	const [cookTime, setCookTime] = useState('');
 
 	// alert state is true if alert is necessary, otherwise false.
@@ -48,7 +48,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		const target = e.target as HTMLInputElement;
 		const file: File = (target.files as FileList)[0];
 		// current: images are saved as 'file path'
-		setFoodImages([...foodImages, URL.createObjectURL(file)]);
+		setFoodImages([...foodImages, { id: foodImages.length, image: URL.createObjectURL(file) }]);
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
@@ -85,19 +85,24 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		? []
 		: foodImages.map((item, i) => {
 				return (
-					<div key={item} id="delete-image-icon-box" data-testid="delete-image-icon-box">
-						<CancelIcon
-							key={item}
-							id="delete-image-button"
-							data-testid="delete-image-button"
-							type="button"
-							disabled={alert}
-							onClick={() => onClickDeleteImage(i)}
-						/>
+					<div
+						key={item.id}
+						id="delete-image-icon-box"
+						data-testid="delete-image-icon-box"
+					>
+						{!alert && (
+							<CancelIcon
+								key={item.image}
+								id="delete-image-button"
+								data-testid="delete-image-button"
+								type="button"
+								onClick={() => onClickDeleteImage(i)}
+							/>
+						)}
 						<img
-							key={item}
+							key={item.id}
 							id="delete-image-icon"
-							src={item}
+							src={item.image as string}
 							height="150px"
 							width="150px"
 							alt="/api/images" // TODO: check alt path
@@ -205,7 +210,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 						</TableRow>
 						<TableRow>
 							<TableCell id="image-box">
-								{image_list.length && image_list}
+								{image_list}
 								<Box id="add-image-icon-box">
 									<label aria-label="food-image-label" htmlFor="food-image">
 										<AddCircleIcon

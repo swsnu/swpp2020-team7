@@ -43,7 +43,8 @@ def recipe_list(request):
                 recipe_content=recipe_content)
 
             for item in food_images:
-                Image.objects.create(file_path=item, recipe_id=recipe.id)
+                Image.objects.create(
+                    file_path=item['image'], recipe_id=recipe.id)
 
             return JsonResponse(data={
                 "id": recipe.id,
