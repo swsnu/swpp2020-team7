@@ -1,1 +1,3 @@
 """urls for comment"""
+
+urlpatterns = []

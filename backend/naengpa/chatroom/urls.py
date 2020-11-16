@@ -1,1 +1,3 @@
 """urls for chatroom"""
+
+urlpatterns = []
