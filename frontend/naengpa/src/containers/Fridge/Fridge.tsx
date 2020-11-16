@@ -21,7 +21,7 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 	useEffect(() => {
 		// TODO: argument should be user id!
 		dispatch(getFridge(user!.id));
-	}, []);
+	}, [dispatch, user]);
 
 	const ingredients = ingredientList.map((ingredient: any) => {
 		return <Ingredient key={ingredient.id} history={history} ingredient={ingredient} />;
@@ -29,9 +29,9 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 
 	return (
 		<Box id="fridge">
-			{/* <ArrowBackIosIcon id="prev-fridge" /> */}
+			<ArrowBackIosIcon id="prev-fridge" />
 			<div id="ingredients">{ingredients}</div>
-			{/* <ArrowForwardIosIcon id="next-fridge" /> */}
+			<ArrowForwardIosIcon id="next-fridge" />
 		</Box>
 	);
 };
