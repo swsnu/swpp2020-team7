@@ -32,7 +32,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	useEffect(() => {
 		// TODO: argument should be user id!
 		dispatch(getFridge(user!.id));
-	}, []);
+	}, [dispatch, user]);
 
 	/* CLICK EVENT - ADD INGREDIENT TO TODAY INGREDIENT */
 	// TODO: should be modified -> 아직 안됨
