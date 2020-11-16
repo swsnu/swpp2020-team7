@@ -26,20 +26,18 @@ def signup(request):
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
 
-        user = User.objects.create_user(
-            username=username,
-            password=password,
-            email=email,
-            name=name,
-            date_of_birth=date_of_birth)
-        user.save()
-        my_fridge = Fridge(user=user)
-        my_fridge.save()
-
-        checked_user = authenticate(
-            request, username=username, password=password)
-
-        if checked_user is not None:
+        try:
+            user = User.objects.create_user(
+                username=username,
+                password=password,
+                email=email,
+                name=name,
+                date_of_birth=date_of_birth)
+            user.save()
+            my_fridge = Fridge(user=user)
+            my_fridge.save()
+            checked_user = authenticate(
+                request, username=username, password=password)
             login(request, checked_user)
             return JsonResponse(data={
                 'id': checked_user.id,
@@ -48,7 +46,7 @@ def signup(request):
                 'name': checked_user.name,
                 'dateOfBirth': checked_user.date_of_birth
             }, status=201)
-        else:
+        except:
             return HttpResponse(status=500)
     return HttpResponseNotAllowed(['POST'])
 
@@ -63,20 +61,22 @@ def signin(request):
             password = req_data['password']
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
-
-        user = authenticate(
-            request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return JsonResponse(data={
-                'id': user.id,
-                'username': user.username,
-                'email': user.email,
-                'name': user.name,
-                'dateOfBirth': user.date_of_birth
-            }, status=200)
-        else:
-            return HttpResponse(status=401)
+        try:
+            user = authenticate(
+                request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return JsonResponse(data={
+                    'id': user.id,
+                    'username': user.username,
+                    'email': user.email,
+                    'name': user.name,
+                    'dateOfBirth': user.date_of_birth
+                }, status=200)
+            else:
+                return HttpResponse(status=401)
+        except:
+            return HttpResponse(status=500)
     return HttpResponseNotAllowed(['POST'])
 
 
@@ -148,7 +148,7 @@ def user_fridge(request, id):
 
 @ensure_csrf_cookie
 def user_ingredient(request, user_id, id):
-    """DELETE /api/users/:user_id/ingredients/id/ Delete ingredient from the fridge of the given user"""
+    """DELETE /api/users/:user_id/ingredients/:id/ Delete ingredient from the fridge of the given user"""
     # if request.user.id != id:
     #     return HttpResponseForbidden()
     if request.method == 'DELETE':
