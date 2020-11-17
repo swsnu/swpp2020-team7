@@ -1,5 +1,4 @@
 /* RECIPE INTERFACE */
-import { Dictionary } from './general';
 
 export interface RecipeEntity {
 	id?: number;
