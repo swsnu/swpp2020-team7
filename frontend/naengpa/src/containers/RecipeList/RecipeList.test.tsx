@@ -37,6 +37,14 @@ const stubInitialState = {
 				'food-images': [URL.createObjectURL(image)],
 				'recipe-like': 10,
 			},
+			{ id: 3 },
+			{ id: 4 },
+			{ id: 5 },
+			{ id: 6 },
+			{ id: 7 },
+			{ id: 8 },
+			{ id: 9 },
+			{ id: 10 },
 		],
 	},
 };
@@ -90,5 +98,12 @@ describe('RecipeList', () => {
 		const wrapper = component.find('#create-recipe-button');
 		wrapper.find('button').at(0).simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/recipes/create');
+	});
+
+	it('should check if pagination works', async () => {
+		const component = mount(getRecipeList);
+		await waitForComponentToPaint(component);
+		const wrapper = component.find('#recipe-list-page');
+		wrapper.find('button').at(3).simulate('click');
 	});
 });
