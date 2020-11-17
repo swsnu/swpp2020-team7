@@ -107,9 +107,6 @@ class UserTestCase(TestCase):
 
         # user_ingredient
         test_uid = uuid.uuid4()
-        response = client.put('/api/users/{}/ingredients/1/'.format(test_uid))
-        self.assertEqual(response.status_code, 405)
-
         response = client.post('/api/users/{}/ingredients/1/'.format(test_uid))
         self.assertEqual(response.status_code, 405)
 
@@ -136,6 +133,9 @@ class UserTestCase(TestCase):
             '/api/users/{}/ingredients/0/'.format(test_uid))
         self.assertEqual(response.status_code, 401)
 
+        response = client.put('/api/users/{}/ingredients/0/'.format(test_uid))
+        self.assertEqual(response.status_code, 401)
+
         response = client.post('/api/signup/', json.dumps({'username': 'chris', 'email': 'swpp@snu.ac.kr', 'password': 'chris', 'name': 'chris', 'dateOfBirth': '980515'}),
                                content_type='application/json')
         self.assertEqual(response.status_code, 201)
@@ -155,6 +155,9 @@ class UserTestCase(TestCase):
             '/api/users/{}/ingredients/0/'.format(user1.id))
         self.assertEqual(response.status_code, 404)
 
+        response = client.put('/api/users/{}/ingredients/0/'.format(user1.id))
+        self.assertEqual(response.status_code, 404)
+
         client.get('/api/logout/')
         response = client.post('/api/signup/', json.dumps({'username': 'dori', 'email': 'swpp@snu.ac.kr', 'password': 'dori', 'name': 'dori', 'dateOfBirth': '980515'}),
                                content_type='application/json')
@@ -168,6 +171,9 @@ class UserTestCase(TestCase):
             '/api/users/{}/ingredients/0/'.format(test_uid))
         self.assertEqual(response.status_code, 400)
 
+        response = client.put('/api/users/{}/ingredients/0/'.format(test_uid))
+        self.assertEqual(response.status_code, 400)
+
         response = client.post('/api/signup/', json.dumps({'username': 'dori', 'email': 'swpp@snu.ac.kr', 'password': 'dori', 'name': 'dori', 'dateOfBirth': '980515'}),
                                content_type='application/json')
         self.assertEqual(response.status_code, 500)
@@ -175,7 +181,7 @@ class UserTestCase(TestCase):
             '/api/login/', json.dumps({'username': 'dori', 'password': 'dori'}),  content_type='application/json')
         self.assertEqual(response.status_code, 500)
 
-    def test_add_and_delete_ingredient(self):
+    def test_user_ingredient(self):
         client = Client()
         response = client.post('/api/signup/', json.dumps({'username': 'dori', 'email': 'swpp@snu.ac.kr', 'password': 'dori', 'name': 'dori', 'dateOfBirth': '980515'}),
                                content_type='application/json')
@@ -185,11 +191,14 @@ class UserTestCase(TestCase):
 
         response = client.get('/api/ingredients/')
         response = client.post(
-            '/api/users/{}/fridge/'.format(user.id), json.dumps({'ingredient_id': 200, }), content_type='application/json')
+            '/api/users/{}/fridge/'.format(user.id), json.dumps({'ingredient_id': 300, }), content_type='application/json')
         self.assertEqual(response.status_code, 201)
 
+        response = client.put('/api/users/{}/ingredients/300/'.format(user.id))
+        self.assertEqual(response.status_code, 200)
+
         response = client.delete(
-            '/api/users/{}/ingredients/200/'.format(user.id))
+            '/api/users/{}/ingredients/300/'.format(user.id))
         self.assertEqual(response.status_code, 200)
 
     def test_key_json_error(self):
@@ -197,9 +206,11 @@ class UserTestCase(TestCase):
         response = client.post('/api/signup/', json.dumps({'username': 'dori', 'password': 'dori', 'name': 'dori', 'dateOfBirth': '980515'}),
                                content_type='application/json')
         self.assertEqual(response.status_code, 400)
+
         response = client.post('/api/login/', json.dumps({'username': 'dori', }),
                                content_type='application/json')
         self.assertEqual(response.status_code, 400)
+
         response = client.post('/api/signup/', json.dumps({'username': 'dori', 'email': 'swpp@snu.ac.kr', 'password': 'dori', 'name': 'dori', 'dateOfBirth': '980515'}),
                                content_type='application/json')
         self.assertEqual(response.status_code, 201)

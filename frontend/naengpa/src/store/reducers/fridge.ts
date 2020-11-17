@@ -21,7 +21,6 @@ function fridgeReducer(state: InitialState = FridgeState, action: Action): Initi
 		/* GET INGREDIENT LIST */
 		case actionTypes.GET_FRIDGE:
 			return { ...state, ingredientList: action.ingredientList };
-		// return { ...state ingredientList:action.ingredientList};
 
 		/* ADD INGREDIENT TO FRIDGE */
 		case actionTypes.ADD_INGREDIENT_TO_FRIDGE:
@@ -38,16 +37,7 @@ function fridgeReducer(state: InitialState = FridgeState, action: Action): Initi
 		case actionTypes.TOGGLE_TODAY_INGREDIENT:
 			ingredientList = state.ingredientList.map((ingredient) => {
 				return (ingredient.id as number) === action.id
-					? { ...ingredient, isTodayIngredient: false }
-					: ingredient;
-			});
-			return { ...state, ingredientList };
-
-		/* ADD INGREDIENT TO TODAY INGREDIENT */
-		case actionTypes.ADD_INGREDIENT_TO_TODAY_INGREDIENT:
-			ingredientList = state.ingredientList.map((ingredient) => {
-				return (ingredient.id as number) === action.id
-					? { ...ingredient, isTodayIngredient: true }
+					? { ...ingredient, isTodayIngredient: !ingredient.isTodayIngredient }
 					: ingredient;
 			});
 			return { ...state, ingredientList };

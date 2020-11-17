@@ -147,6 +147,7 @@ def user_fridge(request, id):
 @ensure_csrf_cookie
 def user_ingredient(request, user_id, id):
     """DELETE /api/users/:user_id/ingredients/:id/ Delete ingredient from the fridge of the given user"""
+    """PUT /api/users/:user_id/ingredients/:id/ Toggle ingredient's is_today_ingredient attribute of the given user"""
     if request.method == 'DELETE':
         if not request.user.is_authenticated:
             return HttpResponse(status=401)
@@ -154,6 +155,23 @@ def user_ingredient(request, user_id, id):
             user = User.objects.get(id=user_id)
             ingredient = Ingredient.objects.get(id=id)
             user.fridge.ingredients.remove(ingredient)
+            ingredient_list = [
+                ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient')]
+        except User.DoesNotExist:
+            return HttpResponseBadRequest()
+        except Ingredient.DoesNotExist:
+            return HttpResponseNotFound()
+        return JsonResponse(ingredient_list, safe=False)
+    elif request.method == 'PUT':
+        if not request.user.is_authenticated:
+            return HttpResponse(status=401)
+        try:
+            user = User.objects.get(id=user_id)
+            ingredient = Ingredient.objects.get(id=id)
+            target_ingredient = FridgeIngredient.objects.filter(
+                fridge=user.fridge).all().get(ingredient=ingredient)
+            target_ingredient.is_today_ingredient = not target_ingredient.is_today_ingredient
+            target_ingredient.save()
             ingredient_list = [
                 ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient')]
         except User.DoesNotExist:
