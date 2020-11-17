@@ -34,10 +34,7 @@ matrix:
         - cd backend/naengpa
       install:
         - pip install -r requirements.txt
-        - pip3 install coveralls
       script:
-        - python manage.py makemigrations core
-        - python manage.py migrate
         - pylint **/*.py
         - coverage run --source='.' manage.py test
         - coverage xml
