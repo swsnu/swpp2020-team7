@@ -93,9 +93,9 @@ DATABASES = {
         'USER': os.getenv("DB_USER"),
         'PASSWORD': os.getenv("DB_PASSWORD"),
         'TEST': {
-            'NAME': 'TEST_NAENGPA'
+            'NAME': 'test_database_' + 'NAME' + os.getenv("TRAVIS_BUILD_NUMBER", "")
         },
-    }
+    },
 }
 
 
