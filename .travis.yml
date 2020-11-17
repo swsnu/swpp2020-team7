@@ -34,7 +34,7 @@ matrix:
         - cd backend/naengpa
       install:
         - pip install -r requirements.txt
-        - pip3 install caveralls
+        - pip3 install coveralls
       script:
         - pylint **/*.py
         - coverage run --source='.' manage.py test
