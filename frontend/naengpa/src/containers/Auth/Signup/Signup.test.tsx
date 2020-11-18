@@ -78,7 +78,7 @@ describe('Signup', () => {
 		signupButton.simulate('click');
 		expect(spySignupAction).toBeCalledTimes(0);
 		expect(spyAlert).toBeCalledTimes(1);
-		expect(spyAlert).toBeCalledWith('blink');
+		expect(spyAlert).toBeCalledWith('fill in the blink');
 
 		inputList.find('#password').simulate('change', { target: { value: mockUser.password } }); // password
 		inputList
