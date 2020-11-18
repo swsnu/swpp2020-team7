@@ -1,20 +1,19 @@
 import React from 'react';
-import './TodayStar.scss';
+import { useSelector } from 'react-redux';
 import { History } from 'history';
-
+import { AppState } from '../../store/store';
+import { getUserList } from '../../store/actions/index';
 import Profile from '../Profile/Profile';
+import './TodayStar.scss';
 
 interface TodayStarProps {
 	history: History;
 }
 
 const TodayStar: React.FC<TodayStarProps> = ({ history }) => {
-	const mock_user_list = [
-		{ id: 1, username: 'pongpong', naengpa_score: 2000, user_image: '/icons/girl.png' },
-		{ id: 2, username: 'eunsung', naengpa_score: 1500, user_image: '/icons/boy.png' },
-	];
+	const user_list = useSelector((state: AppState) => state.user.user_list);
 
-	const user = mock_user_list.map((item: any) => {
+	const user = user_list.map((item: any) => {
 		return <Profile key={item.id} profile={item} />;
 	});
 
