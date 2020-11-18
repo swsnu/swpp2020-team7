@@ -85,7 +85,6 @@ describe('TodayIngredient', () => {
 	let todayIngredient: any;
 	let spyToggleTodayIngredient: any;
 	let spyGetFridge: any;
-	let spyAddIngredientToTodayIngredient: any;
 	let spyHistoryPush: any;
 
 	beforeEach(() => {
@@ -108,9 +107,6 @@ describe('TodayIngredient', () => {
 			.mockImplementation(() => jest.fn());
 		spyGetFridge = jest
 			.spyOn(fridgeActionCreators, 'getFridge')
-			.mockImplementation(() => jest.fn());
-		spyAddIngredientToTodayIngredient = jest
-			.spyOn(fridgeActionCreators, 'addIngredientToTodayIngredient')
 			.mockImplementation(() => jest.fn());
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 	});
@@ -174,11 +170,8 @@ describe('TodayIngredient', () => {
 
 		const alertContentsWrapper = component.find('div#alert-contents');
 		alertContentsWrapper.find('button').at(1).simulate('click'); // apple
-		expect(spyAddIngredientToTodayIngredient).toBeCalledTimes(1);
-		expect(spyAddIngredientToTodayIngredient).toBeCalledWith(
-			stubInitialState(true).user.user.id,
-			1,
-		);
+		expect(spyToggleTodayIngredient).toBeCalledTimes(1);
+		expect(spyToggleTodayIngredient).toBeCalledWith(stubInitialState(true).user.user.id, 1);
 		expect(spyHistoryPush).toBeCalledWith('/fridge');
 	});
 

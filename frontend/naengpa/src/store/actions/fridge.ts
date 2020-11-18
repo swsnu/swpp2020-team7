@@ -46,18 +46,6 @@ export function addIngredientToFridge(id: string, ingredient: IngredientEntity) 
 	};
 }
 
-/* ADD INGREDIENT TO TODAY INGREDIENT */
-export function addIngredientToTodayIngredient(id: string, ingredient_id: number) {
-	return async (dispatch: any) => {
-		// await axios.put(`/api/users/${id}/ingredients/${ingredient_id}/`).then((res) => console.log(res));
-
-		dispatch({
-			type: actionTypes.ADD_INGREDIENT_TO_TODAY_INGREDIENT,
-			id: ingredient_id,
-		});
-	};
-}
-
 /* DELETE INGREDIENT FROM FRIDGE */
 export function deleteIngredientFromFridge(user_id: string, id: number) {
 	return async (dispatch: any) => {
@@ -70,13 +58,13 @@ export function deleteIngredientFromFridge(user_id: string, id: number) {
 }
 
 /*  TOGGLE TODAY INGREDIENT */
-export function toggleTodayIngredient(id: string, ingredient_id: number) {
+export function toggleTodayIngredient(user_id: string, id: number) {
 	return async (dispatch: any) => {
-		// await axios.put(`/api/users/${id}/ingredients/${ingredient_id}/`).then((res) => console.log(res));
+		await axios.put(`/api/users/${user_id}/ingredients/${id}/`);
 
 		dispatch({
 			type: actionTypes.TOGGLE_TODAY_INGREDIENT,
-			id: ingredient_id,
+			id,
 		});
 	};
 }

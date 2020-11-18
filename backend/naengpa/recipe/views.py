@@ -1,11 +1,8 @@
 """views for recipe"""
 import json
-# from django.contrib.auth import get_user_model
-# from django.contrib.auth import authenticate as django_authenticate
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseForbidden,  HttpResponseNotFound, HttpResponseNotAllowed
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import Recipe, Image
-# User = get_user_model()
 
 
 @ensure_csrf_cookie
@@ -34,12 +31,11 @@ def recipe_list(request):
 
         else:
             ''' POST /api/recipes/ post new recipe '''
-            req_data = json.loads(request.body.decode())
+            req_data = json.loads(request.body.decode("utf-8"))
             food_name = req_data['foodName']
             cook_time = req_data['cookTime']
             recipe_content = req_data['recipeContent']
             food_images = req_data['foodImages']
-            # recipe_like = req_data['recipe-like']
             recipe = Recipe.objects.create(
                 author=request.user,
                 food_name=food_name,
@@ -47,7 +43,8 @@ def recipe_list(request):
                 recipe_content=recipe_content)
 
             for item in food_images:
-                Image.objects.create(file_path=item, recipe_id=recipe.id)
+                Image.objects.create(
+                    file_path=item, recipe_id=recipe.id)
 
             return JsonResponse(data={
                 "id": recipe.id,
@@ -67,5 +64,4 @@ def recipe_list(request):
 
 def recipe_info(request, id):
     """get recipe of given id"""
-    # if request.method != 'GET' and request.method != 'POST':
     return HttpResponse(status=405)

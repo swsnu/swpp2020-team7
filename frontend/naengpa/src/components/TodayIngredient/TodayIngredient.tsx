@@ -6,11 +6,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { History } from 'history';
 import Alert from '@material-ui/lab/Alert';
 import { Button, Collapse } from '@material-ui/core';
-import {
-	toggleTodayIngredient,
-	getFridge,
-	addIngredientToTodayIngredient,
-} from '../../store/actions/index';
+import { toggleTodayIngredient, getFridge } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 
 interface TodayIngredientProps {
@@ -32,13 +28,13 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	useEffect(() => {
 		// TODO: argument should be user id!
 		dispatch(getFridge(user!.id));
-	}, []);
+	}, [dispatch, user]);
 
 	/* CLICK EVENT - ADD INGREDIENT TO TODAY INGREDIENT */
 	// TODO: should be modified -> 아직 안됨
 
 	const onClickAddTodayIngredient = (target_id: number) => {
-		dispatch(addIngredientToTodayIngredient(user!.id, target_id));
+		dispatch(toggleTodayIngredient(user!.id, target_id));
 		setAlert(false);
 		history.push('/fridge');
 	};
