@@ -33,6 +33,7 @@ matrix:
         - cd backend/naengpa
       install:
         - pip install -r requirements.txt
+        - pip install coveralls
       script:
         - pylint **/*.py
         - coverage run --source='.' manage.py test
