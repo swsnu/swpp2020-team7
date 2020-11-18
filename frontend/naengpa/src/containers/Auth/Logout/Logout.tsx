@@ -12,7 +12,7 @@ const Logout: React.FC<LogoutProps> = ({ history }) => {
 	useEffect(() => {
 		dispatch(logout());
 		history.push('/login');
-	}, [dispatch]);
+	}, [dispatch, history]);
 	return <></>;
 };
 

@@ -1,8 +1,6 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { AnyAction } from 'redux';
-import * as actionTypes from './actionTypes';
 import * as actionCreators from './fridge';
 
 const middlewares = [thunk];
@@ -66,7 +64,7 @@ describe('ActionCreators', () => {
 	});
 
 	it('should return addIngredientToTodayIngredient action correctly', () => {
-		mockStore.dispatch<any>(actionCreators.addIngredientToTodayIngredient('0', 0));
+		mockStore.dispatch<any>(actionCreators.toggleTodayIngredient('0', 0));
 	});
 
 	it('should return deleteIngredientFromFridge action correctly', () => {
@@ -94,6 +92,5 @@ describe('ActionCreators', () => {
 			});
 		});
 		mockStore.dispatch<any>(actionCreators.toggleTodayIngredient('0', 0));
-		// expect(spy).toBeCalled();
 	});
 });

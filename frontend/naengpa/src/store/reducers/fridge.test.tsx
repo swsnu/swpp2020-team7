@@ -1,8 +1,6 @@
-import React from 'react';
 import fridgeReducer from './fridge';
 import * as actionTypes from '../actions/actionTypes';
 import { IngredientEntity } from '../../model/ingredient';
-import { Dictionary } from '../../model/general';
 
 const ingredientList = [
 	{
@@ -68,20 +66,9 @@ describe('Fridge Reducer', () => {
 		});
 	});
 
-	it('should check if it can toggle today ingredient', () => {
-		const newState = fridgeReducer(FridgeState, {
-			type: actionTypes.TOGGLE_TODAY_INGREDIENT,
-			id: 1,
-		});
-		expect(newState).toEqual({
-			...FridgeState,
-			ingredientList,
-		});
-	});
-
 	it('should check if it can add today ingredient', () => {
 		const newState = fridgeReducer(FridgeState, {
-			type: actionTypes.ADD_INGREDIENT_TO_TODAY_INGREDIENT,
+			type: actionTypes.TOGGLE_TODAY_INGREDIENT,
 			id: 1,
 		});
 		expect(newState).toEqual({
