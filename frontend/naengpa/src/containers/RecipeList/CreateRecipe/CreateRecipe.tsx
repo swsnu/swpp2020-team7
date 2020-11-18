@@ -24,7 +24,7 @@ import './CreateRecipe.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import { RecipeEntity } from '../../../model/recipe';
 import { createRecipe } from '../../../store/actions/index';
-// import { AppState } from '../../store/store';
+import { Dictionary } from '../../../model/general';
 
 interface CreateRecipeProps {
 	history: History;
@@ -33,7 +33,7 @@ interface CreateRecipeProps {
 const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const [foodName, setFoodName] = useState('');
 	const [recipeContent, setRecipeContent] = useState('');
-	const [foodImages, setFoodImages] = useState<Array<string>>([]);
+	const [foodImages, setFoodImages] = useState<Dictionary<string | number>[]>([]);
 	const [cookTime, setCookTime] = useState('');
 
 	// alert state is true if alert is necessary, otherwise false.
@@ -48,14 +48,12 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		const target = e.target as HTMLInputElement;
 		const file: File = (target.files as FileList)[0];
 		// current: images are saved as 'file path'
-		setFoodImages([...foodImages, URL.createObjectURL(file)]);
+		setFoodImages([...foodImages, { id: foodImages.length, image: URL.createObjectURL(file) }]);
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
 	const onClickDeleteImage = (target_id: number) => {
-		if (!alert) {
-			setFoodImages(foodImages.filter((item, i) => i !== target_id));
-		}
+		setFoodImages(foodImages.filter((item, i) => i !== target_id));
 	};
 
 	// TODO: need to alert that the content could be lost
@@ -71,11 +69,14 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
+			const images = foodImages.map((item) => {
+				return item.image as string;
+			});
 			const newRecipe: RecipeEntity = {
 				foodName,
 				cookTime,
 				recipeContent,
-				foodImages,
+				foodImages: images,
 				recipeLike: 0,
 			};
 			dispatch(createRecipe(newRecipe));
@@ -87,18 +88,24 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		? []
 		: foodImages.map((item, i) => {
 				return (
-					<div key={item} id="delete-image-icon-box" data-testid="delete-image-icon-box">
-						<CancelIcon
-							key={item}
-							id="delete-image-button"
-							data-testid="delete-image-button"
-							type="button"
-							onClick={() => onClickDeleteImage(i)}
-						/>
+					<div
+						key={item.id}
+						id="delete-image-icon-box"
+						data-testid="delete-image-icon-box"
+					>
+						{!alert && (
+							<CancelIcon
+								key={item.image}
+								id="delete-image-button"
+								data-testid="delete-image-button"
+								type="button"
+								onClick={() => onClickDeleteImage(i)}
+							/>
+						)}
 						<img
-							key={item}
+							key={item.id}
 							id="delete-image-icon"
-							src={item}
+							src={item.image as string}
 							height="150px"
 							width="150px"
 							alt="/api/images" // TODO: check alt path
@@ -206,10 +213,14 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 						</TableRow>
 						<TableRow>
 							<TableCell id="image-box">
-								{image_list.length && image_list}
+								{image_list}
 								<Box id="add-image-icon-box">
 									<label aria-label="food-image-label" htmlFor="food-image">
-										<AddCircleIcon id="add-image-button" type="button" />
+										<AddCircleIcon
+											id="add-image-button"
+											data-testid="add-image-button"
+											type="button"
+										/>
 										<Input
 											type="file"
 											id="food-image"

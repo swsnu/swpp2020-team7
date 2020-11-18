@@ -38,7 +38,7 @@
   button {
     border: none {
       border-radius: 20px;
-    };
+    }
 
     background-color: white;
 
@@ -54,5 +54,10 @@
   button:focus {
     outline: 0 !important;
     color: #408bf9
+  }    
+  
+  #recipe-list-page {
+    display: flex;
+    justify-content: center;
   }
 }
