@@ -17,19 +17,15 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 	const [passwordConfirm, setPasswordConfirm] = useState('');
 	const [dateOfBirth, setDateOfBirth] = useState('');
 	const [email, setEmail] = useState('');
-	const [nameVal, setNameVal] = useState(true);
-	var namePat = new RegExp(/^[ㄱ-ㅎ|가-힣|a-z|A-Z|\*]+$/);
-	//var userNamePat = new RegExp(/^[ㄱ-ㅎ|가-힣|a-z|A-Z|\*]+$/);
-	var birthPat = new RegExp(/^[0-9]{6}$/);
-	var emailPat = new RegExp(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$/i);
+	const namePat = new RegExp('^[ㄱ-ㅎ|가-힣|a-z|A-Z|*]+$');
+	const birthPat = new RegExp(/^[0-9]{6}$/);
+	const emailPat = new RegExp(
+		/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$/i,
+	);
 
 	const dispatch = useDispatch();
 
 	const onClickSignup = () => {
-		/*
-		if (!namePat.test(name)) setNameVal(false);
-		else if (namePat.test(name)) setNameVal(true);
-		*/
 		if (
 			name === '' ||
 			username === '' ||
@@ -54,7 +50,6 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 		}
 	};
 
-
 	return (
 		<div id="signup">
 			<button id="naengpa" type="button" onClick={() => history.push('/fridge')}>
@@ -63,7 +58,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 			</button>
 			<div id="signup-part">
 				<div id="input-list">
-					<div id='input-name'>
+					<div id="input-name">
 						<input
 							id="name"
 							type="text"
@@ -71,7 +66,11 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							pattern="^[ㄱ-ㅎ|가-힣|a-z|A-Z|\*]+$"
 							onChange={(e) => setName(e.target.value)}
 						/>
-						{(name !== '' && !namePat.test(name)) ? <p id="invaild-name">INVALID NAME</p> : <p id="invalid-name"></p>}
+						{name !== '' && !namePat.test(name) ? (
+							<p id="invaild-name">INVALID NAME</p>
+						) : (
+							<p id="invalid-name" />
+						)}
 					</div>
 					<div>
 						<input
@@ -96,7 +95,9 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							placeholder="PASSWORD CONFIRM"
 							onChange={(e) => setPasswordConfirm(e.target.value)}
 						/>
-						{(passwordConfirm !== '' && password !== passwordConfirm) && <p id="checkPassword">DO NOT MATCH TO PASSWORD</p>}
+						{passwordConfirm !== '' && password !== passwordConfirm && (
+							<p id="checkPassword">DO NOT MATCH TO PASSWORD</p>
+						)}
 					</div>
 					<div>
 						<input
@@ -106,7 +107,9 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							onChange={(e) => setDateOfBirth(e.target.value)}
 							pattern="^[0-9]{6}$"
 						/>
-						{(dateOfBirth !== '' && !birthPat.test(dateOfBirth)) && <p id="invalidBirth">INVALID DATE OF BIRTH</p>}
+						{dateOfBirth !== '' && !birthPat.test(dateOfBirth) && (
+							<p id="invalidBirth">INVALID DATE OF BIRTH</p>
+						)}
 					</div>
 					<div>
 						<input
@@ -116,7 +119,9 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							onChange={(e) => setEmail(e.target.value)}
 							pattern="^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$"
 						/>
-						{(email !== '' && !emailPat.test(email)) && <p id="invalidEmail">INVALID EMAIL</p>}
+						{email !== '' && !emailPat.test(email) && (
+							<p id="invalidEmail">INVALID EMAIL</p>
+						)}
 					</div>
 				</div>
 				<button id="signup-button" type="submit" onClick={onClickSignup}>
