@@ -1,6 +1,6 @@
-language: node_js
+language: python
 node_js: lts/*
-python: 3.7
+python: "3.7"
 cache:
   - yarn: true
   - pip: true
@@ -10,20 +10,23 @@ addons:
     organization: "swsnu"
     token:
       secure: "FJ3gXitz8KWhOeJIECTpAxcF8yaiU33BLrfD405pKBjp0vhSKBRorOwoU4hvNIAxE9StgsJ6HYdlt6S2mNZVnMbVibuzMi0xaikKKah9Yq+LfWxwixJ2TcsRSFSzcYiGWQ/P+Lna4eFH0l5IqrYNx0zlu0vzm+x/VBWIR+wziQV+jjLPi/hOkG+sqgFB/+UwbNfGPY+17x2A1D09p/LziEzB5kTtP/c1vdL1L1l+LDDQoq5dtbGEyEWWyDEr1sQEe8utTxnk2hDVgqO4j4q4nYrsIdqeZnF0/agjouY5ppeGLXuxQon8X6igT3o5CpgzhK/qeXclC1yvbdxB+WnhggGm1Kq90FfpDjzoO0pu+jlqA/6OBOgoCWv8RclxaD98yBy2bBR3bcCFtKIvMtC3wUvTAVVboUdmxL8x92h4MKqgCeqoU6SzQcBN4ZYoD2iUledR1ObD+FmWRjOONRMyjHtFLr3F7sZnLNAD376x6cxgNgwTZzopLAI8J8cBZOsydch1ud9qfmVIpBqMmZK2XFNqQk94Ob2MzS4SUlzODj2MMcoTBsIFxUdui4nedDRDGs0CRucN6n1tmVVOquYIQzL+h+2F1E3wNY76kXO1Kdn9qt3Akoj6soW4KUFpEB/FEJqD3itAgWx+uMtr3Mgp0hH9y1fs7aybsSivlM2+OIE="
+env:
+  - FRONTEND="frontend/naengpa"
+  - BACKEND="backend/naengpa"
 
 install:
-  - cd frontend/naengpa && yarn && yarn add coveralls
-  - cd ../../backend/naengpa && pip install -r requirements.txt
+  - cd $FRONTEND && yarn && yarn add coveralls
+  - cd ../../$BACKEND && pip3 install -r requirements.txt
   - gem install coveralls-lcov
 
 script:
   - echo "[Frontend scripts]"
-  - cd ../../frontend/naengpa && yarn lint
+  - cd ../../$FRONTEND && yarn lint
   - yarn test
   - coveralls-lcov -v -n coverage/lcov.info > coverage/coverage.json
 
   - echo "[Backend scripts]"
-  - cd ../../backend/naengpa && pylint **/*.py
+  - cd ../../$BACKEND && pylint **/*.py
   - coverage run --branch --source='.' manage.py test && coverage report -m
   - coverage xml
 
@@ -31,5 +34,5 @@ script:
   - cd ../.. && sonar-scanner
 
 after_success:
-  - cd backend/naengpa
-  - coveralls --merge=../../frontend/naengpa/coverage/coverage.json
+  - cd $BACKEND
+  - coveralls --merge=../../$FRONTEND/coverage/coverage.json
