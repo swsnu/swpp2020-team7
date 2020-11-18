@@ -16,7 +16,7 @@
         min-width: 375px;
         height: 175px;
         min-height: 175px;
-        font-family: 'Jua';
+        font-family: 'Jua', sans-serif;
         margin-right: 3%;
         font-weight: normal;
         font-stretch: normal;
@@ -50,7 +50,7 @@
         border-radius: 17px;
         box-shadow: 10px 10px 10px 0 rgba(21, 21, 21, 0.34);
         background-color: #ffffff;
-        font-family: 'Arial';
+        font-family: Arial, sans-serif;
     }
 
     #name {
@@ -147,7 +147,7 @@
     font: {
         width: 100%;
         height: 20%;
-        font-family: HelveticaNeue;
+        font-family: "Helvetica Neue", sans-serif;
         font-size: 100%;
         font-weight: bold;
         font-stretch: normal;
