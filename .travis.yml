@@ -2,7 +2,6 @@ matrix:
   include:
     - language: node_js
       node_js:
-        - "lts/*"
         - "12"
       addons:
         sonarcloud:
@@ -34,7 +33,7 @@ matrix:
         - cd backend/naengpa
       install:
         - pip install -r requirements.txt
-        - pip3 install coveralls
+        - pip install coveralls
       script:
         - pylint **/*.py
         - coverage run --source='.' manage.py test
@@ -43,3 +42,4 @@ matrix:
       after_success:
         - cd backend/naengpa
         - coveralls
+        - cd ../..
