@@ -1,6 +1,8 @@
+os: linux
+dist: xenial
 language: python
-node_js: lts/*
-python: "3.7"
+python: 3.7
+node_js: 12
 cache:
   - yarn: true
   - pip: true
@@ -15,7 +17,7 @@ env:
   - BACKEND="backend/naengpa"
 
 install:
-  - cd $FRONTEND && yarn && yarn add coveralls
+  - cd $FRONTEND && npm install yarn && yarn && yarn add coveralls
   - cd ../../$BACKEND && pip3 install -r requirements.txt
   - gem install coveralls-lcov
 
