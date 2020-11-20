@@ -16,7 +16,7 @@ describe('Signup', () => {
 	let spyHistoryPush: any;
 	let spyAlert: any;
 	const mockUser: UserSignupInputDTO = {
-		name: '테스트',
+		name: 'test',
 		username: 'test',
 		password: 'test',
 		dateOfBirth: '20201111',
@@ -69,12 +69,14 @@ describe('Signup', () => {
 		const inputList = component.find('div#input-list').find('input');
 		const signupButton = component.find('button#signup-button');
 
-		inputList.find('#name').simulate('change', { target: { value: mockUser.name } }); // name
+		inputList.find('#name').simulate('change', { target: { value: 'wrongName' } });
+		// expect(component.find('p#invalid-name').length).toBe(1); // name
 		inputList.find('#username').simulate('change', { target: { value: mockUser.username } }); // username
 		inputList
 			.find('#date-of-birth')
 			.simulate('change', { target: { value: mockUser.dateOfBirth } }); // date-of-birth
-		inputList.find('#email').simulate('change', { target: { value: mockUser.email } }); // email
+		inputList.find('#email').simulate('change', { target: { value: 'wrongEmail' } });
+		expect(component.find('p#invalidEmail').length).toBe(1); // email
 		signupButton.simulate('click');
 		expect(spySignupAction).toBeCalledTimes(0);
 		expect(spyAlert).toBeCalledTimes(1);

@@ -66,10 +66,8 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							pattern="^[ㄱ-ㅎ|가-힣|a-z|A-Z|\*]+$"
 							onChange={(e) => setName(e.target.value)}
 						/>
-						{name !== '' && !namePat.test(name) ? (
-							<p id="invaild-name">INVALID NAME</p>
-						) : (
-							<p id="invalid-name" />
+						{name !== '' && !namePat.test(name) && (
+							<p id="invalid-name">INVALID NAME</p>
 						)}
 					</div>
 					<div>
