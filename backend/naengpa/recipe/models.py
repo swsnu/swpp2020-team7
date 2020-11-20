@@ -13,11 +13,8 @@ class Recipe(models.Model):
     food_category = models.CharField(max_length=50)
     cook_time = models.CharField(max_length=50)
     ingredients = models.TextField(blank=True)
-    # images = models.ManyToManyField('Image', blank=True, symmetrical=False)
     recipe_content = models.TextField(blank=True)
-    # like_users =
-    # hashtags =
-    # comments =
+
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
 

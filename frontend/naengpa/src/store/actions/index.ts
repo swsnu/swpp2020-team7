@@ -7,7 +7,6 @@ export {
 	addIngredientToFridge,
 	deleteIngredientFromFridge,
 	toggleTodayIngredient,
-	addIngredientToTodayIngredient,
 } from './fridge';
 
 /* Recipe actions */

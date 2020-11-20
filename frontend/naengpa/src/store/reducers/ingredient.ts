@@ -1,4 +1,3 @@
-import React from 'react';
 import { IngredientCategoryCollection } from '../../model/ingredient';
 import { IngredientActions } from '../actions/ingredient';
 import * as actionTypes from '../actions/actionTypes';

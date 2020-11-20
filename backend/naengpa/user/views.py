@@ -26,21 +26,18 @@ def signup(request):
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
 
-        user = User.objects.create_user(
-            username=username,
-            password=password,
-            email=email,
-            name=name,
-            date_of_birth=date_of_birth
-        )
-        user.save()
-        my_fridge = Fridge(user=user)
-        my_fridge.save()
-
-        checked_user = authenticate(
-            request, username=username, password=password)
-
-        if checked_user is not None:
+        try:
+            user = User.objects.create_user(
+                username=username,
+                password=password,
+                email=email,
+                name=name,
+                date_of_birth=date_of_birth)
+            user.save()
+            my_fridge = Fridge(user=user)
+            my_fridge.save()
+            checked_user = authenticate(
+                request, username=username, password=password)
             login(request, checked_user)
             return JsonResponse(data={
                 'id': checked_user.id,
@@ -50,7 +47,7 @@ def signup(request):
                 'dateOfBirth': checked_user.date_of_birth,
                 'naengpa_score': checked_user.naengpa_score
             }, status=201)
-        else:
+        except:
             return HttpResponse(status=500)
     return HttpResponseNotAllowed(['POST'])
 
@@ -116,8 +113,6 @@ def user_list(request):
 def user_fridge(request, id):
     """GET /api/users/:id/fridge/ Get Ingredient list in the fridge of the given user"""
     """POST /api/users/:id/fridge/ Add new ingredient to the fridge of the given user"""
-    # if request.user.id != id:
-    #     return HttpResponseForbidden()
     if request.method == 'GET':
         if not request.user.is_authenticated:
             return HttpResponse(status=401)
@@ -152,9 +147,8 @@ def user_fridge(request, id):
 
 @ensure_csrf_cookie
 def user_ingredient(request, user_id, id):
-    """DELETE /api/users/:user_id/ingredients/id/ Delete ingredient from the fridge of the given user"""
-    # if request.user.id != id:
-    #     return HttpResponseForbidden()
+    """DELETE /api/users/:user_id/ingredients/:id/ Delete ingredient from the fridge of the given user"""
+    """PUT /api/users/:user_id/ingredients/:id/ Toggle ingredient's is_today_ingredient attribute of the given user"""
     if request.method == 'DELETE':
         if not request.user.is_authenticated:
             return HttpResponse(status=401)
@@ -162,6 +156,23 @@ def user_ingredient(request, user_id, id):
             user = User.objects.get(id=user_id)
             ingredient = Ingredient.objects.get(id=id)
             user.fridge.ingredients.remove(ingredient)
+            ingredient_list = [
+                ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient')]
+        except User.DoesNotExist:
+            return HttpResponseBadRequest()
+        except Ingredient.DoesNotExist:
+            return HttpResponseNotFound()
+        return JsonResponse(ingredient_list, safe=False)
+    elif request.method == 'PUT':
+        if not request.user.is_authenticated:
+            return HttpResponse(status=401)
+        try:
+            user = User.objects.get(id=user_id)
+            ingredient = Ingredient.objects.get(id=id)
+            target_ingredient = FridgeIngredient.objects.filter(
+                fridge=user.fridge).all().get(ingredient=ingredient)
+            target_ingredient.is_today_ingredient = not target_ingredient.is_today_ingredient
+            target_ingredient.save()
             ingredient_list = [
                 ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient')]
         except User.DoesNotExist:

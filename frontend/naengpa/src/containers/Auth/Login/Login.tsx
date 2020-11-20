@@ -32,7 +32,7 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 					<input
 						id="username"
 						type="text"
-						placeholder="ID"
+						placeholder="USERNAME"
 						onChange={(e) => setUserName(e.target.value)}
 					/>
 				</div>

@@ -139,9 +139,16 @@ describe('CreateRecipe', () => {
 		const confirmAlertButton = getByTestId('confirm-alert-button');
 		fireEvent.click(confirmAlertButton);
 		const foodImage = getByTestId('food-image').querySelector('input');
-		fireEvent.change(foodImage as HTMLInputElement, { target: { files: [image] } });
-		const deleteImageButton = getByTestId('delete-image-icon-box');
-		// deleteImageButton?.click();
+		const addFoodImageButton = getByTestId('add-image-button');
+		fireEvent.click(addFoodImageButton);
+		await fireEvent.change(foodImage as HTMLInputElement, { target: { files: [image] } });
+		const deleteImageButton = getByTestId('delete-image-button');
+		fireEvent.click(deleteImageButton);
+		fireEvent.click(addFoodImageButton);
+		await fireEvent.change(foodImage as HTMLInputElement, { target: { files: [image] } });
+		const extractIngredientButton = getByTestId('extract-ingredient-button');
+		fireEvent.click(extractIngredientButton);
+		fireEvent.click(deleteImageButton);
 	});
 
 	it('should go back to recipe list', async () => {

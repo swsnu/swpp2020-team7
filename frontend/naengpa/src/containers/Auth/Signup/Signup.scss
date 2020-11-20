@@ -16,7 +16,7 @@
         min-width: 375px;
         height: 175px;
         min-height: 175px;
-        font-family: 'Jua';
+        font-family: 'Jua', sans-serif;
         margin-right: 3%;
         font-weight: normal;
         font-stretch: normal;
@@ -50,12 +50,16 @@
         border-radius: 17px;
         box-shadow: 10px 10px 10px 0 rgba(21, 21, 21, 0.34);
         background-color: #ffffff;
-        font-family: 'Arial';
+        font-family: 'Arial', sans-serif;
+    }
+
+    #name:invalid {
+        border-bottom-color: rgb(252, 67, 67);
     }
 
     #name {
         margin-top: 7.5%;
-        margin-bottom: 10%;
+        //margin-bottom: 10%;
         margin-left: 10%;
         width: 80%;
         align-content: center;
@@ -69,8 +73,18 @@
         outline: none;
     }
 
+    #invaild-name {
+        margin-top: 1%;
+        margin-left: 10.5%;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 80%;
+        color: rgb(252, 67, 67);
+        line-height: 30%;
+    }
+
     #username {
-        margin-bottom: 10%;
+        margin-top: 10%;
         margin-left: 10%;
         width: 80%;
         align-content: center;
@@ -85,7 +99,8 @@
     }
 
     #password {
-        margin-bottom: 10%;
+        margin-top: 10%;
+        //margin-bottom: 10%;
         margin-left: 10%;
         width: 80%;
         align-content: center;
@@ -100,7 +115,8 @@
     }
     
     #password-confirm {
-        margin-bottom: 10%;
+        margin-top: 10%;
+        margin-bottom: 0%;
         margin-left: 10%;
         width: 80%;
         align-content: center;
@@ -114,8 +130,19 @@
         outline: none;
     }
 
+    #checkPassword {
+        margin-top: 1%;
+        margin-left: 10.5%;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 80%;
+        color: rgb(252, 67, 67);
+        line-height: 30%;
+    }
+
     #date-of-birth {
-        margin-bottom: 10%;
+        margin-top: 10%;
+        margin-bottom: 0%;
         margin-left: 10%;
         width: 80%;
         align-content: center;
@@ -128,9 +155,24 @@
         border-bottom-color: #bbbbbb;
         outline: none;
     }
+
+    #date-of-birth:invalid {
+        border-bottom-color: rgb(252, 67, 67);
+    }
     
+    #invalidBirth {
+        margin-top: 1%;
+        margin-left: 10.5%;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 80%;
+        color: rgb(252, 67, 67);
+        line-height: 30%;
+    }
+
     #email {
-        margin-bottom: 5%;
+        margin-top: 10%;
+        margin-bottom: 0%;
         margin-left: 10%;
         width: 80%;
         align-content: center;
@@ -142,6 +184,20 @@
         font-size: 200%;
         border-bottom-color: #bbbbbb;
         outline: none;
+    }
+
+    #email:invalid {
+        border-bottom-color: rgb(252, 67, 67);
+    }
+
+    #invalidEmail {
+        margin-top: 1%;
+        margin-left: 10.5%;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 80%;
+        color: rgb(252, 67, 67);
+        line-height: 30%;
     }
 
     font: {
