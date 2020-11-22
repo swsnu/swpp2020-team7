@@ -3,12 +3,12 @@ import { UserEntity } from '../../model/user';
 
 export type InitialState = {
 	user: UserEntity | null;
-	user_list: UserEntity[];
+	userList: UserEntity[];
 };
 
 const UserState: InitialState = {
 	user: null,
-	user_list: [],
+	userList: [],
 };
 
 type Action =
@@ -16,7 +16,7 @@ type Action =
 	| { type: 'SIGNUP'; user: UserEntity }
 	| { type: 'LOGIN'; user: UserEntity }
 	| { type: 'LOGOUT' }
-	| { type: 'GET_USER_LIST'; user_list: UserEntity[] };
+	| { type: 'GET_USER_LIST'; userList: UserEntity[] };
 
 function userReducer(state: InitialState = UserState, action: Action): InitialState {
 	switch (action.type) {
@@ -33,7 +33,7 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 			return { ...state, user: null };
 
 		case actionTypes.GET_USER_LIST:
-			return { ...state, user_list: action.user_list };
+			return { ...state, userList: action.userList };
 		default:
 			return state;
 	}
