@@ -10,7 +10,7 @@ const TodayRecipe: React.FC = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(getRecipeList());
+		dispatch(getRecipeList(''));
 	}, [dispatch]);
 
 	const recipe = recipeList.map((item: any) => {

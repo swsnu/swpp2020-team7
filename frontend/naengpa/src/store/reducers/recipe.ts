@@ -1,24 +1,24 @@
 import * as actionTypes from '../actions/actionTypes';
-import { Dictionary } from '../../model/general';
+import { RecipeEntity } from '../../model/recipe';
 
 export type InitialState = {
-	recipeList: Dictionary<string | string[] | number>[];
-	selectedRecipe: Dictionary<string | string[] | number>;
+	recipeList: RecipeEntity[];
+	selectedRecipe: RecipeEntity | null;
 };
 
 const RecipeState: InitialState = {
 	recipeList: [],
-	selectedRecipe: {},
+	selectedRecipe: null,
 };
 
 export type Action =
-	| { type: 'GET_RECIPE_LIST'; recipeList: Dictionary<string | string[] | number>[] }
-	| { type: 'GET_RECIPE'; recipe: Dictionary<string | string[] | number> }
-	| { type: 'CREATE_RECIPE'; recipe: Dictionary<string | string[] | number> }
+	| { type: 'GET_RECIPE_LIST'; recipeList: RecipeEntity[] }
+	| { type: 'GET_RECIPE'; recipe: RecipeEntity }
+	| { type: 'CREATE_RECIPE'; recipe: RecipeEntity }
 	| { type: 'DELETE_RECIPE'; target_id: number }
 	| {
 			type: 'EDIT_RECIPE';
-			recipe: Dictionary<string | string[] | number>;
+			recipe: RecipeEntity;
 			target_id: number;
 	  };
 

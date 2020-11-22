@@ -1,10 +1,22 @@
 /* RECIPE INTERFACE */
 
-export interface RecipeEntity {
+export interface CreateRecipeEntity {
 	id?: number;
 	foodName: string;
 	cookTime: string;
 	recipeContent: string;
-	foodImages?: string[]; // current image state -> 'file path'
+	foodImages?: File[]; // current image state -> 'file path'
 	recipeLike: number;
+}
+
+export interface RecipeEntity {
+	id?: number;
+	authorId: number;
+	author: string;
+	foodName: string;
+	cookTime: string;
+	recipeContent: string;
+	foodImages?: File[];
+	recipeLike: number;
+	createdAt: string;
 }

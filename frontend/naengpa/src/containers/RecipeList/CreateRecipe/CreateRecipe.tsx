@@ -22,7 +22,7 @@ import {
 } from '@material-ui/core';
 import './CreateRecipe.scss';
 import { makeStyles } from '@material-ui/core/styles';
-import { RecipeEntity } from '../../../model/recipe';
+import { CreateRecipeEntity } from '../../../model/recipe';
 import { createRecipe } from '../../../store/actions/index';
 import { Dictionary } from '../../../model/general';
 
@@ -33,7 +33,7 @@ interface CreateRecipeProps {
 const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const [foodName, setFoodName] = useState('');
 	const [recipeContent, setRecipeContent] = useState('');
-	const [foodImages, setFoodImages] = useState<Dictionary<string | number>[]>([]);
+	const [foodImages, setFoodImages] = useState<Dictionary<number | File>[]>([]);
 	const [cookTime, setCookTime] = useState('');
 
 	// alert state is true if alert is necessary, otherwise false.
@@ -48,7 +48,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		const target = e.target as HTMLInputElement;
 		const file: File = (target.files as FileList)[0];
 		// current: images are saved as 'file path'
-		setFoodImages([...foodImages, { id: foodImages.length, image: URL.createObjectURL(file) }]);
+		setFoodImages([...foodImages, { id: foodImages.length, image: file }]);
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
@@ -70,9 +70,9 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 			);
 		} else {
 			const images = foodImages.map((item) => {
-				return item.image as string;
+				return item.image as File;
 			});
-			const newRecipe: RecipeEntity = {
+			const newRecipe: CreateRecipeEntity = {
 				foodName,
 				cookTime,
 				recipeContent,
@@ -89,13 +89,13 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		: foodImages.map((item, i) => {
 				return (
 					<div
-						key={item.id}
+						key={item.id as number}
 						id="delete-image-icon-box"
 						data-testid="delete-image-icon-box"
 					>
 						{!alert && (
 							<CancelIcon
-								key={item.image}
+								key={URL.createObjectURL(item.image) as string}
 								id="delete-image-button"
 								data-testid="delete-image-button"
 								type="button"
@@ -103,9 +103,9 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 							/>
 						)}
 						<img
-							key={item.id}
+							key={item.id as number}
 							id="delete-image-icon"
-							src={item.image as string}
+							src={URL.createObjectURL(item.image) as string}
 							height="150px"
 							width="150px"
 							alt="/api/images" // TODO: check alt path
