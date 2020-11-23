@@ -37,7 +37,7 @@ export function createRecipe(recipe: CreateRecipeEntity) {
 		recipe.foodImages!.map((image, index) => {
 			return bodyFormData.append('image', image);
 		});
-		const receivedRecipe = await axios({
+		const response = await axios({
 			method: 'post',
 			url: '/api/recipes/',
 			data: bodyFormData,
@@ -46,10 +46,34 @@ export function createRecipe(recipe: CreateRecipeEntity) {
 				'Content-Type': 'multipart/form-data',
 			},
 		});
-		// await axios.post(`/api/recipes/${receivedRecipe.data.id}/`, images, });
+
 		dispatch({
 			type: actionTypes.CREATE_RECIPE,
-			recipe: receivedRecipe,
+			recipe: response.data,
+		});
+	};
+}
+
+export function extractMLFeatureFromRecipe(recipe: CreateRecipeEntity) {
+	return async (dispatch: any) => {
+		const bodyFormData = new FormData();
+		bodyFormData.append('recipe', JSON.stringify(recipe));
+		recipe.foodImages!.map((image, index) => {
+			return bodyFormData.append('image', image);
+		});
+		const response = await axios({
+			method: 'post',
+			url: '/api/extract/',
+			data: bodyFormData,
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+		});
+
+		dispatch({
+			type: actionTypes.EXTRACT_ML_FEATURE_FROM_RECIPE,
+			recipe: { ...response.data, ...recipe },
 		});
 	};
 }
@@ -67,13 +91,12 @@ export function deleteRecipe(id: number) {
 }
 
 /* EDIT RECIPE */
-export function editRecipe(id: number, recipe: RecipeEntity) {
+export function editRecipe(recipe: RecipeEntity) {
 	return async (dispatch: any) => {
-		await axios.put(`/api/recipes/${id}`, recipe);
+		await axios.put(`/api/recipes/${recipe.id}`, recipe);
 
 		dispatch({
 			type: actionTypes.EDIT_RECIPE,
-			target_id: id,
 			recipe,
 		});
 	};

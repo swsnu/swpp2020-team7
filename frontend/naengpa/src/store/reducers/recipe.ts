@@ -3,18 +3,21 @@ import { RecipeEntity } from '../../model/recipe';
 
 export type InitialState = {
 	recipeList: RecipeEntity[];
-	selectedRecipe: RecipeEntity | null;
+	recipe: RecipeEntity | null;
+	createdRecipe: RecipeEntity | null;
 };
 
 const RecipeState: InitialState = {
 	recipeList: [],
-	selectedRecipe: null,
+	recipe: null,
+	createdRecipe: null,
 };
 
 export type Action =
 	| { type: 'GET_RECIPE_LIST'; recipeList: RecipeEntity[] }
 	| { type: 'GET_RECIPE'; recipe: RecipeEntity }
 	| { type: 'CREATE_RECIPE'; recipe: RecipeEntity }
+	| { type: 'EXTRACT_ML_FEATURE_FROM_RECIPE'; recipe: RecipeEntity }
 	| { type: 'DELETE_RECIPE'; target_id: number }
 	| {
 			type: 'EDIT_RECIPE';
@@ -30,13 +33,23 @@ function recipeReducer(state: InitialState = RecipeState, action: Action): Initi
 
 		/* GET RECIPE */
 		case actionTypes.GET_RECIPE:
-			return { ...state, selectedRecipe: action.recipe };
+			return { ...state, recipe: action.recipe };
 
 		/* CREATE RECIPE */
 		case actionTypes.CREATE_RECIPE: {
 			return {
 				...state,
 				recipeList: [...state.recipeList, action.recipe],
+				recipe: action.recipe,
+				createdRecipe: null,
+			};
+		}
+
+		/* SAVE RECIPE */
+		case actionTypes.EXTRACT_ML_FEATURE_FROM_RECIPE: {
+			return {
+				...state,
+				createdRecipe: action.recipe,
 			};
 		}
 
