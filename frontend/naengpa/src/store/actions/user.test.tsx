@@ -69,19 +69,30 @@ describe('ActionCreators', () => {
 	it('should return login action correctly', () => {
 		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
 			return new Promise((resolve, reject) => {
-				try {
-					const result = {
-						status: 200,
-						data: stubInitialState,
-					};
-					resolve(result);
-				} catch (e) {
-					reject(Error(e));
-					expect(spyAlert).toBeCalledTimes(1);
-					expect(spyAlert).toBeCalledWith(
-						'존재하지 않는 username이거나 비밀번호가 일치하지 않습니다.',
-					);
-				}
+				const result = {
+					status: 200,
+					data: stubInitialState,
+				};
+				resolve(result);
+			});
+		});
+		mockStore.dispatch<any>(
+			actionCreators.login({
+				username: 'test',
+				password: 'test',
+			}),
+		);
+		expect(spy).toBeCalled();
+	});
+
+	it('should return login action incorrectly', () => {
+		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				reject();
+				expect(spyAlert).toBeCalledTimes(1);
+				expect(spyAlert).toBeCalledWith(
+					'존재하지 않는 username이거나 비밀번호가 일치하지 않습니다.',
+				);
 			});
 		});
 		mockStore.dispatch<any>(
