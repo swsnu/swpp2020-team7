@@ -21,7 +21,7 @@ interface RecipeListProps {
 }
 
 const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
-	const recipe_list = useSelector((state: AppState) => state.recipes.recipeList);
+	const recipe_list = useSelector((state: AppState) => state.recipe.recipeList);
 	const [page, setPage] = useState(1);
 	const [currentList, setCurrentList] = useState<RecipeEntity[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
@@ -108,7 +108,11 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 				</div>
 			</div>
 			{!loading && <div id="recipe-cards">{recipe}</div>}
-			{loading && <div id="recipe-cards"><CircularProgress color="inherit"/></div>}
+			{loading && (
+				<div id="recipe-cards">
+					<CircularProgress color="inherit" />
+				</div>
+			)}
 			<Pagination
 				id="recipe-list-page"
 				page={page}

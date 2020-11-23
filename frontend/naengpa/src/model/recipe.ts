@@ -11,12 +11,15 @@ export interface CreateRecipeEntity {
 
 export interface RecipeEntity {
 	id?: number;
-	authorId: number;
-	author: string;
+	authorId?: number;
+	author?: string;
 	foodName: string;
 	cookTime: string;
 	recipeContent: string;
-	foodImages?: File[];
+	foodImages: File[];
 	recipeLike: number;
-	createdAt: string;
+	createdAt?: string;
+	foodCategory?: string;
+	ingredients?: string[];
+	hashtags?: string[];
 }

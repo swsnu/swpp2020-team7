@@ -6,7 +6,7 @@ import { getRecipeList } from '../../store/actions/recipe';
 import './TodayRecipe.scss';
 
 const TodayRecipe: React.FC = () => {
-	const recipeList = useSelector((state: AppState) => state.recipes.recipeList);
+	const recipeList = useSelector((state: AppState) => state.recipe.recipeList);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
