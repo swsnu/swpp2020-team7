@@ -25,10 +25,14 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 		고기: 'meat.png',
 		'수산물/건해산': 'seafood.png',
 		'우유/유제품': 'milk.png',
-		'장류/양념': 'sauces.png',
 		'계란/알류': 'egg.png',
 		가공육: 'ham.png',
 		'두부/콩류': 'tofu.png',
+		'라면/면류': 'noodles.png',
+		'즉석식품/통조림': 'can.png',
+		'소스/잼류': 'sauces.png',
+		'김치/장류': 'kimchi.png',
+		양념류: 'spices.png',
 	};
 
 	// TODO: noodles.png spices.png tofu.png 추가해야함.

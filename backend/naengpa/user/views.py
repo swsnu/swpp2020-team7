@@ -44,7 +44,8 @@ def signup(request):
                 'username': checked_user.username,
                 'email': checked_user.email,
                 'name': checked_user.name,
-                'dateOfBirth': checked_user.date_of_birth
+                'dateOfBirth': checked_user.date_of_birth,
+                'naengpa_score': checked_user.naengpa_score
             }, status=201)
         except:
             return HttpResponse(status=500)
@@ -61,22 +62,21 @@ def signin(request):
             password = req_data['password']
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
-        try:
-            user = authenticate(
-                request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return JsonResponse(data={
-                    'id': user.id,
-                    'username': user.username,
-                    'email': user.email,
-                    'name': user.name,
-                    'dateOfBirth': user.date_of_birth
-                }, status=200)
-            else:
-                return HttpResponse(status=401)
-        except:
-            return HttpResponse(status=500)
+
+        user = authenticate(
+            request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse(data={
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'name': user.name,
+                'dateOfBirth': user.date_of_birth,
+                'naengpa_score': user.naengpa_score
+            }, status=200)
+        else:
+            return HttpResponse(status=401)
     return HttpResponseNotAllowed(['POST'])
 
 
@@ -102,6 +102,7 @@ def user_list(request):
             "name": user.name,
             "email": user.email,
             "dateOfBirth": user.date_of_birth,
+            "naengpa_score": user.naengpa_score
         } for user in User.objects.all()] if len(User.objects.all()) != 0 else []
         return JsonResponse(user_collection, safe=False)
     else:

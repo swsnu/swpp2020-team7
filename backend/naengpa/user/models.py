@@ -12,6 +12,7 @@ class User(AbstractUser):
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=30)
     date_of_birth = models.CharField(max_length=30)
+    naengpa_score = models.IntegerField(default=0)
 
 
 class Fridge(models.Model):

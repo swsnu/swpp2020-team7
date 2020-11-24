@@ -56,7 +56,7 @@ export function getUserList() {
 
 		dispatch({
 			type: actionTypes.GET_USER_LIST,
-			user_list: response.data,
+			userList: response.data,
 		});
 	};
 }
