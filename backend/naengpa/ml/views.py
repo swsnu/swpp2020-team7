@@ -21,9 +21,10 @@ def extract_ingredients(request, recipe_info):
     for noun in noun_list:
         try:
             # extract nouns only and compare with the ingredient list
-            ingredient = Ingredient.objects.get(name__contains=noun)
-            ingredient_dict[ingredient.name] = ingredient_dict[ingredient.name] + \
-                1 if ingredient.name in ingredient_dict.keys() else 1
+            ingredients = Ingredient.objects.filter(name=noun)
+            for item in ingredients:
+                ingredient_dict[item.name] = ingredient_dict[item.name] + \
+                    1 if item.name in ingredient_dict.keys() else 1
         except Ingredient.DoesNotExist:
             pass
     print(ingredient_dict)
