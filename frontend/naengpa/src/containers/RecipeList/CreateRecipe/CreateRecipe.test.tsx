@@ -1,8 +1,7 @@
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { act } from '@testing-library/react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Provider } from 'react-redux';
-import { fireEvent } from '@testing-library/dom';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import CreateRecipe from './CreateRecipe';
@@ -36,13 +35,14 @@ async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount 
 
 const stubInitialState: RecipeState = {
 	recipeList: [],
-	selectedRecipe: {},
+	recipe: null,
+	createdRecipe: null,
 };
 const image = 'sample_img';
 
 describe('CreateRecipe', () => {
 	let createRecipe: any;
-	let spyCreateRecipe: any;
+	let extractMLFeatureFromRecipe: any;
 	let spyHistoryPush: any;
 
 	beforeEach(() => {
@@ -58,8 +58,8 @@ describe('CreateRecipe', () => {
 			</Provider>
 		);
 
-		spyCreateRecipe = jest
-			.spyOn(recipeActionCreators, 'createRecipe')
+		extractMLFeatureFromRecipe = jest
+			.spyOn(recipeActionCreators, 'extractMLFeatureFromRecipe')
 			.mockImplementation(() => jest.fn());
 
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
@@ -74,44 +74,36 @@ describe('CreateRecipe', () => {
 
 	it('CreateRecipe renders without crashing', async () => {
 		const wrapper = mount(createRecipe);
+		await waitForComponentToPaint(wrapper);
 		expect(wrapper.find('#create-recipe').length).toBe(1);
 	});
 
 	it('should work well with the input changes', async () => {
-		const { getByTestId } = render(createRecipe);
-		const confirmAlertButton = getByTestId('confirm-alert-button');
-		fireEvent.click(confirmAlertButton);
+		const component = mount(createRecipe);
+		await waitForComponentToPaint(component);
+		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
+		confirmAlertButton.simulate('click');
 
-		const foodName = getByTestId('food-name').querySelector('input');
-		const cookTime = getByTestId('cook-time').querySelector('input');
-		const foodImage = getByTestId('food-image').querySelector('input');
-		const recipeContent = getByTestId('recipe-content').querySelector('textarea');
+		const foodName = component.find('input#food-name').find('input');
+		const cookTime = component.find('input#cook-time').find('input');
+		const foodImage = component.find('input#food-image').find('input');
+		const recipeContent = component.find('#recipe-content').find('textarea');
+		const extractMLFeatureButton = component.find('#extract-ml-feature-button').find('button');
 
-		expect(spyCreateRecipe).toBeCalledTimes(0);
-
-		fireEvent.change(foodName as HTMLInputElement, { target: { value: 'ice Cream' } });
-		expect(spyCreateRecipe).toBeCalledTimes(0);
-		expect(foodName?.value).toStrictEqual('ice Cream');
-
-		fireEvent.change(cookTime as HTMLInputElement, { target: { value: '40' } });
-		expect(spyCreateRecipe).toBeCalledTimes(0);
-		expect(cookTime?.value).toStrictEqual('40');
-
-		fireEvent.change(foodImage as HTMLInputElement, { target: { files: [image] } });
-		expect(spyCreateRecipe).toBeCalledTimes(0);
-		expect(foodImage?.files).toStrictEqual([image]);
-
-		fireEvent.change(recipeContent as HTMLTextAreaElement, { target: { value: '아이스크림' } });
-		expect(recipeContent?.value).toStrictEqual('아이스크림');
-
-		const extractIngredientButton = getByTestId('extract-ingredient-button');
-		fireEvent.click(extractIngredientButton);
-		expect(spyCreateRecipe).toBeCalled();
-		expect(spyHistoryPush).toBeCalledWith('/recipes');
+		foodName.simulate('change', { target: { value: 'ice Cream' } });
+		cookTime.simulate('change', { target: { value: '40' } });
+		recipeContent.simulate('change', { target: { value: '아이스크림' } });
+		foodImage.simulate('change', { target: { files: [image] } });
+		expect(foodName.length).toBe(1);
+		expect(cookTime.length).toBe(1);
+		expect(foodImage.length).toBe(1);
+		expect(recipeContent.length).toBe(1);
+		extractMLFeatureButton.simulate('click');
 	});
 
 	it('should close Alert modal when the close button is clicked', async () => {
 		const component = mount(createRecipe);
+		await waitForComponentToPaint(component);
 		const closeAlertButton = component.find('#close-alert-button').at(0);
 		closeAlertButton.simulate('click');
 		expect(component.find('.collapse').at(0).props().in).toBe(false);
@@ -119,6 +111,7 @@ describe('CreateRecipe', () => {
 
 	it('should close Alert modal when the confirm button is clicked', async () => {
 		const component = mount(createRecipe);
+		await waitForComponentToPaint(component);
 		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
 		confirmAlertButton.simulate('click');
 		expect(component.find('.collapse').at(0).props().in).toBe(false);
@@ -129,26 +122,27 @@ describe('CreateRecipe', () => {
 		await waitForComponentToPaint(component);
 		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
 		confirmAlertButton.simulate('click');
-		const extractIngredientButton = component.find('#extract-ingredient-button').at(0);
-		extractIngredientButton.simulate('click');
+		const extractMLFeatureButton = component.find('#extract-ml-feature-button').at(0);
+		extractMLFeatureButton.simulate('click');
 		expect(component.find('.collapse').at(0).props().in).toBe(true);
 	});
 
 	it('should delete the recipe image', async () => {
-		const { getByTestId } = render(createRecipe);
-		const confirmAlertButton = getByTestId('confirm-alert-button');
-		fireEvent.click(confirmAlertButton);
-		const foodImage = getByTestId('food-image').querySelector('input');
-		const addFoodImageButton = getByTestId('add-image-button');
-		fireEvent.click(addFoodImageButton);
-		await fireEvent.change(foodImage as HTMLInputElement, { target: { files: [image] } });
-		const deleteImageButton = getByTestId('delete-image-button');
-		fireEvent.click(deleteImageButton);
-		fireEvent.click(addFoodImageButton);
-		await fireEvent.change(foodImage as HTMLInputElement, { target: { files: [image] } });
-		const extractIngredientButton = getByTestId('extract-ingredient-button');
-		fireEvent.click(extractIngredientButton);
-		fireEvent.click(deleteImageButton);
+		const component = mount(createRecipe);
+		await waitForComponentToPaint(component);
+		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
+		confirmAlertButton.simulate('click');
+		const foodImage = component.find('input#food-image').find('input');
+		const addFoodImageButton = component.find('#add-image-button').at(0);
+		addFoodImageButton.simulate('click');
+		foodImage.simulate('change', { target: { files: [image] } });
+		const deleteFoodImageButton = component.find('#delete-image-button').at(0);
+		deleteFoodImageButton.simulate('click');
+		addFoodImageButton.simulate('click');
+		foodImage.simulate('change', { target: { files: [image] } });
+		const extractMLFeatureButton = component.find('#extract-ml-feature-button').at(0);
+		extractMLFeatureButton.simulate('click');
+		deleteFoodImageButton.simulate('click');
 	});
 
 	it('should go back to recipe list', async () => {

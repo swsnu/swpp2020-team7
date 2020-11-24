@@ -4,10 +4,8 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { act } from '@testing-library/react';
-import { Dictionary } from '../../model/general';
 import * as recipeActionCreators from '../../store/actions/recipe';
 import TodayRecipe from './TodayRecipe';
-import { history } from '../../store/store';
 
 async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>) {
 	await act(async () => {
@@ -22,27 +20,51 @@ const store = configureStore(middlewares);
 const getRecipeListMocked = () => {
 	const recipeList = [
 		{
-			id: '100-12921',
-			'food-name': 'foodName',
-			'cook-time': 100,
-			'recipe-content': 'recipeContent',
-			'food-images': [],
-			'recipe-like': 0,
+			id: 1,
+			authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
+			author: 'test',
+			foodName: '딸기',
+			cookTime: '60',
+			recipeContent: '레시피',
+			foodImages: [
+				{
+					id: 2,
+					recipe_id: 1,
+					file_path: 'path',
+				},
+			],
+			recipeLike: 1,
+			createdAt: '2000.00.00',
+			foodCategory: '밥류',
+			ingredients: ['돼지고기', '고추장'],
+			hashtags: ['혼밥', '혼술'],
 		},
 		{
-			id: '123-241',
-			'food-name': 'foodName',
-			'cook-time': 40,
-			'recipe-content': 'recipeContent',
-			'food-images': [],
-			'recipe-like': 10,
+			id: 2,
+			authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
+			author: 'test',
+			foodName: '딸기',
+			cookTime: '60',
+			recipeContent: '레시피',
+			foodImages: [
+				{
+					id: 2,
+					recipe_id: 2,
+					file_path: 'path',
+				},
+			],
+			recipeLike: 1,
+			createdAt: '2000.00.00',
+			foodCategory: '밥류',
+			ingredients: ['돼지고기', '고추장'],
+			hashtags: ['혼밥', '혼술'],
 		},
 	];
 	return recipeList;
 };
 
 const stubInitialState = {
-	recipes: {
+	recipe: {
 		recipeList: getRecipeListMocked(),
 	},
 };

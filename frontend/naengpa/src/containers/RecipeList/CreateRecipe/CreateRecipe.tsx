@@ -50,7 +50,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
 		const file: File = (target.files as FileList)[0];
-		// current: images are saved as 'file path'
 		setFoodImages([...foodImages, { id: foodImages.length, image: file }]);
 	};
 
@@ -65,7 +64,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	};
 
 	// TODO: need to be directed to extract ingredient page, current => recipelist
-	const onClickExtractIngredient = async () => {
+	const onClickExtractMLFeature = async () => {
 		if (foodImages === [] || foodName === '' || cookTime === '' || recipeContent === '') {
 			setAlert(true);
 			setAlertContent(
@@ -80,8 +79,8 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				cookTime,
 				recipeContent,
 				foodImages: images,
-				recipeLike: 0,
 			};
+
 			setLoading(true);
 			await dispatch(extractMLFeatureFromRecipe(newRecipe));
 			setLoading(false);
@@ -131,8 +130,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	return (
 		<div id="create-recipe" data-testid="create-recipe">
 			{loading && (
-				<div id="loading-extract-ml-feature">
-					{' '}
+				<div id="loading-extract-ml-feature" data-testid="loading-extract-ml-feature">
 					<CircularProgress color="inherit" />
 					머신러닝 API를 이용해 재료, 카테고리, 해쉬태그를 추천 중입니다. 잠시만
 					기다려주세요!!!
@@ -191,9 +189,9 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 										</Button>
 										<div id="create-recipe-title">레시피 등록</div>
 										<Button
-											id="extract-ingredient-button"
-											data-testid="extract-ingredient-button"
-											onClick={onClickExtractIngredient}
+											id="extract-ml-feature-button"
+											data-testid="extract-ml-feature-button"
+											onClick={onClickExtractMLFeature}
 											disabled={alert}
 										>
 											재료등록

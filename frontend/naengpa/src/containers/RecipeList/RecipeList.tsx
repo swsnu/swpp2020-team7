@@ -85,7 +85,9 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 							onChange={(e) => setSearchCategory(e.target.value as string)}
 						>
 							<MenuItem value="전체">전체</MenuItem>
-							<MenuItem value="한식">한식</MenuItem>
+							<MenuItem id="recipe-search-select-item" value="한식">
+								한식
+							</MenuItem>
 							<MenuItem value="양식">양식</MenuItem>
 							<MenuItem value="중식">중식</MenuItem>
 						</Select>

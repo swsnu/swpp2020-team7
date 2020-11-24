@@ -22,7 +22,6 @@ export type Action =
 	| {
 			type: 'EDIT_RECIPE';
 			recipe: RecipeEntity;
-			target_id: number;
 	  };
 
 function recipeReducer(state: InitialState = RecipeState, action: Action): InitialState {
