@@ -5,21 +5,26 @@ export interface CreateRecipeEntity {
 	foodName: string;
 	cookTime: string;
 	recipeContent: string;
-	foodImages?: File[]; // current image state -> 'file path'
-	recipeLike: number;
+	foodImages?: File[];
 }
 
 export interface RecipeEntity {
 	id?: number;
-	authorId?: number;
+	authorId?: string;
 	author?: string;
 	foodName: string;
 	cookTime: string;
 	recipeContent: string;
-	foodImages: File[];
+	foodImages: RecipeImage[] | File[];
 	recipeLike: number;
 	createdAt?: string;
 	foodCategory?: string;
 	ingredients?: string[];
 	hashtags?: string[];
+}
+
+export interface RecipeImage {
+	id?: number;
+	recipe_id: number;
+	file_path: string;
 }
