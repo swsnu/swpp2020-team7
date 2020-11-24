@@ -92,10 +92,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		? []
 		: foodImages.map((item, i) => {
 				return (
-					<div
-						key={item.id as number}
-						id="delete-image-icon-box"
-					>
+					<div key={item.id as number} id="delete-image-icon-box">
 						{!alert && (
 							<CancelIcon
 								key={URL.createObjectURL(item.image) as string}
@@ -126,7 +123,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const classes = useStyles();
 
 	return (
-		<div id="create-recipe" >
+		<div id="create-recipe">
 			{loading && (
 				<div id="loading-extract-ml-feature" data-testid="loading-extract-ml-feature">
 					<CircularProgress color="inherit" />
@@ -137,10 +134,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 			{!loading && (
 				<>
 					<Collapse className="collapse" in={alert}>
-						<Alert
-							id="create-recipe-alert"
-							icon={false}
-						>
+						<Alert id="create-recipe-alert" icon={false}>
 							<div id="naengpa-logo-box">
 								<div id="naengpa-logo">
 									<LocalDiningIcon id="naengpa-logo-image" />
