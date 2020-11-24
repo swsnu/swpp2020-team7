@@ -12,7 +12,7 @@ def food_category_list(request):
         if not request.user.is_authenticated:
             return HttpResponse(status=401)
         return_data = {category.name: [
-            item for item in FoodCategory.foods.all().values('id', 'name')]
+            item for item in category.foods.all().values('id', 'name')]
             for category in FoodCategory.objects.all()}
         return JsonResponse(return_data, safe=False)
     else:
