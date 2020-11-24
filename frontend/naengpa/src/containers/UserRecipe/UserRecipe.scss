@@ -1,0 +1,63 @@
+#mypage {
+    background-size: cover;
+    background-color: #f7f7f7;
+    min-height: 870px;
+    width: 100%;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+    #button-list {
+        width: 375px;
+        height: 240px;
+        margin: 100px 104px 0px 275px;
+        background-color: #ffffff;
+    }
+
+    #info {
+        width: 837px;
+        height: 516px;
+        margin: 100px 275px 0px 0px;
+        background-color: #ffffff;
+    }
+
+    #mypage-check {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #check-image {
+        width: 16px;
+        height: 13.4px;
+    }
+
+    #user-recipe-myrecipe-tap {
+        border: none;
+        outline: none;
+        width: 100%;
+        height: 60px;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        color: #696464;
+        font-variant-position: left;
+        background-color: #e3e3e3;
+        text-align: left;
+        text-indent: 3em;
+    }
+
+    #user-recipe-myinfo-tap, #user-recipe-notification-tap, #user-recipe-chatting-tap {
+        border: none;
+        outline: none;
+        width: 100%;
+        height: 60px;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        color: #696464;
+        font-variant-position: left;
+        background-color: #ffffff;
+        text-align: left;
+        text-indent: 3em;
+    }
+}
