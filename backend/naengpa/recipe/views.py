@@ -39,7 +39,7 @@ def recipe_list(request):
 
         else:
             ''' POST /api/recipes/ post new recipe '''
-            req_data = eval(request.POST.dict()['recipe'])
+            req_data = eval(request.POST.dict().get('recipe', ''))
             food_images = request.FILES.getlist('image')
             food_name = req_data['foodName']
             cook_time = req_data['cookTime']
