@@ -100,15 +100,15 @@ it('should return create Recipe action correctly', () => {
 		});
 	});
 
-const mockData = new FormData();
-mockData.append('recipe', JSON.stringify({}));
-mockData.append('image', image as unknown as File);
+	const mockData = new FormData();
+	mockData.append('recipe', JSON.stringify({}));
+	mockData.append('image', (image as unknown) as File);
 	mockStore.dispatch(
 		actionCreators.createRecipe({
 			foodName: 'foodName',
 			cookTime: '100',
 			recipeContent: 'recipeContent',
-			foodImages: [image as unknwon as File, ],
+			foodImages: [(image as unknwon) as File],
 		}),
 	);
 	// expect(spy).toHaveBeenCalled();
@@ -130,7 +130,7 @@ it('should return extract ml features from Recipe action correctly', () => {
 			foodName: 'foodName',
 			cookTime: '100',
 			recipeContent: 'recipeContent',
-			foodImages: [image as unknwon as File, ],
+			foodImages: [(image as unknwon) as File],
 		}),
 	);
 	// expect(spy).toBeCalled();
