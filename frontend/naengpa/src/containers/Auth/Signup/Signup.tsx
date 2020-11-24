@@ -17,6 +17,11 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 	const [passwordConfirm, setPasswordConfirm] = useState('');
 	const [dateOfBirth, setDateOfBirth] = useState('');
 	const [email, setEmail] = useState('');
+	const namePat = new RegExp('^[ㄱ-ㅎ|가-힣|a-z|A-Z|*]+$');
+	const birthPat = new RegExp(/^[0-9]{6}$/);
+	const emailPat = new RegExp(
+		/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$/i,
+	);
 
 	const dispatch = useDispatch();
 
@@ -29,7 +34,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 			dateOfBirth === '' ||
 			email === ''
 		) {
-			alert('blink');
+			alert('fill in the blink');
 		} else if (password !== passwordConfirm) {
 			alert('Do not match password');
 		} else {
@@ -53,13 +58,17 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 			</button>
 			<div id="signup-part">
 				<div id="input-list">
-					<div>
+					<div id="input-name">
 						<input
 							id="name"
 							type="text"
 							placeholder="NAME"
+							pattern="^[ㄱ-ㅎ|가-힣|a-z|A-Z|\*]+$"
 							onChange={(e) => setName(e.target.value)}
 						/>
+						{name !== '' && !namePat.test(name) && (
+							<p id="invalid-name">INVALID NAME</p>
+						)}
 					</div>
 					<div>
 						<input
@@ -84,14 +93,21 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							placeholder="PASSWORD CONFIRM"
 							onChange={(e) => setPasswordConfirm(e.target.value)}
 						/>
+						{passwordConfirm !== '' && password !== passwordConfirm && (
+							<p id="checkPassword">DO NOT MATCH TO PASSWORD</p>
+						)}
 					</div>
 					<div>
 						<input
 							id="date-of-birth"
 							type="text"
-							placeholder="DATE OF BIRTH"
+							placeholder="DATE OF BIRTH (EX 980515)"
 							onChange={(e) => setDateOfBirth(e.target.value)}
+							pattern="^[0-9]{6}$"
 						/>
+						{dateOfBirth !== '' && !birthPat.test(dateOfBirth) && (
+							<p id="invalidBirth">INVALID DATE OF BIRTH</p>
+						)}
 					</div>
 					<div>
 						<input
@@ -99,7 +115,11 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							type="text"
 							placeholder="E-MAIL"
 							onChange={(e) => setEmail(e.target.value)}
+							pattern="^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$"
 						/>
+						{email !== '' && !emailPat.test(email) && (
+							<p id="invalidEmail">INVALID EMAIL</p>
+						)}
 					</div>
 				</div>
 				<button id="signup-button" type="submit" onClick={onClickSignup}>

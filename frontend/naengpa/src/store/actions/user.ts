@@ -25,11 +25,15 @@ export const login_ = (user: UserEntity) => ({ type: actionTypes.LOGIN, user });
 
 export const login = (user: UserLoginInputDTO) => {
 	return async (dispatch: any) => {
-		const response = await axios.post('/api/login/', user);
-		const currentUser: UserEntity = response.data;
-
-		dispatch(login_(currentUser));
-		dispatch(push('/fridge'));
+		let response;
+		try {
+			response = await axios.post('/api/login/', user);
+			const currentUser: UserEntity = response.data;
+			dispatch(login_(currentUser));
+			dispatch(push('/fridge'));
+		} catch (e) {
+			alert('존재하지 않는 username이거나 비밀번호가 일치하지 않습니다.');
+		}
 	};
 };
 
@@ -52,7 +56,7 @@ export function getUserList() {
 
 		dispatch({
 			type: actionTypes.GET_USER_LIST,
-			user_list: response.data,
+			userList: response.data,
 		});
 	};
 }

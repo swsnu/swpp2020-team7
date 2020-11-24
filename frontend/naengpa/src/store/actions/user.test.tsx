@@ -22,6 +22,12 @@ const stubInitialState = {
 const mockStore = store(stubInitialState);
 
 describe('ActionCreators', () => {
+	let spyAlert: any;
+
+	beforeEach(() => {
+		spyAlert = jest.spyOn(window, 'alert').mockImplementation(jest.fn());
+	});
+
 	afterEach(() => {
 		jest.clearAllMocks();
 	});
@@ -78,6 +84,54 @@ describe('ActionCreators', () => {
 		);
 		expect(spy).toBeCalled();
 	});
+
+	it('should return login action incorrectly', () => {
+		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				reject();
+				expect(spyAlert).toBeCalledTimes(1);
+				expect(spyAlert).toBeCalledWith(
+					'존재하지 않는 username이거나 비밀번호가 일치하지 않습니다.',
+				);
+			});
+		});
+		mockStore.dispatch<any>(
+			actionCreators.login({
+				username: 'test',
+				password: 'test',
+			}),
+		);
+		expect(spy).toBeCalled();
+	});
+
+	/*
+	it('should return login action incorrectly', () => {
+		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				try {
+					const result = {
+						status: 401,
+						data: {},
+					};
+					resolve(result);
+				} catch (e) {
+					reject(Error(e));
+					expect(spyAlert).toBeCalledTimes(1);
+					expect(spyAlert).toBeCalledWith(
+						'존재하지 않는 username이거나 비밀번호가 일치하지 않습니다.',
+					);
+				}
+			});
+		});
+		mockStore.dispatch<any>(
+			actionCreators.login({
+				username: '',
+				password: '',
+			}),
+		);
+		expect(spy).toBeCalled();
+	});
+	*/
 
 	it('should return logout action correctly, case 1', () => {
 		const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
