@@ -95,13 +95,11 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 					<div
 						key={item.id as number}
 						id="delete-image-icon-box"
-						data-testid="delete-image-icon-box"
 					>
 						{!alert && (
 							<CancelIcon
 								key={URL.createObjectURL(item.image) as string}
 								id="delete-image-button"
-								data-testid="delete-image-button"
 								type="button"
 								onClick={() => onClickDeleteImage(i)}
 							/>
@@ -128,7 +126,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const classes = useStyles();
 
 	return (
-		<div id="create-recipe" data-testid="create-recipe">
+		<div id="create-recipe" >
 			{loading && (
 				<div id="loading-extract-ml-feature" data-testid="loading-extract-ml-feature">
 					<CircularProgress color="inherit" />
@@ -141,7 +139,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 					<Collapse className="collapse" in={alert}>
 						<Alert
 							id="create-recipe-alert"
-							data-testid="create-recipe-alert"
 							icon={false}
 						>
 							<div id="naengpa-logo-box">
@@ -151,7 +148,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 								</div>
 								<CancelIcon
 									id="close-alert-button"
-									data-testid="close-alert-button"
 									onClick={() => {
 										setAlert(false);
 									}}
@@ -161,7 +157,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 							<div id="confirm-alert-button-box">
 								<Button
 									id="confirm-alert-button"
-									data-testid="confirm-alert-button"
 									onClick={() => {
 										setAlert(false);
 									}}
@@ -190,7 +185,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 										<div id="create-recipe-title">레시피 등록</div>
 										<Button
 											id="extract-ml-feature-button"
-											data-testid="extract-ml-feature-button"
 											onClick={onClickExtractMLFeature}
 											disabled={alert}
 										>
@@ -209,7 +203,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											disabled={alert}
 											placeholder="요리명"
 											id="food-name"
-											data-testid="food-name"
 											onChange={(e) => setFoodName(e.target.value)}
 										/>
 									</TableCell>
@@ -223,7 +216,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											type="number"
 											placeholder="조리시간 (분)"
 											id="cook-time"
-											data-testid="cook-time"
 											onChange={(e) => setCookTime(e.target.value)}
 										/>
 									</TableCell>
@@ -238,13 +230,11 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											>
 												<AddCircleIcon
 													id="add-image-button"
-													data-testid="add-image-button"
 													type="button"
 												/>
 												<Input
 													type="file"
 													id="food-image"
-													data-testid="food-image"
 													required
 													disabled={alert}
 													onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -266,7 +256,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 										<TextField
 											placeholder="레시피"
 											id="recipe-content"
-											data-testid="recipe-content"
 											fullWidth
 											required
 											disabled={alert}

@@ -30,11 +30,11 @@ export function getRecipe(id: number) {
 }
 
 /* CREATE RECIPE */
-export function createRecipe(recipe: CreateRecipeEntity) {
+export function createRecipe(recipe: RecipeEntity) {
 	return async (dispatch: any) => {
 		const bodyFormData = new FormData();
 		bodyFormData.append('recipe', JSON.stringify(recipe));
-		recipe.foodImages!.map((image, index) => {
+		(recipe.foodImages as File[])!.map((image, index) => {
 			return bodyFormData.append('image', image);
 		});
 		const response = await axios({
@@ -105,5 +105,7 @@ export function editRecipe(recipe: RecipeEntity) {
 export type RecipeActions =
 	| ReturnType<typeof getRecipeList>
 	| ReturnType<typeof getRecipe>
+	| ReturnType<typeof createRecipe>
+	| ReturnType<typeof extractMLFeatureFromRecipe>
 	| ReturnType<typeof deleteRecipe>
 	| ReturnType<typeof editRecipe>;
