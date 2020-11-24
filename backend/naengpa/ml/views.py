@@ -43,7 +43,7 @@ def extract_ml_feature(request):
         if not request.user.is_authenticated:
             return HttpResponse(status=401)
 
-        recipe_info = eval(request.POST.dict()['recipe'])
+        recipe_info = eval(request.POST.dict().get('recipe', ''))
         food_images = request.FILES.getlist('image')
         food_category = extract_foodcategory(request, food_images)
         ingredients = extract_ingredients(request, recipe_info)
