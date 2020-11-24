@@ -25,17 +25,17 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { AppState } from '../../store/store';
-import './ExtractIngredient.scss';
+import './ExtractMLFeature.scss';
 import { RecipeEntity } from '../../model/recipe';
 import { createRecipe, getFoodCategoryList } from '../../store/actions/index';
 import { Dictionary } from '../../model/general';
 
-interface ExtractIngredientProps {
+interface ExtractMLFeatureProps {
 	history: History;
 }
 
 // this component is for the "EDIT RECIPE" and "EXTRACT INGREDIENT"
-const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
+const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const createdRecipe = useSelector((state: AppState) => state.recipe.createdRecipe);
 	const foodCategoryList = useSelector((state: AppState) => state.foodCategory.foodCategoryList);
 
@@ -46,11 +46,12 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 	const [foodCategory, setFoodCategory] = useState('');
 	const [ingredients, setIngredients] = useState<Dictionary<string | boolean>[]>([]);
 	const [hashtags, setHashtags] = useState<string[]>([]);
+	const [recipeIndex, setRecipeIndex] = useState<number>(1);
 
 	// alert state is true if alert is necessary, otherwise false.
 	const [alert, setAlert] = useState(true);
 	const [alertContent, setAlertContent] = useState(
-		'요리 카테고리와 필요한 재료들 그리고 해쉬태그가 작성한 요리명과 레시피를 기반으로 추천되었습니다. 수정이 완료되면 레시피등록 버튼을 눌러주세요.',
+		'요리 카테고리와 필요한 재료들 그리고 해쉬태그가 요리명, 등록된 사진들 그리고 레시피를 기반으로 추천되었습니다. 수정이 완료되면 레시피등록 버튼을 눌러주세요.',
 	);
 
 	// if the value is false => then each modal pops off.
@@ -96,7 +97,7 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 	};
 
 	// TODO: need to be modified for checking the lost of date!
-	const onClickBackToRecipeList = () => {
+	const onClickBackToCreateRecipe = () => {
 		setAlert(true);
 		setGoBackButton(true);
 		setAlertContent(
@@ -104,11 +105,20 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 		);
 	};
 
-	// TODO: need to be directed to extract ingredient page, current => recipelist
+	// need to be directed to recipe detail page, current => recipelist
 	const onClickRegisterRecipe = async () => {
-		if (foodImages === [] || foodName === '' || cookTime === '' || recipeContent === '') {
+		if (
+			foodImages === [] ||
+			cookTime === '' ||
+			recipeContent === '' ||
+			ingredients === [] ||
+			foodCategory === '' ||
+			hashtags === []
+		) {
 			setAlert(true);
-			setAlertContent('조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!');
+			setAlertContent(
+				'조리시간, 요리 카테고리, 레시피 내용, 필요한 재료, 해쉬태그 및 사진을 모두 입력해 주세요!!!',
+			);
 		} else {
 			const newIngredientList: string[] = ingredients.map((dict, idx) => {
 				return dict.ingredient as string;
@@ -147,7 +157,7 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 							/>
 						)}
 						<img
-							key={`${idx} ` as string}
+							key={`${idx}-` as string}
 							id="delete-image-icon"
 							src={URL.createObjectURL(item) as string}
 							height="150px"
@@ -195,7 +205,6 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 						<>
 							<Button
 								id="confirm-alert-button"
-								data-testid="confirm-goback-button"
 								onClick={() => {
 									history.goBack();
 								}}
@@ -204,7 +213,6 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 							</Button>
 							<Button
 								id="cancel-alert-button"
-								data-testid="cancel-goback-button"
 								onClick={() => {
 									setAlert(false);
 									setGoBackButton(false);
@@ -225,7 +233,7 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 				key={item}
 				id="food-category-button"
 				className={`food-category-${item === modifiedCategory}`}
-				data-testid="extract-ingredient-button"
+				data-testid="extract-ml-feature-button"
 				onClick={() => {
 					setModifiedCategory(item);
 				}}
@@ -307,6 +315,7 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 				<FormControlLabel
 					control={
 						<Checkbox
+							key={`${i}` as string}
 							checked={item.checked as boolean}
 							checkedIcon={<CheckBoxIcon id="checkbox" />}
 							onChange={(e) => {
@@ -336,7 +345,7 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 
 	const ingredientSetForRecipe = ingredients?.map((item, i) => {
 		return (
-			<>
+			<div id="ingredient-button-box" key={`${item.ingredient}`}>
 				{item.checked && (
 					<Button
 						key={`${item.ingredient}-${i}` as string}
@@ -346,7 +355,7 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 						{item.ingredient}
 					</Button>
 				)}
-			</>
+			</div>
 		);
 	});
 
@@ -400,7 +409,6 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 		</Collapse>
 	);
 
-
 	const onChangeHashtag = (targetIdx: number, hashtag: string) => {
 		const newHashtagList = modifiedHashtag.map((item, idx) => {
 			if (idx === targetIdx) {
@@ -412,22 +420,27 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 	};
 
 	const hashtagSetForRecipe = hashtags?.map((item, idx) => {
-		return <div id="hashtag">#{item}</div>;
+		return (
+			<div id="hashtag" key={`${item}-${idx}`}>
+				#{item}
+			</div>
+		);
 	});
 
 	const hashtagSet = modifiedHashtag?.map((item, idx) => {
 		return (
-			<>
+			<div id="hashtag-box" key={`${item}-${idx}`}>
 				#
 				<Input
 					id="hashtag"
+					key={`${item}=${idx}`}
 					value={item}
 					disableUnderline
 					onChange={(e) => {
 						onChangeHashtag(idx, e.target.value);
 					}}
 				/>
-			</>
+			</div>
 		);
 	});
 
@@ -489,7 +502,7 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 	const classes = useStyles();
 
 	return (
-		<div id="extract-ml-feature" data-testid="extract-ml-feature">
+		<div id="extract-ml-feature">
 			{/* Alert Modal for go back to Recipe List & Register Recipe */}
 			{alertModal}
 			{/* Modal for food category & ingredients & hashtags */}
@@ -506,18 +519,17 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 						<TableRow>
 							<TableCell id="container-header">
 								<Button
-									id="back-to-recipe-list"
+									id="back-to-create-recipe"
 									type="button"
 									disabled={alert}
-									onClick={onClickBackToRecipeList}
+									onClick={onClickBackToCreateRecipe}
 								>
 									취소
 								</Button>
 								<div id="extract-ml-feature-title">레시피 등록</div>
-								<div id="extract-ml-feature-buttons">
+								<div id="extract-ml-feature-button-box">
 									<Button
-										id="extract-ingredient-button"
-										data-testid="extract-ingredient-button"
+										id="extract-ml-feature-button"
 										onClick={() => {
 											history.push('/ingredients/extract');
 										}}
@@ -526,8 +538,7 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 										추천 다시하기
 									</Button>
 									<Button
-										id="extract-ingredient-button"
-										data-testid="extract-ingredient-button"
+										id="register-recipe-button"
 										onClick={onClickRegisterRecipe}
 										disabled={alert}
 									>
@@ -554,16 +565,12 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 									setShowCategoryModal(true && !alert);
 								}}
 							>
-								<div id="food-name" data-testid="food-name">
-									요리명: {foodName}
-								</div>
-								<Button id="food-category" data-testid="food-category">
-									{foodCategory}
-								</Button>
+								<div id="food-name">요리명: {foodName}</div>
+								<Button id="food-category">{foodCategory}</Button>
 							</TableCell>
 						</TableRow>
 						<TableRow>
-							<TableCell>
+							<TableCell width="100%">
 								조리시간:
 								<Input
 									disableUnderline
@@ -579,15 +586,24 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 							</TableCell>
 						</TableRow>
 						<TableRow>
-							<TableCell id="image-box">
+							<TableCell
+								width="100%"
+								onMouseOver={() => setShowIngredientModal(true && !alert)}
+								onMouseLeave={() => setShowIngredientModal(false)}
+								onFocus={() => setShowIngredientModal(true && !alert)}
+								onClick={() => setShowIngredientModal(true && !alert)}
+							>
+								{/* RECIPE INGREDIENT 추출 재료들 */}
+								<div id="ingredient-name">필수재료</div>
+								<div id="ingredient-list">{ingredientSetForRecipe}</div>
+							</TableCell>
+						</TableRow>
+						<TableRow id="recipe-row-box">
+							<TableCell id="image-box" width="20%">
 								{imageList}
 								<Box id="add-image-icon-box">
 									<label aria-label="food-image-label" htmlFor="food-image">
-										<AddCircleIcon
-											id="add-image-button"
-											data-testid="add-image-button"
-											type="button"
-										/>
+										<AddCircleIcon id="add-image-button" type="button" />
 										<Input
 											type="file"
 											id="food-image"
@@ -602,24 +618,8 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 									<PhotoCameraIcon id="add-image-icon" />
 								</Box>
 							</TableCell>
-						</TableRow>
-						<TableRow>
-							<TableCell>
-								{/* RECIPE INGREDIENT 추출 재료들 */}
-								<div id="ingredient-name">필수재료</div>
-								<Button
-									id="ingredient-list"
-									onMouseOver={() => setShowIngredientModal(true && !alert)}
-									onMouseLeave={() => setShowIngredientModal(false)}
-									onFocus={() => setShowIngredientModal(true && !alert)}
-									onClick={() => setShowIngredientModal(true && !alert)}
-								>
-									{ingredientSetForRecipe}
-								</Button>
-							</TableCell>
-						</TableRow>
-						<TableRow id="recipe-row-box">
-							<TableCell width="100%" id="recipe-row">
+							<Divider orientation="vertical" flexItem />
+							<TableCell id="recipe-row" align="right" width="80%">
 								<TextField
 									id="recipe-content"
 									data-testid="recipe-content"
@@ -636,7 +636,7 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 							</TableCell>
 						</TableRow>
 						<TableRow>
-							<TableCell>
+							<TableCell width="100%">
 								{/* HASH TAG 추출 재료들 */}
 								<div id="hashtag">#HashTag</div>
 								<Button
@@ -665,4 +665,4 @@ const ExtractIngredient: React.FC<ExtractIngredientProps> = ({ history }) => {
 		</div>
 	);
 };
-export default ExtractIngredient;
+export default ExtractMLFeature;

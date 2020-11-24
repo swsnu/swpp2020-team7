@@ -113,6 +113,22 @@
       background-color: #ffffff;
       right:0;
     }
+
+    #cancel-alert-button {
+      font: {
+        size: 90%;
+        weight: bold;
+        stretch: normal;
+        style: normal;
+      }
+      letter-spacing: normal;
+      text-align: left;
+      color: #ff8a3d;
+      border-radius: 25px;
+      border: solid 1px #ffa43c;
+      background-color: #ffffff;
+      right:0;
+    }
   }
 }
 
@@ -137,7 +153,7 @@
   justify-content: space-between;
 }
 
-#back-to-recipe-list {
+#back-to-create-recipe {
   font-size: 120%;
   border: solid 1px #707070;
   border-radius: 25px;
@@ -156,12 +172,27 @@
   color: #696464;
 }
 
-#extract-ml-feature-buttons {
+#extract-ml-feature-button-box {
   display: flex;
   flex-direction: row;
 }
 
-#extract-ingredient-button {
+#extract-ml-feature-button {
+  font: {
+    size: 120%;
+    weight: bold;
+    stretch: normal;
+    style: normal;
+  }
+  letter-spacing: normal;
+  text-align: left;
+  color: #ff8a3d;
+  border-radius: 25px;
+  border: solid 1px #ffa43c;
+  background-color: #ffffff;
+}
+
+#register-recipe-button {
   font: {
     size: 120%;
     weight: bold;
@@ -178,6 +209,8 @@
 
 #image-box {
   display: flex;
+  right: 0;
+  flex-direction: column;
 }
 
 #add-image-icon-box {
@@ -222,7 +255,7 @@
   justify-content: center;
   position: relative;
   float: left;
-  margin-right: 13px;
+  margin-bottom: 13px;
 }
 
 #delete-image-button {
@@ -246,6 +279,11 @@
 
 #recipe-content {
   font-size: 18px;
+}
+
+#recipe-row-box {
+  display: flex;
+  flex-direction: row;
 }
 
 /* Modal Header */
@@ -358,7 +396,7 @@
 
   #ingredient-list {
     padding: 2%;
-    flex-wrap: wrap;
+
     #checkbox {
       color: #ff8a3d; 
     }
@@ -378,6 +416,9 @@
 
 #ingredient-list {
   padding: 2%;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
   
   #ingredient-button{
     font: {
@@ -423,12 +464,12 @@
   width: 25%;
 
   #hashtag-list {
-    display: flex !important;
+    // display: flex !important;
     align-items: center;
     flex-direction: row;
     font-weight: bold;
     color: #ff8a3d; 
-    justify-content: flex-start !important;
+    // justify-content: flex-start !important;
 
     :focus {
       outline: 0 !important;
