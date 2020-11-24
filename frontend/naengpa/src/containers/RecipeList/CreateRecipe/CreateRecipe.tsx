@@ -215,7 +215,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 									</TableCell>
 								</TableRow>
 								<TableRow>
-									<TableCell id="image-box">
+									<TableCell id="image-box1">
 										{image_list}
 										<Box id="add-image-icon-box">
 											<label
