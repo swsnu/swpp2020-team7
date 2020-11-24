@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'chatroom.apps.ChatroomConfig',
     'comment.apps.CommentConfig',
     'ingredient.apps.IngredientConfig',
+    'food_category.apps.FoodCategoryConfig',
+    'ml.apps.MlConfig',
 ]
 
 AUTH_USER_MODEL = 'user.User'
