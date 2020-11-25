@@ -64,10 +64,12 @@ describe('UserInfo', () => {
 		jest.restoreAllMocks();
 	});
 
+	/*
 	it('UserInfo renders without crashing', () => {
 		const component = mount(userInfo);
 		expect(component.find('UserInfo').length).toBe(1);
 	});
+	*/
 
 	it('myinfo-tap should be clicked correctly', () => {
 		const component = mount(userInfo);

@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import UserNotification from './UserNotification';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import UserNotification from './UserNotification';
 import { history } from '../../store/store';
 
 const middlewares = [thunk];

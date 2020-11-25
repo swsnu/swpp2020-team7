@@ -62,7 +62,11 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 			</div>
 			<div id="info">
 				<p>내 정보</p>
-				<button id="edit-info-button" onClick={() => history.push('/@:username/edit')}>
+				<button
+					type="button"
+					id="edit-info-button"
+					onClick={() => history.push('/@:username/edit')}
+				>
 					수정하기
 				</button>
 				{user!.username}
@@ -70,8 +74,9 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 				<p>생년월일 {user!.dateOfBirth}</p>
 				<p>이메일 {user!.email}</p>
 				<p>지역 </p>
-				{/*region*/}
+				{/* region */}
 				<button
+					type="button"
 					id="change-password-button"
 					onClick={() => history.push('/@:username/password')}
 				>

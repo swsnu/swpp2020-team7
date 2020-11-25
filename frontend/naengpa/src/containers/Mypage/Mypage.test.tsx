@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Mypage from './Mypage';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import Mypage from './Mypage';
 import { history } from '../../store/store';
 
 const middlewares = [thunk];

@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import UserRecipe from './UserRecipe';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import UserRecipe from './UserRecipe';
 import { history } from '../../store/store';
 
 const middlewares = [thunk];
