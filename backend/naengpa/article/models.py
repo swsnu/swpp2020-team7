@@ -14,7 +14,6 @@ class Article(models.Model):
     content = models.TextField()
     item = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     price = models.PositiveIntegerField(default=0)
-    # region = models.ForeignKey(Region, on_delete=models.CASCADE)
     views = models.PositiveIntegerField(default=0)
     done = models.BooleanField(default=False)
 
