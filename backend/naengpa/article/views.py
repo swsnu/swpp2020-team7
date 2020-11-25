@@ -23,7 +23,7 @@ def article_list(request):
 
         query = request.GET.get('value', "")
         selected_list = Article.objects.select_related(
-            'author', 'item', 'images').exclude(done=True)
+            'author', 'author__region', 'item', 'images').exclude(done=True)
         sorted_list = selected_list.filter(Q(title__icontains=query) | Q(content__icontains=query)).all().order_by(
             '-created_at') if query else selected_list.all().order_by('-created_at')
 
@@ -31,6 +31,7 @@ def article_list(request):
             "id": article.id,
             "authorId": article.author.id,
             "author": article.author.username,
+            "region": article.author.region.name,
             "title": article.title,
             "content": article.content,
             "item": article.item.name,
@@ -74,6 +75,7 @@ def article_list(request):
             "id": article.id,
             "authorId": author_id,
             "author": article.author.username,
+            "region": article.author.region.name,
             "title": article.title,
             "content": article.content,
             "item": item.name,
@@ -96,7 +98,7 @@ def article_info(request, aid):
             return HttpResponse(status=401)
         try:
             article = Article.objects.select_related(
-                'author', 'item', 'images').get(id=aid)
+                'author', 'author__region', 'item', 'images').get(id=aid)
         except Article.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -104,6 +106,7 @@ def article_info(request, aid):
             "id": article.id,
             "authorId": article.author.id,
             "author": article.author.username,
+            "region": article.author.region.name,
             "title": article.title,
             "content": article.content,
             "item": article.item.name,
