@@ -18,12 +18,14 @@ jest.mock('@material-ui/icons/Favorite', () =>
 
 describe('Recipe', () => {
 	let recipe: any;
+	let recipe2: any;
+
 	const mockRecipe = {
 		id: 2,
 		authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 		author: 'test',
 		foodName: '딸기',
-		cookTime: 60,
+		cookTime: '100',
 		recipeContent: '레시피',
 		foodImages: [
 			{
@@ -34,11 +36,37 @@ describe('Recipe', () => {
 		],
 		recipeLike: 1,
 		createdAt: '2000.00.00',
+		foodCategory: '밥류',
+		ingredients: ['돼지고기', '고추장'],
+		hashtags: ['혼밥', '혼술'],
 	};
+
+	const mockRecipe2 = {
+		id: 1,
+		authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
+		author: 'test',
+		foodName: '딸기',
+		cookTime: '30',
+		recipeContent: '레시피',
+		foodImages: [
+			{
+				id: 1,
+				recipe_id: 1,
+				file_path: 'path',
+			},
+		],
+		recipeLike: 0,
+		createdAt: '2000.00.00',
+		foodCategory: '밥류',
+		ingredients: ['돼지고기', '고추장'],
+		hashtags: ['혼밥', '혼술'],
+	};
+
 	const mockAttribute = 'todays-recipe-child';
 
 	beforeEach(() => {
 		recipe = <Recipe recipe={mockRecipe} attribute={mockAttribute} />;
+		recipe2 = <Recipe recipe={mockRecipe2} attribute={mockAttribute} />;
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -84,14 +112,22 @@ describe('Recipe', () => {
 		const component = mount(recipe);
 
 		const cookTimeWrapper = component.find('div#recipe-cook-time');
-		expect(cookTimeWrapper.text()).toBe('1H');
+		expect(cookTimeWrapper.text()).toBe('2H');
 	});
 
-	it('renders recipe-like-count correctly', () => {
+	it('renders recipe-like-count with 1 like correctly', () => {
 		const component = mount(recipe);
 
 		const likeCountWrapper = component.find('div#recipe-like-count');
 		expect(likeCountWrapper.find('div#recipe-like-count-icon').length).toBe(1);
 		expect(likeCountWrapper.text()).toBe('1');
+	});
+
+	it('renders recipe-like-count with 0 like correctly', () => {
+		const component2 = mount(recipe2);
+
+		const likeCountWrapper2 = component2.find('div#recipe-like-count');
+		expect(likeCountWrapper2.find('div#recipe-like-count-icon').length).toBe(1);
+		expect(likeCountWrapper2.text()).toBe('0');
 	});
 });

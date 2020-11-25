@@ -5,24 +5,25 @@ import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import './Recipe.scss';
-import { Dictionary } from '../../model/general';
+import { RecipeEntity, RecipeImage } from '../../model/recipe';
 
 interface RecipeProps {
-	recipe: Dictionary<string | Dictionary<string | number>[] | number>;
+	recipe: RecipeEntity;
 	attribute: string;
 }
 
 const Recipe: React.FC<RecipeProps> = ({ recipe, attribute }) => {
 	// Thumnail Image for Recipes
-	const images = recipe.foodImages as Dictionary<string>[];
-	const thumnail = images ? (images[0] as Dictionary<string>) : undefined;
+	const images = recipe.foodImages as RecipeImage[];
+	const thumnail = images[0] as RecipeImage;
 	const titleSize = attribute === 'todays-recipe-child' ? 'caption' : 'subtitle2';
 	const fontSize = attribute === 'todays-recipe-child' ? 'small' : 'default';
 	const subheader = attribute === 'todays-recipe-child' ? '' : recipe.createdAt;
 
 	// Cook-Time Unit set for minute and hour
 	let cookTime = `${recipe.cookTime}M`;
-	if (recipe.cookTime >= 60) cookTime = `${Math.round((recipe.cookTime as number) / 60)}H`;
+	if (((recipe.cookTime as unknown) as number) >= 60)
+		cookTime = `${Math.round(((recipe.cookTime as unknown) as number) / 60)}H`;
 
 	return (
 		// TODO: should be modified as User Info

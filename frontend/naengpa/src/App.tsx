@@ -29,7 +29,7 @@ import RecipeList from './containers/RecipeList/RecipeList';
 import CreateRecipe from './containers/RecipeList/CreateRecipe/CreateRecipe';
 import RecipeDetail from './containers/RecipeList/RecipeDetail/RecipeDetail';
 import EditRecipe from './containers/RecipeList/EditRecipe/EditRecipe';
-import ExtractIngredient from './containers/ExtractIngredient/ExtractIngredient';
+import ExtractMLFeature from './containers/ExtractMLFeature/ExtractMLFeature';
 import ArticleList from './containers/ArticleList/ArticleList';
 import CreateArticle from './containers/ArticleList/CreateArticle/CreateArticle';
 import ArticleDetail from './containers/ArticleList/ArticleDetail/ArticleDetail';
@@ -80,7 +80,7 @@ const App: React.FC<AppProps> = ({ history }) => {
 						<Route path="/recipes/create" exact component={CreateRecipe} />
 						<Route path="/recipes/:id" exact component={RecipeDetail} />
 						<Route path="/recipes/:id/edit" exact component={EditRecipe} />
-						<Route path="/ingredients/extract" exact component={ExtractIngredient} />
+						<Route path="/ingredients/extract" exact component={ExtractMLFeature} />
 						{/* Article Page */}
 						<Route path="/articles" exact component={ArticleList} />
 						<Route path="/articles/create" exact component={CreateArticle} />
