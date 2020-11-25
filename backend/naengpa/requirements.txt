@@ -4,3 +4,5 @@ pylint==2.6.0
 pylint-django==2.3.0
 python-dotenv==0.15.0
 psycopg2-binary==2.8.6
+konlpy==0.5.2
+boto3==1.16.14

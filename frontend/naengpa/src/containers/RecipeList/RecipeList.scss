@@ -31,7 +31,8 @@
   #recipe-cards {
     display: flex;
     flex-flow: wrap;
-    margin: 5%;
+    justify-content: center;
+    margin: 3% 5%;
     padding: 10px;
   }
 
@@ -48,7 +49,6 @@
     }
     
     color: #707070;
-    margin-right: 1%;
   }
   
   button:focus {
@@ -60,4 +60,31 @@
     display: flex;
     justify-content: center;
   }
+}
+
+#recipe-list-header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin: 0% 10%;
+}
+
+#recipe-search-input-box {
+  display: flex;
+  flex-direction: row;
+  border: solid 1px #696464;
+  padding: 2% 4%;
+  min-width: 220px;
+  align-items: center;
+  border-radius: 15px;
+
+  #recipe-search-input {
+    margin-right: 10px;
+  }
+}
+
+#recipe-search-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
