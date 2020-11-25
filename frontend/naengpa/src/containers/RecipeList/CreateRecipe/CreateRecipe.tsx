@@ -25,7 +25,6 @@ import './CreateRecipe.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import { CreateRecipeEntity } from '../../../model/recipe';
 import { extractMLFeatureFromRecipe } from '../../../store/actions/index';
-import { Dictionary } from '../../../model/general';
 
 interface CreateRecipeProps {
 	history: History;
@@ -34,7 +33,7 @@ interface CreateRecipeProps {
 const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const [foodName, setFoodName] = useState('');
 	const [recipeContent, setRecipeContent] = useState('');
-	const [foodImages, setFoodImages] = useState<Dictionary<number | File>[]>([]);
+	const [foodImages, setFoodImages] = useState<File[]>([]);
 	const [cookTime, setCookTime] = useState('');
 
 	// alert state is true if alert is necessary, otherwise false.
@@ -49,8 +48,8 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
-		const file: File = (target.files as FileList)[0];
-		setFoodImages([...foodImages, { id: foodImages.length, image: file }]);
+		const image: File = (target.files as FileList)[0];
+		setFoodImages([...foodImages, image]);
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
@@ -63,22 +62,23 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		history.push('/recipes');
 	};
 
-	// TODO: need to be directed to extract ingredient page, current => recipelist
+	/* CLICK EVENT - redirect to extract-ml-feature page */
 	const onClickExtractMLFeature = async () => {
+		// if one of the input field is empty, then the alert modal shows itself
 		if (foodImages === [] || foodName === '' || cookTime === '' || recipeContent === '') {
 			setAlert(true);
 			setAlertContent(
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
-			const images = foodImages.map((item) => {
-				return item.image as File;
-			});
+			// const images = foodImages.map((item) => {
+			// 	return item.image as File;
+			// });
 			const newRecipe: CreateRecipeEntity = {
 				foodName,
 				cookTime,
 				recipeContent,
-				foodImages: images,
+				foodImages,
 			};
 
 			setLoading(true);
@@ -90,21 +90,21 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	const image_list = !foodImages.length
 		? []
-		: foodImages.map((item, i) => {
+		: foodImages.map((item, idx) => {
 				return (
-					<div key={item.id as number} id="delete-image-icon-box">
+					<div key={`${idx}`} id="delete-image-icon-box">
 						{!alert && (
 							<CancelIcon
-								key={URL.createObjectURL(item.image) as string}
+								key={URL.createObjectURL(item) as string}
 								id="delete-image-button"
 								type="button"
-								onClick={() => onClickDeleteImage(i)}
+								onClick={() => onClickDeleteImage(idx)}
 							/>
 						)}
 						<img
-							key={item.id as number}
+							key={`${idx}`}							
 							id="delete-image-icon"
-							src={URL.createObjectURL(item.image) as string}
+							src={URL.createObjectURL(item) as string}
 							height="150px"
 							width="150px"
 							alt="/api/images" // TODO: check alt path
@@ -125,7 +125,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	return (
 		<div id="create-recipe">
 			{loading && (
-				<div id="loading-extract-ml-feature" data-testid="loading-extract-ml-feature">
+				<div id="loading-extract-ml-feature">
 					<CircularProgress color="inherit" />
 					머신러닝 API를 이용해 재료, 카테고리, 해쉬태그를 추천 중입니다. 잠시만
 					기다려주세요!!!
@@ -263,7 +263,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 								</TableRow>
 								<TableRow>
 									<TableCell>
-										<div id="hash-tag">#hash_tag</div>
+										<div id="hash-tag">Hashtag</div>
 									</TableCell>
 								</TableRow>
 							</TableBody>

@@ -145,13 +145,11 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					<div
 						key={`${idx} ` as string}
 						id="delete-image-icon-box"
-						data-testid="delete-image-icon-box"
 					>
 						{!alert && (
 							<CancelIcon
 								key={URL.createObjectURL(item) as string}
 								id="delete-image-button"
-								data-testid="delete-image-button"
 								type="button"
 								onClick={() => onClickDeleteImage(idx)}
 							/>
@@ -172,7 +170,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		<Collapse className="collapse" in={alert}>
 			<Alert
 				id="extract-ml-feature-alert"
-				data-testid="extract-ml-feature-alert"
 				icon={false}
 			>
 				<div id="naengpa-logo-box">
@@ -182,7 +179,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					</div>
 					<CancelIcon
 						id="close-alert-button"
-						data-testid="close-alert-button"
 						onClick={() => {
 							setAlert(false);
 						}}
@@ -193,7 +189,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					{!goBackButton && (
 						<Button
 							id="confirm-alert-button"
-							data-testid="confirm-alert-button"
 							onClick={() => {
 								setAlert(false);
 							}}
@@ -233,7 +228,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				key={item}
 				id="food-category-button"
 				className={`food-category-${item === modifiedCategory}`}
-				data-testid="extract-ml-feature-button"
 				onClick={() => {
 					setModifiedCategory(item);
 				}}
@@ -247,7 +241,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		<Collapse className="collapse" in={showCategoryModal}>
 			<Alert
 				id="food-category-modal"
-				data-testid="food-category-modal"
 				onMouseOver={() => {
 					setShowCategoryModal(true);
 				}}
@@ -266,7 +259,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					</div>
 					<CancelIcon
 						id="close-modal-button"
-						data-testid="close-modal-button"
 						onClick={() => {
 							setShowCategoryModal(false);
 							setModifiedCategory(foodCategory);
@@ -278,7 +270,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				<div id="confirm-modal-button-box">
 					<Button
 						id="confirm-modal-button"
-						data-testid="confirm-modal-button"
 						onClick={() => {
 							setShowCategoryModal(false);
 							setFoodCategory(modifiedCategory);
@@ -350,7 +341,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					<Button
 						key={`${item.ingredient}-${i}` as string}
 						id="ingredient-button"
-						data-testid="ingredient-button"
 					>
 						{item.ingredient}
 					</Button>
@@ -363,7 +353,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		<Collapse className="collapse" in={showIngredientModal}>
 			<Alert
 				id="ingredient-modal"
-				data-testid="ingredient-modal"
 				onMouseOver={() => {
 					setShowIngredientModal(true);
 				}}
@@ -384,7 +373,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					</div>
 					<CancelIcon
 						id="close-modal-button"
-						data-testid="close-modal-button"
 						onClick={() => {
 							setShowIngredientModal(false);
 							setModifiedIngredients(ingredients);
@@ -396,7 +384,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				<div id="confirm-modal-button-box">
 					<Button
 						id="confirm-modal-button"
-						data-testid="confirm-modal-button"
 						onClick={() => {
 							setShowIngredientModal(false);
 							setIngredients(modifiedIngredients);
@@ -448,7 +435,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		<Collapse className="collapse" in={showHashtagModal}>
 			<Alert
 				id="hashtag-modal"
-				data-testid="hashtag-modal"
 				onMouseOver={() => {
 					setShowHashtagModal(true);
 				}}
@@ -467,7 +453,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					</div>
 					<CancelIcon
 						id="close-modal-button"
-						data-testid="close-modal-button"
 						onClick={() => {
 							setShowHashtagModal(false);
 							setModifiedHashtag(hashtags);
@@ -479,7 +464,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				<div id="confirm-modal-button-box">
 					<Button
 						id="confirm-modal-button"
-						data-testid="confirm-modal-button"
 						onClick={() => {
 							setShowHashtagModal(false);
 							setHashtags(modifiedHashtag);
@@ -579,7 +563,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 									type="number"
 									value={cookTime}
 									id="cook-time"
-									data-testid="cook-time"
 									onChange={(e) => setCookTime(e.target.value)}
 								/>
 								분
@@ -607,7 +590,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 										<Input
 											type="file"
 											id="food-image"
-											data-testid="food-image"
 											required
 											disabled={alert}
 											onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -622,7 +604,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							<TableCell id="recipe-row" align="right" width="80%">
 								<TextField
 									id="recipe-content"
-									data-testid="recipe-content"
 									fullWidth
 									required
 									disabled={alert}
