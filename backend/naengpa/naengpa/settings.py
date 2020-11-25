@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'user.apps.UserConfig',
     'recipe.apps.RecipeConfig',
     'article.apps.ArticleConfig',
@@ -88,7 +89,7 @@ WSGI_APPLICATION = 'naengpa.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'HOST': os.getenv("DB_HOST"),
         'PORT': '5432',
         'NAME': os.getenv("DB_NAME"),
