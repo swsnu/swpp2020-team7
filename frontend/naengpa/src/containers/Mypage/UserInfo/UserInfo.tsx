@@ -1,12 +1,16 @@
 import React from 'react';
 import { History } from 'history';
 import './UserInfo.scss';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../../../store/store';
 
 interface UserInfoProps {
 	history: History;
 }
 
 const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
+	const user = useSelector((state: AppState) => state.user.user);
+
 	return (
 		<div id="mypage">
 			<div id="button-list">
@@ -57,7 +61,22 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 				</div>
 			</div>
 			<div id="info">
-				<p>my info</p>
+				<p>내 정보</p>
+				<button id="edit-info-button" onClick={() => history.push('/@:username/edit')}>
+					수정하기
+				</button>
+				{user!.username}
+				<p id="name">이름 {user!.name}</p>
+				<p>생년월일 {user!.dateOfBirth}</p>
+				<p>이메일 {user!.email}</p>
+				<p>지역 </p>
+				{/*region*/}
+				<button
+					id="change-password-button"
+					onClick={() => history.push('/@:username/password')}
+				>
+					비밀번호 변경
+				</button>
 			</div>
 		</div>
 	);
