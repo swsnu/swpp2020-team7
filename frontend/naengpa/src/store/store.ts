@@ -7,14 +7,16 @@ import recipeReducer from './reducers/recipe';
 import userReducer from './reducers/user';
 import fridgeReducer from './reducers/fridge';
 import ingredientReducer from './reducers/ingredient';
+import foodCategoryReducer from './reducers/foodCategory';
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
 	router: connectRouter(history),
-	recipes: recipeReducer,
+	recipe: recipeReducer,
 	user: userReducer,
 	fridge: fridgeReducer,
 	ingredient: ingredientReducer,
+	foodCategory: foodCategoryReducer,
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

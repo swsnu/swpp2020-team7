@@ -10,10 +10,20 @@ export {
 } from './fridge';
 
 /* Recipe actions */
-export { getRecipeList, getRecipe, createRecipe, deleteRecipe, editRecipe } from './recipe';
+export {
+	getRecipeList,
+	getRecipe,
+	createRecipe,
+	extractMLFeatureFromRecipe,
+	deleteRecipe,
+	editRecipe,
+} from './recipe';
 
 /* Ingredient actions */
 export { getIngredientList } from './ingredient';
+
+/* FoodCategory actions */
+export { getFoodCategoryList } from './foodCategory';
 
 /* Article actions */
 // export { getArticleList, getArticle, createArticle, deleteArticle, editArticle } from './article';

@@ -69,7 +69,7 @@ describe('Signup', () => {
 		const inputList = component.find('div#input-list').find('input');
 		const signupButton = component.find('button#signup-button');
 
-		inputList.find('#name').simulate('change', { target: { value: 'wrongName' } });
+		inputList.find('#name').simulate('change', { target: { value: '' } });
 		// expect(component.find('p#invalid-name').length).toBe(1); // name
 		inputList.find('#username').simulate('change', { target: { value: mockUser.username } }); // username
 		inputList
@@ -82,13 +82,18 @@ describe('Signup', () => {
 		expect(spyAlert).toBeCalledTimes(1);
 		expect(spyAlert).toBeCalledWith('fill in the blink');
 
+		inputList.find('#name').simulate('change', { target: { value: '4566' } });
+		signupButton.simulate('click');
+		expect(spySignupAction).toBeCalledTimes(0);
+
+		inputList.find('#name').simulate('change', { target: { value: 'testname' } });
 		inputList.find('#password').simulate('change', { target: { value: mockUser.password } }); // password
 		inputList
 			.find('#password-confirm')
 			.simulate('change', { target: { value: 'wrongPassword' } }); // password-confirm
 		signupButton.simulate('click');
 		expect(spySignupAction).toBeCalledTimes(0);
-		expect(spyAlert).toBeCalledTimes(2);
+		expect(spyAlert).toBeCalledTimes(3);
 		expect(spyAlert).toBeCalledWith('Do not match password');
 	});
 

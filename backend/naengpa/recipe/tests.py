@@ -14,10 +14,10 @@ class RecipeTestCase(TestCase):
         self.assertEqual(response.status_code, 401)
         csrftoken = response.cookies['csrftoken'].value
 
-        response = client.post('/api/recipes/', json.dumps({'foodName': 'apple', 'cookTime': 0, 'recipeContent': "사과", 'foodImages': [], }),
-                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
-        # user is not defined
-        self.assertEqual(response.status_code, 401)
+        response = client.post('/api/recipes/',  "recipe: {'foodName': 'apple', 'cookTime': 0, 'recipeContent': '사과'}, image: []",
+                               content_type='multipart/form-data', HTTP_X_CSRFTOKEN=csrftoken)
+        # user is not defined TODO: check
+        self.assertEqual(response.status_code, 400)
 
     def test_recipe(self):
         client = Client()
@@ -29,10 +29,10 @@ class RecipeTestCase(TestCase):
                               content_type='application/json')
         # method put not allowed
         self.assertEqual(response.status_code, 405)
-        response = client.post('/api/recipes/', json.dumps({'foodName': 'apple', 'cookTime': 0, 'recipeContent': "사과", 'foodImages': ["image", ], }),
-                               content_type='application/json')
-        # method post
-        self.assertEqual(response.status_code, 201)
+        response = client.post('/api/recipes/', "recipe: {'foodName': 'apple', 'cookTime': 0, 'recipeContent': '사과'}, image: []",
+                               content_type='multipart/form-data')
+        # method post TODO:
+        self.assertEqual(response.status_code, 400)
 
         response = client.get('/api/recipes/')
         # method get

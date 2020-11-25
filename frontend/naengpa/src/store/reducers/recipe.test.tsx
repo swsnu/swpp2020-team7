@@ -1,34 +1,61 @@
-import React from 'react';
 import recipeReducer from './recipe';
 import * as actionTypes from '../actions/actionTypes';
-import { Dictionary } from '../../model/general';
+import { RecipeEntity } from '../../model/recipe';
 
 const image = import('../../../public/icons/boy.png');
-const recipeList = [
+const recipeList: RecipeEntity[] = [
 	{
-		'food-name': 'foodName',
-		'cook-time': 100,
-		'recipe-content': 'recipeContent',
-		'food-images': [],
-		'recipe-like': 0,
+		id: 2,
+		authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
+		author: 'test',
+		foodName: '딸기',
+		cookTime: '60',
+		recipeContent: '레시피',
+		foodImages: [
+			{
+				id: 2,
+				recipe_id: 2,
+				file_path: 'path',
+			},
+		],
+		recipeLike: 1,
+		createdAt: '2000.00.00',
+		foodCategory: '밥류',
+		ingredients: ['돼지고기', '고추장'],
+		hashtags: ['혼밥', '혼술'],
 	},
 	{
-		'food-name': 'foodName',
-		'cook-time': 40,
-		'recipe-content': 'recipeContent',
-		'food-images': [],
-		'recipe-like': 10,
+		id: 2,
+		authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
+		author: 'test',
+		foodName: '딸기',
+		cookTime: '60',
+		recipeContent: '레시피',
+		foodImages: [
+			{
+				id: 2,
+				recipe_id: 2,
+				file_path: 'path',
+			},
+		],
+		recipeLike: 1,
+		createdAt: '2000.00.00',
+		foodCategory: '밥류',
+		ingredients: ['돼지고기', '고추장'],
+		hashtags: ['혼밥', '혼술'],
 	},
 ];
 
 type InitialState = {
-	recipeList: Dictionary<string | string[] | number>[];
-	selectedRecipe: Dictionary<string | string[] | number>;
+	recipeList: RecipeEntity[];
+	recipe: RecipeEntity | null;
+	createdRecipe: RecipeEntity | null;
 };
 
 const RecipeState: InitialState = {
 	recipeList: [],
-	selectedRecipe: {},
+	recipe: null,
+	createdRecipe: null,
 };
 
 describe('Recipe Reducer', () => {
@@ -58,7 +85,7 @@ describe('Recipe Reducer', () => {
 		});
 		expect(newState).toEqual({
 			...RecipeState,
-			selectedRecipe: recipeList[0],
+			recipe: recipeList[0],
 		});
 	});
 
@@ -70,6 +97,19 @@ describe('Recipe Reducer', () => {
 		expect(newState).toEqual({
 			...RecipeState,
 			recipeList: [...RecipeState.recipeList, recipeList[0]],
+			recipe: recipeList[0],
+			createdRecipe: null,
+		});
+	});
+
+	it('should check if it can extract ml feature from recipe', () => {
+		const newState = recipeReducer(RecipeState, {
+			type: actionTypes.EXTRACT_ML_FEATURE_FROM_RECIPE,
+			recipe: recipeList[0],
+		});
+		expect(newState).toEqual({
+			...RecipeState,
+			createdRecipe: recipeList[0],
 		});
 	});
 
@@ -80,14 +120,12 @@ describe('Recipe Reducer', () => {
 		});
 		expect(newState).toEqual({
 			...RecipeState,
-			//  recipeList: [...initialState.recipeList,  recipeList[0]]
 		});
 	});
 
 	it('should check if it can edit specific recipe', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.EDIT_RECIPE,
-			target_id: 0,
 			recipe: recipeList[0],
 		});
 		expect(newState).toEqual({
