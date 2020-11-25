@@ -1,10 +1,9 @@
 """models for user"""
+import uuid
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
 from ingredient.models import Ingredient
-
-import uuid
 
 
 class Region(models.Model):
@@ -12,6 +11,17 @@ class Region(models.Model):
     name = models.CharField(max_length=30, unique=True)
     location = models.PointField(
         geography=True, default=Point(0.0, 0.0), unique=True)
+
+    # @property
+    # def latitude(self):
+    #     return self.location.x
+
+    # @property
+    # def longitude(self):
+    #     return self.location.y
+
+    def __str__(self):
+        return f'[{self.id}] {self.name}: {self.location}'
 
 
 class User(AbstractUser):
@@ -22,6 +32,9 @@ class User(AbstractUser):
     date_of_birth = models.CharField(max_length=30)
     naengpa_score = models.IntegerField(default=0)
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return f'[{self.id}] {self.name}'
 
 
 class Fridge(models.Model):
