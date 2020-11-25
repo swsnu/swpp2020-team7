@@ -34,7 +34,7 @@ jest.mock('./containers/RecipeList/RecipeList', () => jest.fn(() => <div />));
 jest.mock('./containers/RecipeList/CreateRecipe/CreateRecipe', () => jest.fn(() => <div />));
 jest.mock('./containers/RecipeList/RecipeDetail/RecipeDetail', () => jest.fn(() => <div />));
 jest.mock('./containers/RecipeList/EditRecipe/EditRecipe', () => jest.fn(() => <div />));
-jest.mock('./containers/ExtractIngredient/ExtractIngredient', () => jest.fn(() => <div />));
+jest.mock('./containers/ExtractMLFeature/ExtractMLFeature', () => jest.fn(() => <div />));
 jest.mock('./containers/ArticleList/ArticleList', () => jest.fn(() => <div />));
 jest.mock('./containers/ArticleList/CreateArticle/CreateArticle', () => jest.fn(() => <div />));
 jest.mock('./containers/ArticleList/ArticleDetail/ArticleDetail', () => jest.fn(() => <div />));

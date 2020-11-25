@@ -1,0 +1,483 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+#container {
+  margin: 0% 10% 10% 15%;
+  width: 70%;
+  height: 80%;
+  border: solid 1px #dcdcdc;
+  align-items: center;
+
+  #food-box {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+
+  #food-category {
+    font: {
+      size: 100%;
+      weight: bold;
+      stretch: normal;
+      style: normal;
+    }
+    letter-spacing: normal;
+    text-align: left;
+    background-color: #ff8a3d;
+    border-radius: 25px;
+    color: #ffffff;
+    right:0; 
+  }
+
+  #food-name {
+    font-size: 120%;
+  }
+  #cook-time {
+    text-align:left;
+    font-size: 120%;
+  }
+  #ingredient-name {
+    font-size: 120%;
+  }
+  #hash-tag {
+    font-size: 120%;
+  }
+}
+
+#extract-ml-feature-alert {
+  position: absolute;
+  z-index: 1;
+  padding: 2%;
+  text-align: center;
+  left: 50%; 
+  transform: translateX(-50%); 
+  margin-top:20%;
+  background-color: #ffffff;
+  border: solid 1px #707070; 
+
+  #naengpa-logo-box {
+    display: flex;
+    margin-bottom: 10%;
+    justify-content: space-between;
+    font-family: 'Jua', sans-serif;
+
+    #naengpa-logo {
+      display: flex;
+      align-items: center;
+      letter-spacing: 5.2px;
+      font-size: 200%;
+      background-color: transparent;
+      color: #ff8a3d;
+
+      #naengpa-logo-image {
+        font: {
+          size: 110%;
+          weight: bold;
+        }
+      }
+    }
+    #close-alert-button {
+      color:#ff6767;
+    }
+   }
+
+   #alert-content {
+    font: {
+      family: HelveticaNeue;
+      size: 120%;
+      weight: normal;
+      stretch: normal;
+      style: normal;
+    }
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: left;
+    color: #707070;
+  }
+
+  #confirm-alert-button-box {
+    display: flex;
+    justify-content: flex-end;
+    margin-top:15%;
+    #confirm-alert-button {
+      font: {
+        size: 90%;
+        weight: bold;
+        stretch: normal;
+        style: normal;
+      }
+      letter-spacing: normal;
+      text-align: left;
+      color: #ff8a3d;
+      border-radius: 25px;
+      border: solid 1px #ffa43c;
+      background-color: #ffffff;
+      right:0;
+    }
+
+    #cancel-alert-button {
+      font: {
+        size: 90%;
+        weight: bold;
+        stretch: normal;
+        style: normal;
+      }
+      letter-spacing: normal;
+      text-align: left;
+      color: #ff8a3d;
+      border-radius: 25px;
+      border: solid 1px #ffa43c;
+      background-color: #ffffff;
+      right:0;
+    }
+  }
+}
+
+
+#extract-ml-feature-mention {
+  font: {
+    size: 20px;
+    weight: bold;
+    stretch: normal;
+    style: normal;
+  }
+  line-height: 3.69;
+  letter-spacing: normal;
+  color: #ff8a3d;
+  display: flex;
+  justify-content: center;
+  margin-top: 5%;
+}
+
+#container-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+#back-to-create-recipe {
+  font-size: 120%;
+  border: solid 1px #707070;
+  border-radius: 25px;
+  background-color: #ffffff;
+}
+
+#extract-ml-feature-title {
+  font: {
+    weight: bold;
+    size: 25px;
+  }
+  margin-top: 10px;
+  margin-left: 10%;
+  letter-spacing: normal;
+  align-content: center;
+  color: #696464;
+}
+
+#extract-ml-feature-button-box {
+  display: flex;
+  flex-direction: row;
+}
+
+#extract-ml-feature-button {
+  font: {
+    size: 120%;
+    weight: bold;
+    stretch: normal;
+    style: normal;
+  }
+  letter-spacing: normal;
+  text-align: left;
+  color: #ff8a3d;
+  border-radius: 25px;
+  border: solid 1px #ffa43c;
+  background-color: #ffffff;
+}
+
+#register-recipe-button {
+  font: {
+    size: 120%;
+    weight: bold;
+    stretch: normal;
+    style: normal;
+  }
+  letter-spacing: normal;
+  text-align: left;
+  color: #ff8a3d;
+  border-radius: 25px;
+  border: solid 1px #ffa43c;
+  background-color: #ffffff;
+}
+
+#image-box {
+  display: flex;
+  right: 0;
+  flex-direction: column;
+}
+
+#add-image-icon-box {
+  background-color: #dcdcdc;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  float: left;
+}
+
+#food-image {
+  display:none;
+}
+
+#add-image-button {
+  position: absolute;
+  color: #69e88e;
+  top: 0;
+  right: 0;
+
+  margin-top: -11px;
+  margin-right: -11px;
+  border-radius: 25px;
+  background-color: #ffffff;
+}
+
+#add-image-icon {
+  font-size: 45px;
+  color: #ffffff;
+}
+
+
+#delete-image-icon-box {
+  background-color: #dcdcdc;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  float: left;
+  margin-bottom: 13px;
+}
+
+#delete-image-button {
+  position: absolute;
+  color:#ff6767;
+  top: 0;
+  right: 0;
+
+  margin: {
+    top: -11px;
+    right: -11px;
+  }
+  border-radius: 20px;
+  background-color: #ffffff;
+}
+
+#delete-image-icon {
+  font-size: 45px;
+  color: #ffffff;
+}
+
+#recipe-content {
+  font-size: 18px;
+}
+
+#recipe-row-box {
+  display: flex;
+  flex-direction: row;
+}
+
+/* Modal Header */
+#modal-header-box {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2%;
+
+  #modal-header {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+
+    #modal-title {
+      color: #ff8a3d;
+      font-size: 130%;
+      font-family: 'Jua', sans-serif;
+    }
+
+    #modal-subtitle {
+      display: inline-flex;
+      color: #707070;
+    }
+  }
+}
+
+/*  Modal Close Button */
+#close-modal-button {
+  font: {
+    weight: bold;
+  }
+  letter-spacing: normal;
+  text-align: left;
+  background-color: #ff8a3d;
+  border-radius: 25px;
+  align-self: right;
+  color: #ffffff;    
+}
+
+#confirm-modal-button-box {
+  display: flex;
+  justify-content: flex-end;
+
+  #confirm-modal-button {
+    font: {
+      size: 90%;
+      weight: bold;
+      stretch: normal;
+    } 
+    letter-spacing: normal;
+    text-align: left;
+    color: #ff8a3d;
+    border-radius: 25px;
+    border: solid 1px #ffa43c;
+    background-color: #ffffff;
+    right:0;
+  }
+}
+
+/* Modal - Food Category */
+#food-category-modal {
+  position: absolute;
+  display: inline-block;
+  z-index: 1;
+  text-align: center;
+  left: 65%; 
+  transform: translateX(-50%); 
+  margin-top: 15%;
+  font-size: 100%;
+  background-color: #ffffff;
+  border: solid 1px #707070; 
+  width: 25%;
+
+  #food-category-list {
+    padding: 2%;
+    
+    #food-category-button{
+      font: {
+        weight: bold;
+      }
+      letter-spacing: normal;
+      text-align: left;
+      border-radius: 25px;
+      align-self: right;
+      color: #ffffff;     
+    }
+    .food-category-false {
+      background-color:  #b4b4b4; 
+    }
+    .food-category-true {
+      background-color: #ff8a3d;
+    }
+  }
+}
+
+
+/* Modal - Food Ingredient */
+#ingredient-modal {
+  position: absolute;
+  display: inline-block;
+  z-index: 1;
+  text-align: center;
+  left: 60%; 
+  transform: translateX(-50%); 
+  margin-top: 25%;
+  font-size: 100%;
+  background-color: #ffffff;
+  border: solid 1px #707070; 
+  width: 25%;
+
+  #ingredient-list {
+    padding: 2%;
+
+    #checkbox {
+      color: #ff8a3d; 
+    }
+    #ingredient-element {
+      font: {
+        weight: bold;
+      }
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #4b4b4b;
+    }
+  }
+}
+
+#ingredient-list {
+  padding: 2%;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  
+  #ingredient-button{
+    font: {
+      weight: bold;
+    }
+    letter-spacing: normal;
+    text-align: left;
+    border-radius: 25px;
+    align-self: right;
+    color: #ffffff;  
+    background-color: #69e88e;   
+  }
+}
+
+#hashtag-list {
+  display: flex;
+  font-weight: bold;
+  color: #ff8a3d; 
+  justify-content: flex-start !important;
+  :focus {
+    outline: 0 !important;
+  }
+
+  #hashtag {
+    color: #ff8a3d; 
+    margin-right: 1%;
+  }
+}
+
+
+#hashtag-modal {
+  position: absolute;
+  display: inline-block;
+  z-index: 1;
+  text-align: center;
+  left: 50%; 
+  min-width: 300px;
+  transform: translateX(-50%); 
+  margin-top: 75%;
+  font-size: 100%;
+  background-color: #ffffff;
+  border: solid 1px #707070; 
+  width: 25%;
+
+  #hashtag-list {
+    // display: flex !important;
+    align-items: center;
+    flex-direction: row;
+    font-weight: bold;
+    color: #ff8a3d; 
+    // justify-content: flex-start !important;
+
+    :focus {
+      outline: 0 !important;
+    }
+  
+    #hashtag {
+      color: #ff8a3d; 
+      margin-right: 1%;
+    }
+  }
+}
