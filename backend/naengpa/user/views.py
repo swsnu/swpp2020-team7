@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.db import transaction
 from .models import Fridge, FridgeIngredient
 from ingredient.models import Ingredient
 
@@ -13,6 +14,7 @@ User = get_user_model()
 
 
 @ensure_csrf_cookie
+@transaction.atomic
 def signup(request):
     """signup"""
     if request.method == 'POST':
@@ -103,7 +105,7 @@ def user_list(request):
             "email": user.email,
             "dateOfBirth": user.date_of_birth,
             "naengpa_score": user.naengpa_score
-        } for user in User.objects.all()] if len(User.objects.all()) != 0 else []
+        } for user in User.objects.all()] if User.objects.count() != 0 else []
         return JsonResponse(user_collection, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
