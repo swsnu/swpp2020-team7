@@ -67,9 +67,6 @@ def article_list(request):
         images_path = upload_images(
             images, "article", article.id, author_id)
         for path in images_path:
-            Image.objects.create(file_path=path, recipe_id=recipe.id)
-
-        for path in images:
             Image.objects.create(author_id=author_id,
                                  file_path=path, article_id=article.id)
 
