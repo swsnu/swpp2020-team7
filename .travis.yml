@@ -24,7 +24,7 @@ matrix:
         - cd ../..
       script:
         - cd frontend/naengpa
-        - yarn lint
+        - ./node_modules/.bin/eslint src/
         - yarn test --coverage --watchAll=false
         - cd ../..
         - cd backend/naengpa
@@ -37,7 +37,7 @@ matrix:
         - coveralls-lcov -v -n coverage/lcov.info > coverage.json
         - cd ../..
         - cd backend/naengpa
-        - coveralls --merge=../../frontend/caffeine/coverage.json
+        - coveralls --merge=../../frontend/naengpa/coverage.json
         - cd ../..
 
     - language: node_js
@@ -49,8 +49,8 @@ matrix:
       install:
         - yarn
       script:
-        - yarn lint
-        - yarn test
+        - ./node_modules/.bin/eslint src/
+        - yarn test --coverage --watchAll=false
 
     - language: python
       python: "3.7"
