@@ -1,12 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { History } from 'history';
 import './Mypage.scss';
+import UserInfo from './UserInfo/UserInfo';
+import UserRecipe from '../UserRecipe/UserRecipe';
+import UserNotification from '../UserNotification/UserNotification';
+import ChatRoomList from '../ChatRoomList/ChatRoomList';
 
 interface MypageProps {
 	history: History;
 }
 
 const Mypage: React.FC<MypageProps> = ({ history }) => {
+	const [myInfo, setMyInfo] = useState(true);
+	const [myRecipe, setMyRecipe] = useState(false);
+	const [notification, setNotification] = useState(false);
+	const [chatting, setChatting] = useState(false);
+
+	/* CLICK EVENT - MY INFO PAGE */
+	const onClickMyInfo = () => {
+		setMyInfo(true);
+		setMyRecipe(false);
+		setNotification(false);
+		setChatting(false);
+	};
+	/* CLICK EVENT - MY RECIPE PAGE */
+	const onClickMyRecipe = () => {
+		setMyInfo(false);
+		setMyRecipe(true);
+		setNotification(false);
+		setChatting(false);
+	};
+	/* CLICK EVENT - NOTIFICATION PAGE */
+	const onClickNotification = () => {
+		setMyInfo(false);
+		setMyRecipe(false);
+		setNotification(true);
+		setChatting(false);
+	};
+	/* CLICK EVENT - CHATTING ROOM LIST PAGE */
+	const onClickChatting = () => {
+		setMyInfo(false);
+		setMyRecipe(false);
+		setNotification(false);
+		setChatting(true);
+	};
+
 	return (
 		<div id="mypage">
 			<div id="button-list">
@@ -17,14 +55,8 @@ const Mypage: React.FC<MypageProps> = ({ history }) => {
 					<button
 						id="myinfo-tap"
 						type="button"
-						onClick={() => history.push('/@:username/info')}
+						onClick={() => history.push('/@:username/info') /*onClickMyInfo*/}
 					>
-						{/*
-						<img
-							id="check-image"
-							src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDc4LjM2OSA3OC4zNjkiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiIGNsYXNzPSIiPjxnPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoJPHBhdGggZD0iTTc4LjA0OSwxOS4wMTVMMjkuNDU4LDY3LjYwNmMtMC40MjgsMC40MjgtMS4xMjEsMC40MjgtMS41NDgsMEwwLjMyLDQwLjAxNWMtMC40MjctMC40MjYtMC40MjctMS4xMTksMC0xLjU0N2w2LjcwNC02LjcwNCAgIGMwLjQyOC0wLjQyNywxLjEyMS0wLjQyNywxLjU0OCwwbDIwLjExMywyMC4xMTJsNDEuMTEzLTQxLjExM2MwLjQyOS0wLjQyNywxLjEyLTAuNDI3LDEuNTQ4LDBsNi43MDMsNi43MDQgICBDNzguNDc3LDE3Ljg5NCw3OC40NzcsMTguNTg2LDc4LjA0OSwxOS4wMTV6IiBmaWxsPSIjNjk2NDY0IiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIj48L3BhdGg+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPC9nPjwvc3ZnPg=="
-						/>
-						*/}
 						내 정보
 					</button>
 				</div>
@@ -32,7 +64,7 @@ const Mypage: React.FC<MypageProps> = ({ history }) => {
 					<button
 						id="myrecipe-tap"
 						type="button"
-						onClick={() => history.push('/@:username/recipes')}
+						onClick={/*onClickMyRecipe*/ () => history.push('/@:username/recipes')}
 					>
 						나의 레시피
 					</button>
@@ -41,7 +73,7 @@ const Mypage: React.FC<MypageProps> = ({ history }) => {
 					<button
 						id="notification-tap"
 						type="button"
-						onClick={() => history.push('/notifications')}
+						onClick={/*onClickNotification*/ () => history.push('/notifications')}
 					>
 						게시글 알림
 					</button>
@@ -50,15 +82,20 @@ const Mypage: React.FC<MypageProps> = ({ history }) => {
 					<button
 						id="chatting-tap"
 						type="button"
-						onClick={() => history.push('/chatrooms')}
+						onClick={/*onClickChatting*/ () => history.push('/chatrooms')}
 					>
 						채팅
 					</button>
 				</div>
 			</div>
+			{/*
 			<div id="info">
-				<p>my page</p>
+				{myInfo && <UserInfo history={history} />}
+				{myRecipe && <UserRecipe history={history} />}
+				{notification && <UserNotification history={history} />}
+				{chatting && <ChatRoomList history={history} />}
 			</div>
+			*/}
 		</div>
 	);
 };
