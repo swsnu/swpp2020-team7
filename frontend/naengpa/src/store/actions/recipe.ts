@@ -34,8 +34,8 @@ export function createRecipe(recipe: RecipeEntity) {
 	return async (dispatch: any) => {
 		const bodyFormData = new FormData();
 		bodyFormData.append('recipe', JSON.stringify(recipe));
-		(recipe.foodImages as File[])!.map((image, index) => {
-			return bodyFormData.append('image', image);
+		(recipe.foodImages as File[])!.forEach((image, index) => {
+			bodyFormData.append('image', image);
 		});
 		const response = await axios({
 			method: 'post',
@@ -58,8 +58,8 @@ export function extractMLFeatureFromRecipe(recipe: CreateRecipeEntity) {
 	return async (dispatch: any) => {
 		const bodyFormData = new FormData();
 		bodyFormData.append('recipe', JSON.stringify(recipe));
-		recipe.foodImages!.map((image, index) => {
-			return bodyFormData.append('image', image);
+		recipe.foodImages!.forEach((image, index) => {
+			bodyFormData.append('image', image);
 		});
 		const response = await axios({
 			method: 'post',
