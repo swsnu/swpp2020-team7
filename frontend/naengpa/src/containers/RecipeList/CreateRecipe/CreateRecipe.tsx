@@ -261,11 +261,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 										/>
 									</TableCell>
 								</TableRow>
-								<TableRow>
-									<TableCell>
-										<div id="hash-tag">Hashtag</div>
-									</TableCell>
-								</TableRow>
 							</TableBody>
 						</Table>
 					</TableContainer>
