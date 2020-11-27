@@ -50,7 +50,6 @@ const stubInitialState = {
 			recipeLike: 0,
 			foodCategory: '밥류',
 			ingredients: ['고추장', '사과'],
-			hashtags: ['혼밥', '혼술'],
 		},
 	},
 	foodCategory: {
@@ -183,11 +182,6 @@ describe('ExtractMLFeature', () => {
 	});
 
 	// it('should work well with the recipe Ingredients Modal', async () => {
-	// 	const component = mount(extractMLFeature);
-	// 	await waitForComponentToPaint(component);
-	// });
-
-	// it('should work well with the hashtag Modal', async () => {
 	// 	const component = mount(extractMLFeature);
 	// 	await waitForComponentToPaint(component);
 	// });

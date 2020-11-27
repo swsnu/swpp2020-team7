@@ -20,6 +20,7 @@ import {
 	TableRow,
 	TextField,
 	CircularProgress,
+	Divider,
 } from '@material-ui/core';
 import './CreateRecipe.scss';
 import { makeStyles } from '@material-ui/core/styles';
@@ -92,7 +93,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		? []
 		: foodImages.map((item, idx) => {
 				return (
-					<div key={`${idx}`} id="delete-image-icon-box">
+					<div key={`#${item}`} id="delete-image-icon-box">
 						{!alert && (
 							<CancelIcon
 								key={URL.createObjectURL(item) as string}
@@ -102,7 +103,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 							/>
 						)}
 						<img
-							key={`${idx}`}							
+							key={`#${item}`}
 							id="delete-image-icon"
 							src={URL.createObjectURL(item) as string}
 							height="150px"
@@ -161,7 +162,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 						</Alert>
 					</Collapse>
 					<div id="create-recipe-mention">
-						**요리 카테고리, 필수재료 및 태그는 재료등록 단계에서 자동으로 추출됩니다.
+						**요리 카테고리, 필수재료는 재료등록 단계에서 자동으로 추출됩니다.
 					</div>
 					<TableContainer id="container">
 						<Table id="create-recipe-form" aria-label="simple table">
@@ -215,7 +216,12 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 									</TableCell>
 								</TableRow>
 								<TableRow>
-									<TableCell id="image-box1">
+									<TableCell>
+										<div id="ingredient-name">필수재료</div>
+									</TableCell>
+								</TableRow>
+								<TableRow id="recipe-row-box">
+									<TableCell id="image-box">
 										{image_list}
 										<Box id="add-image-icon-box">
 											<label
@@ -239,13 +245,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											<PhotoCameraIcon id="add-image-icon" />
 										</Box>
 									</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>
-										<div id="ingredient-name">필수재료</div>
-									</TableCell>
-								</TableRow>
-								<TableRow id="recipe-row-box">
+									<Divider orientation="vertical" flexItem />
 									<TableCell width="100%" id="recipe-row">
 										<TextField
 											placeholder="레시피"
@@ -259,11 +259,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											InputProps={{ classes }}
 											onChange={(e) => setRecipeContent(e.target.value)}
 										/>
-									</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>
-										<div id="hash-tag">Hashtag</div>
 									</TableCell>
 								</TableRow>
 							</TableBody>
