@@ -150,6 +150,8 @@
 
 #image-box1 {
   display: flex;
+  right: 0;
+  flex-direction: column;
 }
 
 #add-image-icon-box {
@@ -214,6 +216,11 @@
 #delete-image-icon {
   font-size: 45px;
   color: #ffffff;
+}
+
+#recipe-row-box {
+  display:flex;
+  flex-direction: row;
 }
 
 #recipe-content {

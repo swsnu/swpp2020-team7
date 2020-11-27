@@ -6,7 +6,6 @@ import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Alert from '@material-ui/lab/Alert';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
-import Divider from '@material-ui/core/Divider';
 import {
 	Button,
 	Collapse,
@@ -21,6 +20,7 @@ import {
 	TableRow,
 	TextField,
 	Checkbox,
+	Divider,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
@@ -396,8 +396,8 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 			{foodCategoryModal}
 			{ingredientListModal}
 			<div id="create-recipe-mention">
-				**요리 카테고리, 필수재료 및 태그를 다시 추천받고 싶으시다면 추천 다시하기 버튼을
-				눌러주세요.
+				**요리 카테고리, 필수재료를 다시 추천받고 싶으시다면 추천 다시하기 버튼을
+				눌러주세요. 
 			</div>
 			<TableContainer id="container">
 				<Table id="extract-ml-feature-form" aria-label="simple table">
@@ -484,7 +484,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							</TableCell>
 						</TableRow>
 						<TableRow id="recipe-row-box">
-							<TableCell id="image-box" width="20%">
+							<TableCell id="image-box">
 								{imageList}
 								<Box id="add-image-icon-box">
 									<label aria-label="food-image-label" htmlFor="food-image">
@@ -503,7 +503,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 								</Box>
 							</TableCell>
 							<Divider orientation="vertical" flexItem />
-							<TableCell id="recipe-row" align="right" width="80%">
+							<TableCell id="recipe-row" align="right" width="100%">
 								<TextField
 									id="recipe-content"
 									fullWidth
