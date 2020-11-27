@@ -1,8 +1,8 @@
 matrix:
   include:
     - language: node_js
-      node_js: '12'
-      python: '3.7'
+      node_js: "12"
+      python: "3.7"
       cache:
         - pip: true
         - yarn: true
@@ -24,7 +24,7 @@ matrix:
         - cd ../..
       script:
         - cd frontend/naengpa
-        - ./node_modules/.bin/eslint src/
+        - yarn lint src/**/*.{ts,tsx,json,scss}
         - yarn test --coverage --watchAll=false
         - cd ../..
         - cd backend/naengpa
@@ -49,7 +49,7 @@ matrix:
       install:
         - yarn
       script:
-        - ./node_modules/.bin/eslint src/
+        - yarn lint src/**/*.{ts,tsx,json,scss}
         - yarn test --coverage --watchAll=false
 
     - language: python
