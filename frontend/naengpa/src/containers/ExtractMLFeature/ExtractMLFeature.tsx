@@ -397,7 +397,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 			{ingredientListModal}
 			<div id="create-recipe-mention">
 				**요리 카테고리, 필수재료를 다시 추천받고 싶으시다면 추천 다시하기 버튼을
-				눌러주세요. 
+				눌러주세요.
 			</div>
 			<TableContainer id="container">
 				<Table id="extract-ml-feature-form" aria-label="simple table">
