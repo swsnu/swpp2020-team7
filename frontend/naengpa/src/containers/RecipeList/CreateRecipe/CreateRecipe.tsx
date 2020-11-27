@@ -92,7 +92,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		? []
 		: foodImages.map((item, idx) => {
 				return (
-					<div key={`${idx}`} id="delete-image-icon-box">
+					<div key={`#${item}`} id="delete-image-icon-box">
 						{!alert && (
 							<CancelIcon
 								key={URL.createObjectURL(item) as string}
@@ -102,7 +102,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 							/>
 						)}
 						<img
-							key={`${idx}`}							
+							key={`#${item}`}
 							id="delete-image-icon"
 							src={URL.createObjectURL(item) as string}
 							height="150px"
