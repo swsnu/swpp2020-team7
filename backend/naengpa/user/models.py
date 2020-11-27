@@ -8,11 +8,11 @@ from ingredient.models import Ingredient
 
 class Region(models.Model):
     ''' Region model '''
-    si_name = models.CharField(max_length=10, unique=True)
-    gu_name = models.CharField(max_length=20, unique=True)
+    si_name = models.CharField(max_length=10)
+    gu_name = models.CharField(max_length=20)
     dong_name = models.CharField(max_length=20)
     location = models.PointField(
-        geography=True, default=Point(0.0, 0.0), unique=True)
+        geography=True, default=Point(0.0, 0.0))
 
     @property
     def name(self):
