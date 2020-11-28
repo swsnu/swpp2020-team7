@@ -1,3 +1,5 @@
+/* INGREDIENT INTERFACE */
+
 export interface IngredientEntity {
 	id: number;
 	name: string;
