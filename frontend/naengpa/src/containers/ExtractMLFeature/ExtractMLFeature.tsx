@@ -56,16 +56,14 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	// alert state is true if alert is necessary, otherwise false.
 	const [alert, setAlert] = useState(true);
 	const [alertContent, setAlertContent] = useState(
-		'요리 카테고리와 필요한 재료들이 요리명, 등록된 사진들 그리고 레시피를 기반으로 추천되었습니다. 해당 부분을 수정하시거나 레시피등록 버튼을 눌러주세요. 첫번째로 업로드한 사진이 썸네일이 됩니다!',
+		'요리 카테고리와 필요한 재료들이 요리명, 등록된 사진들 그리고 레시피를 기반으로 추천되었습니다. 해당 부분을 수정하거나 레시피등록 버튼을 눌러주세요. 첫번째로 업로드한 사진이 썸네일이 됩니다!',
 	);
 
 	// if the value is false => then each modal pops off.
 	const [showCategoryModal, setShowCategoryModal] = useState(false);
 	const [modifiedCategory, setModifiedCategory] = useState(foodCategory);
 	const [showIngredientModal, setShowIngredientModal] = useState(false);
-	const [modifiedIngredients, setModifiedIngredients] = useState<RecipeIngredient[]>(
-		[],
-	);
+	const [modifiedIngredients, setModifiedIngredients] = useState<RecipeIngredient[]>([]);
 	const [goBackButton, setGoBackButton] = useState(false);
 	const dispatch = useDispatch();
 
@@ -79,7 +77,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		setFoodCategory(createdRecipe?.foodCategory as string);
 		setModifiedCategory(createdRecipe?.foodCategory as string);
 		const checkedIngredients = createdRecipe?.ingredients?.map((item) => {
-			return { ...item, checked:true, quantity:''};
+			return { ...item, checked: true, quantity: '' };
 		});
 		setIngredients(checkedIngredients as RecipeIngredient[]);
 		setModifiedIngredients(checkedIngredients as RecipeIngredient[]);
@@ -121,7 +119,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 			);
 		} else {
 			const newIngredientList: RecipeIngredient[] = ingredients.map((item, idx) => {
-				return {ingredient: item.ingredient, quantity: item.quantity};
+				return { ingredient: item.ingredient, quantity: item.quantity };
 			});
 
 			const newRecipe: RecipeEntity = {
@@ -337,7 +335,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							}}
 						/>
 					}
-					key={item.ingredient as string}
+					key={`${item.ingredient}-` as string}
 					label={item.ingredient as string}
 				/>
 				<Input
@@ -367,7 +365,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		);
 	});
 
-
 	const onClickAddIngredient = () => {
 		setModifiedIngredients([
 			...modifiedIngredients,
@@ -379,8 +376,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		]);
 		setNewIngredient('');
 		setNewIngredientQuantity('');
-	}
-
+	};
 
 	const ingredientListModal = (
 		<Collapse className="collapse" in={showIngredientModal}>

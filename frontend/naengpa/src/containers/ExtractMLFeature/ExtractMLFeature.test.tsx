@@ -48,7 +48,10 @@ const stubInitialState = {
 			foodImages: [(image as unknown) as File],
 			recipeLike: 0,
 			foodCategory: '밥류',
-			ingredients: ['고추장', '사과'],
+			ingredients: [
+				{ ingredient: '고추장', quantity: '' },
+				{ ingredient: '사과', quantity: '' },
+			],
 		},
 	},
 	foodCategory: {
@@ -268,7 +271,7 @@ describe('ExtractMLFeature', () => {
 		ingredientField.simulate('mouseOver');
 		const newIngredient = component.find('#ingredient-name').find('input');
 		expect(newIngredient.text()).toBe('');
-		newIngredient.simulate('change', { target: { value: '사과' } });
+		newIngredient.simulate('change', { target: { value: '포도' } });
 		const ingredientQuantity = component.find('#ingredient-quantity').find('input');
 		expect(ingredientQuantity.text()).toBe('');
 		ingredientQuantity.simulate('change', { target: { value: '2개' } });
