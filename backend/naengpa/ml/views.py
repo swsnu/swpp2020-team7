@@ -4,10 +4,34 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from konlpy.tag import Kkma
 from ingredient.models import Ingredient
 from collections import OrderedDict
+import json
+import requests
 
 
+# @ensure_csrf_cookie
 def extract_foodcategory(request, food_images):
     print(food_images)
+    # Parameters
+    img = food_images[0]
+    '''
+    client = Client(enforce_csrf_checks=True)
+    response = client.get('/api/login/', content_type='application/json')
+    csrftoken = response.cookies['csrftoken'].value
+    headers = {'Authorization': 'Bearer ' + csrftoken}
+    '''
+    '''
+    csrftoken = django.middleware.csrf.get_token(request)
+    headers = {'Authorization': 'Bearer ' + csrftoken}
+    '''
+    # api_user_token = <'replace-with-your-api-user-token'>
+    #headers = {'Authorization': 'Bearer ' + api_user_token}
+
+    # Food Dish/Groups Detection
+    url = 'https://api.logmeal.es/v2/recognition/dish'
+    resp = requests.post(url,
+                         files={'image': img},
+                         headers=None)
+    print(resp.json())  # display groups only
     return "밥류"
 
 

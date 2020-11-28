@@ -6,6 +6,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import Fridge, FridgeIngredient
 from ingredient.models import Ingredient
+from django.contrib.auth.hashers import check_password
 
 import json
 
@@ -89,6 +90,40 @@ def signout(request):
             return HttpResponse(status=204)
         return HttpResponse(status=401)
     return HttpResponseNotAllowed(['GET'])
+
+
+@ensure_csrf_cookie
+def user_edit(request, id):
+    """user_edit"""
+    if request.method == 'PUT':
+        try:
+            user = User.objects.get(id=id)
+        except User.DoesNotExist:
+            return HttpResponseBadRequest()
+        try:
+            req_data = json.loads(request.body.decode())
+            edit_name = req_data['name']
+            edit_date_of_birth = req_data['dateOfBirth']
+            edit_email = req_data['email']
+            checked_password = req_data['password']
+        except (KeyError, JSONDecodeError):
+            return HttpResponseBadRequest()
+        if check_password(checked_password, request.user.password):
+            user.name = edit_name
+            user.date_of_birth = edit_date_of_birth
+            user.email = edit_email
+        else:
+            return HttpResponse(status=401)
+        user.save()
+        return JsonResponse(data={
+            'id': request.user.id,
+            'username': request.user.username,
+            'email': request.user.email,
+            'name': request.user.name,
+            'dateOfBirth': request.user.date_of_birth,
+            'naengpa_score': request.user.naengpa_score
+        }, status=201)
+    return HttpResponseNotAllowed(['PUT'])
 
 
 @ensure_csrf_cookie
