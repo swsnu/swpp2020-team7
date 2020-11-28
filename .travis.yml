@@ -1,6 +1,7 @@
-matrix:
+jobs:
   include:
     - language: node_js
+      dist: bionic
       node_js: "12"
       python: "3.7"
       cache:
@@ -58,6 +59,7 @@ matrix:
         - yarn test --coverage --watchAll=false
 
     - language: python
+      dist: bionic
       python: "3.7"
       cache: pip
       before_install:
