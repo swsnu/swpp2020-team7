@@ -4,9 +4,12 @@ from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, Http
 from django.views.decorators.csrf import ensure_csrf_cookie
 from naengpa.settings import S3_URL, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_REGION_NAME
 import boto3
-from .models import Recipe, Image
+from .models import Recipe, Image, RecipeIngredient
+from ingredient.models import Ingredient
+from food_category.models import FoodCategory
 from datetime import datetime
 from django.core import serializers
+from django.db.models import Q
 
 
 @ensure_csrf_cookie
@@ -15,10 +18,10 @@ def recipe_list(request):
     if request.method != 'GET' and request.method != 'POST':
         return HttpResponseNotAllowed(['POST'])
     query = request.GET.get('value', "")
-    sorted_list = Recipe.objects.all().order_by('-created_at')
-    if query != "":
-        sorted_list = sorted_list.filter(
-            recipe_content__contains=query) | Recipe.objects.filter(food_name__contains=query)
+    sorted_list = sorted_list.select_related('author', 'food_category').filter(
+        Q(recipe_content__contains=query) | Q(food_name__contains=query)) if query != "" else \
+        Recipe.objects.all().select_related(
+            'author', 'food_category').order_by('-created_at')
 
     recipe_collection = [{
         "id": recipe.id,
@@ -27,9 +30,11 @@ def recipe_list(request):
         "foodName": recipe.food_name,
         "cookTime": recipe.cook_time,
         "recipeContent": recipe.recipe_content,
-        "foodImages": list(Image.objects.filter(recipe_id=recipe.id).values()),
+        "foodImages": Image.objects.filter(recipe_id=recipe.id).values(),
         "recipeLike": 0,
-        "createdAt": recipe.created_at.strftime("%Y.%m.%d")
+        "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
+        "foodCategory": recipe.food_category.name
+        "ingredients": RecipeIngredient.objects.filter(recipe_id=recipe.id).values()
     } for recipe in sorted_list] if len(sorted_list) != 0 else []
 
     if request.user.is_authenticated:
@@ -44,12 +49,21 @@ def recipe_list(request):
             food_name = req_data['foodName']
             cook_time = req_data['cookTime']
             recipe_content = req_data['recipeContent']
+            food_category = req_data['foodCategory']
+            ingredients = req_data['ingredients']
 
             recipe = Recipe.objects.create(
-                author=request.user,
+                author_id=request.user.id,
                 food_name=food_name,
                 cook_time=cook_time,
-                recipe_content=recipe_content)
+                recipe_content=recipe_content
+            )
+
+            ingredientList = [RecipeIngredient.objects.create(
+                recipe_id=recipe.id,
+                name=ingredient.name,
+                quantity=ingredient.quantity
+            ) for ingredient in ingredients] if ingredients != [] else []
 
             session = boto3.Session(
                 aws_access_key_id=AWS_ACCESS_KEY_ID,
@@ -78,10 +92,12 @@ def recipe_list(request):
                 "author": recipe.author.username,
                 "foodName": food_name,
                 "cookTime": cook_time,
-                "foodImages": list(Image.objects.filter(recipe_id=recipe.id).values()),
+                "foodImages": Image.objects.filter(recipe_id=recipe.id).values(),
                 "recipeContent": recipe_content,
                 "recipeLike": 0,
                 "createdAt": recipe.created_at,
+                "foodCategory": recipe.food_category,
+                "ingredients": Ingredient.objects.filter(recipe_id=recipe.id).values(),
             }, status=201)
     else:
         return HttpResponse(status=401)
