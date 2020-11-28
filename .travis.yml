@@ -19,7 +19,6 @@ matrix:
         - cd ../..
         - cd backend/naengpa
         - source ~/virtualenv/python3.7/bin/activate
-        - apt --quiet=0 policy gdal-bin | grep .
         - sudo add-apt-repository -y ppa:ubuntugis/ppa && sudo apt update
         - sudo apt update && sudo apt -y install gdal-bin libgdal-dev
         - ogrinfo --version
