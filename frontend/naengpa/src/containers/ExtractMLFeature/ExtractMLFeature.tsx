@@ -598,7 +598,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 										</Box>
 									</TableCell>
 									<TableCell>
-										<Divider orientation="vertical" flexItem />
+										<Divider orientation="vertical"/>
 									</TableCell>
 									<TableCell id="recipe-row" align="right" width="100%">
 										<TextField

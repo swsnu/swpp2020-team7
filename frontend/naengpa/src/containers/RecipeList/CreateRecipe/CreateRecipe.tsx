@@ -238,7 +238,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 										</Box>
 									</TableCell>
 									<TableCell>
-										<Divider orientation="vertical" flexItem />
+										<Divider orientation="vertical" />
 									</TableCell>
 									<TableCell width="100%" id="recipe-row">
 										<TextField
