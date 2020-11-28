@@ -1,6 +1,7 @@
-matrix:
+jobs:
   include:
     - language: node_js
+      dist: bionic
       node_js: "12"
       python: "3.7"
       cache:
@@ -13,12 +14,15 @@ matrix:
             secure: "FJ3gXitz8KWhOeJIECTpAxcF8yaiU33BLrfD405pKBjp0vhSKBRorOwoU4hvNIAxE9StgsJ6HYdlt6S2mNZVnMbVibuzMi0xaikKKah9Yq+LfWxwixJ2TcsRSFSzcYiGWQ/P+Lna4eFH0l5IqrYNx0zlu0vzm+x/VBWIR+wziQV+jjLPi/hOkG+sqgFB/+UwbNfGPY+17x2A1D09p/LziEzB5kTtP/c1vdL1L1l+LDDQoq5dtbGEyEWWyDEr1sQEe8utTxnk2hDVgqO4j4q4nYrsIdqeZnF0/agjouY5ppeGLXuxQon8X6igT3o5CpgzhK/qeXclC1yvbdxB+WnhggGm1Kq90FfpDjzoO0pu+jlqA/6OBOgoCWv8RclxaD98yBy2bBR3bcCFtKIvMtC3wUvTAVVboUdmxL8x92h4MKqgCeqoU6SzQcBN4ZYoD2iUledR1ObD+FmWRjOONRMyjHtFLr3F7sZnLNAD376x6cxgNgwTZzopLAI8J8cBZOsydch1ud9qfmVIpBqMmZK2XFNqQk94Ob2MzS4SUlzODj2MMcoTBsIFxUdui4nedDRDGs0CRucN6n1tmVVOquYIQzL+h+2F1E3wNY76kXO1Kdn9qt3Akoj6soW4KUFpEB/FEJqD3itAgWx+uMtr3Mgp0hH9y1fs7aybsSivlM2+OIE="
       install:
         - cd frontend/naengpa
-        - yarn install
+        - yarn
         - yarn global add coveralls
         - gem install coveralls-lcov
         - cd ../..
         - cd backend/naengpa
         - source ~/virtualenv/python3.7/bin/activate
+        - sudo add-apt-repository -y ppa:ubuntugis/ppa && sudo apt update
+        - sudo apt update && sudo apt -y install gdal-bin libgdal-dev
+        - ogrinfo --version
         - pip install -r requirements.txt
         - pip install coveralls
         - cd ../..
@@ -53,14 +57,43 @@ matrix:
         - yarn test --coverage --watchAll=false
 
     - language: python
+      dist: bionic
       python: "3.7"
       cache: pip
       before_install:
         - cd backend/naengpa
       install:
+        - source ~/virtualenv/python3.7/bin/activate
+        - sudo add-apt-repository -y ppa:ubuntugis/ppa && sudo apt update
+        - sudo apt update && sudo apt -y install gdal-bin
         - pip install -r requirements.txt
         - pip install coveralls
       script:
         - pylint **/*.py --load-plugins pylint_django
         - coverage run --source='.' manage.py test
         - coverage report -m
+
+install:
+  - sudo add-apt-repository -y ppa:ubuntugis/ppa && sudo apt update
+  - sudo apt update && sudo apt -y install gdal-bin
+  - cd $FRONTEND && npm install yarn && yarn && yarn add coveralls
+  - cd ../../$BACKEND && pip3 install -r requirements.txt
+  - gem install coveralls-lcov
+
+script:
+  - echo "[Frontend scripts]"
+  - cd ../../$FRONTEND && yarn lint
+  - yarn test
+  - coveralls-lcov -v -n coverage/lcov.info > coverage/coverage.json
+
+  - echo "[Backend scripts]"
+  - cd ../../$BACKEND && pylint **/*.py
+  - coverage run --branch --source='.' manage.py test && coverage report -m
+  - coverage xml
+
+  - echo "[Sonar scanner]"
+  - cd ../.. && sonar-scanner
+
+after_success:
+  - cd $BACKEND
+  - coveralls --merge=../../$FRONTEND/coverage/coverage.json

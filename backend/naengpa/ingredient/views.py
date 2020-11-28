@@ -19,7 +19,7 @@ def ingredient_list(request):
         return HttpResponseNotAllowed(['GET'])
 
 
-@ ensure_csrf_cookie
+@ensure_csrf_cookie
 def create_ingredients(request):
     """makes up database"""
     ingredient_dict = {}
@@ -37,7 +37,8 @@ def create_ingredients(request):
     ingredient_dict['두부/콩류'] = '두부, 콩나물, 숙주나물, 콩'.split(', ')
     ingredient_dict['라면/면류'] = '라면, 짜장라면, 비빔라면, 볶음라면, 우동, 칼국수, 소면'.split(', ')
     ingredient_dict['즉석식품/통조림'] = '참치캔, 통조림햄, 닭가슴살캔, 생선캔, 골뱅이캔'.split(', ')
-    ingredient_dict['소스/잼류'] = '굴소스, 케찹, 마요네즈, 돈가스소스, 토마토소스, 크림소스, 로제소스, 오일소스, 바질 페스토, 딸기잼, 블루베리잼'.split(', ')
+    ingredient_dict['소스/잼류'] = '굴소스, 케찹, 마요네즈, 돈가스소스, 토마토소스, 크림소스, 로제소스, 오일소스, 바질 페스토, 딸기잼, 블루베리잼'.split(
+        ', ')
     ingredient_dict['김치/장류'] = '국간장, 진간장, 고추장, 된장, 배추김치, 깍두기, 열무김치'.split(', ')
     ingredient_dict['양념류'] = '소금, 설탕, 후추, 식초'.split(', ')
 

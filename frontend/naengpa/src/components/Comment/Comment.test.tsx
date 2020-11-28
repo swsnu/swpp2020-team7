@@ -31,7 +31,7 @@ describe('Comment', () => {
 		jest.restoreAllMocks();
 	});
 
-	it('Commnet renders without crashing', () => {
+	it('Comment renders without crashing', () => {
 		const component = mount(comment);
 		expect(component.find('#comment').length).toBe(1);
 	});

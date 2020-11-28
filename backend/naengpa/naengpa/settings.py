@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
+    'rest_framework_gis',
     'user.apps.UserConfig',
     'recipe.apps.RecipeConfig',
     'article.apps.ArticleConfig',
@@ -88,7 +90,7 @@ WSGI_APPLICATION = 'naengpa.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'HOST': os.getenv("DB_HOST"),
         'PORT': '5432',
         'NAME': os.getenv("DB_NAME"),
@@ -147,3 +149,6 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
 AWS_S3_FILE_OVERWRITE = os.getenv("AWS_S3_REGION_NAME")
+
+# Kakao REST Api key
+APP_REST_API_KEY = os.getenv("APP_REST_API_KEY")

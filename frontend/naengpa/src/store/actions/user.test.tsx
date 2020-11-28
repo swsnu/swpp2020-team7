@@ -1,7 +1,6 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { AnyAction } from 'redux';
 import * as actionTypes from './actionTypes';
 import * as actionCreators from './user';
 

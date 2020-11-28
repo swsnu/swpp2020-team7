@@ -11,7 +11,7 @@ export const getIngredientList = () => {
 		const response = await axios.get('/api/ingredients/');
 		const ingredientList: IngredientCategoryCollection = response.data;
 
-		dispatch(getIngredientList_(ingredientList));
+		return dispatch(getIngredientList_(ingredientList));
 	};
 };
 
@@ -36,7 +36,7 @@ export const getIngredientList = () => {
 // 	};
 // }
 
-export type IngredientActions = ReturnType<typeof getIngredientList_>;
+export type IngredientAction = ReturnType<typeof getIngredientList_>;
 // | ReturnType<typeof getIngredient>
 // | ReturnType<typeof deleteIngredient>
 // | ReturnType<typeof editIngredient>;
