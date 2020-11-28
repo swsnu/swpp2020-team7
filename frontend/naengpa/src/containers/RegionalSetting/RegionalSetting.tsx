@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { History } from 'history';
-import { useDispatch } from 'react-redux';
 
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 // import { signup } from '../../../store/actions/index';
@@ -8,7 +7,6 @@ import './RegionalSetting.scss';
 import { InputBase, withStyles } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import Slider from '@material-ui/core/Slider';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 interface RegionalSettingProps {
 	history: History;
@@ -54,8 +52,8 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 	const [query, setQuery] = useState('');
 	const [latitude, setLatitude] = useState(33.450701);
 	const [longitude, setLongitude] = useState(126.570667);
-	const [regionInfo1, setRegionInfo1] = useState('');
-	const [regionInfo2, setRegionInfo2] = useState('');
+	// const [regionInfo1, setRegionInfo1] = useState('');
+	// const [regionInfo2, setRegionInfo2] = useState('');
 
 	const onClickSearch = () => {
 		const mapContainer = document.getElementById('map');
@@ -75,7 +73,6 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 					bounds.extend(bound);
 				});
 				map.setBounds(bounds);
-				const level = map.getLevel();
 				const latlng = map.getCenter();
 				displayMarker(latlng);
 			}
@@ -93,7 +90,7 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 	};
 
 	const onClickConfirmRegion = () => {
-		setRegionInfo1('봉천동');
+		// setRegionInfo1('봉천동');
 	};
 
 	const marks = [
