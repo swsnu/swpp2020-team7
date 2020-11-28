@@ -208,7 +208,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 								<TableRow>
 									<TableCell>
 										<div id="ingredient-name">
-											필수 재료는 추천 될 예정입니다.
+											필수 재료
 										</div>
 									</TableCell>
 								</TableRow>
