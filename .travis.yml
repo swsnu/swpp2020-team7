@@ -18,6 +18,7 @@ matrix:
         - gem install coveralls-lcov
         - cd ../..
         - cd backend/naengpa
+        - sudo apt-get install binutils libproj-dev gdal-bin
         - source ~/virtualenv/python3.7/bin/activate
         - pip install -r requirements.txt
         - pip install coveralls
@@ -66,6 +67,7 @@ matrix:
         - coverage report -m
 
 install:
+  - sudo apt-get install binutils libproj-dev gdal-bin
   - cd $FRONTEND && npm install yarn && yarn && yarn add coveralls
   - cd ../../$BACKEND && pip3 install -r requirements.txt
   - gem install coveralls-lcov
