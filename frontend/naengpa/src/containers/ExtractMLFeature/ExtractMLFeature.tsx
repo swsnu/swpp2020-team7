@@ -6,7 +6,6 @@ import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Alert from '@material-ui/lab/Alert';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
-import Divider from '@material-ui/core/Divider';
 import {
 	Button,
 	Collapse,
@@ -21,6 +20,7 @@ import {
 	TableRow,
 	TextField,
 	Checkbox,
+	Divider,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
@@ -45,7 +45,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const [cookTime, setCookTime] = useState('');
 	const [foodCategory, setFoodCategory] = useState('');
 	const [ingredients, setIngredients] = useState<Dictionary<string | boolean>[]>([]);
-	const [hashtags, setHashtags] = useState<string[]>([]);
 	const [recipeIndex, setRecipeIndex] = useState<number>(1);
 
 	// alert state is true if alert is necessary, otherwise false.
@@ -61,9 +60,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const [modifiedIngredients, setModifiedIngredients] = useState<Dictionary<string | boolean>[]>(
 		[],
 	);
-	const [showHashtagModal, setShowHashtagModal] = useState(false);
-	const [modifiedHashtag, setModifiedHashtag] = useState(hashtags);
-
 	const [goBackButton, setGoBackButton] = useState(false);
 	const dispatch = useDispatch();
 
@@ -80,8 +76,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		});
 		setIngredients(checkedIngredients as Dictionary<string | boolean>[]);
 		setModifiedIngredients(checkedIngredients as Dictionary<string | boolean>[]);
-		setHashtags(createdRecipe?.hashtags as string[]);
-		setModifiedHashtag(createdRecipe?.hashtags as string[]);
 	}, [createdRecipe]);
 
 	/* CLICK EVENT - ADD IMAGE */
@@ -112,8 +106,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 			cookTime === '' ||
 			recipeContent === '' ||
 			ingredients === [] ||
-			foodCategory === '' ||
-			hashtags === []
+			foodCategory === ''
 		) {
 			setAlert(true);
 			setAlertContent(
@@ -131,7 +124,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				recipeLike: 0,
 				foodCategory,
 				ingredients: newIngredientList,
-				hashtags,
 			};
 			dispatch(createRecipe(newRecipe));
 			history.push('/recipes');
@@ -387,86 +379,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		</Collapse>
 	);
 
-	const onChangeHashtag = (targetIdx: number, hashtag: string) => {
-		const newHashtagList = modifiedHashtag.map((item, idx) => {
-			if (idx === targetIdx) {
-				return hashtag;
-			}
-			return item;
-		});
-		setModifiedHashtag(newHashtagList);
-	};
-
-	const hashtagSetForRecipe = hashtags?.map((item, idx) => {
-		return (
-			<div id="hashtag" key={`${item}-${idx}`}>
-				#{item}
-			</div>
-		);
-	});
-
-	const hashtagSet = modifiedHashtag?.map((item, idx) => {
-		return (
-			<div id="hashtag-box" key={`${item}-${idx}`}>
-				#
-				<Input
-					id="hashtag"
-					key={`${item}=${idx}`}
-					value={item}
-					disableUnderline
-					onChange={(e) => {
-						onChangeHashtag(idx, e.target.value);
-					}}
-				/>
-			</div>
-		);
-	});
-
-	const hashtagModal = (
-		<Collapse className="collapse" in={showHashtagModal}>
-			<Alert
-				id="hashtag-modal"
-				onMouseOver={() => {
-					setShowHashtagModal(true);
-				}}
-				onMouseLeave={() => {
-					setShowHashtagModal(false);
-				}}
-				onFocus={() => {
-					setShowHashtagModal(true);
-				}}
-				icon={false}
-			>
-				<div id="modal-header-box">
-					<div id="modal-header">
-						<div id="modal-title">태그</div>
-						<div id="modal-subtitle">태그를 자유롭게 수정하거나 추가해주세요.</div>
-					</div>
-					<CancelIcon
-						id="close-modal-button"
-						onClick={() => {
-							setShowHashtagModal(false);
-							setModifiedHashtag(hashtags);
-						}}
-					/>
-				</div>
-				<Divider />
-				<div id="hashtag-list">{hashtagSet}</div>
-				<div id="confirm-modal-button-box">
-					<Button
-						id="confirm-modal-button"
-						onClick={() => {
-							setShowHashtagModal(false);
-							setHashtags(modifiedHashtag);
-						}}
-					>
-						수정
-					</Button>
-				</div>
-			</Alert>
-		</Collapse>
-	);
-
 	const useStyles = makeStyles({
 		underline: {
 			'&&&:before': { borderBottom: 'none' },
@@ -480,12 +392,11 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		<div id="extract-ml-feature">
 			{/* Alert Modal for go back to Recipe List & Register Recipe */}
 			{alertModal}
-			{/* Modal for food category & ingredients & hashtags */}
+			{/* Modal for food category & ingredients */}
 			{foodCategoryModal}
 			{ingredientListModal}
-			{hashtagModal}
 			<div id="create-recipe-mention">
-				**요리 카테고리, 필수재료 및 태그를 다시 추천받고 싶으시다면 추천 다시하기 버튼을
+				**요리 카테고리, 필수재료를 다시 추천받고 싶으시다면 추천 다시하기 버튼을
 				눌러주세요.
 			</div>
 			<TableContainer id="container">
@@ -573,7 +484,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							</TableCell>
 						</TableRow>
 						<TableRow id="recipe-row-box">
-							<TableCell id="image-box" width="20%">
+							<TableCell id="image-box">
 								{imageList}
 								<Box id="add-image-icon-box">
 									<label aria-label="food-image-label" htmlFor="food-image">
@@ -592,7 +503,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 								</Box>
 							</TableCell>
 							<Divider orientation="vertical" flexItem />
-							<TableCell id="recipe-row" align="right" width="80%">
+							<TableCell id="recipe-row" align="right" width="100%">
 								<TextField
 									id="recipe-content"
 									fullWidth
@@ -605,30 +516,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 									InputProps={{ classes }}
 									onChange={(e) => setRecipeContent(e.target.value)}
 								/>
-							</TableCell>
-						</TableRow>
-						<TableRow>
-							<TableCell width="100%">
-								{/* HASH TAG 추출 재료들 */}
-								<div id="hashtag">#HashTag</div>
-								<Button
-									fullWidth
-									id="hashtag-list"
-									onMouseOver={() => {
-										setShowHashtagModal(true && !alert);
-									}}
-									onMouseLeave={() => {
-										setShowHashtagModal(false);
-									}}
-									onFocus={() => {
-										setShowHashtagModal(true && !alert);
-									}}
-									onClick={() => {
-										setShowHashtagModal(true && !alert);
-									}}
-								>
-									{hashtagSetForRecipe}
-								</Button>
 							</TableCell>
 						</TableRow>
 					</TableBody>

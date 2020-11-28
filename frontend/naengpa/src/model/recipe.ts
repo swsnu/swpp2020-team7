@@ -20,7 +20,6 @@ export interface RecipeEntity {
 	createdAt?: string;
 	foodCategory?: string;
 	ingredients?: string[];
-	hashtags?: string[];
 }
 
 export interface RecipeImage {
