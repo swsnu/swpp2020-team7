@@ -92,27 +92,27 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const image_list = !foodImages.length
 		? []
 		: foodImages.map((item, idx) => {
-			return (
-				<div key={`#${item}`} id="delete-image-icon-box">
-					{!alert && (
-						<CancelIcon
-							key={URL.createObjectURL(item) as string}
-							id="delete-image-button"
-							type="button"
-							onClick={() => onClickDeleteImage(idx)}
+				return (
+					<div key={`#${item}`} id="delete-image-icon-box">
+						{!alert && (
+							<CancelIcon
+								key={URL.createObjectURL(item) as string}
+								id="delete-image-button"
+								type="button"
+								onClick={() => onClickDeleteImage(idx)}
+							/>
+						)}
+						<img
+							key={`#${item}`}
+							id="delete-image-icon"
+							src={URL.createObjectURL(item) as string}
+							height="150px"
+							width="150px"
+							alt="/api/images" // TODO: check alt path
 						/>
-					)}
-					<img
-						key={`#${item}`}
-						id="delete-image-icon"
-						src={URL.createObjectURL(item) as string}
-						height="150px"
-						width="150px"
-						alt="/api/images" // TODO: check alt path
-					/>
-				</div>
-			);
-		});
+					</div>
+				);
+		  });
 
 	const useStyles = makeStyles({
 		underline: {
