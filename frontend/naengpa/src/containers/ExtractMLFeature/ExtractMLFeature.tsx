@@ -142,10 +142,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		? []
 		: foodImages?.map((item, idx) => {
 				return (
-					<div
-						key={`${idx} ` as string}
-						id="delete-image-icon-box"
-					>
+					<div key={`${idx} ` as string} id="delete-image-icon-box">
 						{!alert && (
 							<CancelIcon
 								key={URL.createObjectURL(item) as string}
@@ -168,10 +165,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	const alertModal = (
 		<Collapse className="collapse" in={alert}>
-			<Alert
-				id="extract-ml-feature-alert"
-				icon={false}
-			>
+			<Alert id="extract-ml-feature-alert" icon={false}>
 				<div id="naengpa-logo-box">
 					<div id="naengpa-logo">
 						<LocalDiningIcon id="naengpa-logo-image" />
@@ -338,10 +332,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		return (
 			<div id="ingredient-button-box" key={`${item.ingredient}`}>
 				{item.checked && (
-					<Button
-						key={`${item.ingredient}-${i}` as string}
-						id="ingredient-button"
-					>
+					<Button key={`${item.ingredient}-${i}` as string} id="ingredient-button">
 						{item.ingredient}
 					</Button>
 				)}
