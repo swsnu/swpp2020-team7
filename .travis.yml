@@ -18,9 +18,8 @@ matrix:
         - gem install coveralls-lcov
         - cd ../..
         - cd backend/naengpa
-        - sudo apt update
-        - sudo apt -y install gdal-bin python3-gdal
         - source ~/virtualenv/python3.7/bin/activate
+        - sudo apt update && sudo apt -y install gdal-bin python3-gdal
         - pip install -r requirements.txt
         - pip install coveralls
         - cd ../..
@@ -60,8 +59,8 @@ matrix:
       before_install:
         - cd backend/naengpa
       install:
-        - sudo apt update
-        - sudo apt-get install gdal-bin
+        - source ~/virtualenv/python3.7/bin/activate
+        - sudo apt update && sudo apt-get install gdal-bin
         - pip install -r requirements.txt
         - pip install coveralls
       script:
@@ -70,8 +69,7 @@ matrix:
         - coverage report -m
 
 install:
-  - sudo apt update
-  - sudo apt-get install gdal-bin
+  - sudo apt update && sudo apt-get install gdal-bin
   - cd $FRONTEND && npm install yarn && yarn && yarn add coveralls
   - cd ../../$BACKEND && pip3 install -r requirements.txt
   - gem install coveralls-lcov
