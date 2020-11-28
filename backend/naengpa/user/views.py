@@ -111,14 +111,14 @@ def user(request, id):
             user = User.objects.get(id=id)
         except User.DoesNotExist:
             return HttpResponseBadRequest()
-        try:
-            req_data = json.loads(request.body.decode())
-            edit_name = req_data['name']
-            edit_date_of_birth = req_data['dateOfBirth']
-            edit_email = req_data['email']
-            checked_password = req_data['password']
-        except (KeyError, JSONDecodeError):
-            return HttpResponseBadRequest()
+        # try:
+        req_data = json.loads(request.body.decode())
+        edit_name = req_data['name']
+        edit_date_of_birth = req_data['dateOfBirth']
+        edit_email = req_data['email']
+        checked_password = req_data['password']
+        # except (KeyError, JSONDecodeError):
+        #    return HttpResponseBadRequest()
         if check_password(checked_password, request.user.password):
             user.name = edit_name
             user.date_of_birth = edit_date_of_birth

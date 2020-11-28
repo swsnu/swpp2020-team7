@@ -83,7 +83,7 @@ describe('EditUserInfo', () => {
 	it('Edit user info should dispatch user info correctly', () => {
 		const component = mount(editUserInfo);
 		const name = component.find('div#name').find('input');
-		//name.find('#edit-name').simulate('change', { target: { value: mockUser.name } });
+		// name.find('#edit-name').simulate('change', { target: { value: mockUser.name } });
 		/*
 		const inputList = component.find('div#input-list').find('input');
 		inputList.find('#name').simulate('change', { target: { value: mockUser.name } }); // name

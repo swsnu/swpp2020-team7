@@ -13,11 +13,12 @@ interface UserInfoProps {
 const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user.user);
+	/*
 	useEffect(() => {
 		// TODO: argument should be user id!
 		dispatch(getUser(user!));
 	}, [dispatch, user]);
-
+	*/
 	return (
 		<div id="mypage">
 			<Tap history={history} />
