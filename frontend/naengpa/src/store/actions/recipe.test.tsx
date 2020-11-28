@@ -34,7 +34,6 @@ const stubInitialState = {
 				createdAt: '2000.00.00',
 				foodCategory: '밥류',
 				ingredients: ['돼지고기', '고추장'],
-				hashtags: ['혼밥', '혼술'],
 			},
 			{
 				id: 2,
@@ -54,7 +53,6 @@ const stubInitialState = {
 				createdAt: '2000.00.00',
 				foodCategory: '밥류',
 				ingredients: ['돼지고기', '고추장'],
-				hashtags: ['혼밥', '혼술'],
 			},
 		],
 	},

@@ -38,7 +38,6 @@ describe('Recipe', () => {
 		createdAt: '2000.00.00',
 		foodCategory: '밥류',
 		ingredients: ['돼지고기', '고추장'],
-		hashtags: ['혼밥', '혼술'],
 	};
 
 	const mockRecipe2 = {
@@ -48,18 +47,11 @@ describe('Recipe', () => {
 		foodName: '딸기',
 		cookTime: '30',
 		recipeContent: '레시피',
-		foodImages: [
-			{
-				id: 1,
-				recipe_id: 1,
-				file_path: 'path',
-			},
-		],
+		foodImages: [],
 		recipeLike: 0,
 		createdAt: '2000.00.00',
 		foodCategory: '밥류',
 		ingredients: ['돼지고기', '고추장'],
-		hashtags: ['혼밥', '혼술'],
 	};
 
 	const mockAttribute = 'todays-recipe-child';
@@ -129,5 +121,11 @@ describe('Recipe', () => {
 		const likeCountWrapper2 = component2.find('div#recipe-like-count');
 		expect(likeCountWrapper2.find('div#recipe-like-count-icon').length).toBe(1);
 		expect(likeCountWrapper2.text()).toBe('0');
+	});
+
+	it('renders recipe-image correctly', () => {
+		const component = mount(recipe2);
+		const imageWrapper = component.find('div#recipe-image');
+		expect(imageWrapper.length).toBe(0);
 	});
 });
