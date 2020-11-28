@@ -25,7 +25,7 @@
         "react/prop-types": 0,
         "no-shadow": 0,
         "react-hooks/exhaustive-deps": 1,
-        "no-underscore-dangle": 1,
+        "no-underscore-dangle": 0,
         "jsx-a11y/label-has-associated-control": 1
     },
     "overrides": [
