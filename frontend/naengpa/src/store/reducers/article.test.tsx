@@ -2,7 +2,6 @@ import articleReducer, { ArticleState } from './article';
 import * as actionTypes from '../actions/actionTypes';
 import { ArticleEntity } from '../../model/article';
 
-
 const mockArticle: ArticleEntity = {
 	id: 2,
 	authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
@@ -20,9 +19,9 @@ const mockArticle: ArticleEntity = {
 	price: 1000,
 	views: 77,
 	createdAt: '2000.00.00',
-}
+};
 const mockArticleList: ArticleEntity[] = [
-	{...mockArticle, id: 7},
+	{ ...mockArticle, id: 7 },
 	{
 		id: 3,
 		authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
@@ -57,7 +56,7 @@ describe('Article Reducer', () => {
 			type: actionTypes.GET_ARTICLE_LIST,
 			payload: [],
 		});
-		
+
 		expect(newState).toEqual(initialState);
 	});
 
@@ -99,13 +98,13 @@ describe('Article Reducer', () => {
 	});
 
 	it('should edit specific recipe correctly', () => {
-		const modified: ArticleEntity = {...mockArticleList[0], title: 'modified'}
+		const modified: ArticleEntity = { ...mockArticleList[0], title: 'modified' };
 		const newState = articleReducer(stubInitialState, {
 			type: actionTypes.EDIT_ARTICLE,
 			payload: modified,
 		});
 
-		const expectedList = [modified, mockArticleList[1]]
+		const expectedList = [modified, mockArticleList[1]];
 		expect(newState).toEqual({
 			...initialState,
 			articleList: expectedList,

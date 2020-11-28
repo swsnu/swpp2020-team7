@@ -2,7 +2,6 @@ import ingredientReducer, { IngredientState } from './ingredient';
 import * as actionTypes from '../actions/actionTypes';
 import { IngredientCategoryCollection } from '../../model/ingredient';
 
-
 const ingredientList: IngredientCategoryCollection = {};
 const initialState: IngredientState = { ingredientList };
 

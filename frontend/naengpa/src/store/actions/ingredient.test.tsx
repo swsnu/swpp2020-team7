@@ -15,7 +15,6 @@ const stubInitialState = {
 const mockStore = store(stubInitialState);
 
 describe('Ingredient Reducer', () => {
-
 	afterEach(() => {
 		jest.clearAllMocks();
 		mockStore.clearActions();
@@ -36,8 +35,8 @@ describe('Ingredient Reducer', () => {
 		expect(spy).toBeCalledTimes(1);
 		expect(spy).toBeCalledWith(`/api/ingredients/`);
 
-		const actions = mockStore.getActions()
-		const expectedPayload = { type: actionTypes.GET_INGREDIENT_LIST, payload: null }
-		expect(actions).toEqual([expectedPayload])
+		const actions = mockStore.getActions();
+		const expectedPayload = { type: actionTypes.GET_INGREDIENT_LIST, payload: null };
+		expect(actions).toEqual([expectedPayload]);
 	});
 });

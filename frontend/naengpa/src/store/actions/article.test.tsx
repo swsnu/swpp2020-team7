@@ -27,8 +27,8 @@ const mockArticle: ArticleEntity = {
 	price: 1000,
 	views: 77,
 	createdAt: '2000.00.00',
-}
-const stubInitialState: {article: ArticleState} = {
+};
+const stubInitialState: { article: ArticleState } = {
 	article: {
 		articleList: [
 			mockArticle,
@@ -57,59 +57,64 @@ const stubInitialState: {article: ArticleState} = {
 const mockStore = store(stubInitialState);
 
 describe('ActionCreators', () => {
-	
 	afterEach(() => {
 		jest.clearAllMocks();
 		mockStore.clearActions();
 	});
 
 	it('should return getArticleList action correctly', async () => {
-		const spy = jest.spyOn(axios, 'get').mockImplementation(() =>
-			new Promise((resolve, reject) => {
-				const result = {
-					status: 200,
-					data: null,
-				};
-				resolve(result)
-			}));
+		const spy = jest.spyOn(axios, 'get').mockImplementation(
+			() =>
+				new Promise((resolve, reject) => {
+					const result = {
+						status: 200,
+						data: null,
+					};
+					resolve(result);
+				}),
+		);
 
 		await actionCreators.getArticleList()(mockStore.dispatch);
 		expect(spy).toBeCalledTimes(1);
 		expect(spy).toBeCalledWith(`/api/articles/`);
 
-		const actions = mockStore.getActions()
-		const expectedPayload = { type: actionTypes.GET_ARTICLE_LIST, payload: null }
-		expect(actions).toEqual([expectedPayload])
+		const actions = mockStore.getActions();
+		const expectedPayload = { type: actionTypes.GET_ARTICLE_LIST, payload: null };
+		expect(actions).toEqual([expectedPayload]);
 	});
 
 	it('should return getArticle action correctly', async () => {
-		const spy = jest.spyOn(axios, 'get').mockImplementation(() =>
-			new Promise((resolve, reject) => {
-				const result = {
-					status: 200,
-					data: null,
-				};
-				resolve(result)
-			}));
+		const spy = jest.spyOn(axios, 'get').mockImplementation(
+			() =>
+				new Promise((resolve, reject) => {
+					const result = {
+						status: 200,
+						data: null,
+					};
+					resolve(result);
+				}),
+		);
 
 		await actionCreators.getArticle(2)(mockStore.dispatch);
 		expect(spy).toBeCalledTimes(1);
 		expect(spy).toBeCalledWith(`/api/articles/2/`);
 
-		const actions = mockStore.getActions()
-		const expectedPayload = { type: actionTypes.GET_ARTICLE, payload: null }
-		expect(actions).toEqual([expectedPayload])
+		const actions = mockStore.getActions();
+		const expectedPayload = { type: actionTypes.GET_ARTICLE, payload: null };
+		expect(actions).toEqual([expectedPayload]);
 	});
 
 	it('should return createArticle action correctly', async () => {
-		const spy = jest.spyOn(axios, 'post').mockImplementation(() =>
-			new Promise((resolve, reject) => {
-				const result = {
-					status: 200,
-					data: null,
-				};
-				resolve(result)
-			}));
+		const spy = jest.spyOn(axios, 'post').mockImplementation(
+			() =>
+				new Promise((resolve, reject) => {
+					const result = {
+						status: 200,
+						data: null,
+					};
+					resolve(result);
+				}),
+		);
 
 		const mockData: CreateArticleEntity = {
 			title: 'test title',
@@ -118,24 +123,26 @@ describe('ActionCreators', () => {
 			price: '0',
 			images: [(testImage as unknown) as File],
 		};
-	
+
 		await actionCreators.createArticle(mockData)(mockStore.dispatch);
 		expect(spy).toBeCalledTimes(1);
 
-		const actions = mockStore.getActions()
-		const expectedPayload = { type: actionTypes.CREATE_ARTICLE, payload: null }
-		expect(actions).toEqual([expectedPayload])
+		const actions = mockStore.getActions();
+		const expectedPayload = { type: actionTypes.CREATE_ARTICLE, payload: null };
+		expect(actions).toEqual([expectedPayload]);
 	});
 
 	it('should return editArticle action correctly', async () => {
-		const spy = jest.spyOn(axios, 'put').mockImplementation(() =>
-			new Promise((resolve, reject) => {
-				const result = {
-					status: 200,
-					data: null,
-				};
-				resolve(result)
-			}));
+		const spy = jest.spyOn(axios, 'put').mockImplementation(
+			() =>
+				new Promise((resolve, reject) => {
+					const result = {
+						status: 200,
+						data: null,
+					};
+					resolve(result);
+				}),
+		);
 
 		const mockData: CreateArticleEntity = {
 			title: 'test title',
@@ -149,27 +156,29 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalled();
 		expect(spy).toBeCalledWith('/api/articles/2/', mockData);
 
-		const actions = mockStore.getActions()
-		const expectedPayload = { type: actionTypes.EDIT_ARTICLE, payload: null }
-		expect(actions).toEqual([expectedPayload])
+		const actions = mockStore.getActions();
+		const expectedPayload = { type: actionTypes.EDIT_ARTICLE, payload: null };
+		expect(actions).toEqual([expectedPayload]);
 	});
 
 	it('should return deleteArticle action correctly', async () => {
-		const spy = jest.spyOn(axios, 'delete').mockImplementation(() =>
-			new Promise((resolve, reject) => {
-				const result = {
-					status: 200,
-					data: null,
-				};
-				resolve(result)
-			}));
+		const spy = jest.spyOn(axios, 'delete').mockImplementation(
+			() =>
+				new Promise((resolve, reject) => {
+					const result = {
+						status: 200,
+						data: null,
+					};
+					resolve(result);
+				}),
+		);
 
 		await actionCreators.deleteArticle(2)(mockStore.dispatch);
 		expect(spy).toBeCalled();
 		expect(spy).toBeCalledWith(`/api/articles/2/`);
 
-		const actions = mockStore.getActions()
-		const expectedPayload = { type: actionTypes.DELETE_ARTICLE, payload: null }
-		expect(actions).toEqual([expectedPayload])
+		const actions = mockStore.getActions();
+		const expectedPayload = { type: actionTypes.DELETE_ARTICLE, payload: null };
+		expect(actions).toEqual([expectedPayload]);
 	});
 });
