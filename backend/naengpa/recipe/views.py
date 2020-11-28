@@ -49,7 +49,8 @@ def recipe_list(request):
                 author=request.user,
                 food_name=food_name,
                 cook_time=cook_time,
-                recipe_content=recipe_content)
+                recipe_content=recipe_content,
+            )
 
             session = boto3.Session(
                 aws_access_key_id=AWS_ACCESS_KEY_ID,
@@ -81,7 +82,7 @@ def recipe_list(request):
                 "foodImages": list(Image.objects.filter(recipe_id=recipe.id).values()),
                 "recipeContent": recipe_content,
                 "recipeLike": 0,
-                "createdAt": recipe.created_at,
+                "createdAt": recipe.created_at
             }, status=201)
     else:
         return HttpResponse(status=401)
@@ -89,4 +90,25 @@ def recipe_list(request):
 
 def recipe_info(request, id):
     """get recipe of given id"""
-    return HttpResponse(status=405)
+    if request.method not in ['GET', 'DELETE']:
+        return HttpResponse(status=405)
+    recipe = Recipe.objects.get(id=id)
+    response = {
+        "id": recipe.id,
+        "authorId": recipe.author.id,
+        "author": recipe.author.username,
+        "foodName": recipe.food_name,
+        "cookTime": recipe.cook_time,
+        "recipeContent": recipe.recipe_content,
+        "foodImages": list(Image.objects.filter(recipe_id=recipe.id).values()),
+        "recipeLike": 0,
+        "createdAt": recipe.created_at.strftime("%Y.%m.%d")
+    }
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            return JsonResponse(data=response, status=201)
+        if request.method == 'DELETE':
+            Recipe.objects.filter(id=id).delete()
+            return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=401)
