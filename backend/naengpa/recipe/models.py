@@ -25,7 +25,7 @@ class Image(models.Model):
     file_path = models.TextField(null=True)
 
 
-class RecipeIngedient(models.Model):
+class RecipeIngredient(models.Model):
     '''ManyToMany Through model for Ingredient '''
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, unique=True)

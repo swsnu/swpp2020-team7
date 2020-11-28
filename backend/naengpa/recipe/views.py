@@ -18,10 +18,10 @@ def recipe_list(request):
     if request.method != 'GET' and request.method != 'POST':
         return HttpResponseNotAllowed(['POST'])
     query = request.GET.get('value', "")
-    sorted_list = sorted_list.select_related('author', 'food_category').filter(
-        Q(recipe_content__contains=query) | Q(food_name__contains=query)) if query != "" else \
+    sorted_list = Recipe.objects.all().select_related('author').filter(
+        Q(recipe_content__contains=query) | Q(food_name__contains=query)).order_by('-created_at') if query != "" else \
         Recipe.objects.all().select_related(
-            'author', 'food_category').order_by('-created_at')
+            'author').order_by('-created_at')
 
     recipe_collection = [{
         "id": recipe.id,
@@ -30,11 +30,11 @@ def recipe_list(request):
         "foodName": recipe.food_name,
         "cookTime": recipe.cook_time,
         "recipeContent": recipe.recipe_content,
-        "foodImages": Image.objects.filter(recipe_id=recipe.id).values(),
+        "foodImages": list(Image.objects.filter(recipe_id=recipe.id).values()),
         "recipeLike": 0,
         "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-        "foodCategory": recipe.food_category.name
-        "ingredients": RecipeIngredient.objects.filter(recipe_id=recipe.id).values()
+        "foodCategory": recipe.food_category,
+        "ingredients": list(RecipeIngredient.objects.filter(recipe_id=recipe.id).values()),
     } for recipe in sorted_list] if len(sorted_list) != 0 else []
 
     if request.user.is_authenticated:
@@ -56,14 +56,9 @@ def recipe_list(request):
                 author_id=request.user.id,
                 food_name=food_name,
                 cook_time=cook_time,
-                recipe_content=recipe_content
+                recipe_content=recipe_content,
+                food_category=food_category,
             )
-
-            ingredientList = [RecipeIngredient.objects.create(
-                recipe_id=recipe.id,
-                name=ingredient.name,
-                quantity=ingredient.quantity
-            ) for ingredient in ingredients] if ingredients != [] else []
 
             session = boto3.Session(
                 aws_access_key_id=AWS_ACCESS_KEY_ID,
@@ -92,12 +87,12 @@ def recipe_list(request):
                 "author": recipe.author.username,
                 "foodName": food_name,
                 "cookTime": cook_time,
-                "foodImages": Image.objects.filter(recipe_id=recipe.id).values(),
+                "foodImages": list(Image.objects.filter(recipe_id=recipe.id).values()),
                 "recipeContent": recipe_content,
                 "recipeLike": 0,
                 "createdAt": recipe.created_at,
                 "foodCategory": recipe.food_category,
-                "ingredients": Ingredient.objects.filter(recipe_id=recipe.id).values(),
+                "ingredients": list(RecipeIngredient.objects.filter(recipe_id=recipe.id).values()),
             }, status=201)
     else:
         return HttpResponse(status=401)
