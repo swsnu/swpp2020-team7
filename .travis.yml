@@ -1,11 +1,56 @@
-os: linux
-dist: xenial
-language: python
-python: 3.7
-node_js: 12
-cache:
-  - yarn: true
-  - pip: true
+matrix:
+  include:
+    - language: node_js
+      node_js: "12"
+      python: "3.7"
+      cache:
+        - pip: true
+        - yarn: true
+      addons:
+        sonarcloud:
+          organization: "swsnu"
+          token:
+            secure: "FJ3gXitz8KWhOeJIECTpAxcF8yaiU33BLrfD405pKBjp0vhSKBRorOwoU4hvNIAxE9StgsJ6HYdlt6S2mNZVnMbVibuzMi0xaikKKah9Yq+LfWxwixJ2TcsRSFSzcYiGWQ/P+Lna4eFH0l5IqrYNx0zlu0vzm+x/VBWIR+wziQV+jjLPi/hOkG+sqgFB/+UwbNfGPY+17x2A1D09p/LziEzB5kTtP/c1vdL1L1l+LDDQoq5dtbGEyEWWyDEr1sQEe8utTxnk2hDVgqO4j4q4nYrsIdqeZnF0/agjouY5ppeGLXuxQon8X6igT3o5CpgzhK/qeXclC1yvbdxB+WnhggGm1Kq90FfpDjzoO0pu+jlqA/6OBOgoCWv8RclxaD98yBy2bBR3bcCFtKIvMtC3wUvTAVVboUdmxL8x92h4MKqgCeqoU6SzQcBN4ZYoD2iUledR1ObD+FmWRjOONRMyjHtFLr3F7sZnLNAD376x6cxgNgwTZzopLAI8J8cBZOsydch1ud9qfmVIpBqMmZK2XFNqQk94Ob2MzS4SUlzODj2MMcoTBsIFxUdui4nedDRDGs0CRucN6n1tmVVOquYIQzL+h+2F1E3wNY76kXO1Kdn9qt3Akoj6soW4KUFpEB/FEJqD3itAgWx+uMtr3Mgp0hH9y1fs7aybsSivlM2+OIE="
+      install:
+        - cd frontend/naengpa
+        - yarn install
+        - yarn global add coveralls
+        - gem install coveralls-lcov
+        - cd ../..
+        - cd backend/naengpa
+        - source ~/virtualenv/python3.7/bin/activate
+        - pip install -r requirements.txt
+        - pip install coveralls
+        - cd ../..
+      script:
+        - cd frontend/naengpa
+        - yarn lint src/**/*.{ts,tsx}
+        - yarn test --coverage --watchAll=false
+        - cd ../..
+        - cd backend/naengpa
+        - pylint **/*.py --load-plugins pylint_django
+        - coverage run --source='.' manage.py test
+        - coverage xml
+        - cd ../..
+        - sonar-scanner
+        - cd frontend/naengpa
+        - coveralls-lcov -v -n coverage/lcov.info > coverage.json
+        - cd ../..
+        - cd backend/naengpa
+        - coveralls --merge=../../frontend/naengpa/coverage.json
+        - cd ../..
+
+    - language: node_js
+      node_js:
+        - "12"
+      cache: yarn
+      before_install:
+        - cd frontend/naengpa
+      install:
+        - yarn
+      script:
+        - yarn lint src/**/*.{ts,tsx}
+        - yarn test --coverage --watchAll=false
 
     - language: python
       python: "3.7"
@@ -16,12 +61,9 @@ cache:
         - pip install -r requirements.txt
         - pip install coveralls
       script:
-        - pylint **/*.py
+        - pylint **/*.py --load-plugins pylint_django
         - coverage run --source='.' manage.py test
-        - coverage xml
-      after_success:
-        - coveralls
-        - cd ../..
+        - coverage report -m
 
 install:
   - cd $FRONTEND && npm install yarn && yarn && yarn add coveralls

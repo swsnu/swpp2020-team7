@@ -31,10 +31,6 @@ def extract_ingredients(request, recipe_info):
     return list(ingredient_dict.keys())
 
 
-def extract_hashtag(request, recipe_info):
-    return ["혼밥", "술안주"]
-
-
 @ensure_csrf_cookie
 def extract_ml_feature(request):
     """/api/extract/ extract ml features"""
@@ -47,9 +43,8 @@ def extract_ml_feature(request):
         food_images = request.FILES.getlist('image')
         food_category = extract_foodcategory(request, food_images)
         ingredients = extract_ingredients(request, recipe_info)
-        hashtags = extract_hashtag(request, recipe_info)
         return_data = {'foodCategory': food_category,
-                       'ingredients': ingredients, 'hashtags': hashtags}
+                       'ingredients': ingredients}
 
         return JsonResponse(return_data, safe=False)
     else:
