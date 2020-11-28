@@ -52,7 +52,9 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	};
 
 	const recipe = currentList.map((item: any) => {
-		return <Recipe key={item.id} recipe={item} attribute="recipe-list-child" />;
+		return (
+			<Recipe key={item.id} recipe={item} attribute="recipe-list-child" history={history} />
+		);
 	});
 
 	useEffect(() => {

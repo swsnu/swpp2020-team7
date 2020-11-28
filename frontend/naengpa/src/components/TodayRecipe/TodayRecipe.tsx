@@ -1,11 +1,16 @@
 import React, { useEffect } from 'react';
+import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
 import Recipe from '../Recipe/Recipe';
 import { AppState } from '../../store/store';
 import { getRecipeList } from '../../store/actions/recipe';
 import './TodayRecipe.scss';
 
-const TodayRecipe: React.FC = () => {
+interface TodayRecipeProps {
+	history: History;
+}
+
+const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
 	const recipeList = useSelector((state: AppState) => state.recipe.recipeList);
 	const dispatch = useDispatch();
 
@@ -14,7 +19,9 @@ const TodayRecipe: React.FC = () => {
 	}, [dispatch]);
 
 	const recipe = recipeList.map((item: any) => {
-		return <Recipe key={item.id} recipe={item} attribute="todays-recipe-child" />;
+		return (
+			<Recipe key={item.id} recipe={item} attribute="todays-recipe-child" history={history} />
+		);
 	});
 
 	return (

@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+#recipe-detail {
+  margin: 5% 10% 10% 15%;
+  width: 70%;
+  height: 80%;
+  border: solid 1px #dcdcdc;
+  align-items: center;
+
+  #recipe-header {
+    margin: 5% 5% 5% 5%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+
+  #recipe-section1 {
+    font: {
+        family: HelveticaNeue;
+        stretch: normal;
+        style: normal;
+    }
+    margin: 5% 5% 0% 5%;
+  }
+
+  #recipe-section2 {
+    margin: 0% 5% 2% 5%;
+
+    #recipe-cook-time {
+      display: flex;
+      flex-direction: column;
+      margin-right: 1%;
+      align-items: center;
+      color: #ff8a3d;
+      font-weight: bold;
+      float: right;
+      
+      #recipe-cook-time-icon {
+        color: #ff8a3d;
+      }
+    }
+      
+    #recipe-like {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #ff8a3d; 
+      font-weight: bold;
+      
+      #recipe-like-count-icon {
+        color: #ff8a3d;
+      }
+    }
+
+    #recipe-setting-alert {
+      position: absolute;
+      display: inline-block;
+      z-index: 1;
+      background-color: #ffffff;
+      border: solid 1px #707070; 
+    }
+  }
+
+  #recipe-section3 {
+    margin: 2% 5% 2% 5%;
+
+    #recipe-ingredient {
+      flex-wrap: wrap;
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 2%;
+  
+      #ingredient-button{
+        font: {
+          weight: bold;
+        }
+        letter-spacing: normal;
+        text-align: left;
+        border-radius: 25px;
+        align-self: right;
+        color: #ffffff;  
+        background-color: #69e88e;  
+      }
+    }
+    #recipe-content {
+        line-height: 180%;
+    }
+  }
+
+  #recipe-section4 {
+    margin: 2% 5% 2% 5%;
+  }
+
+  #recipe-section5 {
+    margin: 2% 5% 2% 5%;
+  }
+}

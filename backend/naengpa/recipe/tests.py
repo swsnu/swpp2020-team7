@@ -40,5 +40,15 @@ class RecipeTestCase(TestCase):
 
     def test_recipe_detail(self):
         client = Client()
-        response = client.get('/api/recipes/0/')
+        response = client.post('/api/signup/', json.dumps({'username': 'nimo', 'name': "nimo", 'password': "nimo", 'dateOfBirth': "19950506", "email": "dori@dori.com"}),
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        response = client.post('/api/recipes/', "recipe: {'foodName': 'apple', 'cookTime': 0, 'recipeContent': '사과'}, image: []",
+                               content_type='multipart/form-data')
+        self.assertEqual(response.status_code, 400)
+        #response = client.get('/api/recipes/0/')
+        #self.assertEqual(response.status_code, 201)
+        #response = client.delete('/api/recipes/0/')
+        #self.assertEqual(response.status_code, 200)
+        response = client.post('/api/recipes/0/')
         self.assertEqual(response.status_code, 405)

@@ -69,7 +69,7 @@ it('should return recipeList action correctly', () => {
 			resolve(result);
 		});
 	});
-	mockStore.dispatch(actionCreators.getRecipeList(''));
+	mockStore.dispatch<any>(actionCreators.getRecipeList(''));
 	expect(spy).toBeCalled();
 });
 
@@ -83,7 +83,7 @@ it('should return get Recipe action correctly', () => {
 			resolve(result);
 		});
 	});
-	mockStore.dispatch(actionCreators.getRecipe(0));
+	mockStore.dispatch<any>(actionCreators.getRecipe(0));
 	expect(spy).toBeCalled();
 });
 
@@ -101,12 +101,13 @@ it('should return create Recipe action correctly', () => {
 	const mockData = new FormData();
 	mockData.append('recipe', JSON.stringify({}));
 	mockData.append('image', (image as unknown) as File);
-	mockStore.dispatch(
+	mockStore.dispatch<any>(
 		actionCreators.createRecipe({
 			foodName: 'foodName',
 			cookTime: '100',
 			recipeContent: 'recipeContent',
 			foodImages: [(image as unknwon) as File],
+			recipeLike: 1,
 		}),
 	);
 	// expect(spy).toHaveBeenCalled();
@@ -123,12 +124,13 @@ it('should return extract ml features from Recipe action correctly', () => {
 		});
 	});
 
-	mockStore.dispatch(
+	mockStore.dispatch<any>(
 		actionCreators.createRecipe({
 			foodName: 'foodName',
 			cookTime: '100',
 			recipeContent: 'recipeContent',
-			foodImages: [(image as unknwon) as File],
+			foodImages: [(image as unknown) as File],
+			recipeLike: 1,
 		}),
 	);
 	// expect(spy).toBeCalled();
@@ -144,7 +146,7 @@ it('should return delete Recipe action correctly', () => {
 			resolve(result);
 		});
 	});
-	mockStore.dispatch(actionCreators.deleteRecipe(0));
+	mockStore.dispatch<any>(actionCreators.deleteRecipe(0));
 	expect(spy).toBeCalled();
 });
 
@@ -158,6 +160,6 @@ it('should return edit Recipe action correctly', () => {
 			resolve(result);
 		});
 	});
-	mockStore.dispatch(actionCreators.editRecipe(stubInitialState.recipe.recipeList[0]));
+	mockStore.dispatch<any>(actionCreators.editRecipe(stubInitialState.recipe.recipeList[0]));
 	expect(spy).toBeCalled();
 });

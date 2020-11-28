@@ -25,6 +25,7 @@ export type Action =
 	  };
 
 function recipeReducer(state: InitialState = RecipeState, action: Action): InitialState {
+	let recipeList = [];
 	switch (action.type) {
 		/* GET RECIPE LIST */
 		case actionTypes.GET_RECIPE_LIST:
@@ -53,8 +54,12 @@ function recipeReducer(state: InitialState = RecipeState, action: Action): Initi
 		}
 
 		/* DELETE RECIPE */
-		case actionTypes.DELETE_RECIPE:
-			return { ...state };
+		case actionTypes.DELETE_RECIPE: {
+			recipeList = state.recipeList.filter((recipe) => {
+				return (recipe.id as number) !== action.target_id;
+			});
+			return { ...state, recipeList };
+		}
 
 		/* EDIT RECIPE */
 		case actionTypes.EDIT_RECIPE:
