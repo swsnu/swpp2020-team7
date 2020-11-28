@@ -52,7 +52,12 @@ def extract_ingredients(request, recipe_info):
         except Ingredient.DoesNotExist:
             pass
     print(ingredient_dict)
-    return list(ingredient_dict.keys())
+
+    context = [
+        {"ingredient": ingredient, "quantity": ""} for ingredient in ingredient_dict.keys()
+    ]
+    print(context, "context")
+    return context
 
 
 @ensure_csrf_cookie

@@ -27,7 +27,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppState } from '../../store/store';
 import Loading from '../../components/Loading/Loading';
 import './ExtractMLFeature.scss';
-import { CreateRecipeEntity, RecipeEntity } from '../../model/recipe';
+import { CreateRecipeEntity, RecipeEntity, RecipeIngredient } from '../../model/recipe';
 import {
 	createRecipe,
 	getFoodCategoryList,
@@ -50,20 +50,20 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const [foodImages, setFoodImages] = useState<File[]>([]);
 	const [cookTime, setCookTime] = useState('');
 	const [foodCategory, setFoodCategory] = useState('');
-	const [ingredients, setIngredients] = useState<Dictionary<string | boolean>[]>([]);
+	const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
 	const [newIngredient, setNewIngredient] = useState('');
 	const [newIngredientQuantity, setNewIngredientQuantity] = useState('');
 	// alert state is true if alert is necessary, otherwise false.
 	const [alert, setAlert] = useState(true);
 	const [alertContent, setAlertContent] = useState(
-		'요리 카테고리와 필요한 재료들 그리고 해쉬태그가 요리명, 등록된 사진들 그리고 레시피를 기반으로 추천되었습니다. 수정이 완료되면 레시피등록 버튼을 눌러주세요.',
+		'요리 카테고리와 필요한 재료들이 요리명, 등록된 사진들 그리고 레시피를 기반으로 추천되었습니다. 해당 부분을 수정하시거나 레시피등록 버튼을 눌러주세요. 첫번째로 업로드한 사진이 썸네일이 됩니다!',
 	);
 
 	// if the value is false => then each modal pops off.
 	const [showCategoryModal, setShowCategoryModal] = useState(false);
 	const [modifiedCategory, setModifiedCategory] = useState(foodCategory);
 	const [showIngredientModal, setShowIngredientModal] = useState(false);
-	const [modifiedIngredients, setModifiedIngredients] = useState<Dictionary<string | boolean>[]>(
+	const [modifiedIngredients, setModifiedIngredients] = useState<RecipeIngredient[]>(
 		[],
 	);
 	const [goBackButton, setGoBackButton] = useState(false);
@@ -79,10 +79,10 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		setFoodCategory(createdRecipe?.foodCategory as string);
 		setModifiedCategory(createdRecipe?.foodCategory as string);
 		const checkedIngredients = createdRecipe?.ingredients?.map((item) => {
-			return { ingredient: item, checked: true, quantity: '' };
+			return { ...item, checked:true, quantity:''};
 		});
-		setIngredients(checkedIngredients as Dictionary<string | boolean>[]);
-		setModifiedIngredients(checkedIngredients as Dictionary<string | boolean>[]);
+		setIngredients(checkedIngredients as RecipeIngredient[]);
+		setModifiedIngredients(checkedIngredients as RecipeIngredient[]);
 	}, [createdRecipe]);
 
 	/* CLICK EVENT - ADD IMAGE */
@@ -120,8 +120,8 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				'조리시간, 요리 카테고리, 레시피 내용, 필요한 재료, 해쉬태그 및 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
-			const newIngredientList: string[] = ingredients.map((dict, idx) => {
-				return dict.ingredient as string;
+			const newIngredientList: RecipeIngredient[] = ingredients.map((item, idx) => {
+				return {ingredient: item.ingredient, quantity: item.quantity};
 			});
 
 			const newRecipe: RecipeEntity = {
@@ -306,7 +306,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	const onChangeIngredientQuantity = (ingredient: string, quantity: string) => {
 		const newIngredientList = modifiedIngredients.map((item) => {
-			if (item.ingredient === ingredient) return { ...item, quantity: quantity as string };
+			if (item.ingredient === ingredient) return { ...item, quantity };
 			return item;
 		});
 		setModifiedIngredients(newIngredientList);
@@ -366,6 +366,21 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 			</div>
 		);
 	});
+
+
+	const onClickAddIngredient = () => {
+		setModifiedIngredients([
+			...modifiedIngredients,
+			{
+				ingredient: newIngredient,
+				quantity: newIngredientQuantity,
+				checked: true,
+			},
+		]);
+		setNewIngredient('');
+		setNewIngredientQuantity('');
+	}
+
 
 	const ingredientListModal = (
 		<Collapse className="collapse" in={showIngredientModal}>
@@ -433,18 +448,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 								<AddCircleIcon
 									id="add-ingredient-button"
 									type="button"
-									onClick={() => {
-										setModifiedIngredients([
-											...modifiedIngredients,
-											{
-												ingredient: newIngredient,
-												quantity: newIngredientQuantity,
-												checked: true,
-											},
-										]);
-										setNewIngredient('');
-										setNewIngredientQuantity('');
-									}}
+									onClick={onClickAddIngredient}
 								/>
 							)}
 					</div>
@@ -545,10 +549,9 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 									</TableCell>
 								</TableRow>
 								<TableRow>
-									<TableCell width="100%">
+									<TableCell id="cook-time-box" width="100%">
 										조리시간:
-										<Input
-											disableUnderline
+										<input
 											required
 											disabled={alert}
 											type="number"
