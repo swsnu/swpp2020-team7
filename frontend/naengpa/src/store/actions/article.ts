@@ -47,9 +47,7 @@ export const createArticle = (article: CreateArticleEntity) => {
 		bodyFormData.append('article', JSON.stringify(article));
 		article.images.forEach((image) => bodyFormData.append('image', image));
 
-		const response = await axios({
-			method: 'post',
-			url: '/api/articles/',
+		const response = await axios.post('/api/articles/', {
 			data: bodyFormData,
 			headers: {
 				Accept: 'application/json',
