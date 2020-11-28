@@ -48,8 +48,7 @@ def article_list(request):
             return HttpResponse(status=401)
         try:
             author_id = request.user.id
-            req_data = eval(request.POST.dict().get('recipe', ''))  # FIXME:
-            # req_data = json.loads(request.body.decode())
+            req_data = eval(request.POST.dict().get('article', ''))
             title, content, item_str, price = itemgetter(
                 'title', 'content', 'item', 'price')(req_data)
             images = request.FILES.getlist('image')
