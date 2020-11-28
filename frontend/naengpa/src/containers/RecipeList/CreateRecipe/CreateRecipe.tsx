@@ -207,9 +207,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 								</TableRow>
 								<TableRow>
 									<TableCell>
-										<div id="ingredient-name">
-											필수 재료
-										</div>
+										<div id="ingredient-name">필수 재료</div>
 									</TableCell>
 								</TableRow>
 								<TableRow id="recipe-row-box">
