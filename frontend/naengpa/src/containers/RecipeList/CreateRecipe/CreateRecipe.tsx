@@ -102,7 +102,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 							/>
 						)}
 						<img
-							key={`${idx}`}							
+							key={`${idx}`}
 							id="delete-image-icon"
 							src={URL.createObjectURL(item) as string}
 							height="150px"
