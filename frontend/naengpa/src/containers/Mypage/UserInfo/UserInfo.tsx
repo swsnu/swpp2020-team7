@@ -1,7 +1,7 @@
 import React from 'react';
 import { History } from 'history';
 import './UserInfo.scss';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AppState } from '../../../store/store';
 import Tap from '../../../components/Tap/Tap';
 

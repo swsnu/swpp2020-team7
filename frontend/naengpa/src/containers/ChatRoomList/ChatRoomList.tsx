@@ -1,6 +1,6 @@
 import React from 'react';
 import { History } from 'history';
-//import './ChatRoomList.scss';
+// import './ChatRoomList.scss';
 import '../Mypage/UserInfo/UserInfo.scss';
 import Tap from '../../components/Tap/Tap';
 

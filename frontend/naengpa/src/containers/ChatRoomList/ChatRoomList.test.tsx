@@ -35,32 +35,4 @@ describe('ChatRoomList', () => {
 		const component = mount(chatRoomList);
 		expect(component.find('ChatRoomList').length).toBe(1);
 	});
-
-	it('chatroom-myinfo-tap should be clicked correctly', () => {
-		const component = mount(chatRoomList);
-		const ingredientContentsWrapper = component.find('button#chatroom-myinfo-tap').at(0);
-		ingredientContentsWrapper.simulate('click');
-		expect(spyHistoryPush).toBeCalledWith('/@:username/info');
-	});
-
-	it('chatroom-myrecipe-tap should be clicked correctly', () => {
-		const component = mount(chatRoomList);
-		const ingredientContentsWrapper = component.find('button#chatroom-myrecipe-tap').at(0);
-		ingredientContentsWrapper.simulate('click');
-		expect(spyHistoryPush).toBeCalledWith('/@:username/recipes');
-	});
-
-	it('chatroom-notification-tap should be clicked correctly', () => {
-		const component = mount(chatRoomList);
-		const ingredientContentsWrapper = component.find('button#chatroom-notification-tap').at(0);
-		ingredientContentsWrapper.simulate('click');
-		expect(spyHistoryPush).toBeCalledWith('/notifications');
-	});
-
-	it('chatroom-chatting-tap should be clicked correctly', () => {
-		const component = mount(chatRoomList);
-		const ingredientContentsWrapper = component.find('button#chatroom-chatting-tap').at(0);
-		ingredientContentsWrapper.simulate('click');
-		expect(spyHistoryPush).toBeCalledWith('/chatrooms');
-	});
 });
