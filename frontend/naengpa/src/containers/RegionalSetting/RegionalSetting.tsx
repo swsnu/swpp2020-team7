@@ -117,14 +117,14 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 			center: new window.kakao.maps.LatLng(latitude, longitude),
 			level: 3,
 		};
-		new window.kakao.maps.Map(container, options);
+		let map = new window.kakao.maps.Map(container, options);
 		const mapContainer = document.getElementById('map');
 		const mapOption = {
 			center: new window.kakao.maps.LatLng(latitude, longitude),
 			level: 3,
 		};
 
-		new window.kakao.maps.Map(mapContainer, mapOption);
+		map = new window.kakao.maps.Map(mapContainer, mapOption);
 	}, []);
 
 	return (
