@@ -16,7 +16,6 @@ import RegionalSetting from './containers/RegionalSetting/RegionalSetting';
 import MyFridge from './containers/MyFridge/MyFridge';
 import AddIngredient from './containers/AddIngredient/AddIngredient';
 
-import Mypage from './containers/Mypage/Mypage';
 import UserRecipe from './containers/UserRecipe/UserRecipe';
 import UserNotification from './containers/UserNotification/UserNotification';
 import UserInfo from './containers/Mypage/UserInfo/UserInfo';
@@ -67,7 +66,6 @@ const App: React.FC<AppProps> = ({ history }) => {
 						<Route path="/fridge" exact component={MyFridge} />
 						<Route path="/ingredients/add" exact component={AddIngredient} />
 						{/* Mypage */}
-						<Route path="/@:username" exact component={Mypage} />
 						<Route path="/@:username/info" exact component={UserInfo} />
 						<Route path="/@:username/edit" exact component={EditUserInfo} />
 						<Route path="/@:username/password" exact component={ChangePassword} />

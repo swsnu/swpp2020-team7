@@ -1,0 +1,17 @@
+#mypage {
+    background-size: cover;
+    background-color: #f7f7f7;
+    min-height: 870px;
+    width: 100%;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+    #info {
+        width: 837px;
+        height: 516px;
+        margin: 100px 275px 0px 0px;
+        background-color: #ffffff;
+    }
+}

@@ -3,22 +3,22 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import ChatRoomList from './ChatRoomList';
 import { history } from '../../store/store';
+import Tap from './Tap';
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
-describe('ChatRoomList', () => {
-	let chatRoomList: any;
+describe('User', () => {
+	let tap: any;
 	let spyHistoryPush: any;
 
 	beforeEach(() => {
 		const mockStore = store([]);
 
-		chatRoomList = (
+		tap = (
 			<Provider store={mockStore}>
-				<ChatRoomList history={history} />
+				<Tap history={history} />
 			</Provider>
 		);
 
@@ -31,8 +31,8 @@ describe('ChatRoomList', () => {
 		jest.restoreAllMocks();
 	});
 
-	it('ChatRoomList renders without crashing', () => {
-		const component = mount(chatRoomList);
-		expect(component.find('ChatRoomList').length).toBe(1);
+	it('Tap renders without crashing', () => {
+		const component = mount(tap);
+		expect(component.find('#button-list').length).toBe(1);
 	});
 });
