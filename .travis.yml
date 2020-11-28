@@ -19,7 +19,8 @@ matrix:
         - cd ../..
         - cd backend/naengpa
         - source ~/virtualenv/python3.7/bin/activate
-        - sudo apt update && sudo apt -y install gdal-bin=2.1 libgdal-dev
+        - apt policy gdal-bin
+        - sudo apt update && sudo apt -y install gdal-bin=2.2.3+dfsg-2 libgdal-dev
         - ogrinfo --version
         - export CPLUS_INCLUDE_PATH=/usr/include/gdal && export C_INCLUDE_PATH=/usr/include/gdal
         - pip install GDAL
@@ -63,7 +64,7 @@ matrix:
         - cd backend/naengpa
       install:
         - source ~/virtualenv/python3.7/bin/activate
-        - sudo apt-get update && sudo apt-get install gdal-bin=2.1
+        - sudo apt update && sudo apt -y install gdal-bin=2.2.3+dfsg-2 libgdal-dev
         - pip install -r requirements.txt
         - pip install coveralls
       script:
@@ -72,7 +73,7 @@ matrix:
         - coverage report -m
 
 install:
-  - sudo apt update && sudo apt-get install gdal-bin=2.1
+  - sudo apt update && sudo apt -y install gdal-bin=2.2.3+dfsg-2 libgdal-dev
   - cd $FRONTEND && npm install yarn && yarn && yarn add coveralls
   - cd ../../$BACKEND && pip3 install -r requirements.txt
   - gem install coveralls-lcov
