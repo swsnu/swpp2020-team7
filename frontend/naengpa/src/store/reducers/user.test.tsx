@@ -73,4 +73,50 @@ describe('User Reducer', () => {
 			user: null,
 		});
 	});
+
+	it('should check if getting user is done correctly', () => {
+		const newState = userReducer(UserState, {
+			type: actionTypes.GET_USER,
+			user: {
+				id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
+				username: 'test',
+				email: 'test@snu.ac.kr',
+				name: '테스트',
+				dateOfBirth: '20201112',
+			},
+		});
+		expect(newState).toEqual({
+			...UserState,
+			user: {
+				id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
+				username: 'test',
+				email: 'test@snu.ac.kr',
+				name: '테스트',
+				dateOfBirth: '20201112',
+			},
+		});
+	});
+
+	it('should check if editing user is done correctly', () => {
+		const newState = userReducer(UserState, {
+			type: actionTypes.EDIT_USER,
+			user: {
+				id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
+				username: 'test',
+				email: 'test@snu.ac.kr',
+				name: '테스트',
+				dateOfBirth: '20201112',
+			},
+		});
+		expect(newState).toEqual({
+			...UserState,
+			user: {
+				id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
+				username: 'test',
+				email: 'test@snu.ac.kr',
+				name: '테스트',
+				dateOfBirth: '20201112',
+			},
+		});
+	});
 });

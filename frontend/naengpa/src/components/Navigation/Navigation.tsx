@@ -27,7 +27,7 @@ const Navigation: React.FC<NavigationProps> = ({ history }) => {
 				<button
 					id="mypage-button"
 					type="button"
-					onClick={() => history.push('/@:username')}
+					onClick={() => history.push('/@:username/info')}
 				>
 					MY PAGE
 				</button>
