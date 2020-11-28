@@ -1,13 +1,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { CardHeader } from '@material-ui/core';
-import Recipe from './Recipe';
-import { history } from '../../store/store';
-import * as redux from "react-redux";
-import { Provider } from "react-redux";
+import * as redux from 'react-redux';
+import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import { unmountComponentAtNode } from 'react-dom';
+import { history } from '../../store/store';
+import Recipe from './Recipe';
 
 jest.mock('@material-ui/icons/MoreVert', () =>
 	jest.fn((props) => <div {...props} className="spyMoreVertIcon" />),
@@ -63,7 +63,7 @@ const stubInitialState = {
 	recipe: {
 		recipeList: [mockRecipe, mockRecipe2],
 		recipe: null,
-	}
+	},
 };
 
 describe('Recipe', () => {
@@ -78,7 +78,7 @@ describe('Recipe', () => {
 
 		jest.mock('react-redux', () => ({
 			useSelector: jest.fn((fn) => fn(mockStore.getState())),
-			useDispatch: () => jest.fn()
+			useDispatch: () => jest.fn(),
 		}));
 		recipe = (
 			<Provider store={mockStore}>
@@ -102,7 +102,7 @@ describe('Recipe', () => {
 
 	it('Recipe renders without crashing', () => {
 		const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
-		const mockDispatchFn = jest.fn()
+		const mockDispatchFn = jest.fn();
 		useDispatchSpy.mockReturnValue(mockDispatchFn);
 		const component = mount(recipe);
 		expect(component.find('Recipe').length).toBe(1);
@@ -112,7 +112,7 @@ describe('Recipe', () => {
 
 	it('Recipe renders correctly for given attribute', () => {
 		const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
-		const mockDispatchFn = jest.fn()
+		const mockDispatchFn = jest.fn();
 		useDispatchSpy.mockReturnValue(mockDispatchFn);
 		const component = mount(recipe);
 
@@ -141,7 +141,7 @@ describe('Recipe', () => {
 
 	it('renders cookTime correctly in hours unit', () => {
 		const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
-		const mockDispatchFn = jest.fn()
+		const mockDispatchFn = jest.fn();
 		useDispatchSpy.mockReturnValue(mockDispatchFn);
 		const component = mount(recipe);
 
@@ -151,7 +151,7 @@ describe('Recipe', () => {
 
 	it('renders recipe-like-count with 1 like correctly', () => {
 		const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
-		const mockDispatchFn = jest.fn()
+		const mockDispatchFn = jest.fn();
 		useDispatchSpy.mockReturnValue(mockDispatchFn);
 		const component = mount(recipe);
 
@@ -162,7 +162,7 @@ describe('Recipe', () => {
 
 	it('renders recipe-like-count with 0 like correctly', () => {
 		const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
-		const mockDispatchFn = jest.fn()
+		const mockDispatchFn = jest.fn();
 		useDispatchSpy.mockReturnValue(mockDispatchFn);
 		const component2 = mount(recipe2);
 
@@ -173,7 +173,7 @@ describe('Recipe', () => {
 
 	it('renders recipe-image correctly', () => {
 		const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
-		const mockDispatchFn = jest.fn()
+		const mockDispatchFn = jest.fn();
 		useDispatchSpy.mockReturnValue(mockDispatchFn);
 		const component = mount(recipe2);
 
@@ -183,7 +183,7 @@ describe('Recipe', () => {
 
 	it('should click recipe card correctly', () => {
 		const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
-		const mockDispatchFn = jest.fn()
+		const mockDispatchFn = jest.fn();
 		useDispatchSpy.mockReturnValue(mockDispatchFn);
 		const component = mount(recipe2);
 
