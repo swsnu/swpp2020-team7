@@ -20,11 +20,8 @@ jobs:
         - cd ../..
         - cd backend/naengpa
         - source ~/virtualenv/python3.7/bin/activate
-        - sudo add-apt-repository -y ppa:ubuntugis/ppa && sudo apt update
         - sudo apt update && sudo apt -y install gdal-bin libgdal-dev
         - ogrinfo --version
-        - export CPLUS_INCLUDE_PATH=/usr/include/gdal && export C_INCLUDE_PATH=/usr/include/gdal
-        - pip install GDAL
         - pip install -r requirements.txt
         - pip install coveralls
         - cd ../..
@@ -66,7 +63,7 @@ jobs:
         - cd backend/naengpa
       install:
         - source ~/virtualenv/python3.7/bin/activate
-        - sudo apt update && sudo apt -y install gdal-bin=2.2.3+dfsg-2 libgdal-dev
+        - sudo apt update && sudo apt -y install gdal-bin
         - pip install -r requirements.txt
         - pip install coveralls
       script:
@@ -75,7 +72,7 @@ jobs:
         - coverage report -m
 
 install:
-  - sudo apt update && sudo apt -y install gdal-bin=2.2.3+dfsg-2 libgdal-dev
+  - sudo apt update && sudo apt -y install gdal-bin
   - cd $FRONTEND && npm install yarn && yarn && yarn add coveralls
   - cd ../../$BACKEND && pip3 install -r requirements.txt
   - gem install coveralls-lcov
