@@ -1,4 +1,6 @@
 import React from 'react';
+import { History } from 'history';
+import { useDispatch } from 'react-redux';
 import { Card, CardHeader, Avatar, IconButton, CardMedia, CardContent } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
@@ -6,13 +8,16 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import './Recipe.scss';
 import { RecipeEntity, RecipeImage } from '../../model/recipe';
+import { getRecipe } from '../../store/actions/index';
 
 interface RecipeProps {
 	recipe: RecipeEntity;
 	attribute: string;
+	history: History;
 }
 
-const Recipe: React.FC<RecipeProps> = ({ recipe, attribute }) => {
+const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
+	const dispatch = useDispatch();
 	// Thumnail Image for Recipes
 	const images = recipe.foodImages as RecipeImage[];
 	const thumnail = images[0] as RecipeImage;
@@ -25,9 +30,21 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute }) => {
 	if (((recipe.cookTime as unknown) as number) >= 60)
 		cookTime = `${Math.round(((recipe.cookTime as unknown) as number) / 60)}H`;
 
+	const onClickRecipe = async () => {
+		if (recipe.id !== undefined) {
+			await dispatch(getRecipe(recipe.id));
+			history.push(`/recipes/:${recipe.id}`);
+		}
+	};
+
 	return (
 		// TODO: should be modified as User Info
-		<Card id={attribute}>
+		<Card
+			id={attribute}
+			onClick={() => {
+				onClickRecipe();
+			}}
+		>
 			<CardHeader
 				id="recipe-card-header"
 				avatar={<Avatar aria-label="recipe">R</Avatar>}

@@ -4,8 +4,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.db import transaction
 from .models import Fridge, FridgeIngredient
 from ingredient.models import Ingredient
+from django.contrib.auth.hashers import check_password
 
 import json
 
@@ -13,6 +15,7 @@ User = get_user_model()
 
 
 @ensure_csrf_cookie
+@transaction.atomic
 def signup(request):
     """signup"""
     if request.method == 'POST':
@@ -92,6 +95,51 @@ def signout(request):
 
 
 @ensure_csrf_cookie
+def user(request, id):
+    """user"""
+    # GET USER
+    if request.method == 'GET':
+        user = User.objects.get(id=id)
+        current_user = {
+            "id": user.id,
+            "username": user.username,
+            "name": user.name,
+            "email": user.email,
+            "dateOfBirth": user.date_of_birth,
+        }
+        return JsonResponse(data=current_user, safe=False)
+    elif request.method == 'PUT':
+        try:
+            user = User.objects.get(id=id)
+        except User.DoesNotExist:
+            return HttpResponseBadRequest()
+        # try:
+        req_data = json.loads(request.body.decode())
+        edit_name = req_data['name']
+        edit_date_of_birth = req_data['dateOfBirth']
+        edit_email = req_data['email']
+        checked_password = req_data['password']
+        # except (KeyError, JSONDecodeError):
+        #    return HttpResponseBadRequest()
+        if check_password(checked_password, request.user.password):
+            user.name = edit_name
+            user.date_of_birth = edit_date_of_birth
+            user.email = edit_email
+        else:
+            return HttpResponse(status=401)
+        user.save()
+        return JsonResponse(data={
+            'id': request.user.id,
+            'username': request.user.username,
+            'email': request.user.email,
+            'name': request.user.name,
+            'dateOfBirth': request.user.date_of_birth,
+            'naengpa_score': request.user.naengpa_score
+        }, status=201)
+    return HttpResponseNotAllowed(['GET', 'PUT'])
+
+
+@ensure_csrf_cookie
 def user_list(request):
     """user_list"""
     # GET USER LIST
@@ -103,7 +151,7 @@ def user_list(request):
             "email": user.email,
             "dateOfBirth": user.date_of_birth,
             "naengpa_score": user.naengpa_score
-        } for user in User.objects.all()] if len(User.objects.all()) != 0 else []
+        } for user in User.objects.all()] if User.objects.count() != 0 else []
         return JsonResponse(user_collection, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])

@@ -54,7 +54,7 @@ describe('Navigation', () => {
 		const component = mount(navigation);
 		const ingredientContentsWrapper = component.find('button#mypage-button').at(0);
 		ingredientContentsWrapper.simulate('click');
-		expect(spyHistoryPush).toBeCalledWith('/@:username');
+		expect(spyHistoryPush).toBeCalledWith('/@:username/info');
 	});
 
 	it('logout-button should be clicked correctly', () => {
