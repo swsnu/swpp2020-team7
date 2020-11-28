@@ -95,7 +95,7 @@ DATABASES = {
         'USER': os.getenv("DB_USER"),
         'PASSWORD': os.getenv("DB_PASSWORD"),
         'TEST': {
-            'NAME': 'test_database_' + 'NAME' + os.getenv("TRAVIS_BUILD_NUMBER", "")
+            'NAME': 'test_database_' + 'NAME' + os.getenv("TRAVIS_JOB_NUMBER", "")
         },
     },
 }
