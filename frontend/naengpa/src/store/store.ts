@@ -4,6 +4,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import thunk from 'redux-thunk';
 import recipeReducer from './reducers/recipe';
+import articleReducer from './reducers/article';
 import userReducer from './reducers/user';
 import fridgeReducer from './reducers/fridge';
 import ingredientReducer from './reducers/ingredient';
@@ -13,6 +14,7 @@ export const history = createBrowserHistory();
 const rootReducer = combineReducers({
 	router: connectRouter(history),
 	recipe: recipeReducer,
+	article: articleReducer,
 	user: userReducer,
 	fridge: fridgeReducer,
 	ingredient: ingredientReducer,
