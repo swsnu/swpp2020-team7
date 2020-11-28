@@ -77,6 +77,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		setCookTime(createdRecipe?.cookTime as string);
 		setFoodImages(createdRecipe?.foodImages as File[]);
 		setFoodCategory(createdRecipe?.foodCategory as string);
+		setModifiedCategory(createdRecipe?.foodCategory as string);
 		const checkedIngredients = createdRecipe?.ingredients?.map((item) => {
 			return { ingredient: item, checked: true, quantity: '' };
 		});
