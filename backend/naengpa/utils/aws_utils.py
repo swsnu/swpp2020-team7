@@ -28,8 +28,8 @@ def get_filename_format(prefix, fid, user_id, fname):
 
 def upload_images(files, prefix, feed_id, user_id):
     images_path = []
-    for fname, file in files.iteritems:
-        file_path = get_filename_format(prefix, feed_id, user_id, fname)
+    for file in files:
+        file_path = get_filename_format(prefix, feed_id, user_id, file.name)
         s3_bucket.put_object(
             Key=file_path,
             Body=file,
