@@ -11,7 +11,7 @@ export const getIngredientList = () => {
 		const response = await axios.get('/api/ingredients/');
 		const ingredientList: IngredientCategoryCollection = response.data;
 
-		dispatch(getIngredientList_(ingredientList));
+		return dispatch(getIngredientList_(ingredientList));
 	};
 };
 
