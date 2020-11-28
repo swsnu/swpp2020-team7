@@ -19,6 +19,7 @@
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
         "@typescript-eslint/camelcase": 0,
+        "@typescript-eslint/no-explicit-any": 0,
         "import/extensions": 0,
         "import/no-extraneous-dependencies": [2, {"devDependencies": true}],
         "no-param-reassign": [2, { "props": false }],
