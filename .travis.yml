@@ -19,7 +19,11 @@ matrix:
         - cd ../..
         - cd backend/naengpa
         - source ~/virtualenv/python3.7/bin/activate
-        - sudo apt update && sudo apt -y install gdal-bin python3-gdal
+        - sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
+        - sudo apt update && sudo apt -y install gdal-bin libgdal-dev
+        - ogrinfo --version
+        - export CPLUS_INCLUDE_PATH=/usr/include/gdal && export C_INCLUDE_PATH=/usr/include/gdal
+        - pip install GDAL
         - pip install -r requirements.txt
         - pip install coveralls
         - cd ../..
@@ -60,7 +64,7 @@ matrix:
         - cd backend/naengpa
       install:
         - source ~/virtualenv/python3.7/bin/activate
-        - sudo apt update && sudo apt-get install gdal-bin
+        - sudo apt-get update && sudo apt-get install gdal-bin
         - pip install -r requirements.txt
         - pip install coveralls
       script:
