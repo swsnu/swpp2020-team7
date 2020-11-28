@@ -17,6 +17,7 @@ type Action =
 	| { type: 'LOGIN'; user: UserEntity }
 	| { type: 'LOGOUT' }
 	| { type: 'GET_USER_LIST'; userList: UserEntity[] }
+	| { type: 'GET_USER'; user: UserEntity }
 	| { type: 'EDIT_USER'; user: UserEntity };
 
 function userReducer(state: InitialState = UserState, action: Action): InitialState {
@@ -36,6 +37,10 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 		/* GET USET LIST */
 		case actionTypes.GET_USER_LIST:
 			return { ...state, userList: action.userList };
+
+		/* GET USET */
+		case actionTypes.GET_USER:
+			return { ...state, user: action.user };
 
 		/* EDIT USER */
 		case actionTypes.EDIT_USER:

@@ -93,9 +93,20 @@ def signout(request):
 
 
 @ensure_csrf_cookie
-def user_edit(request, id):
-    """user_edit"""
-    if request.method == 'PUT':
+def user(request, id):
+    """user"""
+    # GET USER
+    if request.method == 'GET':
+        user = User.objects.get(id=id)
+        current_user = {
+            "id": user.id,
+            "username": user.username,
+            "name": user.name,
+            "email": user.email,
+            "dateOfBirth": user.date_of_birth,
+        }
+        return JsonResponse(data=current_user, safe=False)
+    elif request.method == 'PUT':
         try:
             user = User.objects.get(id=id)
         except User.DoesNotExist:
@@ -123,7 +134,7 @@ def user_edit(request, id):
             'dateOfBirth': request.user.date_of_birth,
             'naengpa_score': request.user.naengpa_score
         }, status=201)
-    return HttpResponseNotAllowed(['PUT'])
+    return HttpResponseNotAllowed(['GET', 'PUT'])
 
 
 @ensure_csrf_cookie

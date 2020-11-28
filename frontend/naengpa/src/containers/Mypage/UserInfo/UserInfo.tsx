@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { History } from 'history';
 import './UserInfo.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../store/store';
+import { getUser } from '../../../store/actions/index';
 import Tap from '../../../components/Tap/Tap';
 
 interface UserInfoProps {
@@ -10,7 +11,12 @@ interface UserInfoProps {
 }
 
 const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
+	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user.user);
+	useEffect(() => {
+		// TODO: argument should be user id!
+		dispatch(getUser(user!));
+	}, [dispatch, user]);
 
 	return (
 		<div id="mypage">

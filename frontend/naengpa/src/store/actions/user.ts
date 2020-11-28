@@ -66,10 +66,16 @@ export function getUserList() {
 	};
 }
 
-export const getUser = () => ({
-	type: actionTypes.GET_USER,
-	payload: {},
-});
+export function getUser(user: UserEntity) {
+	return async (dispatch: any) => {
+		const response: any = await axios.get(`/api/users/${user.id}/`);
+
+		dispatch({
+			type: actionTypes.GET_USER,
+			user: response.data,
+		});
+	};
+}
 
 export const deleteUser = () => ({
 	type: actionTypes.DELETE_USER,
