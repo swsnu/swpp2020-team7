@@ -197,8 +197,10 @@ describe('ActionCreators', () => {
 		expect(returnAction.type).toBe(actionTypes.DELETE_USER);
 	});
 
+	/*
 	it('should return correct actionType for editUser', () => {
 		const returnAction = actionCreators.editUser();
 		expect(returnAction.type).toBe(actionTypes.EDIT_USER);
 	});
+	*/
 });

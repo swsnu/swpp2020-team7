@@ -19,3 +19,11 @@ export interface UserSignupInputDTO {
 	dateOfBirth: string;
 	email: string;
 }
+
+export interface EditUserInputDTO {
+	id: string;
+	name: string;
+	password: string;
+	dateOfBirth: string;
+	email: string;
+}
