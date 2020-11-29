@@ -7,7 +7,7 @@
   border: solid 1px #dcdcdc;
   align-items: center;
 
-  #food-box {
+  #food-field {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
@@ -31,9 +31,27 @@
   #food-name {
     font-size: 120%;
   }
-  #cook-time {
-    text-align:left;
-    font-size: 120%;
+
+  #cook-time-box {
+    display: flex;
+    flex-direction: row;
+
+    #cook-time {
+      text-align:left;
+      font-size: 120%;
+      right: 0;
+      width: 7%;
+      border: none;
+    }
+
+    #cook-time:focus {
+      outline: 0 !important;
+    }
+
+    #cook-time-unit {
+      left: 0;
+      font-size: 120%;
+    }
   }
   #ingredient-name {
     font-size: 120%;
@@ -82,7 +100,6 @@
 
    #alert-content {
     font: {
-      family: HelveticaNeue;
       size: 120%;
       weight: normal;
       stretch: normal;
@@ -404,6 +421,12 @@
       font: {
         weight: bold;
       }
+      #ingredient-name {
+        left: 0;
+        margin-left: -15px;
+        width:50%;
+      }
+      left: 0;
       font-weight: bold;
       font-stretch: normal;
       font-style: normal;

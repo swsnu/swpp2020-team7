@@ -137,6 +137,7 @@ describe('RecipeList', () => {
 		const recipeSearchCategory = component.find('#recipe-search-select').find('div').at(0);
 		recipeSearchCategory.simulate('click');
 		recipeSearchCategory.simulate('change', { target: { value: '한식' } });
+		recipeSearchInput.simulate('keyDown', { key: '' });
 		recipeSearchInput.simulate('keyDown', { key: 'Enter' });
 		expect(spyGetRecipeList).toBeCalledTimes(2);
 	});

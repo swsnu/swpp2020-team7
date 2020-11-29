@@ -25,15 +25,15 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const [page, setPage] = useState(1);
 	const [currentList, setCurrentList] = useState<RecipeEntity[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
-	const [searchCategory, setSearchCategory] = useState<string>('전체');
+	// const [searchCategory, setSearchCategory] = useState<string>('전체');
 	const [loading, setLoading] = useState<boolean>(true);
 	const [query, setQuery] = useState('');
 	const dispatch = useDispatch();
 
-	const onClickSearch = async (e: React.KeyboardEvent) => {
+	const onClickSearch = (e: React.KeyboardEvent) => {
 		console.log(e.key);
 		if (e.key === 'Enter') {
-			await dispatch(getRecipeList(query));
+			dispatch(getRecipeList(query));
 			setMaxPageIndex(Math.ceil(recipe_list.length / 9.0));
 			setCurrentList(recipe_list.slice((page - 1) * 9, (page - 1) * 9 + 9));
 			setLoading(false);
@@ -58,8 +58,8 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	});
 
 	useEffect(() => {
-		const func = async () => {
-			await dispatch(getRecipeList(query));
+		const func = () => {
+			dispatch(getRecipeList(query));
 			setMaxPageIndex(Math.ceil(recipe_list.length / 9.0));
 			setCurrentList(recipe_list.slice((page - 1) * 9, (page - 1) * 9 + 9));
 			setLoading(false);
@@ -82,9 +82,9 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 						<Select
 							labelId="recipe-search-select-label"
 							id="recipe-search-select"
-							value={searchCategory}
+							value="전체"
 							disableUnderline
-							onChange={(e) => setSearchCategory(e.target.value as string)}
+							// onChange={(e) => setSearchCategory(e.target.value as string)}
 						>
 							<MenuItem value="전체">전체</MenuItem>
 							<MenuItem id="recipe-search-select-item" value="한식">

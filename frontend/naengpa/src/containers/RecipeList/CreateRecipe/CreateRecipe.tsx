@@ -6,7 +6,6 @@ import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Alert from '@material-ui/lab/Alert';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
-
 import {
 	Button,
 	Collapse,
@@ -19,11 +18,11 @@ import {
 	TableHead,
 	TableRow,
 	TextField,
-	CircularProgress,
 	Divider,
 } from '@material-ui/core';
 import './CreateRecipe.scss';
 import { makeStyles } from '@material-ui/core/styles';
+import Loading from '../../../components/Loading/Loading';
 import { CreateRecipeEntity } from '../../../model/recipe';
 import { extractMLFeatureFromRecipe } from '../../../store/actions/index';
 
@@ -40,7 +39,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	// alert state is true if alert is necessary, otherwise false.
 	const [alert, setAlert] = useState(true);
 	const [alertContent, setAlertContent] = useState(
-		'요리 카테고리와 필요한 재료들 그리고 해쉬태그를 작성한 요리명과 레시피를 기반으로 자동으로 추천해 드립니다. 작성이 완료되면 재료등록 버튼을 눌러주세요.',
+		'요리 카테고리와 필요한 재료들이 작성한 요리명과 레시피를 기반으로 자동으로 추천해 드립니다. 작성이 완료되면 재료등록 버튼을 눌러주세요.',
 	);
 	const [loading, setLoading] = useState(false);
 
@@ -64,7 +63,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	};
 
 	/* CLICK EVENT - redirect to extract-ml-feature page */
-	const onClickExtractMLFeature = async () => {
+	const onClickExtractMLFeature = () => {
 		// if one of the input field is empty, then the alert modal shows itself
 		if (foodImages === [] || foodName === '' || cookTime === '' || recipeContent === '') {
 			setAlert(true);
@@ -72,9 +71,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
-			// const images = foodImages.map((item) => {
-			// 	return item.image as File;
-			// });
 			const newRecipe: CreateRecipeEntity = {
 				foodName,
 				cookTime,
@@ -83,7 +79,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 			};
 
 			setLoading(true);
-			await dispatch(extractMLFeatureFromRecipe(newRecipe));
+			dispatch(extractMLFeatureFromRecipe(newRecipe));
 			setLoading(false);
 			history.push('/ingredients/extract');
 		}
@@ -125,13 +121,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	return (
 		<div id="create-recipe">
-			{loading && (
-				<div id="loading-extract-ml-feature">
-					<CircularProgress color="inherit" />
-					머신러닝 API를 이용해 재료, 카테고리, 해쉬태그를 추천 중입니다. 잠시만
-					기다려주세요!!!
-				</div>
-			)}
+			{loading && <Loading />}
 			{!loading && (
 				<>
 					<Collapse className="collapse" in={alert}>
@@ -203,21 +193,21 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 									</TableCell>
 								</TableRow>
 								<TableRow>
-									<TableCell>
-										<Input
-											disableUnderline
+									<TableCell id="cook-time-box">
+										<input
 											required
 											disabled={alert}
 											type="number"
-											placeholder="조리시간 (분)"
+											placeholder="60"
 											id="cook-time"
 											onChange={(e) => setCookTime(e.target.value)}
 										/>
+										<div id="cook-time-unit">분</div>
 									</TableCell>
 								</TableRow>
 								<TableRow>
 									<TableCell>
-										<div id="ingredient-name">필수재료</div>
+										<div id="ingredient-name">필수 재료</div>
 									</TableCell>
 								</TableRow>
 								<TableRow id="recipe-row-box">
@@ -245,7 +235,9 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											<PhotoCameraIcon id="add-image-icon" />
 										</Box>
 									</TableCell>
-									<Divider orientation="vertical" flexItem />
+									<TableCell>
+										<Divider orientation="vertical" />
+									</TableCell>
 									<TableCell width="100%" id="recipe-row">
 										<TextField
 											placeholder="레시피"
@@ -254,7 +246,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											required
 											disabled={alert}
 											multiline
-											rows={20}
+											rows={30}
 											type="text"
 											InputProps={{ classes }}
 											onChange={(e) => setRecipeContent(e.target.value)}

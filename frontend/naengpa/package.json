@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.20.0",
     "connected-react-router": "^6.8.0",
+    "dotenv": "^8.2.0",
     "enzyme": "^3.11.0",
     "history": "~4.10.1",
     "immutable": "^4.0.0-rc.12",
@@ -41,7 +42,7 @@
     "lint": "eslint 'src/**/*.{ts,tsx,js,jsx}'",
     "lint:fix": "eslint --fix 'src/**/*.{ts,tsx,js,jsx}'",
     "prettier": "prettier --write --config .prettierrc.json 'src/**/*.{ts,tsx}'",
-    "start": "react-scripts start",
+    "start": "NODE_ENV=production && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject"

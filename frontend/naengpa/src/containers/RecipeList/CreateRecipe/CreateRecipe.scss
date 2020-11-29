@@ -60,7 +60,6 @@
 
    #alert-content {
     font: {
-      family: HelveticaNeue;
       size: 120%;
       weight: normal;
       stretch: normal;
@@ -221,6 +220,10 @@
 #recipe-row-box {
   display:flex;
   flex-direction: row;
+}
+
+#recipe-row {
+  bottom: 0;
 }
 
 #recipe-content {

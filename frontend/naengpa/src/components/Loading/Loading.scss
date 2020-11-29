@@ -1,0 +1,31 @@
+#loading {
+  display: flex !important;
+  flex-direction: column;
+  margin-top: 20%;
+  align-content: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+#loading-bar {
+  position: absolute;
+  margin-bottom : 4%;
+}
+
+#naengpa-logo-image {
+  position: relative;
+  align-items: center; 
+  color: #ff8a3d;
+  font-size: 150px;
+  align-content: center;
+}
+
+#loading-content { 
+  font-weight: bold; 
+  text-align: center; 
+}
+
+#loading-subcontent {
+  margin-top : 1%;
+  font-weight: bold;
+  font-size: 150%;
+}
