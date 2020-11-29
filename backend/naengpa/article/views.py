@@ -37,6 +37,11 @@ def article_list(request):
             "item": article.item.name,
             "price": article.price,
             "views": article.views,
+            "options": {
+                "isForSale": article.is_for_sale,
+                "isForExchange": article.is_for_exchange,
+                "isForShare": article.is_for_share
+            },
             "images": article.images.all().values('id', 'file_path'),
             "createdAt": article.created_at.strftime("%Y.%m.%d")
         } for article in sorted_list]
@@ -48,9 +53,11 @@ def article_list(request):
             return HttpResponse(status=401)
         try:
             author_id = request.user.id
+            print(request.POST)
             req_data = eval(request.POST.dict().get('article', ''))
-            title, content, item_str, price = itemgetter(
-                'title', 'content', 'item', 'price')(req_data)
+            # req_data = json.loads(request.body.decode())
+            title, content, item_str, price, options = itemgetter(
+                'title', 'content', 'item', 'price', 'options')(req_data)
             images = request.FILES.getlist('image')
             item = Ingredient.objects.get(name=item_str)
             article = Article.objects.create(
@@ -58,7 +65,10 @@ def article_list(request):
                 title=title,
                 content=content,
                 item_id=item.id,
-                price=price)
+                price=price,
+                is_for_sale=options['isForSale'],
+                is_for_exchange=options['isForExchange'],
+                is_for_share=options['isForShare'])
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
         except Ingredient.DoesNotExist:
@@ -80,6 +90,11 @@ def article_list(request):
             "item": item.name,
             "price": article.price,
             "views": article.views,
+            "options": {
+                "isForSale": article.is_for_sale,
+                "isForExchange": article.is_for_exchange,
+                "isForShare": article.is_for_share
+            },
             "images": article.images.all().values('id', 'file_path'),
             "createdAt": article.created_at,
         }, status=201)
@@ -87,8 +102,8 @@ def article_list(request):
         return HttpResponseNotAllowed(['GET', 'POST'])
 
 
-@ensure_csrf_cookie
-@transaction.atomic
+@ ensure_csrf_cookie
+@ transaction.atomic
 def article_info(request, aid):
     '''process article of given id'''
     if request.method == 'GET':
@@ -111,8 +126,44 @@ def article_info(request, aid):
             "item": article.item.name,
             "price": article.price,
             "views": article.views,
+            "options": {
+                "isForSale": article.is_for_sale,
+                "isForExchange": article.is_for_exchange,
+                "isForShare": article.is_for_share
+            },
             "images": article.images.all().values('id', 'file_path'),
             "createdAt": article.created_at,
         }, status=201)
+
+    elif request.method == 'DELETE':
+        ''' DELETE /api/articles/:aid/ delete article of given id '''
+        if not request.user.is_authenticated:
+            return HttpResponse(status=401)
+        try:
+            article = Article.objects.select_related(
+                'author', 'author__region', 'item', 'images').get(id=aid)
+            deleted_article = {
+                "id": article.id,
+                "authorId": article.author.id,
+                "author": article.author.username,
+                "region": article.author.region.name,
+                "title": article.title,
+                "content": article.content,
+                "item": article.item.name,
+                "price": article.price,
+                "views": article.views,
+                "options": {
+                    "isForSale": article.is_for_sale,
+                    "isForExchange": article.is_for_exchange,
+                    "isForShare": article.is_for_share
+                },
+                "images": article.images.all().values('id', 'file_path'),
+                "createdAt": article.created_at,
+            }
+            article.delete()
+        except Article.DoesNotExist:
+            return HttpResponseNotFound()
+
+        return JsonResponse(data=deleted_article, status=201)
     else:
-        return HttpResponseNotAllowed(['GET'])
+        return HttpResponseNotAllowed(['GET', 'DELETE'])
