@@ -4,7 +4,7 @@ from operator import itemgetter
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseForbidden,  HttpResponseNotFound, HttpResponseNotAllowed
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.db import transaction
-from django.db.models import Q
+from django.db.models import F, Q
 from utils.aws_utils import upload_images
 from ingredient.models import Ingredient
 from .models import Article, Image
@@ -28,7 +28,7 @@ def article_list(request):
 
         query = request.GET.get('value', "")
         selected_list = Article.objects.select_related(
-            'author', 'author__region', 'item', 'images').exclude(done=True)
+            'author', 'author__region', 'item').exclude(done=True)
         sorted_list = selected_list.filter(Q(title__icontains=query) | Q(content__icontains=query)).all().order_by(
             '-created_at') if query else selected_list.all().order_by('-created_at')
 
@@ -47,7 +47,7 @@ def article_list(request):
                 "isForExchange": article.is_for_exchange,
                 "isForShare": article.is_for_share
             },
-            "images": [img for img in article.images.all().values('id', 'file_path')],
+            "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
             "createdAt": article.created_at.strftime("%Y.%m.%d")
         } for article in sorted_list]
         return JsonResponse(article_collection, safe=False)
@@ -103,7 +103,7 @@ def article_list(request):
                 "isForExchange": article.is_for_exchange,
                 "isForShare": article.is_for_share
             },
-            "images": [img for img in article.images.all().values('id', 'file_path')],
+            "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
             "createdAt": article.created_at,
         }, status=201)
     else:
@@ -120,7 +120,7 @@ def article_info(request, aid):
             return HttpResponse(status=401)
         try:
             article = Article.objects.select_related(
-                'author', 'author__region', 'item', 'images').get(id=aid)
+                'author', 'author__region', 'item').get(id=aid)
         except Article.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -139,7 +139,7 @@ def article_info(request, aid):
                 "isForExchange": article.is_for_exchange,
                 "isForShare": article.is_for_share
             },
-            "images": [img for img in article.images.all().values('id', 'file_path')],
+            "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
             "createdAt": article.created_at,
         }, status=201)
 
@@ -149,7 +149,7 @@ def article_info(request, aid):
             return HttpResponse(status=401)
         try:
             article = Article.objects.select_related(
-                'author', 'author__region', 'item', 'images').get(id=aid)
+                'author', 'author__region', 'item').get(id=aid)
             deleted_article = {
                 "id": article.id,
                 "authorId": article.author.id,
@@ -165,7 +165,7 @@ def article_info(request, aid):
                     "isForExchange": article.is_for_exchange,
                     "isForShare": article.is_for_share
                 },
-                "images": [img for img in article.images.all().values('id', 'file_path')],
+                "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
                 "createdAt": article.created_at,
             }
             article.delete()
