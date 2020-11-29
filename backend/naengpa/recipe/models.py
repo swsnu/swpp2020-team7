@@ -11,8 +11,6 @@ class Recipe(models.Model):
     """Recipe model"""
     author = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     food_name = models.CharField(max_length=50)
-    # category = models.ForeignKey(
-    #     FoodCategory, null=True, on_delete=models.CASCADE)
     food_category = models.CharField(max_length=50)
     cook_time = models.CharField(max_length=50)
     recipe_content = models.TextField(blank=True)
