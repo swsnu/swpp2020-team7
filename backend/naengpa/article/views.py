@@ -10,6 +10,11 @@ from ingredient.models import Ingredient
 from .models import Article, Image
 
 
+class InvalidOptionsGivenError(Exception):
+    """Error class for insufficient or no true value options given with a new article"""
+    pass
+
+
 @ensure_csrf_cookie
 @transaction.atomic
 def article_list(request):
@@ -58,6 +63,8 @@ def article_list(request):
             # req_data = json.loads(request.body.decode())
             title, content, item_str, price, options = itemgetter(
                 'title', 'content', 'item', 'price', 'options')(req_data)
+            if len(options) != 3 or True not in options.values():
+                raise InvalidOptionsGivenError
             images = request.FILES.getlist('image')
             item = Ingredient.objects.get(name=item_str)
             article = Article.objects.create(
@@ -71,7 +78,7 @@ def article_list(request):
                 is_for_share=options['isForShare'])
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
-        except Ingredient.DoesNotExist:
+        except (Ingredient.DoesNotExist, InvalidOptionsGivenError):
             return HttpResponseBadRequest()
 
         images_path = upload_images(
