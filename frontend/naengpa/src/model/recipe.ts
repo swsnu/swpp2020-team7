@@ -19,11 +19,17 @@ export interface RecipeEntity {
 	recipeLike: number;
 	createdAt?: string;
 	foodCategory?: string;
-	ingredients?: string[];
+	ingredients?: RecipeIngredient[];
 }
 
 export interface RecipeImage {
 	id?: number;
-	recipe_id: number;
 	file_path: string;
+}
+
+export interface RecipeIngredient {
+	id?: number;
+	ingredient: string;
+	checked?: boolean;
+	quantity?: string;
 }

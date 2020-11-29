@@ -52,11 +52,13 @@ describe('CreateRecipe', () => {
 			useDispatch: () => jest.fn(),
 		}));
 
-		createRecipe = (
-			<Provider store={mockStore}>
-				<CreateRecipe history={history} />
-			</Provider>
-		);
+		act(() => {
+			createRecipe = (
+				<Provider store={mockStore}>
+					<CreateRecipe history={history} />
+				</Provider>
+			);
+		});
 
 		extractMLFeatureFromRecipe = jest
 			.spyOn(recipeActionCreators, 'extractMLFeatureFromRecipe')
@@ -99,6 +101,7 @@ describe('CreateRecipe', () => {
 		expect(foodImage.length).toBe(1);
 		expect(recipeContent.length).toBe(1);
 		extractMLFeatureButton.simulate('click');
+		// expect(component.find('Loading').length).toBe(1);
 	});
 
 	it('should close Alert modal when the close button is clicked', async () => {
