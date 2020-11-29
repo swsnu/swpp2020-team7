@@ -22,7 +22,7 @@ def recipe_list(request):
         if request.method == 'GET':
             ''' GET /api/recipes/ get recipe list '''
             if not Recipe.objects.count():
-                return JsonResponse([])
+                return JsonResponse({})
 
             query = request.GET.get('value', "")
             selected_list = Recipe.objects.select_related(
