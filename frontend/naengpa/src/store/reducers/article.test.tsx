@@ -10,15 +10,20 @@ const mockArticle: ArticleEntity = {
 	title: 'for test',
 	content: 'this is test',
 	item: '딸기',
+	price: 1000,
+	views: 77,
+	options: {
+		isForSale: true,
+		isForExchange: false,
+		isForShare: false,
+	},
+	createdAt: '2000.00.00',
 	images: [
 		{
 			id: 2,
 			file_path: 'path',
 		},
 	],
-	price: 1000,
-	views: 77,
-	createdAt: '2000.00.00',
 };
 const mockArticleList: ArticleEntity[] = [
 	{ ...mockArticle, id: 7 },
@@ -30,15 +35,20 @@ const mockArticleList: ArticleEntity[] = [
 		title: 'for test 2',
 		content: 'this is test 2',
 		item: '딸기 2',
+		price: 1000,
+		views: 77,
+		options: {
+			isForSale: true,
+			isForExchange: false,
+			isForShare: false,
+		},
+		createdAt: '2000.00.00',
 		images: [
 			{
 				id: 2,
 				file_path: 'path',
 			},
 		],
-		price: 1000,
-		views: 77,
-		createdAt: '2000.00.00',
 	},
 ];
 const stubInitialState: ArticleState = {
