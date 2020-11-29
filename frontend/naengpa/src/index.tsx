@@ -7,6 +7,15 @@ import * as serviceWorker from './serviceWorker';
 import App from './App';
 
 import store, { history } from './store/store';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+/* KAKAO MAP API SCRIPT */
+const script = document.createElement("script");
+script.async = true;
+script.src =
+      `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_KEY}&libraries=services,clusterer,drawing`;
+document.getElementById('root')?.appendChild(script);
 
 ReactDOM.render(
 	<Provider store={store}>
