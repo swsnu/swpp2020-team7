@@ -1,5 +1,7 @@
 /* ARTICLE INTERFACE */
 
+import { IngredientEntity } from "./ingredient";
+
 export interface ArticleOptions {
 	isForSale: Boolean;
 	isForExchange: Boolean;
@@ -21,7 +23,7 @@ export interface ArticleEntity {
 	region: string;
 	title: string;
 	content: string;
-	item: string;
+	item: IngredientEntity;
 	price: number;
 	views: number;
 	options: ArticleOptions;
@@ -31,5 +33,5 @@ export interface ArticleEntity {
 
 export interface ArticleImage {
 	id: number;
-	file_path: string;
+	path: string;
 }

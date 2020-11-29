@@ -21,7 +21,7 @@ const mockArticle: ArticleEntity = {
 	images: [
 		{
 			id: 2,
-			file_path: 'path',
+			path: 'path',
 		},
 	],
 };
@@ -46,7 +46,7 @@ const mockArticleList: ArticleEntity[] = [
 		images: [
 			{
 				id: 2,
-				file_path: 'path',
+				path: 'path',
 			},
 		],
 	},

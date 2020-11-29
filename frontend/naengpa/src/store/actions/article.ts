@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { push } from 'connected-react-router';
 import { Dispatch } from 'redux';
 import * as actionTypes from './actionTypes';
 import { ArticleEntity, CreateArticleEntity } from '../../model/article';
@@ -13,9 +14,9 @@ export const getArticleList_ = (articles: ArticleEntity[]) => ({
 	payload: articles,
 });
 
-export const getArticleList = () => {
+export const getArticleList = (query?: string) => {
 	return async (dispatch: Dispatch<any>) => {
-		const response = await axios.get(`/api/articles/`);
+		const response = await axios.get(`/api/articles/?q=${query}`);
 
 		dispatch(getArticleList_(response.data));
 	};
@@ -65,6 +66,7 @@ export const createArticle = (article: CreateArticleEntity) => {
 		// });
 
 		dispatch(createArticle_(response.data));
+		dispatch(push(`/articles/${response.data.id}`));
 	};
 };
 

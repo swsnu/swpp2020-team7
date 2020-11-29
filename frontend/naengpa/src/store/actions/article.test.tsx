@@ -17,7 +17,11 @@ const mockArticle: ArticleEntity = {
 	region: '서울시 관악구 대학동',
 	title: 'for test',
 	content: 'this is test',
-	item: '딸기',
+	item: {
+		id: 14,
+		name: "딸기",
+		category: "과일",
+	},
 	price: 1000,
 	views: 77,
 	options: {
@@ -29,7 +33,7 @@ const mockArticle: ArticleEntity = {
 	images: [
 		{
 			id: 2,
-			file_path: 'path',
+			path: 'path',
 		},
 	],
 };
@@ -44,7 +48,11 @@ const stubInitialState: { article: ArticleState } = {
 				region: '서울시 관악구 청룡동',
 				title: 'for test 2',
 				content: 'this is test 2',
-				item: '딸기 2',
+				item: {
+					id: 14,
+					name: "딸기",
+					category: "과일",
+				},
 				options: {
 					isForSale: true,
 					isForExchange: false,
@@ -56,7 +64,7 @@ const stubInitialState: { article: ArticleState } = {
 				images: [
 					{
 						id: 2,
-						file_path: 'path',
+						path: 'path',
 					},
 				],
 			},
@@ -131,6 +139,7 @@ describe('ActionCreators', () => {
 			content: 'test content',
 			item: 'test item',
 			price: '0',
+			options: {isForSale: true, isForExchange: false, isForShare: false},
 			images: [(testImage as unknown) as File],
 		};
 
@@ -159,6 +168,7 @@ describe('ActionCreators', () => {
 			content: 'test content',
 			item: 'test item',
 			price: '0',
+			options: {isForSale: true, isForExchange: false, isForShare: false},
 			images: [(testImage as unknown) as File],
 		};
 
