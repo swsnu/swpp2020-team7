@@ -26,7 +26,7 @@ def article_list(request):
         if not Article.objects.count():  # if article list is empty
             return JsonResponse([])
 
-        query = request.GET.get('value', "")
+        query = request.GET.get('q', "")
         selected_list = Article.objects.select_related(
             'author', 'author__region', 'item').exclude(done=True)
         sorted_list = selected_list.filter(Q(title__icontains=query) | Q(content__icontains=query)).all().order_by(
