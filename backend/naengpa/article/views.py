@@ -39,13 +39,17 @@ def article_list(request):
             "region": article.author.region.name,
             "title": article.title,
             "content": article.content,
-            "item": article.item.name,
+            "item": {
+                "id": article.item.id,
+                "name": article.item.name,
+                "category": article.item.category.name,
+            },
             "price": article.price,
             "views": article.views,
             "options": {
                 "isForSale": article.is_for_sale,
                 "isForExchange": article.is_for_exchange,
-                "isForShare": article.is_for_share
+                "isForShare": article.is_for_share,
             },
             "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
             "createdAt": article.created_at.strftime("%Y.%m.%d")
@@ -95,7 +99,11 @@ def article_list(request):
             "region": article.author.region.name,
             "title": article.title,
             "content": article.content,
-            "item": item.name,
+            "item": {
+                "id": article.item.id,
+                "name": article.item.name,
+                "category": article.item.category.name,
+            },
             "price": article.price,
             "views": article.views,
             "options": {
@@ -131,7 +139,11 @@ def article_info(request, aid):
             "region": article.author.region.name,
             "title": article.title,
             "content": article.content,
-            "item": article.item.name,
+            "item": {
+                "id": article.item.id,
+                "name": article.item.name,
+                "category": article.item.category.name,
+            },
             "price": article.price,
             "views": article.views,
             "options": {
@@ -157,7 +169,11 @@ def article_info(request, aid):
                 "region": article.author.region.name,
                 "title": article.title,
                 "content": article.content,
-                "item": article.item.name,
+                "item": {
+                    "id": article.item.id,
+                    "name": article.item.name,
+                    "category": article.item.category.name,
+                },
                 "price": article.price,
                 "views": article.views,
                 "options": {
