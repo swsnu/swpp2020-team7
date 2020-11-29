@@ -18,7 +18,7 @@ def recipe_list(request):
     if request.method not in ['GET', 'POST']:
         return HttpResponseNotAllowed(['GET', 'POST'])
 
-    if request.user.is_authenticated:
+    if not request.user.is_authenticated:
         return HttpResponse(status=401)
 
     if request.method == 'GET':
