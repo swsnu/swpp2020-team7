@@ -33,7 +33,6 @@ import {
 	getFoodCategoryList,
 	extractMLFeatureFromRecipe,
 } from '../../store/actions/index';
-import { Dictionary } from '../../model/general';
 
 interface ExtractMLFeatureProps {
 	history: History;
@@ -320,7 +319,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	/* ingredient list for Ingredient Modal */
 	const ingredientSet = modifiedIngredients?.map((item, i) => {
 		return (
-			<div id="ingredient-element" key={item.ingredient as string}>
+			<div id="ingredient-element" key={item.ingredient}>
 				<FormControlLabel
 					control={
 						<Checkbox
@@ -328,15 +327,12 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							checked={item.checked as boolean}
 							checkedIcon={<CheckBoxIcon id="checkbox" />}
 							onChange={(e) => {
-								onChangeIngredientCheck(
-									item.ingredient as string,
-									e.target.checked,
-								);
+								onChangeIngredientCheck(item.ingredient, e.target.checked);
 							}}
 						/>
 					}
-					key={`${item.ingredient}-` as string}
-					label={item.ingredient as string}
+					key={`${item.ingredient}-`}
+					label={item.ingredient}
 				/>
 				<Input
 					id="ingredient-quantity"
@@ -345,7 +341,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					key={`${item.ingredient}-${i}` as string}
 					required
 					onChange={(e) => {
-						onChangeIngredientQuantity(item.ingredient as string, e.target.value);
+						onChangeIngredientQuantity(item.ingredient, e.target.value);
 					}}
 				/>
 			</div>

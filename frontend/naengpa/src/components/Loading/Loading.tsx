@@ -1,5 +1,4 @@
 import React from 'react';
-import { CircularProgress } from '@material-ui/core';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import './Loading.scss';
 

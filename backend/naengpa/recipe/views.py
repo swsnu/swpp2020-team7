@@ -19,82 +19,80 @@ def recipe_list(request):
         return HttpResponseNotAllowed(['GET', 'POST'])
 
     if request.user.is_authenticated:
-        if request.method == 'GET':
-            ''' GET /api/recipes/ get recipe list '''
-            if not Recipe.objects.count():
-                return JsonResponse({})
-
-            query = request.GET.get('value', "")
-            selected_list = Recipe.objects.select_related(
-                'author')
-            sorted_list = selected_list.filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)).order_by('-created_at') if query else \
-                selected_list.order_by('-created_at')
-
-            recipe_collection = [{
-                "id": recipe.id,
-                "authorId": recipe.author.id,
-                "author": recipe.author.username,
-                "foodName": recipe.food_name,
-                "cookTime": recipe.cook_time,
-                "recipeContent": recipe.recipe_content,
-                "foodImages": list(recipe.images.values('id', 'file_path')),
-                "recipeLike": recipe.likes.count(),
-                "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-                "foodCategory": recipe.food_category,
-                "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
-            } for recipe in sorted_list]
-            return JsonResponse(recipe_collection, safe=False)
-
-        else:
-            ''' POST /api/recipes/ post new recipe '''
-            try:
-                user_id = request.user.id
-                req_data = eval(request.POST.dict().get('recipe', ''))
-                food_name, cook_time, recipe_content, food_category_str, ingredients = itemgetter(
-                    'foodName', 'cookTime', 'recipeContent', 'foodCategory', 'ingredients')(req_data)
-                food_images = request.FILES.getlist('image')
-                # food_category = FoodCategory.objects.get(
-                #     name=food_category_str)
-
-                recipe = Recipe.objects.create(
-                    author_id=user_id,
-                    food_name=food_name,
-                    cook_time=cook_time,
-                    recipe_content=recipe_content,
-                    food_category=food_category_str,
-                )
-
-                print(ingredients, "list")
-                ingredient_list = [RecipeIngredient.objects.create(
-                    ingredient=item.get('ingredient', ''), quantity=item.get('quantity', ''), recipe_id=recipe.id
-                ) for item in eval(str(ingredients))]
-
-                # print(ingredient_list, "list")
-            except (KeyError, json.decoder.JSONDecodeError):
-                return HttpResponseBadRequest()
-            except FoodCategory.DoesNotExist:
-                return HttpResponseBadRequest()
-
-            images_path = upload_images(
-                food_images, "recipe", recipe.id, user_id)
-            for path in images_path:
-                Image.objects.create(file_path=path, recipe_id=recipe.id)
-
-            return JsonResponse(data={
-                "id": recipe.id,
-                "authorId": recipe.author.id,
-                "author": recipe.author.username,
-                "foodName": food_name,
-                "cookTime": cook_time,
-                "foodImages": list(recipe.images.values('id', 'file_path')),
-                "recipeContent": recipe_content,
-                "recipeLike": recipe.likes.count(),
-                "createdAt": recipe.created_at,
-                "foodCategory": recipe.food_category,
-                "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
-            }, status=201)
-    else:
         return HttpResponse(status=401)
+
+    if request.method == 'GET':
+        ''' GET /api/recipes/ get recipe list '''
+        if not Recipe.objects.count():
+            return JsonResponse({})
+
+        query = request.GET.get('value', "")
+        selected_list = Recipe.objects.select_related(
+            'author')
+        sorted_list = selected_list.filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)).order_by('-created_at') if query else \
+            selected_list.order_by('-created_at')
+
+        recipe_collection = [{
+            "id": recipe.id,
+            "authorId": recipe.author.id,
+            "author": recipe.author.username,
+            "foodName": recipe.food_name,
+            "cookTime": recipe.cook_time,
+            "recipeContent": recipe.recipe_content,
+            "foodImages": list(recipe.images.values('id', 'file_path')),
+            "recipeLike": recipe.likes.count(),
+            "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
+            "foodCategory": recipe.food_category,
+            "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
+        } for recipe in sorted_list]
+        return JsonResponse(recipe_collection, safe=False)
+
+    else:
+        ''' POST /api/recipes/ post new recipe '''
+        try:
+            user_id = request.user.id
+            req_data = eval(request.POST.dict().get('recipe', ''))
+            food_name, cook_time, recipe_content, food_category_str, ingredients = itemgetter(
+                'foodName', 'cookTime', 'recipeContent', 'foodCategory', 'ingredients')(req_data)
+            food_images = request.FILES.getlist('image')
+
+            recipe = Recipe.objects.create(
+                author_id=user_id,
+                food_name=food_name,
+                cook_time=cook_time,
+                recipe_content=recipe_content,
+                food_category=food_category_str,
+            )
+
+            print(ingredients, "list")
+            ingredient_list = [RecipeIngredient.objects.create(
+                ingredient=item.get('ingredient', ''), quantity=item.get('quantity', ''), recipe_id=recipe.id
+            ) for item in eval(str(ingredients))]
+
+            print("[Ingredient List] ", ingredient_list)
+        except (KeyError, json.decoder.JSONDecodeError):
+            return HttpResponseBadRequest()
+        except FoodCategory.DoesNotExist:
+            return HttpResponseBadRequest()
+
+        images_path = upload_images(
+            food_images, "recipe", recipe.id, user_id)
+        for path in images_path:
+            Image.objects.create(file_path=path, recipe_id=recipe.id)
+
+        return JsonResponse(data={
+            "id": recipe.id,
+            "authorId": recipe.author.id,
+            "author": recipe.author.username,
+            "foodName": food_name,
+            "cookTime": cook_time,
+            "foodImages": list(recipe.images.values('id', 'file_path')),
+            "recipeContent": recipe_content,
+            "recipeLike": recipe.likes.count(),
+            "createdAt": recipe.created_at,
+            "foodCategory": recipe.food_category,
+            "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
+        }, status=201)
 
 
 def recipe_info(request, id):
