@@ -47,7 +47,7 @@ def article_list(request):
                 "isForExchange": article.is_for_exchange,
                 "isForShare": article.is_for_share
             },
-            "images": article.images.all().values('id', 'file_path'),
+            "images": [img for img in article.images.all().values('id', 'file_path')],
             "createdAt": article.created_at.strftime("%Y.%m.%d")
         } for article in sorted_list]
         return JsonResponse(article_collection, safe=False)
@@ -57,6 +57,7 @@ def article_list(request):
         if not request.user.is_authenticated:
             return HttpResponse(status=401)
         try:
+            true, false = True, False
             author_id = request.user.id
             print(request.POST)
             req_data = eval(request.POST.dict().get('article', ''))
@@ -102,7 +103,7 @@ def article_list(request):
                 "isForExchange": article.is_for_exchange,
                 "isForShare": article.is_for_share
             },
-            "images": article.images.all().values('id', 'file_path'),
+            "images": [img for img in article.images.all().values('id', 'file_path')],
             "createdAt": article.created_at,
         }, status=201)
     else:
@@ -138,7 +139,7 @@ def article_info(request, aid):
                 "isForExchange": article.is_for_exchange,
                 "isForShare": article.is_for_share
             },
-            "images": article.images.all().values('id', 'file_path'),
+            "images": [img for img in article.images.all().values('id', 'file_path')],
             "createdAt": article.created_at,
         }, status=201)
 
@@ -164,7 +165,7 @@ def article_info(request, aid):
                     "isForExchange": article.is_for_exchange,
                     "isForShare": article.is_for_share
                 },
-                "images": article.images.all().values('id', 'file_path'),
+                "images": [img for img in article.images.all().values('id', 'file_path')],
                 "createdAt": article.created_at,
             }
             article.delete()
