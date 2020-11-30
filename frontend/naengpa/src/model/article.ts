@@ -1,11 +1,11 @@
 /* ARTICLE INTERFACE */
 
-import { IngredientEntity } from "./ingredient";
+import { IngredientEntity } from './ingredient';
 
 export interface ArticleOptions {
-	isForSale: Boolean;
-	isForExchange: Boolean;
-	isForShare: Boolean;
+	isForSale: boolean;
+	isForExchange: boolean;
+	isForShare: boolean;
 }
 export interface CreateArticleEntity {
 	title: string;

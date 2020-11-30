@@ -19,8 +19,8 @@ const mockArticle: ArticleEntity = {
 	content: 'this is test',
 	item: {
 		id: 14,
-		name: "딸기",
-		category: "과일",
+		name: '딸기',
+		category: '과일',
 	},
 	price: 1000,
 	views: 77,
@@ -28,7 +28,7 @@ const mockArticle: ArticleEntity = {
 		isForSale: true,
 		isForExchange: false,
 		isForShare: false,
-	},	
+	},
 	createdAt: '2000.00.00',
 	images: [
 		{
@@ -50,8 +50,8 @@ const stubInitialState: { article: ArticleState } = {
 				content: 'this is test 2',
 				item: {
 					id: 14,
-					name: "딸기",
-					category: "과일",
+					name: '딸기',
+					category: '과일',
 				},
 				options: {
 					isForSale: true,
@@ -92,9 +92,9 @@ describe('ActionCreators', () => {
 				}),
 		);
 
-		await actionCreators.getArticleList()(mockStore.dispatch);
+		await actionCreators.getArticleList('query')(mockStore.dispatch);
 		expect(spy).toBeCalledTimes(1);
-		expect(spy).toBeCalledWith(`/api/articles/`);
+		expect(spy).toBeCalledWith('/api/articles/', { params: { q: 'query' } });
 
 		const actions = mockStore.getActions();
 		const expectedPayload = { type: actionTypes.GET_ARTICLE_LIST, payload: null };
@@ -119,7 +119,7 @@ describe('ActionCreators', () => {
 
 		const actions = mockStore.getActions();
 		const expectedPayload = { type: actionTypes.GET_ARTICLE, payload: null };
-		expect(actions).toEqual([expectedPayload]);
+		expect(actions[0]).toEqual(expectedPayload);
 	});
 
 	it('should return createArticle action correctly', async () => {
@@ -128,7 +128,7 @@ describe('ActionCreators', () => {
 				new Promise((resolve, reject) => {
 					const result = {
 						status: 200,
-						data: null,
+						data: { id: 1 },
 					};
 					resolve(result);
 				}),
@@ -139,7 +139,7 @@ describe('ActionCreators', () => {
 			content: 'test content',
 			item: 'test item',
 			price: '0',
-			options: {isForSale: true, isForExchange: false, isForShare: false},
+			options: { isForSale: true, isForExchange: false, isForShare: false },
 			images: [(testImage as unknown) as File],
 		};
 
@@ -147,8 +147,8 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.CREATE_ARTICLE, payload: null };
-		expect(actions).toEqual([expectedPayload]);
+		const expectedPayload = { type: actionTypes.CREATE_ARTICLE, payload: { id: 1 } };
+		expect(actions[0]).toEqual(expectedPayload);
 	});
 
 	it('should return editArticle action correctly', async () => {
@@ -168,7 +168,7 @@ describe('ActionCreators', () => {
 			content: 'test content',
 			item: 'test item',
 			price: '0',
-			options: {isForSale: true, isForExchange: false, isForShare: false},
+			options: { isForSale: true, isForExchange: false, isForShare: false },
 			images: [(testImage as unknown) as File],
 		};
 
