@@ -20,6 +20,7 @@
         "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
         "@typescript-eslint/camelcase": 0,
         "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/explicit-function-return-type": 0,
         "import/extensions": 0,
         "import/no-extraneous-dependencies": [2, {"devDependencies": true}],
         "no-param-reassign": [2, { "props": false }],
@@ -30,12 +31,6 @@
         "jsx-a11y/label-has-associated-control": 1
     },
     "overrides": [
-        {
-            "files": ["**/*.ts"],
-            "rules": {
-                "@typescript-eslint/explicit-function-return-type": 0
-            }
-        },
         {
             "files": ["**/*.test.tsx"],
             "rules": {

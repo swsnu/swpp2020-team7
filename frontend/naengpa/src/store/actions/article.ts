@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { push } from 'connected-react-router';
 import { Dispatch } from 'redux';
 import * as actionTypes from './actionTypes';
-import { ArticleEntity, CreateArticleEntity } from '../../model/article';
+import { ArticleEntity, ArticleOptions, CreateArticleEntity } from '../../model/article';
 
 /* CSRF TOKEN */
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -13,9 +14,16 @@ export const getArticleList_ = (articles: ArticleEntity[]) => ({
 	payload: articles,
 });
 
-export const getArticleList = () => {
+export const getArticleList = (query?: string, options?: ArticleOptions) => {
 	return async (dispatch: Dispatch<any>) => {
-		const response = await axios.get(`/api/articles/`);
+		const response = await axios.get('/api/articles/', {
+			params: {
+				q: query,
+				fs: options?.isForSale,
+				fe: options?.isForExchange,
+				fh: options?.isForShare,
+			},
+		});
 
 		dispatch(getArticleList_(response.data));
 	};
@@ -43,19 +51,14 @@ export const createArticle_ = (article: ArticleEntity) => ({
 
 export const createArticle = (article: CreateArticleEntity) => {
 	return async (dispatch: Dispatch<any>) => {
-		const bodyFormData = new FormData();
-		bodyFormData.append('article', JSON.stringify(article));
-		article.images.forEach((image) => bodyFormData.append('image', image));
+		const form = new FormData();
+		form.append('article', JSON.stringify(article));
+		article.images.forEach((image) => form.append('image', image));
 
-		const response = await axios.post('/api/articles/', {
-			data: bodyFormData,
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'multipart/form-data',
-			},
-		});
+		const response = await axios.post('/api/articles/', form);
 
 		dispatch(createArticle_(response.data));
+		dispatch(push(`/articles/${response.data.id}`));
 	};
 };
 

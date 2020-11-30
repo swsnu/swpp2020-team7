@@ -40,6 +40,7 @@ const getIngredientListMocked = () => {
 		ingredientList[category] = rawData[category].sort().map((item, index) => ({
 			id: categoryIndex * 20 + index,
 			name: item,
+			category,
 		}));
 	});
 	return ingredientList;
