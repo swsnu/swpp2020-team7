@@ -27,7 +27,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppState } from '../../store/store';
 import Loading from '../../components/Loading/Loading';
 import './ExtractMLFeature.scss';
-import { CreateRecipeEntity, RecipeEntity, RecipeIngredient } from '../../model/recipe';
+import { BaseRecipeEntity, RecipeEntity, RecipeIngredient } from '../../model/recipe';
 import {
 	createRecipe,
 	getFoodCategoryList,
@@ -46,7 +46,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const [loading, setLoading] = useState(false);
 	const [foodName, setFoodName] = useState('');
 	const [recipeContent, setRecipeContent] = useState('');
-	const [foodImages, setFoodImages] = useState<File[]>([]);
+	const [foodImageFiles, setFoodImageFiles] = useState<File[]>([]);
 	const [cookTime, setCookTime] = useState('');
 	const [foodCategory, setFoodCategory] = useState('');
 	const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
@@ -72,7 +72,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		setFoodName(createdRecipe?.foodName as string);
 		setRecipeContent(createdRecipe?.recipeContent as string);
 		setCookTime(createdRecipe?.cookTime as string);
-		setFoodImages(createdRecipe?.foodImages as File[]);
+		setFoodImageFiles(createdRecipe?.foodImageFiles as File[]);
 		setFoodCategory(createdRecipe?.foodCategory as string);
 		setModifiedCategory(createdRecipe?.foodCategory as string);
 		const checkedIngredients = createdRecipe?.ingredients?.map((item) => {
@@ -86,12 +86,12 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
 		const image: File = (target.files as FileList)[0];
-		return setFoodImages([...foodImages, image]);
+		return setFoodImageFiles([...foodImageFiles, image]);
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
 	const onClickDeleteImage = (target_id: number) => {
-		return setFoodImages(foodImages.filter((item, idx) => idx !== target_id));
+		return setFoodImageFiles(foodImageFiles.filter((item, idx) => idx !== target_id));
 	};
 
 	// TODO: need to be modified for checking the lost of date!
@@ -104,9 +104,9 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	};
 
 	// need to be directed to recipe detail page, current => recipelist
-	const onClickRegisterRecipe = async () => {
+	const onClickRegisterRecipe = () => {
 		if (
-			foodImages === [] ||
+			foodImageFiles === [] ||
 			cookTime === '' ||
 			recipeContent === '' ||
 			ingredients === [] ||
@@ -125,7 +125,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				foodName,
 				cookTime,
 				recipeContent,
-				foodImages,
+				foodImageFiles,
 				recipeLike: 0,
 				foodCategory,
 				ingredients: newIngredientList,
@@ -136,17 +136,17 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	};
 
 	const onClickExtractMLFeatureAgain = () => {
-		if (foodImages === [] || foodName === '' || cookTime === '' || recipeContent === '') {
+		if (foodImageFiles === [] || foodName === '' || cookTime === '' || recipeContent === '') {
 			setAlert(true);
 			setAlertContent(
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
-			const newRecipe: CreateRecipeEntity = {
+			const newRecipe: BaseRecipeEntity = {
 				foodName,
 				cookTime,
 				recipeContent,
-				foodImages,
+				foodImageFiles,
 			};
 			setLoading(true);
 			dispatch(extractMLFeatureFromRecipe(newRecipe));
@@ -155,9 +155,9 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		}
 	};
 
-	const imageList = !foodImages?.length
+	const imageList = !foodImageFiles?.length
 		? []
-		: foodImages?.map((item, idx) => {
+		: foodImageFiles?.map((item, idx) => {
 				return (
 					<div key={`${idx} ` as string} id="delete-image-icon-box">
 						{!alert && (

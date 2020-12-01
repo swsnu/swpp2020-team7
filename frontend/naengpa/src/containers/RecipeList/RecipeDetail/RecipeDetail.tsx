@@ -26,7 +26,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const [page, setPage] = useState(1);
 	const [currentList, setCurrentList] = useState<RecipeImage[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
-	const images = recipe.foodImages as RecipeImage[];
+	const images = recipe.foodImagePaths as RecipeImage[];
 	const ingredients = ['밥', '소고기', '김치', '시금치'];
 	const recipe_id = recipe.id as number;
 

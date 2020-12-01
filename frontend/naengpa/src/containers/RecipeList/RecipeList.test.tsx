@@ -28,7 +28,7 @@ const stubInitialState = {
 				foodName: '딸기',
 				cookTime: '60',
 				recipeContent: '레시피',
-				foodImages: [
+				foodImagePaths: [
 					{
 						id: 2,
 						recipe_id: 1,
@@ -47,7 +47,7 @@ const stubInitialState = {
 				foodName: '딸기',
 				cookTime: '60',
 				recipeContent: '레시피',
-				foodImages: [
+				foodImagePaths: [
 					{
 						id: 2,
 						recipe_id: 2,

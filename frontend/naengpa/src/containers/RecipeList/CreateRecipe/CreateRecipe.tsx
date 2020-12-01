@@ -23,7 +23,7 @@ import {
 import './CreateRecipe.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import Loading from '../../../components/Loading/Loading';
-import { CreateRecipeEntity } from '../../../model/recipe';
+import { BaseRecipeEntity } from '../../../model/recipe';
 import { extractMLFeatureFromRecipe } from '../../../store/actions/index';
 
 interface CreateRecipeProps {
@@ -33,7 +33,7 @@ interface CreateRecipeProps {
 const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const [foodName, setFoodName] = useState('');
 	const [recipeContent, setRecipeContent] = useState('');
-	const [foodImages, setFoodImages] = useState<File[]>([]);
+	const [foodImageFiles, setFoodImageFiles] = useState<File[]>([]);
 	const [cookTime, setCookTime] = useState('');
 
 	// alert state is true if alert is necessary, otherwise false.
@@ -49,12 +49,12 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
 		const image: File = (target.files as FileList)[0];
-		setFoodImages([...foodImages, image]);
+		setFoodImageFiles([...foodImageFiles, image]);
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
 	const onClickDeleteImage = (target_id: number) => {
-		setFoodImages(foodImages.filter((item, i) => i !== target_id));
+		setFoodImageFiles(foodImageFiles.filter((item, i) => i !== target_id));
 	};
 
 	// TODO: need to alert that the content could be lost
@@ -65,17 +65,17 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	/* CLICK EVENT - redirect to extract-ml-feature page */
 	const onClickExtractMLFeature = () => {
 		// if one of the input field is empty, then the alert modal shows itself
-		if (foodImages === [] || foodName === '' || cookTime === '' || recipeContent === '') {
+		if (foodImageFiles === [] || foodName === '' || cookTime === '' || recipeContent === '') {
 			setAlert(true);
 			setAlertContent(
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
-			const newRecipe: CreateRecipeEntity = {
+			const newRecipe: BaseRecipeEntity = {
 				foodName,
 				cookTime,
 				recipeContent,
-				foodImages,
+				foodImageFiles,
 			};
 
 			setLoading(true);
@@ -85,9 +85,9 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		}
 	};
 
-	const image_list = !foodImages.length
+	const image_list = !foodImageFiles.length
 		? []
-		: foodImages.map((item, idx) => {
+		: foodImageFiles.map((item, idx) => {
 				return (
 					<div key={`#${item}`} id="delete-image-icon-box">
 						{!alert && (

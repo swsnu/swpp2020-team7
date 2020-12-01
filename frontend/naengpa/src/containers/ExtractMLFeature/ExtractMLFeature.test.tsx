@@ -26,6 +26,10 @@ jest.mock('@material-ui/icons/LocalDining', () =>
 	jest.fn((props) => <div {...props} className="spyLocalDiningIcon" />),
 );
 
+const useStateSpy = jest.spyOn(React, 'useState');
+const setStateSpy: Dispatch<unknown> = jest.fn();
+useStateSpy.mockImplementation((init: unknown) => [init, setStateSpy]);
+
 const middleware = [thunk];
 const store = configureStore(middleware);
 
@@ -45,7 +49,7 @@ const stubInitialState = {
 			foodName: '딸기',
 			cookTime: '60',
 			recipeContent: '레시피',
-			foodImages: [(image as unknown) as File],
+			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 0,
 			foodCategory: '밥류',
 			ingredients: [
@@ -67,7 +71,7 @@ const stubInitialState2 = {
 			foodName: '딸기',
 			cookTime: '60',
 			recipeContent: '레시피',
-			foodImages: [(image as unknown) as File],
+			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 0,
 			foodCategory: '밥류',
 			ingredients: [],
