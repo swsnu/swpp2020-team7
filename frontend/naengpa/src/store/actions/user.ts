@@ -12,6 +12,20 @@ import {
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+/* SAVE TEMP USER */
+export const saveUserInfo_ = (user: UserSignupInputDTO) => ({
+	type: actionTypes.SAVE_USER_INFO,
+	user,
+});
+
+export const saveUserInfo = (user: UserSignupInputDTO) => {
+	return async (dispatch: any) => {
+		const temporaryUser: UserSignupInputDTO = user;
+		dispatch(push('/regional-setting'));
+		dispatch(saveUserInfo_(temporaryUser));
+	};
+};
+
 /* SIGNUP */
 export const signup_ = (user: UserEntity) => ({ type: actionTypes.SIGNUP, user });
 
@@ -19,9 +33,8 @@ export const signup = (user: UserSignupInputDTO) => {
 	return async (dispatch: any) => {
 		const response = await axios.post('/api/signup/', user);
 		const currentUser: UserEntity = response.data;
-
+		dispatch(push('/regional-setting'));
 		dispatch(signup_(currentUser));
-		dispatch(push('/fridge'));
 	};
 };
 

@@ -12,7 +12,7 @@ jest.mock('react-redux', () => ({
 
 describe('Signup', () => {
 	let signup: any;
-	let spySignupAction: any;
+	let spySaveUserInfoAction: any;
 	let spyHistoryPush: any;
 	let spyAlert: any;
 	const mockUser: UserSignupInputDTO = {
@@ -25,8 +25,8 @@ describe('Signup', () => {
 
 	beforeEach(() => {
 		signup = <Signup history={history} />;
-		spySignupAction = jest
-			.spyOn(userActionCreators, 'signup')
+		spySaveUserInfoAction = jest
+			.spyOn(userActionCreators, 'saveUserInfo')
 			.mockImplementation(() => jest.fn());
 		spyAlert = jest.spyOn(window, 'alert').mockImplementation(jest.fn());
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
@@ -60,11 +60,11 @@ describe('Signup', () => {
 
 		const signupButton = component.find('button#signup-button');
 		signupButton.simulate('click');
-		expect(spySignupAction).toBeCalledTimes(1);
-		expect(spySignupAction).toBeCalledWith(mockUser);
+		expect(spySaveUserInfoAction).toBeCalledTimes(1);
+		expect(spySaveUserInfoAction).toBeCalledWith(mockUser);
 	});
 
-	it('Signup should not dispatch signup with insufficient inputs', () => {
+	it('Signup should not dispatch save User Info with insufficient inputs', () => {
 		const component = mount(signup);
 		const inputList = component.find('div#input-list').find('input');
 		const signupButton = component.find('button#signup-button');
@@ -78,13 +78,13 @@ describe('Signup', () => {
 		inputList.find('#email').simulate('change', { target: { value: 'wrongEmail' } });
 		expect(component.find('p#invalidEmail').length).toBe(1); // email
 		signupButton.simulate('click');
-		expect(spySignupAction).toBeCalledTimes(0);
+		expect(spySaveUserInfoAction).toBeCalledTimes(0);
 		expect(spyAlert).toBeCalledTimes(1);
 		expect(spyAlert).toBeCalledWith('fill in the blink');
 
 		inputList.find('#name').simulate('change', { target: { value: '4566' } });
 		signupButton.simulate('click');
-		expect(spySignupAction).toBeCalledTimes(0);
+		expect(spySaveUserInfoAction).toBeCalledTimes(0);
 
 		inputList.find('#name').simulate('change', { target: { value: 'testname' } });
 		inputList.find('#password').simulate('change', { target: { value: mockUser.password } }); // password
@@ -92,7 +92,7 @@ describe('Signup', () => {
 			.find('#password-confirm')
 			.simulate('change', { target: { value: 'wrongPassword' } }); // password-confirm
 		signupButton.simulate('click');
-		expect(spySignupAction).toBeCalledTimes(0);
+		expect(spySaveUserInfoAction).toBeCalledTimes(0);
 		expect(spyAlert).toBeCalledTimes(3);
 		expect(spyAlert).toBeCalledWith('Do not match password');
 	});

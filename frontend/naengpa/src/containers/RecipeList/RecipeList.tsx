@@ -31,7 +31,6 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const dispatch = useDispatch();
 
 	const onClickSearch = (e: React.KeyboardEvent) => {
-		console.log(e.key);
 		if (e.key === 'Enter') {
 			dispatch(getRecipeList(query));
 			setMaxPageIndex(Math.ceil(recipe_list.length / 9.0));
