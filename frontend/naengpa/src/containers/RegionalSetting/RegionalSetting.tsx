@@ -1,131 +1,188 @@
 import React, { useState, useEffect } from 'react';
 import { History } from 'history';
 
-import LocalDiningIcon from '@material-ui/icons/LocalDining';
-// import { signup } from '../../../store/actions/index';
 import './RegionalSetting.scss';
-import { InputBase, withStyles } from '@material-ui/core';
+import { withStyles, Collapse, Button, Slider } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import Slider from '@material-ui/core/Slider';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Alert from '@material-ui/lab/Alert';
+
+import CancelIcon from '@material-ui/icons/Cancel';
+import LocalDiningIcon from '@material-ui/icons/LocalDining';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { RegionEntity, UserSignupInputDTO } from '../../model/user';
+import { signup, getRegionList } from '../../store/actions/index';
+import { AppState } from '../../store/store';
 
 interface RegionalSettingProps {
 	history: History;
 }
 
+/* KAKO MAP API */
 declare global {
 	interface Window {
 		kakao: any;
 	}
 }
 
+/* Slider bar styling for range setting */
 const PrettoSlider = withStyles({
 	root: {
-		color: '#52af77',
-		height: 8,
+		color: '#90ff88',
+		height: 20,
 	},
 	thumb: {
 		height: 24,
 		width: 24,
-		backgroundColor: '#fff',
-		border: '2px solid currentColor',
-		marginTop: -8,
-		marginLeft: -12,
+		color: '#ff8a3d',
+		border: '2px solid #90ff88',
+		backgroundColor: 'white',
+		marginTop: -3,
+		marginRight: -10,
 		'&:focus, &:hover, &$active': {
 			boxShadow: 'inherit',
 		},
 	},
-	active: {},
+
 	valueLabel: {
 		left: 'calc(-50% + 4px)',
+		color: '#ff8a3d',
 	},
 	track: {
-		height: 8,
-		borderRadius: 4,
+		height: 18,
+		borderRadius: 10,
+		padding: -3,
+		marginLeft: 7,
+		marginRight: 7,
 	},
 	rail: {
-		height: 8,
-		borderRadius: 4,
+		marginTop: -6,
+		height: 30,
+		color: '#e0e0e0',
+		borderRadius: 10,
+	},
+	marks: {
+		margionTop: 10,
+		margionRight: 5,
 	},
 })(Slider);
 
+const theme = createMuiTheme({
+	overrides: {
+		MuiInput: {
+			underline: {
+				'&:after': {
+					borderBottom: 'none',
+				},
+				'&:focus': {
+					borderBottom: 'none',
+				},
+				'&:before': {
+					borderBottom: 'none',
+				},
+			},
+		},
+	},
+});
+
 const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
-	const [query, setQuery] = useState('');
+	const dispatch = useDispatch();
+	const regionList: RegionEntity[] = useSelector((state: AppState) => state.region.regionList);
+	const userInfo: UserSignupInputDTO | null = useSelector(
+		(state: AppState) => state.user.saved_user,
+	);
+	const [selectedRegion, setSelectedRegion] = useState<RegionEntity | null>(null);
+
+	/* Alert Modal state */
+	const [alert, setAlert] = useState(false);
+	const alertContent = '지역을 입력해 주세요!!!';
+
+	/* Region Information for latitude, longitude and level */
 	const [latitude, setLatitude] = useState(33.450701);
 	const [longitude, setLongitude] = useState(126.570667);
-	// const [regionInfo1, setRegionInfo1] = useState('');
-	// const [regionInfo2, setRegionInfo2] = useState('');
+	const [level, setLevel] = useState(3);
 
-	const onClickSearch = () => {
-		const mapContainer = document.getElementById('map');
-		const mapOption = {
-			center: new window.kakao.maps.LatLng(latitude, longitude),
-			level: 3,
-		};
+	/* CLICK EVENT - user clicks specific region from region list */
+	const onChangeSpecificRegion = (e: React.ChangeEvent<{}>, region: RegionEntity | null) => {
+		e.preventDefault();
+		setSelectedRegion(region);
 
-		const map = new window.kakao.maps.Map(mapContainer, mapOption);
-		const ps = new window.kakao.maps.services.Places();
-
-		const placesSearchCB = (data: any, status: any, pagination: any) => {
-			if (status === window.kakao.maps.services.Status.OK) {
-				const bounds = new window.kakao.maps.LatLngBounds();
-				data.forEach((item: any, i: any) => {
-					const bound = new window.kakao.maps.LatLng(item.y, item.x);
-					bounds.extend(bound);
-				});
-				map.setBounds(bounds);
-				const latlng = map.getCenter();
-				displayMarker(latlng);
-			}
-		};
-
-		ps.keywordSearch(query, placesSearchCB);
-		function displayMarker(place: any) {
-			const markerPosition = new window.kakao.maps.LatLng(place.getLat(), place.getLng());
-			const marker = new window.kakao.maps.Marker({
-				map,
-				position: markerPosition,
-			});
-			marker.setMap(map);
+		if (selectedRegion) {
+			const mapContainer = document.getElementById('map');
+			const mapOption = {
+				center: new window.kakao.maps.LatLng(
+					selectedRegion?.location.latitude,
+					selectedRegion?.location.longitude,
+				),
+				level,
+			};
+			const map = new window.kakao.maps.Map(mapContainer, mapOption);
 		}
 	};
 
-	const onClickConfirmRegion = () => {
-		// setRegionInfo1('봉천동');
+	/* CLICK EVENT - user signup completed */
+	const onClickConfirmRegion = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.preventDefault();
+		if (selectedRegion) {
+			dispatch(
+				signup({ ...userInfo, region: { ...selectedRegion, distance: level.toString() } }),
+			);
+		} else {
+			setAlert(true);
+		}
 	};
 
-	const marks = [
-		{
-			value: 1,
-			label: '좁음',
-		},
-		{
-			value: 3,
-			label: '중간',
-		},
-		{
-			value: 5,
-			label: '넓음',
-		},
-	];
-
 	useEffect(() => {
+		dispatch(getRegionList());
 		const container = document.getElementById('map');
 		const options = {
 			center: new window.kakao.maps.LatLng(latitude, longitude),
-			level: 3,
+			level,
 		};
-		let map = new window.kakao.maps.Map(container, options);
-		const mapContainer = document.getElementById('map');
-		const mapOption = {
-			center: new window.kakao.maps.LatLng(latitude, longitude),
-			level: 3,
-		};
-
-		map = new window.kakao.maps.Map(mapContainer, mapOption);
+		const map = new window.kakao.maps.Map(container, options);
 	}, []);
+
+	const defaultRegions = {
+		options: regionList,
+		getOptionLabel: (option: RegionEntity) => option.name,
+	};
+
+	const alertModal = (
+		<Collapse className="collapse" in={alert}>
+			<Alert id="alert-modal" icon={false}>
+				<div id="naengpa-logo-box">
+					<div id="naengpa-logo">
+						<LocalDiningIcon id="naengpa-logo-image" />
+						냉파
+					</div>
+					<CancelIcon
+						id="close-alert-button"
+						onClick={() => {
+							setAlert(false);
+						}}
+					/>
+				</div>
+				<div id="alert-content">{alertContent}</div>
+				<div id="confirm-alert-button-box">
+					<Button
+						id="confirm-alert-button"
+						onClick={() => {
+							setAlert(false);
+						}}
+					>
+						확인
+					</Button>
+				</div>
+			</Alert>
+		</Collapse>
+	);
 
 	return (
 		<div id="regional-setting">
+			{/* {alertModal} */}
 			<button id="naengpa" type="button" onClick={() => history.push('/fridge')}>
 				<LocalDiningIcon id="naengpa-logo" />
 				<div id="naengpa-logo-name">냉파</div>
@@ -135,13 +192,21 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 					<div id="region-part-header">지역 설정을 해보세요!</div>
 					<div id="region-part-subheader">설정한 지역의 거래만 볼 수 있어요!</div>
 					<div id="region-search-input-box">
-						<InputBase
-							id="region-search-input"
-							placeholder="동을 입력해주세요(봉천동)"
-							inputProps={{ 'aria-label': 'search' }}
-							onChange={(e) => setQuery(e.target.value)}
-							onKeyDown={onClickSearch}
-						/>
+						<MuiThemeProvider theme={theme}>
+							<Autocomplete
+								{...defaultRegions}
+								id="region-search-input"
+								onChange={(event, value) => onChangeSpecificRegion(event, value)}
+								renderInput={(params) => (
+									<TextField
+										required
+										placeholder="동을 입력해주세요(봉천동)"
+										{...params}
+										margin="normal"
+									/>
+								)}
+							/>
+						</MuiThemeProvider>
 						<SearchIcon id="region-search-icon" />
 					</div>
 					<div id="region-map">
@@ -152,14 +217,26 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 							defaultValue={3}
 							aria-label="pretto slider"
 							valueLabelDisplay="auto"
-							marks={marks}
+							min={1}
+							max={5}
+							onChange={(e, value) => setLevel(value as number)}
 							id="slider-bar"
 						/>
+						<div id="region-level-mark">
+							<div>좁음(1 km)</div> <div>넓음(5 km)</div>
+						</div>
 					</div>
 				</div>
-				<button id="confirm-button" type="submit" onClick={onClickConfirmRegion}>
-					CONFIRM
-				</button>
+				<div id="alert-bottom">
+					{alert && <div id="alert-comment">지역을 설정을 완료해 주세요!!!</div>}
+					<button
+						id="confirm-button"
+						type="submit"
+						onClick={(e) => onClickConfirmRegion(e)}
+					>
+						CONFIRM
+					</button>
+				</div>
 			</div>
 		</div>
 	);
