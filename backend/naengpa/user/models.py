@@ -41,6 +41,7 @@ class User(AbstractUser):
     date_of_birth = models.CharField(max_length=30)
     naengpa_score = models.IntegerField(default=0)
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
+    region_range = models.IntegerField(default=0)
 
     def __str__(self):
         return f'[{self.id}] {self.name}'

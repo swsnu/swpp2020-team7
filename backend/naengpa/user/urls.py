@@ -13,4 +13,5 @@ urlpatterns = [
     path('users/<uuid:id>/fridge/', views.user_fridge, name='user_fridge'),
     path('users/<uuid:user_id>/ingredients/<int:id>/',
          views.user_ingredient, name='user_ingredient'),
+    path('users/regions/', views.get_region_info, name="get_region_info"),
 ]

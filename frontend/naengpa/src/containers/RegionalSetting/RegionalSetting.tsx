@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import { History } from 'history';
 
@@ -64,10 +65,6 @@ const PrettoSlider = withStyles({
 		color: '#e0e0e0',
 		borderRadius: 10,
 	},
-	marks: {
-		margionTop: 10,
-		margionRight: 5,
-	},
 })(Slider);
 
 const theme = createMuiTheme({
@@ -101,49 +98,48 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 	const alertContent = '지역을 입력해 주세요!!!';
 
 	/* Region Information for latitude, longitude and level */
-	const [latitude, setLatitude] = useState(33.450701);
-	const [longitude, setLongitude] = useState(126.570667);
-	const [level, setLevel] = useState(3);
+	const [latitude, setLatitude] = useState(37.47632914533942);
+	const [longitude, setLongitude] = useState(126.95840521502);
+	const [level, setLevel] = useState(6);
 
 	/* CLICK EVENT - user clicks specific region from region list */
 	const onChangeSpecificRegion = (e: React.ChangeEvent<{}>, region: RegionEntity | null) => {
 		e.preventDefault();
-		setSelectedRegion(region);
 
-		if (selectedRegion) {
-			const mapContainer = document.getElementById('map');
-			const mapOption = {
-				center: new window.kakao.maps.LatLng(
-					selectedRegion?.location.latitude,
-					selectedRegion?.location.longitude,
-				),
-				level,
-			};
-			const map = new window.kakao.maps.Map(mapContainer, mapOption);
+		if (region) {
+			setLatitude((region.location.latitude as unknown) as number);
+			setLongitude((region.location.longitude as unknown) as number);
 		}
+		setSelectedRegion(region);
 	};
 
 	/* CLICK EVENT - user signup completed */
 	const onClickConfirmRegion = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 		if (selectedRegion) {
-			dispatch(
-				signup({ ...userInfo, region: { ...selectedRegion, distance: level.toString() } }),
-			);
+			dispatch(signup({ ...userInfo, region: selectedRegion, regionRange: level - 3 }));
 		} else {
 			setAlert(true);
 		}
 	};
 
 	useEffect(() => {
-		dispatch(getRegionList());
+		if (!regionList.length) dispatch(getRegionList());
 		const container = document.getElementById('map');
 		const options = {
 			center: new window.kakao.maps.LatLng(latitude, longitude),
+			minLevel: 4,
+			maxLevel: 8,
 			level,
 		};
 		const map = new window.kakao.maps.Map(container, options);
-	}, []);
+		const markerPosition = new window.kakao.maps.LatLng(latitude, longitude);
+		const marker = new window.kakao.maps.Marker({
+			position: markerPosition,
+		});
+
+		marker.setMap(map);
+	}, [latitude, longitude, level]);
 
 	const defaultRegions = {
 		options: regionList,
@@ -200,7 +196,7 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 								renderInput={(params) => (
 									<TextField
 										required
-										placeholder="동을 입력해주세요(봉천동)"
+										placeholder="동을 입력해주세요(낙성대동)"
 										{...params}
 										margin="normal"
 									/>
@@ -219,7 +215,7 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 							valueLabelDisplay="auto"
 							min={1}
 							max={5}
-							onChange={(e, value) => setLevel(value as number)}
+							onChange={(e, value) => setLevel((value as number) + 3)}
 							id="slider-bar"
 						/>
 						<div id="region-level-mark">
