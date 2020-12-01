@@ -18,7 +18,7 @@ export const getRegionList = () => {
 			dispatch(getRegionList_(regionList));
 		} catch (e) {
 			console.log('Error detected, while getting REGION DATA', e);
-			alert("잘못된 입력입니다! 지역 설정을 다시 해주세요!");
+			alert('잘못된 입력입니다! 지역 설정을 다시 해주세요!');
 		}
 	};
 };
