@@ -25,6 +25,8 @@ def extract_foodcategory(request, food_images):
     # print(resp.json()['foodFamily'])  # display groups only
     response = resp.text.split('"')
     print(response[7])
+    # food_category_result = {'meat': '고기류',
+    #                        'dessert': '디저트류', 'dairy': '유제품류', 'seafood': '해물류', 'rice': '밥류', 'fruit': '과일류', 'noodles/pasta': '면류', 'vegetables': '채소류', 'fish': '생선류', 'bread': '빵류', 'fried': '튀김류', 'egg': '계란/알류', 'soup': '수프/국/찌개류', '': '기타'}
     if response[7] == 'meat':
         return "육류"
     elif response[7] == 'dessert':
@@ -48,11 +50,12 @@ def extract_foodcategory(request, food_images):
     elif response[7] == 'fried':
         return "튀김류"
     elif response[7] == 'egg':
-        return "알류"
+        return "계란/알류"
     elif response[7] == 'soup':
         return "수프/국/찌개류"
     else:
         return "기타"
+    # return food_category_result[response[7]]
 
 
 def extract_ingredients(request, recipe_info):
