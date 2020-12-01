@@ -28,8 +28,8 @@ jobs:
         - cd ../..
       script:
         - cd frontend/naengpa
-        - yarn lint src/**/*.{ts,tsx}
-        - yarn test --coverage --watchAll=false
+        - yarn lint
+        - yarn test
         - cd ../..
         - cd backend/naengpa
         - pylint **/*.py --load-plugins pylint_django
@@ -53,8 +53,8 @@ jobs:
       install:
         - yarn
       script:
-        - yarn lint src/**/*.{ts,tsx}
-        - yarn test --coverage --watchAll=false
+        - yarn lint
+        - yarn test
 
     - language: python
       dist: bionic
@@ -72,28 +72,3 @@ jobs:
         - pylint **/*.py --load-plugins pylint_django
         - coverage run --source='.' manage.py test
         - coverage report -m
-
-install:
-  - sudo add-apt-repository -y ppa:ubuntugis/ppa && sudo apt update
-  - sudo apt update && sudo apt -y install gdal-bin
-  - cd $FRONTEND && npm install yarn && yarn && yarn add coveralls
-  - cd ../../$BACKEND && pip3 install -r requirements.txt
-  - gem install coveralls-lcov
-
-script:
-  - echo "[Frontend scripts]"
-  - cd ../../$FRONTEND && yarn lint
-  - yarn test
-  - coveralls-lcov -v -n coverage/lcov.info > coverage/coverage.json
-
-  - echo "[Backend scripts]"
-  - cd ../../$BACKEND && pylint **/*.py
-  - coverage run --branch --source='.' manage.py test && coverage report -m
-  - coverage xml
-
-  - echo "[Sonar scanner]"
-  - cd ../.. && sonar-scanner
-
-after_success:
-  - cd $BACKEND
-  - coveralls --merge=../../$FRONTEND/coverage/coverage.json

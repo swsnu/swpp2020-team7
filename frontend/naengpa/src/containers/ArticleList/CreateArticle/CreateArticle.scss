@@ -1,0 +1,269 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+#container {
+  margin: 0% 10% 10% 15%;
+  width: 70%;
+  height: 80%;
+  border: solid 1px #dcdcdc;
+  align-items: center;
+
+  #title-input {
+    font-size: 120%;
+  }
+  #item-input {
+    font-size: 120%;
+  }
+  #price-input {
+    font-size: 120%;
+  }
+  #ingredient-name {
+    font-size: 120%;
+  }
+  #hash-tag {
+    font-size: 120%;
+  }
+}
+
+#create-article-options {
+  width: 35%;
+  position: relative; 
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: flex-end;
+  align-items: center;
+  align-self: stretch;
+  margin-right: 1%;
+
+  button {
+    width: 50%;
+    height: 75%;
+    margin: {
+      left: 5%;
+    }
+    padding: 0;
+    border-radius: 11px;
+    border: solid 1px #f7f7f7;
+    background-color: #f7f7f7;
+    
+    font-family: 'Jua', sans-serif;
+    font-size: 100%;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #696464;
+  }
+    
+  button.selected {
+    color: #ffffff;
+    background-color: #ff8a3d;
+  }
+}
+
+#create-article-alert {
+  position: absolute;
+  z-index: 1;
+  padding: 2%;
+  text-align: center;
+  left: 50%; 
+  transform: translateX(-50%); 
+  margin-top:20%;
+  background-color: #ffffff;
+  border: solid 1px #707070; 
+
+  #naengpa-logo-box {
+    display: flex;
+    margin-bottom: 10%;
+    justify-content: space-between;
+    font-family: 'Jua', sans-serif;
+
+    #naengpa-logo {
+      display: flex;
+      align-items: center;
+      letter-spacing: 5.2px;
+      font-size: 200%;
+      background-color: transparent;
+      color: #ff8a3d;
+
+      #naengpa-logo-image {
+        font: {
+          size: 110%;
+          weight: bold;
+        }
+      }
+    }
+    #close-alert-button {
+      color:#ff6767;
+    }
+   }
+
+   #alert-content {
+    font: {
+      family: HelveticaNeue;
+      size: 120%;
+      weight: normal;
+      stretch: normal;
+      style: normal;
+    }
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: left;
+    color: #707070;
+  }
+
+   #confirm-alert-button-box {
+    display: flex;
+    justify-content: flex-end;
+    margin-top:15%;
+    #confirm-alert-button {
+      font: {
+        size: 90%;
+        weight: bold;
+        stretch: normal;
+        style: normal;
+      }
+      letter-spacing: normal;
+      text-align: left;
+      color: #ff8a3d;
+      border-radius: 25px;
+      border: solid 1px #ffa43c;
+      background-color: #ffffff;
+      right:0;
+    }
+  }
+}
+
+#create-article-mention {
+  font: {
+    size: 20px;
+    weight: bold;
+    stretch: normal;
+    style: normal;
+  }
+  line-height: 3.69;
+  letter-spacing: normal;
+  color: #ff8a3d;
+  display: flex;
+  justify-content: center;
+  margin-top: 5%;
+}
+
+#container-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+#back-to-article-list {
+  font-size: 120%;
+  border: solid 1px #707070;
+  border-radius: 25px;
+  background-color: #ffffff;
+}
+
+#create-article-title {
+  font: {
+    weight: bold;
+    style: normal;
+    size: 25px;
+  }
+  margin-top: 10px;
+  letter-spacing: normal;
+  text-align: left;
+  color: #696464;
+}
+
+#create-article-button {
+  font: {
+    size: 120%;
+    weight: bold;
+    stretch: normal;
+    style: normal;
+  }
+  letter-spacing: normal;
+  text-align: left;
+  color: #ff8a3d;
+  border-radius: 25px;
+  border: solid 1px #ffa43c;
+  background-color: #ffffff;
+}
+
+#image-box1 {
+  display: flex;
+  right: 0;
+  flex-direction: column;
+}
+
+#add-image-icon-box {
+  background-color: #dcdcdc;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  float: left;
+}
+
+#food-image {
+  display:none;
+}
+
+#add-image-button {
+  position: absolute;
+  color: #69e88e;
+  top: 0;
+  right: 0;
+
+  margin-top: -11px;
+  margin-right: -11px;
+  border-radius: 25px;
+  background-color: #ffffff;
+}
+
+#add-image-icon {
+  font-size: 45px;
+  color: #ffffff;
+}
+
+
+#delete-image-icon-box {
+  background-color: #dcdcdc;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  float: left;
+  margin-right: 13px;
+}
+
+#delete-image-button {
+  position: absolute;
+  color:#ff6767;
+  top: 0;
+  right: 0;
+
+  margin: {
+    top: -11px;
+    right: -11px;
+  }
+  border-radius: 20px;
+  background-color: #ffffff;
+}
+
+#delete-image-icon {
+  font-size: 45px;
+  color: #ffffff;
+}
+
+#article-row-box {
+  display:flex;
+  flex-direction: row;
+}
+
+#article-content {
+  font-size: 18px;
+}

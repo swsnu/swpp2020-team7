@@ -15,6 +15,9 @@ class Article(models.Model):
     item = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     price = models.PositiveIntegerField(default=0)
     views = models.PositiveIntegerField(default=0)
+    is_for_sale = models.BooleanField(default=False)
+    is_for_exchange = models.BooleanField(default=False)
+    is_for_share = models.BooleanField(default=False)
     done = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(default=timezone.now, db_index=True)

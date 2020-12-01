@@ -76,6 +76,7 @@ def signin(request):
                 'email': user.email,
                 'name': user.name,
                 'dateOfBirth': user.date_of_birth,
+                'region': user.region.name,
                 'naengpa_score': user.naengpa_score
             }, status=200)
         else:
@@ -99,13 +100,14 @@ def user(request, id):
     """user"""
     # GET USER
     if request.method == 'GET':
-        user = User.objects.get(id=id)
+        user = User.objects.select_related('region').get(id=id)
         current_user = {
             "id": user.id,
             "username": user.username,
             "name": user.name,
             "email": user.email,
             "dateOfBirth": user.date_of_birth,
+            "region": user.region.name,
         }
         return JsonResponse(data=current_user, safe=False)
     elif request.method == 'PUT':
@@ -134,6 +136,7 @@ def user(request, id):
             'email': request.user.email,
             'name': request.user.name,
             'dateOfBirth': request.user.date_of_birth,
+            'region': user.region.name,
             'naengpa_score': request.user.naengpa_score
         }, status=201)
     return HttpResponseNotAllowed(['GET', 'PUT'])
@@ -150,8 +153,9 @@ def user_list(request):
             "name": user.name,
             "email": user.email,
             "dateOfBirth": user.date_of_birth,
+            'region': user.region.name,
             "naengpa_score": user.naengpa_score
-        } for user in User.objects.all()] if User.objects.count() != 0 else []
+        } for user in User.objects.select_related('region').all()] if User.objects.count() != 0 else []
         return JsonResponse(user_collection, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
