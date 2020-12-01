@@ -17,7 +17,7 @@ const Profile: React.FC<ProfileProps> = ({ profile }) => {
 				subheader={
 					<div>
 						<img id="profile-star" src="/icons/star.png" alt="/icons/star.png" />
-						<Typography id="profile-subheader">{profile.naengpa_score}</Typography>
+						<Typography id="profile-subheader">{profile.naengpaScore}</Typography>
 					</div>
 				}
 			/>
