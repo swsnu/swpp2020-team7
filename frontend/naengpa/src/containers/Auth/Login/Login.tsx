@@ -21,6 +21,11 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 		}
 		dispatch(login({ username, password }));
 	};
+	const onKeyPress = (e: React.KeyboardEvent) => {
+		if (e.key === 'Enter') {
+			onClickLogin();
+		}
+	};
 	return (
 		<div id="login">
 			<button id="naengpa" type="button" onClick={() => history.push('/fridge')}>
@@ -42,6 +47,7 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 						type="password"
 						placeholder="PASSWORD"
 						onChange={(e) => setPassword(e.target.value)}
+						onKeyPress={onKeyPress}
 					/>
 				</div>
 			</div>

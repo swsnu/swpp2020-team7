@@ -5,6 +5,7 @@ export interface UserEntity {
 	username: string;
 	dateOfBirth: string;
 	email: string;
+	region: string;
 }
 
 export interface UserLoginInputDTO {

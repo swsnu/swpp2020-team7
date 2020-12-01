@@ -5,6 +5,11 @@ from naengpa.settings import APP_REST_API_KEY
 
 
 def geocode(addr):
+    """
+    kako geocode rest API
+    addr: query string contatining address
+    returns (latitude, longitude) of the best matching location
+    """
     url = 'https://dapi.kakao.com/v2/local/search/address.json?query=' + addr
     headers = {"Authorization": "KakaoAK {}".format(APP_REST_API_KEY)}
     result = json.loads(str(requests.get(url, headers=headers).text))

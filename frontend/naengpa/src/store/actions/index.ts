@@ -26,7 +26,7 @@ export { getIngredientList } from './ingredient';
 export { getFoodCategoryList } from './foodCategory';
 
 /* Article actions */
-// export { getArticleList, getArticle, createArticle, deleteArticle, editArticle } from './article';
+export { getArticleList, getArticle, createArticle, deleteArticle, editArticle } from './article';
 
 /* Comment actions */
 // export { getCommentList, getComment, addComment, deleteComment, editComment } from './comment';
