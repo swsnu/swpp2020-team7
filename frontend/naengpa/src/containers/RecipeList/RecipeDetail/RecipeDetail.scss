@@ -69,7 +69,7 @@
       flex-direction: row;
       margin-bottom: 2%;
   
-      #ingredient-button{
+      #ingredient-yes-button{
         font: {
           weight: bold;
         }
@@ -79,6 +79,18 @@
         align-self: right;
         color: #ffffff;  
         background-color: #69e88e;  
+      }
+
+      #ingredient-no-button{
+        font: {
+          weight: bold;
+        }
+        letter-spacing: normal;
+        text-align: left;
+        border-radius: 25px;
+        align-self: right;
+        color: #ffffff;  
+        background-color: #ff6767;  
       }
     }
     #recipe-content {

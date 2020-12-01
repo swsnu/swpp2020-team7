@@ -106,10 +106,12 @@ def recipe_info(request, id):
         "author": recipe.author.username,
         "foodName": recipe.food_name,
         "cookTime": recipe.cook_time,
+        "foodImages": list(recipe.images.values('id', 'file_path')),
         "recipeContent": recipe.recipe_content,
-        "foodImages": list(Image.objects.filter(recipe_id=recipe.id).values()),
-        "recipeLike": 0,
-        "createdAt": recipe.created_at.strftime("%Y.%m.%d")
+        "recipeLike": recipe.likes.count(),
+        "createdAt": recipe.created_at,
+        "foodCategory": recipe.food_category,
+        "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
     }
     if request.user.is_authenticated:
         if request.method == 'GET':
