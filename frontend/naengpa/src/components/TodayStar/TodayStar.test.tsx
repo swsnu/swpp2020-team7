@@ -19,7 +19,7 @@ const getUserListMocked = () => {
 			email: 'test@snu.ac.kr',
 			name: '테스트',
 			dateOfBirth: '20201112',
-			naengpa_score: 100,
+			naengpaScore: 100,
 		},
 		{
 			id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf2c99',
@@ -27,7 +27,7 @@ const getUserListMocked = () => {
 			email: 'pong@snu.ac.kr',
 			name: '퐁',
 			dateOfBirth: '20201115',
-			naengpa_score: 300,
+			naengpaScore: 300,
 		},
 		{
 			id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf0p23',
@@ -35,7 +35,7 @@ const getUserListMocked = () => {
 			email: 'jane@snu.ac.kr',
 			name: '재인',
 			dateOfBirth: '20201121',
-			naengpa_score: 500,
+			naengpaScore: 500,
 		},
 	];
 	return userList;

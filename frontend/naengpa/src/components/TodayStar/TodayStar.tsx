@@ -12,7 +12,7 @@ interface TodayStarProps {
 
 const TodayStar: React.FC<TodayStarProps> = ({ history }) => {
 	const user_list = useSelector((state: AppState) => state.user.userList);
-	let sorted_user = user_list.sort((a: any, b: any) => b.naengpa_score - a.naengpa_score);
+	let sorted_user = user_list.sort((a: any, b: any) => b.naengpaScore - a.naengpaScore);
 	sorted_user = sorted_user.slice(0, Math.min(2, sorted_user.length));
 	const dispatch = useDispatch();
 
