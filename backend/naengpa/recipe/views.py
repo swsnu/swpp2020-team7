@@ -39,7 +39,7 @@ def recipe_list(request):
             "foodName": recipe.food_name,
             "cookTime": recipe.cook_time,
             "recipeContent": recipe.recipe_content,
-            "foodImages": list(recipe.images.values('id', 'file_path')),
+            "foodImagePaths": list(recipe.images.values('id', 'file_path')),
             "recipeLike": recipe.likes.count(),
             "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
             "foodCategory": recipe.food_category,
@@ -86,7 +86,7 @@ def recipe_list(request):
             "author": recipe.author.username,
             "foodName": food_name,
             "cookTime": cook_time,
-            "foodImages": list(recipe.images.values('id', 'file_path')),
+            "foodImagePaths": list(recipe.images.values('id', 'file_path')),
             "recipeContent": recipe_content,
             "recipeLike": recipe.likes.count(),
             "createdAt": recipe.created_at,
@@ -107,7 +107,7 @@ def recipe_info(request, id):
         "foodName": recipe.food_name,
         "cookTime": recipe.cook_time,
         "recipeContent": recipe.recipe_content,
-        "foodImages": list(Image.objects.filter(recipe_id=recipe.id).values()),
+        "foodImagePaths": list(Image.objects.filter(recipe_id=recipe.id).values()),
         "recipeLike": 0,
         "createdAt": recipe.created_at.strftime("%Y.%m.%d")
     }

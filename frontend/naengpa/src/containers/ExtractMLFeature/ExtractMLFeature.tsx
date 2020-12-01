@@ -135,7 +135,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		}
 	};
 
-	const onClickExtractMLFeatureAgain = () => {
+	const onClickExtractMLFeatureAgain = async () => {
 		if (foodImageFiles === [] || foodName === '' || cookTime === '' || recipeContent === '') {
 			setAlert(true);
 			setAlertContent(
@@ -149,7 +149,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				foodImageFiles,
 			};
 			setLoading(true);
-			dispatch(extractMLFeatureFromRecipe(newRecipe));
+			await dispatch(extractMLFeatureFromRecipe(newRecipe));
 			setLoading(false);
 			history.push('/ingredients/extract');
 		}
