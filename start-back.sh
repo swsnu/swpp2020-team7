@@ -13,5 +13,5 @@ pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
 
-redis-server --daemonize ye
+redis-server --daemonize yes
 python manage.py runserver
