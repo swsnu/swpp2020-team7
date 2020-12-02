@@ -9,7 +9,6 @@ urlpatterns = [
     path('users/<uuid:id>/', views.user, name='get_user'),
     path('users/', views.user_list, name='user_list'),
     #path('users/<uuid:id>/', views.user_edit, name='user_edit'),
-    #path('users/<uuid:id>/', views.user, name='login'),
     path('users/<uuid:id>/fridge/', views.user_fridge, name='user_fridge'),
     path('users/<uuid:user_id>/ingredients/<int:id>/',
          views.user_ingredient, name='user_ingredient'),
