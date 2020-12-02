@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from ingredient.models import Ingredient
 
 User = get_user_model()
@@ -26,6 +27,14 @@ class Article(models.Model):
     def __str__(self):
         return f'[{self.id}] {self.title} by {self.author}'
 
+    def save(self, *args, **kwargs):
+        cache.delete('users')
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        cache.delete('users')
+        super().save(*args, **kwargs)
+
 
 class Image(models.Model):
     """Image model for Article"""
@@ -38,3 +47,11 @@ class Image(models.Model):
 
     def __str__(self):
         return f'[{self.id}] of {self.article}'
+
+    def save(self, *args, **kwargs):
+        cache.delete('users')
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        cache.delete('users')
+        super().save(*args, **kwargs)
