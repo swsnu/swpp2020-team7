@@ -12,26 +12,11 @@ from utils.aws_utils import upload_images
 from .models import Article, Image
 
 
-class InvalidOptionsGivenError(Exception):
-    """Error class for insufficient or no true value options given with a new article"""
-    pass
-
-
 @transaction.atomic
 def article_list_get(request):
     ''' GET /api/articles/ get article list '''
     query = request.GET.get('q')
-    options_filter = {}
-    options_filter['is_for_sale'] = True if request.GET.get(
-        'fs') == 'true' else False
-    options_filter['is_for_exchange'] = True if request.GET.get(
-        'fe') == 'true' else False
-    options_filter['is_for_share'] = True if request.GET.get(
-        'fh') == 'true' else False
-
-    print(query, options_filter)
-    is_filter = True in options_filter.values()
-    if not query and not is_filter:
+    if not query:
         article_collection = cache.get('articles')
         if not article_collection:
             sorted_list = Article.objects.select_related(
@@ -67,11 +52,6 @@ def article_list_get(request):
         if query:
             q |= Q(title__icontains=query) | Q(content__icontains=query) | Q(
                 querystring__icontains=F('item__name'))
-        options_filter = {fil: val for fil,
-                          val in options_filter.items() if val}
-        if options_filter:
-            q |= Q(**options_filter)
-        print(q)
 
         sorted_list = Article.objects.select_related(
             'author', 'author__region', 'item'
@@ -104,7 +84,7 @@ def article_list_get(request):
     return JsonResponse(article_collection, safe=False)
 
 
-@ transaction.atomic
+@transaction.atomic
 def article_list_post(request):
     """ POST /api/articles/ post new article """
     try:
