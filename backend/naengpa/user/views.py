@@ -1,15 +1,16 @@
 """views for user"""
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound, HttpResponseNotAllowed, JsonResponse
-from django.contrib.auth import get_user_model
-from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.db import transaction
-from .models import Fridge, FridgeIngredient
-from ingredient.models import Ingredient
-from django.contrib.auth.hashers import check_password
-
 import json
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound, HttpResponseNotAllowed, JsonResponse
+from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.contrib.auth.hashers import check_password
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.core.cache import cache
+from django.db import transaction
+
+from ingredient.models import Ingredient
+from utils.gis_utils import get_nearest_places_from_region
+from .models import Fridge, FridgeIngredient
+
 
 User = get_user_model()
 
@@ -147,15 +148,18 @@ def user_list(request):
     """user_list"""
     # GET USER LIST
     if request.method == 'GET':
-        user_collection = [{
-            "id": user.id,
-            "username": user.username,
-            "name": user.name,
-            "email": user.email,
-            "dateOfBirth": user.date_of_birth,
-            'region': user.region.name,
-            "naengpa_score": user.naengpa_score
-        } for user in User.objects.select_related('region').all()] if User.objects.count() != 0 else []
+        user_collection = cache.get('users')
+        if not user_collection:
+            user_collection = [{
+                "id": user.id,
+                "username": user.username,
+                "name": user.name,
+                "email": user.email,
+                "dateOfBirth": user.date_of_birth,
+                'region': user.region.name,
+                "naengpa_score": user.naengpa_score
+            } for user in User.objects.select_related('region').all()] if User.objects.count() != 0 else []
+            cache.set('users', user_collection)
         return JsonResponse(user_collection, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])

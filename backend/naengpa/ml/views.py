@@ -2,7 +2,7 @@
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from konlpy.tag import Kkma
-from naengpa.settings import LOGMEAL_TOKEN
+from settings.env import LOGMEAL_TOKEN
 from ingredient.models import Ingredient
 from collections import OrderedDict
 import json

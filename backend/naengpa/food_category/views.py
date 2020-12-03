@@ -8,7 +8,6 @@ from .models import FoodCategory, Food
 def food_category_list(request):
     """/api/foodcategories/ Get article list"""
     if request.method == 'GET':
-        create_food_categories(request)
         if not request.user.is_authenticated:
             return HttpResponse(status=401)
         return_data = {category.name: [

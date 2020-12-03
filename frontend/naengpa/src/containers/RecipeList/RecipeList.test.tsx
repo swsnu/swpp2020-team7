@@ -1,9 +1,9 @@
 import React from 'react';
-import { act } from '@testing-library/react';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
+import waitForComponentToPaint from '../../../utils/waitForComponentToPaint';
 import { history } from '../../store/store';
 import RecipeList from './RecipeList';
 import * as recipeActionCreators from '../../store/actions/recipe';
@@ -11,12 +11,6 @@ import * as recipeActionCreators from '../../store/actions/recipe';
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
-async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount = 0) {
-	await act(async () => {
-		await new Promise((resolve) => setTimeout(resolve, 0));
-		wrapper.update();
-	});
-}
 // const image = import('../../../public/icons/boy.png');
 const stubInitialState = {
 	recipe: {
