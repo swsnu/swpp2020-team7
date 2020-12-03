@@ -15,7 +15,7 @@ def get_env_value(var_name):
         raise ImproperlyConfigured(error_msg) from None
 
 
-#  AWS S3 BUCKET
+# AWS S3 BUCKET
 S3_URL = get_env_value("S3_URL")
 DEFAULT_FILE_STORAGE = get_env_value("DEFAULT_FILE_STORAGE")
 AWS_ACCESS_KEY_ID = get_env_value("AWS_ACCESS_KEY_ID")
