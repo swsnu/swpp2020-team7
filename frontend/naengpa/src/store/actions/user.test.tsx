@@ -103,35 +103,6 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalled();
 	});
 
-	/*
-	it('should return login action incorrectly', () => {
-		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
-			return new Promise((resolve, reject) => {
-				try {
-					const result = {
-						status: 401,
-						data: {},
-					};
-					resolve(result);
-				} catch (e) {
-					reject(Error(e));
-					expect(spyAlert).toBeCalledTimes(1);
-					expect(spyAlert).toBeCalledWith(
-						'존재하지 않는 username이거나 비밀번호가 일치하지 않습니다.',
-					);
-				}
-			});
-		});
-		mockStore.dispatch<any>(
-			actionCreators.login({
-				username: '',
-				password: '',
-			}),
-		);
-		expect(spy).toBeCalled();
-	});
-	*/
-
 	it('should return logout action correctly, case 1', () => {
 		const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
 			return new Promise((resolve, reject) => {
@@ -174,7 +145,6 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalled();
 	});
 
-	/*
 	it('should return getUser action correctly', () => {
 		const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
 			return new Promise((resolve, reject) => {
@@ -185,23 +155,59 @@ describe('ActionCreators', () => {
 				resolve(result);
 			});
 		});
-		mockStore.dispatch<any>(actionCreators.getUser());
-		// expect(spy).toBeCalled();
-
-		const returnAction = actionCreators.getUser();
-		expect(returnAction.type).toBe(actionTypes.GET_USER);
+		mockStore.dispatch<any>(actionCreators.getUser(stubInitialState.user.user));
 	});
-	*/
 
 	it('should return correct actionType for deleteUser', () => {
 		const returnAction = actionCreators.deleteUser();
 		expect(returnAction.type).toBe(actionTypes.DELETE_USER);
 	});
 
-	/*
-	it('should return correct actionType for editUser', () => {
-		const returnAction = actionCreators.editUser();
+	it('should return correct actionType for editUser_', () => {
+		const returnAction = actionCreators.editUser_(stubInitialState.user.user);
 		expect(returnAction.type).toBe(actionTypes.EDIT_USER);
+		expect(returnAction.user).toBe(stubInitialState.user.user);
 	});
-	*/
+
+	it('should return correct actionType for editUser', () => {
+		const spy = jest.spyOn(axios, 'put').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: stubInitialState,
+				};
+				resolve(result);
+			});
+		});
+		mockStore.dispatch<any>(
+			actionCreators.editUser({
+				id: 'test',
+				name: 'test',
+				password: 'test',
+				dateOfBirth: '980515',
+				email: 'test@email.com',
+			}),
+		);
+		expect(spy).toBeCalled();
+	});
+
+	it('should return edit user action incorrectly', () => {
+		const spy = jest.spyOn(axios, 'put').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				reject();
+				expect(spyAlert).toBeCalledTimes(1);
+				expect(spyAlert).toBeCalledWith('비밀번호가 일치하지 않습니다.');
+			});
+		});
+		mockStore.dispatch<any>(
+			actionCreators.editUser({
+				id: 'test',
+				name: 'test',
+				password: 'test',
+				dateOfBirth: '980515',
+				email: 'test@email.com',
+			}),
+		);
+		expect(spy).toBeCalled();
+	});
 });

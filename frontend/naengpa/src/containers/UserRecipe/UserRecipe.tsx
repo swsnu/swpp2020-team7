@@ -1,18 +1,66 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
+
+import Pagination from '@material-ui/lab/Pagination';
+
 import '../Mypage/UserInfo/UserInfo.scss';
+import './UserRecipe.scss';
 import Tap from '../../components/Tap/Tap';
+import Recipe from '../../components/Recipe/Recipe';
+import { AppState } from '../../store/store';
+import { getRecipeList } from '../../store/actions/index';
+import { RecipeEntity } from '../../model/recipe';
 
 interface UserRecipeProps {
 	history: History;
 }
 
 const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
+	const recipe_list = useSelector((state: AppState) => state.recipe.recipeList);
+	const user = useSelector((state: AppState) => state.user.user);
+	const userRecipeList = recipe_list.filter((item: any) => item.authorId === user?.id);
+	const [currentList, setCurrentList] = useState<RecipeEntity[]>([]);
+
+	const [page, setPage] = useState(1);
+	const [maxPageIndex, setMaxPageIndex] = useState(1);
+	const [query, setQuery] = useState('');
+	const dispatch = useDispatch();
+
+	const onChangePage = (e: React.ChangeEvent<unknown>, value: number): void => {
+		e.preventDefault();
+		setPage(value);
+		setCurrentList(recipe_list.slice((value - 1) * 3, (value - 1) * 3 + 3));
+	};
+
+	const recipe = currentList.map((item: any) => {
+		return (
+			<Recipe key={item.id} recipe={item} attribute="recipe-list-child" history={history} />
+		);
+	});
+
+	useEffect(() => {
+		const func = () => {
+			dispatch(getRecipeList(''));
+			setMaxPageIndex(Math.ceil(recipe_list.length / 3.0));
+			setCurrentList(userRecipeList.slice((page - 1) * 3, (page - 1) * 3 + 3));
+			// setLoading(false);
+		};
+		func();
+	}, [dispatch, userRecipeList.length]);
+
 	return (
 		<div id="mypage">
 			<Tap history={history} />
 			<div id="info">
-				<p>my recipe</p>
+				<div id="user-recipes">{recipe}</div>
+				<Pagination
+					id="recipe-list-page"
+					page={page}
+					size="large"
+					count={maxPageIndex}
+					onChange={onChangePage}
+				/>
 			</div>
 		</div>
 	);

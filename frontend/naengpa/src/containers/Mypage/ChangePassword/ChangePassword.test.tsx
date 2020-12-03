@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { history } from '../../../store/store';
+import * as userActionCreators from '../../../store/actions/user';
 import ChangePassword from './ChangePassword';
 
 const middlewares = [thunk];
@@ -59,5 +60,17 @@ describe('ChangePassword', () => {
 	it('ChangePassword renders without crashing', () => {
 		const component = mount(changePassword);
 		expect(component.find('ChangePassword').length).toBe(1);
+	});
+
+	it('ChangePassword should change password correctly', () => {
+		const component = mount(changePassword);
+		const passwordList = component.find('div#info').find('input');
+		passwordList.find('#current-password').simulate('change', { target: { value: 'test' } });
+		passwordList.find('#new-password').simulate('change', { target: { value: 'newtest' } });
+		passwordList
+			.find('#confirm-new-password')
+			.simulate('change', { target: { value: 'newtest' } });
+		// expect(spySignupAction).toBeCalledTimes(1);
+		// expect(spySignupAction).toBeCalledWith(mockUser);
 	});
 });
