@@ -1,10 +1,11 @@
 import React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 import '@testing-library/jest-dom';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
+import waitForComponentToPaint from '../../../utils/waitForComponentToPaint';
 import ExtractMLFeature from './ExtractMLFeature';
 import { history } from '../../store/store';
 import * as recipeActionCreators from '../../store/actions/recipe';
@@ -29,14 +30,7 @@ jest.mock('@material-ui/icons/LocalDining', () =>
 const middleware = [thunk];
 const store = configureStore(middleware);
 
-async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount = 0) {
-	await act(async () => {
-		await new Promise((resolve) => setTimeout(resolve, 0));
-		wrapper.update();
-	});
-}
 const image = import('../../../public/icons/boy.png');
-
 const stubInitialState = {
 	recipe: {
 		recipeList: [],

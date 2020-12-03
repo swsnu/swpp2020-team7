@@ -1,19 +1,10 @@
 import React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { act } from '@testing-library/react';
 import { history } from '../../../store/store';
-import { UserEntity } from '../../../model/user';
 import EditUserInfo from './EditUserInfo';
-
-async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount = 0) {
-	await act(async () => {
-		await new Promise((resolve) => setTimeout(resolve, 0));
-		wrapper.update();
-	});
-}
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
