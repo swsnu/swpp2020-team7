@@ -26,7 +26,6 @@ export const getFoodCategoryList = () => {
 			'계란/알류',
 			'수프/국/찌개류',
 		];
-		/* ['밥류', '빵류', '떡류', '면류', '고기류', '라면류']; */
 		dispatch(getFoodCategoryList_(foodCategoryList));
 	};
 };

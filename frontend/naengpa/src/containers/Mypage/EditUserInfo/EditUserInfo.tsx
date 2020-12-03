@@ -4,7 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../../store/store';
 import { editUser } from '../../../store/actions/index';
 import '../UserInfo/UserInfo.scss';
-import Tap from '../../../components/Tap/Tap';
+import Tab from '../../../components/Tab/Tab';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { Input } from '@material-ui/core';
 
 interface EditUserInfoProps {
 	history: History;
@@ -46,15 +48,27 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 		}
 	};
 
+	/*
+	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const target = e.target as HTMLInputElement;
+		const image: File = (target.files as FileList)[0];
+		setFoodImages([...foodImages, image]);
+	};
+	*/
+
 	return (
 		<div id="mypage">
-			<Tap history={history} />
+			<Tab history={history} />
 			<div id="info">
 				<p>내 정보 수정</p>
 				<button type="button" id="edit-user-info" onClick={onClickEdit}>
 					저장하기
 				</button>
 				{user!.username}
+				<div>
+					<AddCircleIcon id="add-image-button" type="button" />
+					<Input type="file" id="food-image" required />
+				</div>
 				<div id="name">
 					<label>이름 </label>
 					<input

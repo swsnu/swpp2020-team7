@@ -4,7 +4,7 @@ import './UserInfo.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../store/store';
 import { getUser } from '../../../store/actions/index';
-import Tap from '../../../components/Tap/Tap';
+import Tab from '../../../components/Tab/Tab';
 
 interface UserInfoProps {
 	history: History;
@@ -19,7 +19,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tap history={history} />
+			<Tab history={history} />
 			<div id="info">
 				<p>내 정보</p>
 				<button

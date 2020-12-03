@@ -10,7 +10,9 @@
 
     #button-list {
         width: 375px;
+        min-width: 375px;
         height: 240px;
+        min-width: 240px;
         margin: 100px 104px 0px 275px;
         background-color: #ffffff;
     }
@@ -21,9 +23,10 @@
         align-items: flex-start;
     }
 
-    #myinfo-tap {
+    #myinfo-tab {
         border: none;
         outline: none;
+        min-width: 375px;
         width: 100%;
         height: 60px;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
@@ -35,9 +38,10 @@
         text-indent: 3em;
     }
 
-    #myrecipe-tap, #notification-tap, #chatting-tap {
+    #myrecipe-tab, #notification-tab, #chatting-tab {
         border: none;
         outline: none;
+        min-width: 375px;
         width: 100%;
         height: 60px;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;

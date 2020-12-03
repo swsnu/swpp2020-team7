@@ -3,7 +3,7 @@ import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../../store/store';
 import '../UserInfo/UserInfo.scss';
-import Tap from '../../../components/Tap/Tap';
+import Tab from '../../../components/Tab/Tab';
 
 interface ChangePasswordProps {
 	history: History;
@@ -18,7 +18,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tap history={history} />
+			<Tab history={history} />
 			<div id="info">
 				<p>비밀번호 변경</p>
 				<button type="button" id="change-password">

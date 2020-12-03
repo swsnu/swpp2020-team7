@@ -1,7 +1,7 @@
 import React from 'react';
 import { History } from 'history';
 import '../Mypage/UserInfo/UserInfo.scss';
-import Tap from '../../components/Tap/Tap';
+import Tab from '../../components/Tab/Tab';
 
 interface UserNotificationProps {
 	history: History;
@@ -10,7 +10,7 @@ interface UserNotificationProps {
 const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 	return (
 		<div id="mypage">
-			<Tap history={history} />
+			<Tab history={history} />
 			<div id="info">
 				<p>user notification</p>
 			</div>
