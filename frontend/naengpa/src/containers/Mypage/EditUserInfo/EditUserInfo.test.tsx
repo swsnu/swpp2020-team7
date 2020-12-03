@@ -5,7 +5,8 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { act } from '@testing-library/react';
 import { history } from '../../../store/store';
-import { UserEntity } from '../../../model/user';
+import { EditUserInputDTO } from '../../../model/user';
+import * as userActionCreators from '../../../store/actions/user';
 import EditUserInfo from './EditUserInfo';
 
 async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount = 0) {
@@ -39,17 +40,16 @@ const stubInitialState = {
 
 describe('EditUserInfo', () => {
 	let editUserInfo: any;
+	let spyEditUserAction: any;
 	let spyHistoryPush: any;
-	/*
-	const mockUser: UserEntity = {
-		id: 'test',
+	let spyAlert: any;
+	const mockUser: EditUserInputDTO = {
+		id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
 		name: 'test',
-		username: 'test',
 		password: 'test',
 		dateOfBirth: '20201111',
 		email: 'test@snu.ac.kr',
 	};
-	*/
 
 	beforeEach(() => {
 		const mockStore = store(stubInitialState);
@@ -65,7 +65,10 @@ describe('EditUserInfo', () => {
 				<EditUserInfo history={history} />
 			</Provider>
 		);
-
+		spyEditUserAction = jest
+			.spyOn(userActionCreators, 'editUser')
+			.mockImplementation(() => jest.fn());
+		spyAlert = jest.spyOn(window, 'alert').mockImplementation(jest.fn());
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 	});
 	afterEach(() => {
@@ -82,25 +85,36 @@ describe('EditUserInfo', () => {
 
 	it('Edit user info should dispatch user info correctly', () => {
 		const component = mount(editUserInfo);
-		const name = component.find('div#name').find('input');
-		// name.find('#edit-name').simulate('change', { target: { value: mockUser.name } });
-		/*
-		const inputList = component.find('div#input-list').find('input');
-		inputList.find('#name').simulate('change', { target: { value: mockUser.name } }); // name
-		inputList.find('#username').simulate('change', { target: { value: mockUser.username } }); // username
-		inputList.find('#password').simulate('change', { target: { value: mockUser.password } }); // password
+		const inputList = component.find('div#info').find('input');
+		inputList.find('#edit-name').simulate('change', { target: { value: mockUser.name } }); // name
+		inputList
+			.find('#edit-date-of-birth')
+			.simulate('change', { target: { value: mockUser.dateOfBirth } }); // username
+		inputList.find('#edit-email').simulate('change', { target: { value: mockUser.email } }); // email
 		inputList
 			.find('#password-confirm')
 			.simulate('change', { target: { value: mockUser.password } }); // password-confirm
-		inputList
-			.find('#date-of-birth')
-			.simulate('change', { target: { value: mockUser.dateOfBirth } }); // date-of-birth
-		inputList.find('#email').simulate('change', { target: { value: mockUser.email } }); // email
+		const storeButton = component.find('button#edit-user-info');
+		storeButton.simulate('click');
+		expect(spyEditUserAction).toBeCalledTimes(1);
+		expect(spyEditUserAction).toBeCalledWith(mockUser);
+	});
 
-		const signupButton = component.find('button#signup-button');
-		signupButton.simulate('click');
-		expect(spySignupAction).toBeCalledTimes(1);
-		expect(spySignupAction).toBeCalledWith(mockUser);
-		*/
+	it('Edit user info should not dispatch user info correctly', () => {
+		const component = mount(editUserInfo);
+		const inputList = component.find('div#info').find('input');
+		inputList.find('#edit-name').simulate('change', { target: { value: '' } }); // name
+		inputList
+			.find('#edit-date-of-birth')
+			.simulate('change', { target: { value: mockUser.dateOfBirth } }); // username
+		inputList.find('#edit-email').simulate('change', { target: { value: mockUser.email } }); // email
+		inputList
+			.find('#password-confirm')
+			.simulate('change', { target: { value: mockUser.password } }); // password-confirm
+		const storeButton = component.find('button#edit-user-info');
+		storeButton.simulate('click');
+		expect(spyEditUserAction).toBeCalledTimes(0);
+		expect(spyAlert).toBeCalledTimes(1);
+		expect(spyAlert).toBeCalledWith('fill in the blink');
 	});
 });
