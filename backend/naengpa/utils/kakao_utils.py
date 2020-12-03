@@ -1,7 +1,7 @@
 """utility functions for kakao api"""
 import json
 import requests
-from naengpa.settings import APP_REST_API_KEY
+from settings.env import APP_REST_API_KEY
 
 
 def geocode(addr):
