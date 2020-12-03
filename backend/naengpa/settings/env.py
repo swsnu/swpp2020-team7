@@ -26,3 +26,6 @@ AWS_S3_FILE_OVERWRITE = get_env_value("AWS_S3_REGION_NAME")
 
 # Kakao REST Api key
 APP_REST_API_KEY = get_env_value("APP_REST_API_KEY")
+
+# Logmeal ML Api
+LOGMEAL_TOKEN = get_env_value("LOGMEAL_TOKEN")
