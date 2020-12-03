@@ -2,6 +2,7 @@
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from konlpy.tag import Kkma
+from naengpa.settings import LOGMEAL_TOKEN
 from ingredient.models import Ingredient
 from collections import OrderedDict
 import json
@@ -13,26 +14,48 @@ def extract_foodcategory(request, food_images):
     print(food_images)
     # Parameters
     img = food_images[0]
-    '''
-    client = Client(enforce_csrf_checks=True)
-    response = client.get('/api/login/', content_type='application/json')
-    csrftoken = response.cookies['csrftoken'].value
-    headers = {'Authorization': 'Bearer ' + csrftoken}
-    '''
-    '''
-    csrftoken = django.middleware.csrf.get_token(request)
-    headers = {'Authorization': 'Bearer ' + csrftoken}
-    '''
-    # api_user_token = <'replace-with-your-api-user-token'>
-    #headers = {'Authorization': 'Bearer ' + api_user_token}
+    user_token = LOGMEAL_TOKEN
+    headers = {'Authorization': 'Bearer ' + user_token}
 
     # Food Dish/Groups Detection
     url = 'https://api.logmeal.es/v2/recognition/dish'
     resp = requests.post(url,
                          files={'image': img},
-                         headers=None)
-    print(resp.json())  # display groups only
-    return "밥류"
+                         headers=headers)
+    # print(resp.json()['foodFamily'])  # display groups only
+    response = resp.text.split('"')
+    print(response[7])
+    # food_category_result = {'meat': '고기류',
+    #                        'dessert': '디저트류', 'dairy': '유제품류', 'seafood': '해물류', 'rice': '밥류', 'fruit': '과일류', 'noodles/pasta': '면류', 'vegetables': '채소류', 'fish': '생선류', 'bread': '빵류', 'fried': '튀김류', 'egg': '계란/알류', 'soup': '수프/국/찌개류', '': '기타'}
+    if response[7] == 'meat':
+        return "육류"
+    elif response[7] == 'dessert':
+        return "디저트류"
+    elif response[7] == 'dairy':
+        return "유제품류"
+    elif response[7] == 'seafood':
+        return "해물류"
+    elif response[7] == 'rice':
+        return "밥류"
+    elif response[7] == 'fruit':
+        return "과일류"
+    elif response[7] == 'noodles/pasta':
+        return "면류"
+    elif response[7] == 'vegetables':
+        return "채소류"
+    elif response[7] == 'fish':
+        return "생선류"
+    elif response[7] == 'bread':
+        return "빵류"
+    elif response[7] == 'fried':
+        return "튀김류"
+    elif response[7] == 'egg':
+        return "계란/알류"
+    elif response[7] == 'soup':
+        return "수프/국/찌개류"
+    else:
+        return "기타"
+    # return food_category_result[response[7]]
 
 
 def extract_ingredients(request, recipe_info):

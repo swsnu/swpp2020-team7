@@ -152,3 +152,6 @@ AWS_S3_FILE_OVERWRITE = os.getenv("AWS_S3_REGION_NAME")
 
 # Kakao REST Api key
 APP_REST_API_KEY = os.getenv("APP_REST_API_KEY")
+
+# LogMeal Food AI token
+LOGMEAL_TOKEN = os.getenv("LOGMEAL_TOKEN")
