@@ -12,6 +12,10 @@ from utils.aws_utils import upload_images
 from .models import Article, Image
 
 
+class InvalidOptionsGivenError(Exception):
+    pass
+
+
 @transaction.atomic
 def article_list_get(request):
     ''' GET /api/articles/ get article list '''
