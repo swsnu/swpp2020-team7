@@ -7,3 +7,4 @@ psycopg2-binary==2.8.6
 konlpy==0.5.2
 boto3==1.16.14
 djangorestframework-gis==0.16
+django-redis==4.12.1

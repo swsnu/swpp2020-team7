@@ -3,6 +3,7 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
+from django.core.cache import cache
 from ingredient.models import Ingredient
 
 
@@ -32,6 +33,14 @@ class Region(models.Model):
     def __str__(self):
         return f'[{self.id}] {self.name}: {self.location}'
 
+    def save(self, *args, **kwargs):
+        cache.delete('users')
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        cache.delete('users')
+        super().save(*args, **kwargs)
+
 
 class User(AbstractUser):
     ''' User model '''
@@ -40,10 +49,19 @@ class User(AbstractUser):
     name = models.CharField(max_length=30)
     date_of_birth = models.CharField(max_length=30)
     naengpa_score = models.IntegerField(default=0)
-    region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
+    region = models.ForeignKey(
+        Region, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f'[{self.id}] {self.name}'
+
+    def save(self, *args, **kwargs):
+        cache.delete('users')
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        cache.delete('users')
+        super().save(*args, **kwargs)
 
 
 class Fridge(models.Model):

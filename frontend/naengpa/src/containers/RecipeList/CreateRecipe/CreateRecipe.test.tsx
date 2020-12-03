@@ -1,9 +1,10 @@
 import React from 'react';
 import { act } from '@testing-library/react';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
+import waitForComponentToPaint from '../../../../utils/waitForComponentToPaint';
 import CreateRecipe from './CreateRecipe';
 import '@testing-library/jest-dom';
 import * as recipeActionCreators from '../../../store/actions/recipe';
@@ -25,13 +26,6 @@ jest.mock('@material-ui/icons/LocalDining', () =>
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
-
-async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount = 0) {
-	await act(async () => {
-		await new Promise((resolve) => setTimeout(resolve, 0));
-		wrapper.update();
-	});
-}
 
 const stubInitialState: RecipeState = {
 	recipeList: [],
