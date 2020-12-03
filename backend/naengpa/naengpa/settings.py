@@ -12,8 +12,19 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from dotenv import load_dotenv
+from django.core.exceptions import ImproperlyConfigured
 
 load_dotenv()
+
+
+def get_env_value(var_name):
+    """help function for os.getenv to handle KeyError"""
+    try:
+        return os.getenv(var_name)
+    except KeyError:
+        error_msg = 'Set the {} environment variable'.format(var_name)
+        raise ImproperlyConfigured(error_msg) from None
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,12 +34,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = get_env_value('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+
+AWS_EC2_ELASTIC_IP = get_env_value('AWS_EC2_ELASTIC_IP')
+ALLOWED_HOSTS = [AWS_EC2_ELASTIC_IP]
 
 
 # Application definition
@@ -91,13 +104,14 @@ WSGI_APPLICATION = 'naengpa.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'HOST': os.getenv("DB_HOST"),
-        'PORT': '5432',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': get_env_value("DB_HOST"),
+        'PORT': 5432,
+        'NAME': get_env_value("DB_NAME"),
+        'USER': get_env_value("DB_USER"),
+        'PASSWORD': get_env_value("DB_PASSWORD"),
         'TEST': {
-            'NAME': 'test_database_' + 'NAME' + os.getenv("TRAVIS_JOB_NUMBER", "")
+            # for travis ci
+            'NAME': 'test_database_NAME{}'.format(os.getenv("TRAVIS_JOB_NUMBER", ""))
         },
     },
 }
@@ -159,13 +173,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # AWS S3 BUCKET
-S3_URL = os.getenv("S3_URL")
-DEFAULT_FILE_STORAGE = os.getenv("DEFAULT_FILE_STORAGE")
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
-AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
-AWS_S3_FILE_OVERWRITE = os.getenv("AWS_S3_REGION_NAME")
+S3_URL = get_env_value("S3_URL")
+DEFAULT_FILE_STORAGE = get_env_value("DEFAULT_FILE_STORAGE")
+AWS_ACCESS_KEY_ID = get_env_value("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = get_env_value("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = get_env_value("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = get_env_value("AWS_S3_REGION_NAME")
+AWS_S3_FILE_OVERWRITE = get_env_value("AWS_S3_REGION_NAME")
 
 # Kakao REST Api key
-APP_REST_API_KEY = os.getenv("APP_REST_API_KEY")
+APP_REST_API_KEY = get_env_value("APP_REST_API_KEY")
