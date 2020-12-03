@@ -151,7 +151,7 @@ def article_list_post(request):
 def article_list(request):
     """get article list or create an article"""
     if request.method == 'GET':
-        if False:  # not request.user.is_authenticated:
+        if not request.user.is_authenticated:
             return HttpResponse(status=401)
         else:
             return article_list_get(request)
