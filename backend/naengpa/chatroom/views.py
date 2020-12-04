@@ -15,7 +15,7 @@ User = get_user_model()
 
 def get_time_format(time_str):
     return time_str.strftime("%y.%m.%d") if time_str.strftime("%y.%m.%d") != timezone.now().strftime("%y.%m.%d") \
-        else time_str.strftime("%H:%M %p")
+        else time_str.strftime("%H:%M")
 
 
 @ensure_csrf_cookie
@@ -32,10 +32,15 @@ def get_chatroom_list(request):
     try:
         chatroom_collection = [{
             "id": chatroom.id,
+            "messages": [{
+                "content": message.content,
+                "author": message.author.username,
+                "createdAt": get_time_format(message.created_at),
+            } for message in chatroom.message_set.select_related('author')],
             "lastChat": chatroom.message_set.all().last().content if chatroom.message_set.count() != 0 else "채팅을 시작해보세요!",
-            "member": "test-uset",
-            "updatedAt":  get_time_format(chatroom.updated_at),
-            "chatCount": 0,
+            "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.username,
+            "updatedAt": get_time_format(chatroom.updated_at),
+            "chatCount": ChatMember.objects.get(Q(chatroom_id=chatroom.id) & Q(member_id=user.id)).notice,
         } for chatroom in chatrooms]
     except Message.DoesNotExist:
         return HttpResponseBadRequest()
@@ -45,6 +50,7 @@ def get_chatroom_list(request):
     return JsonResponse(chatroom_collection, safe=False)
 
 
+@ensure_csrf_cookie
 def make_chatroom(request):
     user = request.user
     try:
@@ -52,7 +58,9 @@ def make_chatroom(request):
         friend = User.objects.get(id=friend_id)
         chatroom = ChatRoom.objects.get(
             Q(chat_members=user) & Q(chat_members=friend))
-
+        chat_user = user.chat_member.get(chatroom_id=chatroom.id)
+        chat_user.notice = 0
+        chat_user.save()
     except (KeyError, json.decoder.JSONDecodeError):
         return HttpResponseBadRequest()
     except User.DoesNotExist:
@@ -61,6 +69,11 @@ def make_chatroom(request):
         chatroom = ChatRoom.objects.create()
         chatroom.chat_members.add(user, friend)
         pass
+    except ChatMember.DoesNotExist:
+        return HttpResponseBadRequest()
+
+    messages = chatroom.message_set.select_related(
+        'author').all().order_by('created_at')
 
     return JsonResponse(data={
         "id": chatroom.id,
@@ -68,14 +81,18 @@ def make_chatroom(request):
             "content": message.content,
             "author": message.author.user.username,
             "createdAt": get_time_format(message.created_at),
-        } for message in chatroom.message_set.select_related('author').all().order_by('-created_at')],
-        "member": friend.username
+        } for message in messages],
+        "lastChat": messages.last().content if messages.count() != 0 else "채팅을 시작해보세요!",
+        "member": friend.username,
+        "updatedAt":  get_time_format(chatroom.updated_at),
+        "chatCount": 0,
+
     }, safe=False)
 
 
 @ensure_csrf_cookie
 def chatroom_list(request):
-    """ get chatroom list of given user """
+    """ GET POST 'chatrooms/' get chatroom list of given user """
     if request.method not in ['GET', 'POST']:
         return HttpResponseNotAllowed(['GET', 'POST'])
     if not request.user.is_authenticated:
@@ -88,13 +105,17 @@ def chatroom_list(request):
         return HttpResponse(status=400)
 
 
+@ensure_csrf_cookie
 def get_chatroom(request, id):
     """ get chatroom information """
     try:
         user = request.user
         chatroom = ChatRoom.objects.get(id=id)
         messages = chatroom.message_set.select_related(
-            'author').all().order_by('-created_at')
+            'author').all().order_by('created_at')
+        chat_user = user.chat_member.get(chatroom_id=chatroom.id)
+        chat_user.notice = 0
+        chat_user.save()
     except (ChatRoom.DoesNotExist, Message.DoesNotExist):
         return HttpResponseBadRequest()
 
@@ -105,7 +126,10 @@ def get_chatroom(request, id):
             "author": message.author.username,
             "createdAt": get_time_format(message.created_at),
         } for message in messages],
-        "member": user.username,
+        "lastChat": messages.last().content if messages.count() != 0 else "채팅을 시작해보세요!",
+        "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.username,
+        "updatedAt":  get_time_format(chatroom.updated_at),
+        "chatCount": 0,
     }
     return JsonResponse(chatroom_collection, safe=False)
 
@@ -117,10 +141,17 @@ def send_message(request, id):
         user = request.user
         content = json.loads(request.body.decode())['content']
         chatroom = ChatRoom.objects.get(id=id)
+        chatroom.updated_at = timezone.now()
         Message.objects.create(
             author_id=user.id, content=content, chatroom_id=id)
         messages = chatroom.message_set.select_related(
-            'author').all().order_by('-created_at')
+            'author').all().order_by('created_at')
+        chat_member = ChatMember.objects.select_related('member').filter(
+            chatroom_id=chatroom.id).exclude(member_id=user.id).first()
+        chat_member.notice += 1
+        chat_member.save()
+        chatroom.save()
+
     except (KeyError, json.decoder.JSONDecodeError):
         return HttpResponseBadRequest()
     except (ChatRoom.DoesNotExist, Message.DoesNotExist):
@@ -133,18 +164,36 @@ def send_message(request, id):
             "author": message.author.username,
             "createdAt": get_time_format(message.created_at),
         } for message in messages],
-        "member": "test-user"
+        "lastChat": messages.last().content if messages.count() != 0 else "채팅을 시작해보세요!",
+        "member": chat_member.member.username,
+        "updatedAt":  get_time_format(chatroom.updated_at),
+        "chatCount": 0,
     }, safe=False)
 
 
 @ensure_csrf_cookie
+def delete_chatroom(request, id):
+    """ delete ChatRoom """
+    try:
+        chatroom = ChatRoom.objects.get(id=id)
+        chatroom.delete()
+
+    except ChatRoom.DoesNotExist:
+        return HttpResponseBadRequest()
+
+    return JsonResponse([], status=201)
+
+
+@ensure_csrf_cookie
 def chatroom(request, id):
-    """ request to given chatroom """
-    if request.method not in ['GET', 'PUT']:
-        return HttpResponseNotAllowed(['GET', 'PUT'])
+    """ GET, PUT, POST 'chatrooms/:id' request to given chatroom """
+    if request.method not in ['GET', 'PUT', 'POST']:
+        return HttpResponseNotAllowed(['GET', 'PUT', 'POST'])
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
     if request.method == 'GET':
         return get_chatroom(request, id)
-    else:
+    elif request.method == 'PUT':
         return send_message(request, id)
+    else:
+        return delete_chatroom(request, id)
