@@ -11,7 +11,7 @@ const Tap: React.FC<TabProps> = ({ history }) => {
 		<div id="button-list">
 			<div id="myinfo-check">
 				<button
-					id="myinfo-tab"
+					id="mypage-tab"
 					type="button"
 					onClick={() => history.push('/@:username/info')}
 				>
@@ -20,7 +20,7 @@ const Tap: React.FC<TabProps> = ({ history }) => {
 			</div>
 			<div>
 				<button
-					id="myrecipe-tab"
+					id="mypage-tab"
 					type="button"
 					onClick={() => history.push('/@:username/recipes')}
 				>
@@ -29,7 +29,7 @@ const Tap: React.FC<TabProps> = ({ history }) => {
 			</div>
 			<div>
 				<button
-					id="notification-tab"
+					id="mypage-tab"
 					type="button"
 					onClick={() => history.push('/notifications')}
 				>
@@ -37,7 +37,7 @@ const Tap: React.FC<TabProps> = ({ history }) => {
 				</button>
 			</div>
 			<div>
-				<button id="chatting-tab" type="button" onClick={() => history.push('/chatrooms')}>
+				<button id="mypage-tab" type="button" onClick={() => history.push('/chatrooms')}>
 					채팅
 				</button>
 			</div>
