@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { Input } from '@material-ui/core';
 import { AppState } from '../../../store/store';
 import { editUser } from '../../../store/actions/index';
 import '../UserInfo/UserInfo.scss';
 import Tab from '../../../components/Tab/Tab';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { Input } from '@material-ui/core';
 import './EditUserInfo.scss';
 
 interface EditUserInfoProps {

@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { History } from 'history';
 import './UserInfo.scss';
 import { useDispatch, useSelector } from 'react-redux';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { AppState } from '../../../store/store';
 import { getUser } from '../../../store/actions/index';
 import Tab from '../../../components/Tab/Tab';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 interface UserInfoProps {
 	history: History;

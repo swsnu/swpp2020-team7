@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { AppState } from '../../../store/store';
 import '../UserInfo/UserInfo.scss';
 import './ChangePassword.scss';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Tab from '../../../components/Tab/Tab';
 
 interface ChangePasswordProps {
