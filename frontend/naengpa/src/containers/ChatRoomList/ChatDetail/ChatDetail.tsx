@@ -38,7 +38,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const onClickGoBackToChatRoomList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 		history.push('/chatrooms');
-	}
+	};
 
 	const onEnterSendMessage = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (e.key === 'Enter' && content !== '') {
@@ -62,7 +62,12 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 			<Tap history={history} />
 			<div id="info">
 				<Typography id="chatroom-header" gutterBottom variant="h3">
-					<Button id="go-to-chatroom-list-button" onClick={(e) => onClickGoBackToChatRoomList(e)}>돌아가기</Button>
+					<Button
+						id="go-to-chatroom-list-button"
+						onClick={(e) => onClickGoBackToChatRoomList(e)}
+					>
+						돌아가기
+					</Button>
 					<div id="member-info-box">
 						<div id="chat-member-image" />
 						<div id="chat-member-username">{chatRoom!.member}</div>{' '}

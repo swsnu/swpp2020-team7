@@ -32,7 +32,7 @@ type Action =
 	| { type: 'SEND_CHAT'; chatRoom: ChatEntity }
 	| { type: 'DELETE_CHATROOM'; id: string };
 
-function userReducer(state: InitialState = UserState, action: Action): InitialState {	
+function userReducer(state: InitialState = UserState, action: Action): InitialState {
 	switch (action.type) {
 		/* SAVE USER INFO */
 		case actionTypes.SAVE_USER_INFO:
@@ -65,12 +65,12 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 		/* CREAT CHATROOM */
 		case actionTypes.CREATE_CHATROOM:
 			let filteredChatRoomList = state.chatRoomList.filter((chatRoom) => {
-				return chatRoom.id == action.chatRoom.id
+				return chatRoom.id == action.chatRoom.id;
 			});
-			if(!filteredChatRoomList.length) {
+			if (!filteredChatRoomList.length) {
 				filteredChatRoomList = [...state.chatRoomList, action.chatRoom];
 			}
-			return { ...state, chatRoomList:filteredChatRoomList, chatRoom: action.chatRoom };
+			return { ...state, chatRoomList: filteredChatRoomList, chatRoom: action.chatRoom };
 
 		/* GET CHATROOM */
 		case actionTypes.GET_CHATROOM:
@@ -84,13 +84,12 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 		case actionTypes.SEND_CHAT:
 			return { ...state, chatRoom: action.chatRoom };
 
-		case actionTypes.DELETE_CHATROOM: 
+		case actionTypes.DELETE_CHATROOM:
 			const modifiedChatRoomList = state.chatRoomList.filter((item) => {
-				return (item.id !==action.id) 
-				}
-			)
+				return item.id !== action.id;
+			});
 
-			return { ...state, chatRoomList: modifiedChatRoomList, chatRoom: null }
+			return { ...state, chatRoomList: modifiedChatRoomList, chatRoom: null };
 
 		default:
 			return state;
