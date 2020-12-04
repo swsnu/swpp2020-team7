@@ -127,13 +127,13 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 							<Typography id="profile-title" variant="h5">
 								{recipe.author}
 							</Typography>
-							<button
+							{user!.id !== recipe.authorId && <button
 								id="chatting-icon"
 								type="button"
 								onClick={(e) => onClickChatIcon()}
 							>
 								<EmailIcon />
-							</button>
+							</button>}
 						</Grid>
 						<Grid item xs>
 							<div id="recipe-cook-time">
