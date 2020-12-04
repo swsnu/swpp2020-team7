@@ -421,6 +421,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							id="ingredient-name"
 							placeholder="재료"
 							disableUnderline
+							value={newIngredient}
 							onChange={(e) => {
 								setNewIngredient(e.target.value);
 							}}
@@ -429,6 +430,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							<Input
 								id="ingredient-quantity"
 								placeholder="수량: "
+								value={newIngredientQuantity}
 								onChange={(e) => {
 									setNewIngredientQuantity(e.target.value);
 								}}
