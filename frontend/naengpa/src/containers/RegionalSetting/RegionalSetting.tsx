@@ -117,7 +117,13 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 	const onClickConfirmRegion = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 		if (selectedRegion) {
-			dispatch(signup({ ...userInfo, region: selectedRegion, regionRange: level - 3 }));
+			dispatch(
+				signup({
+					...userInfo,
+					region: selectedRegion,
+					regionRange: level - 3,
+				} as UserSignupInputDTO),
+			);
 		} else {
 			setAlert(true);
 		}
@@ -145,36 +151,6 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 		options: regionList,
 		getOptionLabel: (option: RegionEntity) => option.name,
 	};
-
-	const alertModal = (
-		<Collapse className="collapse" in={alert}>
-			<Alert id="alert-modal" icon={false}>
-				<div id="naengpa-logo-box">
-					<div id="naengpa-logo">
-						<LocalDiningIcon id="naengpa-logo-image" />
-						냉파
-					</div>
-					<CancelIcon
-						id="close-alert-button"
-						onClick={() => {
-							setAlert(false);
-						}}
-					/>
-				</div>
-				<div id="alert-content">{alertContent}</div>
-				<div id="confirm-alert-button-box">
-					<Button
-						id="confirm-alert-button"
-						onClick={() => {
-							setAlert(false);
-						}}
-					>
-						확인
-					</Button>
-				</div>
-			</Alert>
-		</Collapse>
-	);
 
 	return (
 		<div id="regional-setting">

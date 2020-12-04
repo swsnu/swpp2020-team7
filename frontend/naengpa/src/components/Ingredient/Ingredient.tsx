@@ -53,10 +53,8 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	/* CLICK EVENT - DELETE IMAGE */
 	const onClickDeleteIngredient = () => {
 		const target_id: number = ingredient.id;
-		if (user) {
-			dispatch(deleteIngredientFromFridge(user.id, target_id));
-			history.push('/fridge');
-		}
+		dispatch(deleteIngredientFromFridge(user!.id, target_id));
+		history.push('/fridge');
 	};
 
 	return (
