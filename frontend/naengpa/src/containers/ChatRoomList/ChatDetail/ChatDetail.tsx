@@ -15,10 +15,10 @@ interface ChatDetailProps {
 const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user.user);
-	const chatroom = useSelector((state: AppState) => state.user.chatroom);
+	const chatRoom = useSelector((state: AppState) => state.user.chatRoom);
 	const [content, setContent] = useState('');
 
-	const chatMessage = chatroom!.messages!.map((message: any) => {
+	const chatMessage = chatRoom!.messages!.map((message: any) => {
 		if (message.author === user!.username) {
 			return (
 				<Typography id="user-message" gutterBottom>
@@ -35,10 +35,16 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		);
 	});
 
-	const onEnterSendMessage = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+	const onClickGoBackToChatRoomList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.preventDefault();
+		history.push('/chatrooms');
+	}
+
+	const onEnterSendMessage = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (e.key === 'Enter' && content !== '') {
 			e.preventDefault();
-			dispatch(sendChat(chatroom!.id, content));
+			e.stopPropagation();
+			dispatch(sendChat(chatRoom!.id, content));
 			setContent('');
 		}
 	};
@@ -46,7 +52,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const onClickSendMessage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		if (content !== '') {
 			e.preventDefault();
-			dispatch(sendChat(chatroom!.id, content));
+			dispatch(sendChat(chatRoom!.id, content));
 			setContent('');
 		}
 	};
@@ -56,10 +62,10 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 			<Tap history={history} />
 			<div id="info">
 				<Typography id="chatroom-header" gutterBottom variant="h3">
-					<Button id="go-to-chatroom-list-button">돌아가기</Button>
+					<Button id="go-to-chatroom-list-button" onClick={(e) => onClickGoBackToChatRoomList(e)}>돌아가기</Button>
 					<div id="member-info-box">
 						<div id="chat-member-image" />
-						<div id="chat-member-username">{chatroom!.member}</div>{' '}
+						<div id="chat-member-username">{chatRoom!.member}</div>{' '}
 					</div>
 				</Typography>
 				<Divider />
@@ -69,8 +75,9 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 						id="chat-input-field"
 						placeholder="내용을 입력해 주세요."
 						inputProps={{ 'aria-label': 'search' }}
+						value={content}
 						onChange={(e) => setContent(e.target.value)}
-						onKeyDown={(e) => onEnterSendMessage(e)}
+						onKeyPress={(e) => onEnterSendMessage(e)}
 					/>
 					<Button id="send-chat-button" onClick={(e) => onClickSendMessage(e)}>
 						보내기

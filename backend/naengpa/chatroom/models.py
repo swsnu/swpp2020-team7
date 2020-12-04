@@ -11,6 +11,9 @@ class ChatRoom(models.Model):
         User, blank=True, related_name="chatroom", through="ChatMember")
     updated_at = models.DateTimeField(default=timezone.now)
 
+    def __str__(self):
+        return f'[{self.id}] by {self.chat_members} - {self.updated_at}]'
+
 
 class ChatMember(models.Model):
     member = models.ForeignKey(
@@ -20,7 +23,7 @@ class ChatMember(models.Model):
     notice = models.IntegerField(default=0, verbose_name='chat_count')
 
     def __str__(self):
-        return f'[{self.id}] by {self.member.username} - chatroom {self.chatroom.id}[notice-{self.notic}]'
+        return f'[{self.id}] by {self.member.username} - chatroom {self.chatroom.id}[notice-{self.notice}]'
 
 
 class Message(models.Model):
