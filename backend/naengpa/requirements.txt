@@ -8,3 +8,4 @@ konlpy==0.5.2
 boto3==1.16.14
 djangorestframework-gis==0.16
 django-redis==4.12.1
+uWSGI==2.0.19.1
