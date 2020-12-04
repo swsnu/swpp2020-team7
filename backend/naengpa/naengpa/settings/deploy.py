@@ -2,6 +2,8 @@
 from .base import *
 
 
+WSGI_APPLICATION = 'naengpa.wsgi.deploy.application'
+
 DEBUG = False
 
 AWS_EC2_ELASTIC_IP = get_env_value('AWS_EC2_ELASTIC_IP')

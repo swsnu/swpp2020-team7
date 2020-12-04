@@ -66,8 +66,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'naengpa.wsgi.application'
-
 
 # Database
 DATABASES = {
