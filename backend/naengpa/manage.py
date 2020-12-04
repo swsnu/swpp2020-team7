@@ -6,7 +6,7 @@ import sys
 
 def main():
     """main function"""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'naengpa.settings.local')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'naengpa.settings.debug')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
