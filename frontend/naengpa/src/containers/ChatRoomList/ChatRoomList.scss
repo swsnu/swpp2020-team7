@@ -1,0 +1,48 @@
+#mypage {
+  #info {
+    left: 0;
+    right: 0;
+    #chatroom-header {
+      font-weight: bold;
+      color: #6b6b6b; 
+      font-size: 130%;
+      margin-left: 5%; 
+      margin-top: 2%;
+    }
+    #chatroom {
+      display: flex;
+      flex-direction: row; 
+      justify-content: space-between;
+      background-color: #ffffff;
+      border: none;
+      width: 100%;
+      font-size: 120%;
+      :focus {
+        outline: 0 !important;
+      }
+      #chat-member {
+        color: #408bf9;
+        font-weight: bold;
+      } 
+
+      #chat-message {
+        color: #6b6b6b;
+      }
+
+      #chat-count {
+        border: none;
+        border-radius: 100%;
+        font-size: 90%;
+        padding: {
+          left: 1.5%;
+          right: 1.5%;
+          top: 0;
+          bottom: 0;
+        }
+        font-weight: bold;
+        color: #ffffff;
+        background-color:#fd6767;
+      }
+    }
+  }
+}
