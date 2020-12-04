@@ -1,6 +1,6 @@
 export interface ChatEntity {
 	id: string;
-	messages?: MessageEntity[],
+	messages?: MessageEntity[];
 	lastChat: string;
 	member: string;
 	updatedAt: string;
