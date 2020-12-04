@@ -8,6 +8,10 @@ export {
 	getUser,
 	editUser,
 	deleteUser,
+	getChatRoomList,
+	getChatRoom,
+	createChatRoom,
+	sendChat,
 } from './user';
 export { getRegionList } from './region';
 
