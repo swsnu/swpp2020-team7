@@ -12,3 +12,6 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
                  AWS_EC2_ELASTIC_IP, 'naengpa.shop', AWS_EC2_DNS_HOST_NAME]
 CSRF_TRUSTED_ORIGINS = ['127.0.0.1', 'localhost',
                         AWS_EC2_ELASTIC_IP, 'naengpa.shop', AWS_EC2_DNS_HOST_NAME]
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
