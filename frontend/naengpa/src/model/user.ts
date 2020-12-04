@@ -15,11 +15,11 @@ export interface UserLoginInputDTO {
 }
 
 export interface UserSignupInputDTO {
-	name?: string;
-	username?: string;
-	password?: string;
-	dateOfBirth?: string;
-	email?: string;
+	name: string;
+	username: string;
+	password: string;
+	dateOfBirth: string;
+	email: string;
 	region?: RegionEntity;
 	regionRange?: number;
 }

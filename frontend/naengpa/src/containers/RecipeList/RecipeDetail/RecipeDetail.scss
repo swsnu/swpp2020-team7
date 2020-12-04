@@ -93,4 +93,16 @@
   #recipe-section5 {
     margin: 2% 5% 2% 5%;
   }
+
+  #profile-box {
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+  }
+
+  #chatting-icon {
+    background-color: #ffffff;
+    border: none; 
+    margin-top: 2%;
+  }
 }

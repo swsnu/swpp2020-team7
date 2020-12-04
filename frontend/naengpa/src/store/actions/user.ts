@@ -8,6 +8,8 @@ import {
 	EditUserInputDTO,
 } from '../../model/user';
 
+import { ChatEntity } from '../../model/chat';
+
 /* CSRF TOKEN */
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -111,3 +113,93 @@ export const editUser = (user: EditUserInputDTO) => {
 		}
 	};
 };
+
+/* GET ChatRoom List */
+export const getChatRoomList_ = (chatRoomList: ChatEntity) => ({
+	type: actionTypes.GET_CHATROOM_LIST,
+	chatRoomList,
+});
+export const getChatRoomList = () => {
+	return async (dispatch: any) => {
+		try {
+			const response = await axios.get(`/api/chatrooms/`);
+			dispatch(getChatRoomList_(response.data));
+		} catch (e) {
+			alert('채팅방 정보를 얻지 못했습니다! 다시 시도해주세요.');
+		}
+	};
+};
+
+/* GET ChatRoom */
+export const getChatRoom_ = (chatRoom: ChatEntity) => ({
+	type: actionTypes.GET_CHATROOM,
+	chatRoom,
+});
+export const getChatRoom = (chatRoom: ChatEntity) => {
+	return async (dispatch: any) => {
+		try {
+			const response = await axios.get(`/api/chatrooms/${chatRoom.id}/`);
+
+			dispatch(getChatRoom_(response.data));
+			dispatch(push(`chatrooms/${chatRoom.id}`));
+		} catch (e) {
+			alert('채팅방에 입장하지 못했습니다! 다시 시도해주세요.');
+		}
+	};
+};
+
+/* Create ChatRoom */
+export const createChatRoom_ = (chatRoom: ChatEntity) => ({
+	type: actionTypes.CREATE_CHATROOM,
+	chatRoom,
+});
+export const createChatRoom = (id: string) => {
+	return async (dispatch: any) => {
+		try {
+			// const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/`)
+			const response = await axios.post(`/api/chatrooms/`, { friend_id: id });
+			console.log(response);
+			if (response.data) {
+				await dispatch(createChatRoom_(response.data));
+				console.log(response.data);
+				await dispatch(push(`/chatrooms/${response.data.id}`));
+			}
+		} catch (e) {
+			alert('채팅방을 만들지 못했습니다! 다시 시도해주세요.');
+		}
+	};
+};
+
+/* Send Chat Message */
+export const sendChat_ = (chatRoom: ChatEntity) => ({
+	type: actionTypes.SEND_CHAT,
+	chatRoom,
+});
+export const sendChat = (chatRoom_id: string, chat: string) => {
+	return async (dispatch: any) => {
+		try {
+			const response = await axios.put(`/api/chatrooms/${chatRoom_id}/`, { content: chat });
+			dispatch(sendChat_(response.data));
+		} catch (e) {
+			alert('채팅을 전송하지 못했습니다! 다시 시도해주세요.');
+		}
+	};
+};
+
+/* Delete ChatRoom */
+export const deleteChatRoom_ = (id: string) => ({
+	type:actionTypes.DELETE_CHATROOM,
+	id,
+});
+
+export const deleteChatRoom = (chatRoom_id:string) => {
+	return async (dispatch:any )=> {
+		try {
+			const response = await axios.delete(`/api/chatrooms/${chatRoom_id}/`);
+			await dispatch(deleteChatRoom_(chatRoom_id));
+		} catch (e) {
+			alert('채팅방을 삭제하지 못했습니다! 다시 시도해주세요.');
+		}
+	}
+} 
+

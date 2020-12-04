@@ -1,0 +1,60 @@
+#mypage {
+  #info {
+    #chatroom-header {
+      display: flex; 
+      flex-direction: row;
+      align-items:center;
+
+      #go-to-chatroom-list-button {
+        font-weight: bold;
+      }
+
+      #chat-member-username {
+        color: #408bf9;
+      }
+    }
+    #user-message {
+      display: flex;
+      flex-direction: row; 
+      align-content: right;
+      justify-content: flex-end;
+      text-align: right;
+      margin-top: 2%;
+    }
+    #member-message {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      text-align: left;
+      margin-top: 2%;
+    }
+    #message-content {
+      width: 60%;
+      border: solid 1px #707070;
+      border-radius: 20px;
+      padding: 15px;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    #message-created-time {
+      align-self: end;
+    }
+
+    #chat-input-box {
+      display: flex; 
+      flex-direction: row;
+      justify-content: center;
+      #chat-input-field {
+        border: 1px solid #707070; 
+        border-radius: 20px;
+        padding: 10px;
+      }
+      #send-chat-button {
+        color: #408bf9;
+        font-weight: bold;
+        font-size: 120%;
+      }
+    }
+  }
+}

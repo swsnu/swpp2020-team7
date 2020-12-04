@@ -10,10 +10,9 @@ import Alert from '@material-ui/lab/Alert';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Button, IconButton, Divider, Collapse, Typography, Avatar, Grid } from '@material-ui/core';
-import { getRecipe, deleteRecipe, editRecipe } from '../../../store/actions/index';
-import { Dictionary } from '../../../model/general';
+import EmailIcon from '@material-ui/icons/Email';
+import { getRecipe, createChatRoom, deleteRecipe, editRecipe } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
-
 import { RecipeEntity, RecipeImage } from '../../../model/recipe';
 
 interface RecipeDetailProps {
@@ -44,6 +43,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const onClickDeleteRecipe = () => {
 		dispatch(deleteRecipe(recipe_id));
 		history.push('/recipes');
+	};
+
+	const onClickChatIcon = async () => {
+		if (recipe.authorId !== user!.id) dispatch(createChatRoom(recipe.authorId as string));
 	};
 
 	const [alert, setAlert] = useState(false);
@@ -120,10 +123,17 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						<Grid item>
 							<Avatar aria-label="user-image" src="/icons/boy.png" />
 						</Grid>
-						<Grid item>
+						<Grid item id="profile-box">
 							<Typography id="profile-title" variant="h5">
 								{recipe.author}
 							</Typography>
+							<button
+								id="chatting-icon"
+								type="button"
+								onClick={(e) => onClickChatIcon()}
+							>
+								<EmailIcon />
+							</button>
 						</Grid>
 						<Grid item xs>
 							<div id="recipe-cook-time">
