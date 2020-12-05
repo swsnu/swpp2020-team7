@@ -3,7 +3,7 @@ import { History } from 'history';
 import { useDispatch } from 'react-redux';
 
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
-import { signup } from '../../../store/actions/index';
+import { getRegionList, saveUserInfo } from '../../../store/actions/index';
 import './Signup.scss';
 
 interface SignupProps {
@@ -38,8 +38,9 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 		} else if (password !== passwordConfirm) {
 			alert('Do not match password');
 		} else {
+			dispatch(getRegionList());
 			dispatch(
-				signup({
+				saveUserInfo({
 					name,
 					username,
 					password,

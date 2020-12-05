@@ -18,7 +18,7 @@ const stubInitialState = {
 				foodName: '딸기',
 				cookTime: '60',
 				recipeContent: '레시피',
-				foodImages: [
+				foodImagePaths: [
 					{
 						id: 2,
 						recipe_id: 2,
@@ -37,7 +37,7 @@ const stubInitialState = {
 				foodName: '딸기',
 				cookTime: '60',
 				recipeContent: '레시피',
-				foodImages: [
+				foodImagePaths: [
 					{
 						id: 2,
 						recipe_id: 2,
@@ -102,7 +102,7 @@ describe('ActionCreators', () => {
 			foodName: 'foodName',
 			cookTime: '100',
 			recipeContent: 'recipeContent',
-			foodImages: [(image as unknown) as File],
+			foodImagePaths: [(image as unknwon) as File],
 			recipeLike: 1,
 		};
 
@@ -128,7 +128,7 @@ describe('ActionCreators', () => {
 			foodName: 'foodName',
 			cookTime: '100',
 			recipeContent: 'recipeContent',
-			foodImages: [(image as unknown) as File],
+			foodImagePaths: [(image as unknown) as File],
 			recipeLike: 1,
 		};
 

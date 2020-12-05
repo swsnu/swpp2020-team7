@@ -1,5 +1,21 @@
 /* User actions */
-export { signup, login, logout, getUserList, getUser, editUser, deleteUser } from './user';
+export {
+	saveUserInfo,
+	signup,
+	login,
+	logout,
+	getUserList,
+	getUser,
+	editUser,
+	deleteUser,
+	getChatRoomList,
+	getChatRoom,
+	createChatRoom,
+	sendChat,
+	receiveChat,
+	deleteChatRoom,
+} from './user';
+export { getRegionList } from './region';
 
 /* Fridge actions */
 export {

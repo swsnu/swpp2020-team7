@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import * as actionTypes from './actionTypes';
-import { CreateRecipeEntity, RecipeEntity } from '../../model/recipe';
+import { BaseRecipeEntity, RecipeEntity } from '../../model/recipe';
 
 /* CSRF TOKEN */
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -48,7 +48,7 @@ export function createRecipe(recipe: RecipeEntity) {
 	};
 }
 
-export function extractMLFeatureFromRecipe(recipe: CreateRecipeEntity) {
+export function extractMLFeatureFromRecipe(recipe: BaseRecipeEntity) {
 	return async (dispatch: any) => {
 		const bodyFormData = new FormData();
 		bodyFormData.append('recipe', JSON.stringify(recipe));

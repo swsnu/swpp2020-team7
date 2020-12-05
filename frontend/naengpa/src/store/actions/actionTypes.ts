@@ -1,5 +1,5 @@
 // USER related ACTIONS
-export const CHECK_LOGIN = 'CHECK_LOGIN' as const;
+export const SAVE_USER_INFO = 'SAVE_USER_INFO' as const;
 export const SIGNUP = 'SIGNUP' as const;
 export const LOGIN = 'LOGIN' as const;
 export const LOGOUT = 'LOGOUT' as const;
@@ -7,6 +7,17 @@ export const GET_USER_LIST = 'GET_USER_LIST' as const;
 export const GET_USER = 'GET_USER' as const;
 export const DELETE_USER = 'DELETE_USER' as const;
 export const EDIT_USER = 'EDIT_USER' as const;
+
+// CHATROOM related ACTIONS
+export const GET_CHATROOM_LIST = 'GET_CHATROOM_LIST' as const;
+export const GET_CHATROOM = 'GET_CHATROOM' as const;
+export const CREATE_CHATROOM = 'CREATE_CHATROOM' as const;
+export const SEND_CHAT = 'SEND_CHAT' as const;
+export const RECEIVE_CHAT = 'RECEIVE_CHAT' as const;
+export const DELETE_CHATROOM = 'DELETE_CHATROOM' as const;
+
+// REGION related ACTIONS
+export const GET_REGION_LIST = 'GET_REGION_LIST' as const;
 
 // FRIDGE related ACTIONS
 export const GET_FRIDGE = 'GET_FRIDGE' as const;

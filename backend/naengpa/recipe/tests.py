@@ -25,7 +25,7 @@ class RecipeTestCase(TestCase):
         response = client.post('/api/signup/', json.dumps({'username': 'nimo', 'name': "nimo", 'password': "nimo", 'dateOfBirth': "19950506", "email": "dori@dori.com"}),
                                content_type='application/json')
         self.assertEqual(response.status_code, 201)
-        response = client.put('/api/recipes/', json.dumps({'foodName': 'apple', 'cookTime': 0, 'recipeContent': "사과", 'foodImages': [], }),
+        response = client.put('/api/recipes/', json.dumps({'foodName': 'apple', 'cookTime': 0, 'recipeContent': "사과", 'foodImageFiles': [], }),
                               content_type='application/json')
         # method put not allowed
         self.assertEqual(response.status_code, 405)

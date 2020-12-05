@@ -7,8 +7,11 @@ import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import './Recipe.scss';
+import { RecipeEntity } from '../../model/recipe';
+import { getRecipe } from '../../store/actions/index';
 import { RecipeEntity, RecipeImage } from '../../model/recipe';
 import { getRecipe, toggleRecipe, getRecipeList } from '../../store/actions/index';
+
 
 interface RecipeProps {
 	recipe: RecipeEntity;
@@ -18,9 +21,7 @@ interface RecipeProps {
 
 const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 	const dispatch = useDispatch();
-	// Thumnail Image for Recipes
-	const images = recipe.foodImages as RecipeImage[];
-	const thumnail = images[0] as RecipeImage;
+	const images = recipe.foodImagePaths;
 	const titleSize = attribute === 'todays-recipe-child' ? 'caption' : 'subtitle2';
 	const fontSize = attribute === 'todays-recipe-child' ? 'small' : 'default';
 	const subheader = attribute === 'todays-recipe-child' ? '' : recipe.createdAt;
@@ -63,9 +64,10 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 				subheaderTypographyProps={{ variant: titleSize }}
 				subheader={subheader}
 			/>
-			{thumnail ? (
+
+			{images?.length ? (
 				<CardMedia
-					image={thumnail.file_path}
+					image={images[0].file_path}
 					id="recipe-image"
 					onClick={() => {
 						onClickRecipe();
