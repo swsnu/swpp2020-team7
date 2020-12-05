@@ -107,8 +107,8 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 		e.preventDefault();
 
 		if (region) {
-			setLatitude((region.location.latitude as unknown) as number);
-			setLongitude((region.location.longitude as unknown) as number);
+			setLatitude((region!.location!.latitude as unknown) as number);
+			setLongitude((region!.location!.longitude as unknown) as number);
 		}
 		setSelectedRegion(region);
 	};
