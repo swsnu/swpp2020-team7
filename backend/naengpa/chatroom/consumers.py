@@ -34,9 +34,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'message': message
         }))
 
-    async def chat_message(self, evnet):
-        message = event['message']
+    # async def chat_message(self, evnet):
+    #     message = event['message']
 
-        await self.send(text_data=json.dumps({
-            'message': message
-        }))
+    #     await self.send(text_data=json.dumps({
+    #         'message': message
+    #     }))
