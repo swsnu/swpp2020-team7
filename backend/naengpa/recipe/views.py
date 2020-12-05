@@ -4,6 +4,7 @@ from operator import itemgetter
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.core.cache import cache
 from django.db import transaction
 from rest_framework.decorators import api_view
 from utils.aws_utils import upload_images
@@ -22,26 +23,31 @@ def recipe_list(request):
             return JsonResponse([], safe=False)
 
         query = request.GET.get('value', "")
-        selected_list = Recipe.objects.select_related(
-            'author')
-        sorted_list = selected_list.filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)).order_by('-created_at') if query else \
-            selected_list.order_by('-created_at')
         user_id = request.user.id
 
-        recipe_collection = [{
-            "id": recipe.id,
-            "authorId": recipe.author.id,
-            "author": recipe.author.username,
-            "foodName": recipe.food_name,
-            "cookTime": recipe.cook_time,
-            "recipeContent": recipe.recipe_content,
-            "foodImagePaths": list(recipe.images.values('id', 'file_path')),
-            "recipeLike": recipe.likes.count(),
-            "userLike": recipe.likes.filter(user_id=user_id).count(),
-            "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-            "foodCategory": recipe.food_category,
-            "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
-        } for recipe in sorted_list]
+        if not query:
+            recipe_collection = cache.get('recipes')
+            if not recipe_collection:
+                sorted_list = Recipe.objects.select_related(
+                    'author')
+        else:
+            sorted_list = selected_list.filter(Q(recipe_content__icontains=query) | Q(
+                food_name__icontains=query) | Q(food_category__icontains=query) | Q(ingredients__ingredient__icontains=query))
+
+            recipe_collection = [{
+                "id": recipe.id,
+                "authorId": recipe.author.id,
+                "author": recipe.author.username,
+                "foodName": recipe.food_name,
+                "cookTime": recipe.cook_time,
+                "recipeContent": recipe.recipe_content,
+                "foodImagePaths": list(recipe.images.values('id', 'file_path')),
+                "recipeLike": recipe.likes.count(),
+                "userLike": recipe.likes.filter(user_id=user_id).count(),
+                "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
+                "foodCategory": recipe.food_category,
+                "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
+            } for recipe in sorted_list]
         return JsonResponse(recipe_collection, safe=False)
 
     else:

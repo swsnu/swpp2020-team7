@@ -34,6 +34,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		if (e.key === 'Enter') {
 			dispatch(getRecipeList(query));
 			setMaxPageIndex(Math.ceil(recipe_list.length / 9.0));
+			setCurrentList([]);
 			setCurrentList(recipe_list.slice((page - 1) * 9, (page - 1) * 9 + 9));
 			setLoading(false);
 		}
@@ -60,7 +61,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		const func = () => {
 			dispatch(getRecipeList(query));
 			setMaxPageIndex(Math.ceil(recipe_list.length / 9.0));
-			setCurrentList(recipe_list.slice((page - 1) * 9, (page - 1) * 9 + 9));
+			// setCurrentList(recipe_list.slice((page - 1) * 9, (page - 1) * 9 + 9));
 			setLoading(false);
 		};
 		func();

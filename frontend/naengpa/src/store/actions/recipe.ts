@@ -10,26 +10,37 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 /* GET RECIPE LIST */
 export function getRecipeList(query: string) {
 	return async (dispatch: any) => {
-		const response = await axios.get('/api/recipes/', {
-			params: {
-				value: query,
-			},
-		});
-		dispatch({
-			type: actionTypes.GET_RECIPE_LIST,
-			recipeList: response.data,
-		});
+		try {
+			const response = await axios.get('/api/recipes/', {
+				params: {
+					value: query,
+				},
+			});
+			const receivedList = (!response.data.length) ? response.data : []
+		
+			dispatch({
+				type: actionTypes.GET_RECIPE_LIST,
+				recipeList: receivedList
+			});
+		} catch {
+			console.log("레시피 리스트 정보를 가져오지 못했습니다! 다시 시도해주세요!");
+		}
 	};
 }
 
 /* GET RECIPE */
 export function getRecipe(id: number) {
 	return async (dispatch: any) => {
-		const response = await axios.get(`/api/recipes/${id}`);
-		dispatch({
-			type: actionTypes.GET_RECIPE,
-			recipe: response.data,
-		});
+		try {
+			const response = await axios.get(`/api/recipes/${id}`);
+			const receivedRecipe = (!response.data.length) ? response.data : null;
+			dispatch({
+				type: actionTypes.GET_RECIPE,
+				recipe: receivedRecipe,
+			});
+		} catch {
+			console.log("레시피 정보를 가져오지 못했습니다.");
+		}
 	};
 }
 
