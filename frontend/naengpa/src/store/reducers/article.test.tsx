@@ -12,7 +12,7 @@ const mockArticle: ArticleEntity = {
 	item: {
 		id: 2,
 		category: '과일',
-		name: '딸기'
+		name: '딸기',
 	},
 	price: 1000,
 	views: 77,
@@ -41,7 +41,7 @@ const mockArticleList: ArticleEntity[] = [
 		item: {
 			id: 2,
 			category: '과일',
-			name: '딸기'
+			name: '딸기',
 		},
 		price: 1000,
 		views: 77,

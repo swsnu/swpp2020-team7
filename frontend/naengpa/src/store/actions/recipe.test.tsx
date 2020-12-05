@@ -88,21 +88,23 @@ describe('ActionCreators', () => {
 	});
 
 	it('should return create Recipe action correctly', async () => {
-		const spy = jest.spyOn(axios, 'post').mockImplementation(() => 
-			new Promise((resolve, reject) => {
-				const result = {
-					status: 201,
-					data: { id: 1 },
-				};
-				resolve(result);
-			}));
+		const spy = jest.spyOn(axios, 'post').mockImplementation(
+			() =>
+				new Promise((resolve, reject) => {
+					const result = {
+						status: 201,
+						data: { id: 1 },
+					};
+					resolve(result);
+				}),
+		);
 		const mockData = {
 			foodName: 'foodName',
 			cookTime: '100',
 			recipeContent: 'recipeContent',
 			foodImages: [(image as unknown) as File],
 			recipeLike: 1,
-		}
+		};
 
 		await mockStore.dispatch<any>(actionCreators.createRecipe(mockData));
 		expect(spy).toBeCalledTimes(1);
@@ -134,7 +136,10 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.EXTRACT_ML_FEATURE_FROM_RECIPE, recipe: { id: 6, ...mockData } };
+		const expectedPayload = {
+			type: actionTypes.EXTRACT_ML_FEATURE_FROM_RECIPE,
+			recipe: { id: 6, ...mockData },
+		};
 		expect(actions[0]).toEqual(expectedPayload);
 	});
 

@@ -20,7 +20,7 @@ const recipeList: RecipeEntity[] = [
 		recipeLike: 1,
 		createdAt: '2000.00.00',
 		foodCategory: '밥류',
-		ingredients: [{ingredient: '돼지고기'}, {ingredient: '고추장'}],
+		ingredients: [{ ingredient: '돼지고기' }, { ingredient: '고추장' }],
 	},
 	{
 		id: 3,
@@ -38,7 +38,7 @@ const recipeList: RecipeEntity[] = [
 		recipeLike: 1,
 		createdAt: '2000.00.00',
 		foodCategory: '밥류',
-		ingredients: [{ingredient: '돼지고기'}, {ingredient: '고추장'}],
+		ingredients: [{ ingredient: '돼지고기' }, { ingredient: '고추장' }],
 	},
 ];
 
@@ -110,10 +110,13 @@ describe('Recipe Reducer', () => {
 	});
 
 	it('should check if it can delete specific recipe', () => {
-		const newState = recipeReducer({...RecipeState, recipeList}, {
-			type: actionTypes.DELETE_RECIPE,
-			target_id: 3,
-		});
+		const newState = recipeReducer(
+			{ ...RecipeState, recipeList },
+			{
+				type: actionTypes.DELETE_RECIPE,
+				target_id: 3,
+			},
+		);
 		expect(newState).toEqual({
 			...RecipeState,
 			recipeList: [recipeList[0]],
