@@ -103,7 +103,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 			<div id="article-list-header">
 				<div id="article-list-header-primary">
 					<h1 id="article-list-header-title">우리 동네 장터</h1>
-					<span>{user!.region}</span>
+					<span>{user!.region.name}</span>
 				</div>
 				<div id="article-list-helper">
 					<div id="article-search">
