@@ -65,7 +65,7 @@ def extract_ingredients(request, recipe_info):
     return context
 
 
-@api_view('[POST]')
+@api_view(['POST'])
 @login_required
 def extract_ml_feature(request):
     """/api/extract/ extract ml features"""
