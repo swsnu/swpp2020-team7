@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { deleteIngredientFromFridge } from '../../store/actions/index';
+import StarIcon from '@material-ui/icons/Star';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import { deleteIngredientFromFridge, toggleTodayIngredient } from '../../store/actions/index';
 import './Ingredient.scss';
 import { AppState } from '../../store/store';
 import { IngredientEntity } from '../../model/ingredient';
@@ -16,7 +18,9 @@ interface IngredientProps {
 const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	const category: string = ingredient.category!;
 	const [deleteIngredient, setDeleteIngredient] = useState(false);
+	const [todayIngredient, setTodayIngredient] = useState(false);
 	const user = useSelector((state: AppState) => state.user.user);
+	const [isTodayIngredient, setIsTodayIngredient] = useState(ingredient.isTodayIngredient);
 	const dispatch = useDispatch();
 
 	const foodCategory: Dictionary<string> = {
@@ -41,19 +45,29 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	/* MOUSEOVER EVENT */
 	const onMouseOverIngredient = () => {
 		setDeleteIngredient(true);
+		setTodayIngredient(true);
 	};
 	/* MOUSELEAVE EVENT */
 	const onMouseLeaveIngredient = () => {
 		setDeleteIngredient(false);
+		setTodayIngredient(false);
 	};
 	/* FOCUS EVENT */
 	const onFocusIngredient = () => {
 		setDeleteIngredient(true);
+		setTodayIngredient(true);
 	};
 	/* CLICK EVENT - DELETE IMAGE */
 	const onClickDeleteIngredient = () => {
 		const target_id: number = ingredient.id;
 		dispatch(deleteIngredientFromFridge(user!.id, target_id));
+		history.push('/fridge');
+	};
+
+	const onClickToggleTodayIngredient = () => {
+		const target_id: number = ingredient.id;
+		setIsTodayIngredient(!isTodayIngredient);
+		dispatch(toggleTodayIngredient(user!.id, target_id));
 		history.push('/fridge');
 	};
 
@@ -65,6 +79,20 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 				onMouseLeave={onMouseLeaveIngredient}
 				onFocus={onFocusIngredient}
 			>
+				{todayIngredient &&
+					(isTodayIngredient ? (
+						<StarIcon
+							id="toggle-ingredient-button"
+							type="button"
+							onClick={() => onClickToggleTodayIngredient()}
+						/>
+					) : (
+						<StarBorderIcon
+							id="toggle-ingredient-button"
+							type="button"
+							onClick={() => onClickToggleTodayIngredient()}
+						/>
+					))}
 				{deleteIngredient && (
 					<CancelIcon
 						id="delete-ingredient-button"
