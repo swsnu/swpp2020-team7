@@ -13,7 +13,6 @@ const initialState: RegionState = {
 function regionReducer(state: RegionState = initialState, action: RegionAction): RegionState {
 	switch (action.type) {
 		case actionTypes.GET_REGION_LIST:
-			console.log(action.regionList);
 			return { ...state, regionList: action.regionList };
 		default:
 			return state;
