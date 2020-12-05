@@ -77,7 +77,7 @@ def signin(request):
                 'email': user.email,
                 'name': user.name,
                 'dateOfBirth': user.date_of_birth,
-                'region': user.region.name,
+                'region': user.region.name if user.region else None,
                 'naengpa_score': user.naengpa_score
             }, status=200)
         else:
