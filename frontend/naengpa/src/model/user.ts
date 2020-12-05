@@ -6,6 +6,7 @@ export interface UserEntity {
 	dateOfBirth: string;
 	email: string;
 	region?: RegionEntity;
+	regionRange?: number;
 }
 
 export interface UserLoginInputDTO {
@@ -20,6 +21,7 @@ export interface UserSignupInputDTO {
 	dateOfBirth: string;
 	email: string;
 	region?: RegionEntity;
+	regionRange?: number;
 }
 
 export interface EditUserInputDTO {
@@ -29,14 +31,13 @@ export interface EditUserInputDTO {
 	dateOfBirth: string;
 	email: string;
 	region?: RegionEntity;
+	regionRange?: string;
 }
 
 export interface RegionEntity {
-	user_id?: number;
 	id?: number;
 	name: string;
 	location: LocationEntity;
-	distance: string;
 }
 export interface LocationEntity {
 	latitude: string;

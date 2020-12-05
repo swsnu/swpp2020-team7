@@ -185,10 +185,10 @@ export const sendChat = (chatRoom_id: string, chat: string) => {
 	};
 };
 
-export const receiveChat = (messages: MessageEntity[], id:string) => ({
-		type: actionTypes.RECEIVE_CHAT,
-		messages,
-		id,
+export const receiveChat = (messages: MessageEntity[], id: string) => ({
+	type: actionTypes.RECEIVE_CHAT,
+	messages,
+	id,
 });
 
 /* Delete ChatRoom */

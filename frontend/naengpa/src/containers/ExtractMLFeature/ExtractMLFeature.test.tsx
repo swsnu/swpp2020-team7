@@ -73,17 +73,23 @@ const stubInitialState2 = {
 	},
 };
 
+describe('ExtractMLFeature', () => {
+	let extractMLFeature: any;
+	let extractMLFeature2: any;
+	let spyHistoryPush: any;
+	let spyCreateRecipe: any;
+	let spyGetFoodCategory: any;
+	let spyUseState: any;
+	let spySetState: any;
+
 	beforeEach(() => {
-		let spyGetFoodCategory;
-		let spyCreateRecipe;
-		let spyHistoryPush;
-		let extractMLFeature;
-		let extractMLFeature2;
-		
 		const mockStore = store(stubInitialState);
 		const mockStore2 = store(stubInitialState2);
+
 		jest.mock('react-redux', () => ({
+			useSelector: jest.fn((fn) => fn(mockStore.getState())),
 			useDispatch: () => jest.fn(),
+			useState: () => jest.fn(),
 		}));
 
 		act(() => {
@@ -109,6 +115,9 @@ const stubInitialState2 = {
 			.spyOn(recipeActionCreators, 'createRecipe')
 			.mockImplementation(() => jest.fn());
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
+		spySetState = jest.fn();
+		spyUseState = jest.spyOn(React, 'useState');
+		spyUseState.mockImplementation((init: any) => [init, spySetState]);
 	});
 	afterEach(() => {
 		jest.clearAllMocks();

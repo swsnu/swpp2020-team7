@@ -10,9 +10,41 @@ from django.db import transaction
 from ingredient.models import Ingredient
 from utils.gis_utils import get_nearest_places_from_region
 from .models import Fridge, FridgeIngredient
-
+from django.contrib.auth.hashers import check_password
 
 User = get_user_model()
+
+
+def get_region(region):
+    """ get specific user Region Information """
+    return {
+        "id": region.id,
+        "name": region.name,
+        "location": {
+            "latitude": region.latitude,
+            "longitude": region.longitude,
+        }
+    }
+
+
+def get_region_list():
+    """ get region list """
+    return [get_region(region) for region in Region.objects.all()]
+
+
+@ensure_csrf_cookie
+def get_region_info(request):
+    """ get region list information for searching Region """
+    if request.method != 'GET':
+        return HttpResponseNotAllowed(['GET'])
+
+    try:
+        """ get region list from seoul's center('종로', id:44) """
+        region_list = get_region_list()
+    except Region.DoesNotExist:
+        return HttpResponseBadRequest()
+
+    return JsonResponse(region_list, safe=False)
 
 
 @ensure_csrf_cookie
@@ -22,13 +54,21 @@ def signup(request):
     if request.method == 'POST':
         try:
             req_data = json.loads(request.body.decode())
+
             username = req_data['username']
             name = req_data['name']
             password = req_data['password']
             date_of_birth = req_data['dateOfBirth']
             email = req_data['email']
+            si_name, gu_name, dong_name = req_data['region']['name'].split()
+            user_region = Region.objects.get(
+                si_name=si_name, gu_name=gu_name, dong_name=dong_name)
+            region_range = req_data['regionRange']
+
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
+        except Region.DoesNotExist:
+            return HttpResponseNotFound()
 
         try:
             user = User.objects.create_user(
@@ -36,7 +76,10 @@ def signup(request):
                 password=password,
                 email=email,
                 name=name,
-                date_of_birth=date_of_birth)
+                date_of_birth=date_of_birth,
+                region=user_region,
+                region_range=region_range,
+            )
             user.save()
             my_fridge = Fridge(user=user)
             my_fridge.save()
@@ -49,7 +92,9 @@ def signup(request):
                 'email': checked_user.email,
                 'name': checked_user.name,
                 'dateOfBirth': checked_user.date_of_birth,
-                'naengpa_score': checked_user.naengpa_score
+                'naengpaScore': checked_user.naengpa_score,
+                'region': get_region(checked_user.region),
+                "regionRange": user.region_range,
             }, status=201)
         except:
             return HttpResponse(status=500)
@@ -77,8 +122,9 @@ def signin(request):
                 'email': user.email,
                 'name': user.name,
                 'dateOfBirth': user.date_of_birth,
-                'region': user.region.name,
-                'naengpa_score': user.naengpa_score
+                'naengpaScore': user.naengpa_score,
+                'region': get_region(user.region),
+                "regionRange": user.region_range,
             }, status=200)
         else:
             return HttpResponse(status=401)
@@ -108,7 +154,9 @@ def user(request, id):
             "name": user.name,
             "email": user.email,
             "dateOfBirth": user.date_of_birth,
-            "region": user.region.name,
+            'naengpaScore': user.naengpa_score,
+            "region": get_region(user.region),
+            "regionRange": user.region_range,
         }
         return JsonResponse(data=current_user, safe=False)
     elif request.method == 'PUT':
@@ -132,13 +180,14 @@ def user(request, id):
             return HttpResponse(status=401)
         user.save()
         return JsonResponse(data={
-            'id': request.user.id,
-            'username': request.user.username,
-            'email': request.user.email,
-            'name': request.user.name,
-            'dateOfBirth': request.user.date_of_birth,
-            'region': user.region.name,
-            'naengpa_score': request.user.naengpa_score
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'name': user.name,
+            'dateOfBirth': user.date_of_birth,
+            'naengpaScore': user.naengpa_score,
+            'region': get_region(user.region),
+            'region_range': user.region_range,
         }, status=201)
     return HttpResponseNotAllowed(['GET', 'PUT'])
 
@@ -156,7 +205,7 @@ def user_list(request):
                 "name": user.name,
                 "email": user.email,
                 "dateOfBirth": user.date_of_birth,
-                'region': user.region.name,
+                'region': get_region(user.region),
                 "naengpa_score": user.naengpa_score
             } for user in User.objects.select_related('region').all()] if User.objects.count() != 0 else []
             cache.set('users', user_collection)
