@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -152,3 +153,15 @@ AWS_S3_FILE_OVERWRITE = os.getenv("AWS_S3_REGION_NAME")
 
 # Kakao REST Api key
 APP_REST_API_KEY = os.getenv("APP_REST_API_KEY")
+
+
+# Channels
+ASGI_APPLICATION = 'naengpa.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
