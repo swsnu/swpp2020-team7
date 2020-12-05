@@ -36,8 +36,9 @@ class Command(BaseCommand):
                     print(Region.objects.create(
                         si_name=si_name, gu_name=gu_name, dong_name=dong_name, location=location))
 
-        region_snu = Region.objects.get(name="관악구 대학동")
-        for user in User.objects.selected_related('region').all():
+        region_snu = Region.objects.get(
+            si_name="서울시", gu_name="관악구", dong_name="대학동")
+        for user in User.objects.select_related('region').all():
             if not user.region:
                 user.region = region_snu
                 user.save()
