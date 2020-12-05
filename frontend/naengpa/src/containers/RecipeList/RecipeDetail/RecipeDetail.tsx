@@ -46,6 +46,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const recipe_id = recipe.id as number;
 	const [userLike, setUserLike] = useState(recipe.userLike);
 	const [recipeLike, setRecipeLike] = useState(recipe.recipeLike);
+	const dispatch = useDispatch();
 
 	const onClickPage = (e: React.ChangeEvent<unknown>, value: number): void => {
 		e.preventDefault();
@@ -129,15 +130,14 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						{item.ingredient}
 					</Button>
 				) : (
-					<Button key={`${item.ingredient}-${i}` as string} id="ingredient-no-button">
-						{item.ingredient}
-					</Button>
-				)}
+						<Button key={`${item.ingredient}-${i}` as string} id="ingredient-no-button">
+							{item.ingredient}
+						</Button>
+					)}
 			</div>
 		);
 	});
 
-	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const func = () => {
@@ -220,12 +220,12 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 										onClick={() => onClickRecipeLike()}
 									/>
 								) : (
-									<FavoriteBorderIcon
-										id="recipe-like-count-icon"
-										fontSize="large"
-										onClick={() => onClickRecipeLike()}
-									/>
-								)}
+										<FavoriteBorderIcon
+											id="recipe-like-count-icon"
+											fontSize="large"
+											onClick={() => onClickRecipeLike()}
+										/>
+									)}
 								{recipeLike}
 							</div>
 						</Grid>
