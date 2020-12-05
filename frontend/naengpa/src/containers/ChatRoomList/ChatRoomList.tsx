@@ -8,7 +8,6 @@ import Tab from '../../components/Tab/Tab';
 import { getChatRoomList, getChatRoom } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 
-
 interface ChatRoomListProps {
 	history: History;
 }
