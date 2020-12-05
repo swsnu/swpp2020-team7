@@ -102,10 +102,24 @@ export function editRecipe(recipe: RecipeEntity) {
 	};
 }
 
+/* TOGGLE RECIPE LIKE */
+export function toggleRecipe(id: number) {
+	return async (dispatch: any) => {
+		const response: any = await axios.get(`/api/recipes/${id}/like`);
+		console.log(response);
+		dispatch({
+			type: actionTypes.TOGGLE_RECIPE,
+			target_id: id,
+			recipeLikeInfo: response.data,
+		});
+	};
+}
+
 export type RecipeActions =
 	| ReturnType<typeof getRecipeList>
 	| ReturnType<typeof getRecipe>
 	| ReturnType<typeof createRecipe>
 	| ReturnType<typeof extractMLFeatureFromRecipe>
 	| ReturnType<typeof deleteRecipe>
-	| ReturnType<typeof editRecipe>;
+	| ReturnType<typeof editRecipe>
+	| ReturnType<typeof toggleRecipe>;

@@ -17,6 +17,7 @@ export interface RecipeEntity {
 	recipeContent: string;
 	foodImages: RecipeImage[] | File[];
 	recipeLike: number;
+	userLike: number;
 	createdAt?: string;
 	foodCategory?: string;
 	ingredients?: RecipeIngredient[];
@@ -32,4 +33,9 @@ export interface RecipeIngredient {
 	ingredient: string;
 	checked?: boolean;
 	quantity?: string;
+}
+
+export interface RecipeLike {
+	recipeLike: number;
+	userLike: number;
 }

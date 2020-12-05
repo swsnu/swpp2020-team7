@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { RecipeEntity } from '../../model/recipe';
+import { RecipeEntity, RecipeLike } from '../../model/recipe';
 
 export type InitialState = {
 	recipeList: RecipeEntity[];
@@ -19,10 +19,8 @@ export type Action =
 	| { type: 'CREATE_RECIPE'; recipe: RecipeEntity }
 	| { type: 'EXTRACT_ML_FEATURE_FROM_RECIPE'; recipe: RecipeEntity }
 	| { type: 'DELETE_RECIPE'; target_id: number }
-	| {
-			type: 'EDIT_RECIPE';
-			recipe: RecipeEntity;
-	  };
+	| { type: 'EDIT_RECIPE'; recipe: RecipeEntity }
+	| { type: 'TOGGLE_RECIPE'; target_id: number; recipeLikeInfo: RecipeLike };
 
 function recipeReducer(state: InitialState = RecipeState, action: Action): InitialState {
 	let recipeList = [];
@@ -66,6 +64,19 @@ function recipeReducer(state: InitialState = RecipeState, action: Action): Initi
 			return {
 				...state,
 			};
+
+		case actionTypes.TOGGLE_RECIPE: {
+			recipeList = state.recipeList.map((recipe) => {
+				if ((recipe.id as number) === action.target_id) {
+					recipe.recipeLike =
+						recipe.userLike === 1 ? recipe.recipeLike - 1 : recipe.recipeLike + 1;
+					recipe.userLike = recipe.userLike === 1 ? 0 : 1;
+					return recipe;
+				}
+				return recipe;
+			});
+			return { ...state, recipeList };
+		}
 
 		default:
 			return state;
