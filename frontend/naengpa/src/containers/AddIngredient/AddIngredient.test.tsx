@@ -132,6 +132,26 @@ describe('AddIngredient', () => {
 		expect(wrapper.find('button').last().text()).toBe('오리고기');
 	});
 
+	it('should render a filtered list for given query', async () => {
+		const component = mount(addIngredient);
+		await waitForComponentToPaint(component);
+
+		let wrapper = component.find('div#add-ingredient-search');
+		const searchBar = wrapper.find('input#add-ingredient-search-input')
+		const event = {target: {value: '고기'}};
+		searchBar.simulate('change', event);
+		searchBar.simulate('keydown');
+		component.update();
+		console.log(component.debug())
+
+		wrapper = component.find('div#add-ingredient-category-list');
+		expect(wrapper.find('button').length).toBe(1);
+
+		wrapper = component.find('div#add-ingredient-grid');
+		expect(wrapper.find('button').length).toBe(5);
+		expect(wrapper.find('button').last().text()).toBe('오리고기');
+	});
+
 	// it('should render selected category and ingredient correctly', async () => {
 	// 	const component = mount(addIngredient);
 	// 	await waitForComponentToPaint(component);

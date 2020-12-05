@@ -62,9 +62,11 @@ const AddIngredient: React.FC = () => {
 	}, [currentIngredientList]);
 
 	const onClickSearch = () => {
+		console.log('hihi')
 		if (!query) {
 			setCurrentIngredientList(ingredientList);
 		} else {
+			console.log(query)
 			const filteredCollection: IngredientCategoryCollection = {};
 			Object.keys(ingredientList).forEach((category) => {
 				filteredCollection[category] = ingredientList[category].filter((item) =>
@@ -72,6 +74,7 @@ const AddIngredient: React.FC = () => {
 				);
 			});
 			setCurrentIngredientList(filteredCollection);
+			console.log(JSON.stringify(currentIngredientList))
 			setSelectedIngredient(null);
 		}
 	};
@@ -123,12 +126,14 @@ const AddIngredient: React.FC = () => {
 					<InputBase
 						id="add-ingredient-search-input"
 						placeholder="가지고 있는 재료명을 검색해보세요!"
+						value={query}
 						autoFocus
 						fullWidth
 						inputProps={{ 'aria-label': 'search' }}
 						onChange={(e) => setQuery(e.target.value)}
 						onKeyDown={onClickSearch}
 					/>
+					{"hi" + query}
 					<SearchIcon id="add-ingredient-search-icon" />
 				</div>
 				<div id="add-ingredient-category-list" className="grid-container">
