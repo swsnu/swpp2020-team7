@@ -8,7 +8,7 @@ import {
 	EditUserInputDTO,
 } from '../../model/user';
 
-import { ChatEntity } from '../../model/chat';
+import { ChatEntity, MessageEntity } from '../../model/chat';
 
 /* CSRF TOKEN */
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -156,7 +156,6 @@ export const createChatRoom_ = (chatRoom: ChatEntity) => ({
 export const createChatRoom = (id: string) => {
 	return async (dispatch: any) => {
 		try {
-			// const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/`)
 			const response = await axios.post(`/api/chatrooms/`, { friend_id: id });
 			console.log(response);
 			if (response.data) {
@@ -185,6 +184,12 @@ export const sendChat = (chatRoom_id: string, chat: string) => {
 		}
 	};
 };
+
+export const receiveChat = (messages: MessageEntity[], id:string) => ({
+		type: actionTypes.RECEIVE_CHAT,
+		messages,
+		id,
+});
 
 /* Delete ChatRoom */
 export const deleteChatRoom_ = (id: string) => ({
