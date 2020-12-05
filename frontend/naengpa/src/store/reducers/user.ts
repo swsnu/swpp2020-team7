@@ -33,6 +33,9 @@ type Action =
 	| { type: 'RECEIVE_CHAT'; chatRoomList: ChatEntity[] }
 	| { type: 'DELETE_CHATROOM'; id: string };
 
+let filteredChatRoomList = null;
+let filteredChatRoom = null;
+
 function userReducer(state: InitialState = UserState, action: Action): InitialState {
 	switch (action.type) {
 		/* SAVE USER INFO */
@@ -65,8 +68,8 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 
 		/* CREAT CHATROOM */
 		case actionTypes.CREATE_CHATROOM:
-			let filteredChatRoomList = state.chatRoomList.filter((chatRoom) => {
-				return chatRoom.id == action.chatRoom.id;
+			filteredChatRoomList = state.chatRoomList.filter((chatRoom) => {
+				return chatRoom.id === action.chatRoom.id;
 			});
 			if (!filteredChatRoomList.length) {
 				filteredChatRoomList = [...state.chatRoomList, action.chatRoom];
@@ -87,22 +90,22 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 
 		/* RECEIVE CHAT */
 		case actionTypes.RECEIVE_CHAT:
-			let newChatRoom = null;
-			if(state.chatRoom) {
-				newChatRoom = action.chatRoomList.find((chatroom) => {
-					return (chatroom.id === state.chatRoom!.id)
+			filteredChatRoom = null;
+			if (state.chatRoom) {
+				filteredChatRoom = action.chatRoomList.find((chatroom) => {
+					return chatroom.id === state.chatRoom!.id;
 				});
-			} 
-			if(newChatRoom === undefined) newChatRoom = state.chatRoom;
-			return { ...state, chatRoomList: action.chatRoomList, chatRoom:newChatRoom };
+			}
+			if (filteredChatRoom === undefined) filteredChatRoom = state.chatRoom;
+			return { ...state, chatRoomList: action.chatRoomList, chatRoom: filteredChatRoom };
 
 		/* DELETE CHATROOM */
 		case actionTypes.DELETE_CHATROOM:
-			const modifiedChatRoomList = state.chatRoomList.filter((item) => {
+			filteredChatRoomList = state.chatRoomList.filter((item) => {
 				return item.id !== action.id;
 			});
 
-			return { ...state, chatRoomList: modifiedChatRoomList, chatRoom: null };
+			return { ...state, chatRoomList: filteredChatRoomList, chatRoom: null };
 
 		default:
 			return state;
