@@ -1,5 +1,6 @@
 """views for user"""
 import json
+from operator import itemgetter
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.hashers import check_password
@@ -33,11 +34,9 @@ def get_region_list():
     return [get_region(region) for region in Region.objects.all()]
 
 
+@api_view(['GET'])
 def get_region_info(request):
     """ get region list information for searching Region """
-    if request.method != 'GET':
-        return HttpResponseNotAllowed(['GET'])
-
     try:
         """ get region list from seoul's center('종로', id:44) """
         region_list = get_region_list()
@@ -53,18 +52,11 @@ def signup(request):
     """signup"""
     if request.method == 'POST':
         try:
-            req_data = json.loads(request.body.decode())
-
-            username = req_data['username']
-            name = req_data['name']
-            password = req_data['password']
-            date_of_birth = req_data['dateOfBirth']
-            email = req_data['email']
-            si_name, gu_name, dong_name = req_data['region']['name'].split()
+            name, username, password, date_of_birth, email, region, region_range = itemgetter(
+                'name', 'username', 'password', 'dateOfBirth', 'email', 'region', 'regionRange')(request.data)
+            gu_name, dong_name = region['name'].split()
             user_region = Region.objects.get(
-                si_name=si_name, gu_name=gu_name, dong_name=dong_name)
-            region_range = req_data['regionRange']
-
+                gu_name=gu_name, dong_name=dong_name)
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
         except Region.DoesNotExist:
@@ -102,9 +94,8 @@ def signin(request):
     """signin"""
     if request.method == 'POST':
         try:
-            req_data = json.loads(request.body.decode())
-            username = req_data['username']
-            password = req_data['password']
+            username = request.data['username']
+            password = request.data['password']
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
 
@@ -159,14 +150,13 @@ def user(request, id):
             user = User.objects.get(id=id)
         except User.DoesNotExist:
             return HttpResponseBadRequest()
-        # try:
-        req_data = json.loads(request.body.decode())
-        edit_name = req_data['name']
-        edit_date_of_birth = req_data['dateOfBirth']
-        edit_email = req_data['email']
-        checked_password = req_data['password']
-        # except (KeyError, JSONDecodeError):
-        #    return HttpResponseBadRequest()
+        try:
+            edit_name = request.data['name']
+            edit_date_of_birth = request.data['dateOfBirth']
+            edit_email = request.data['email']
+            checked_password = request.data['password']
+        except (KeyError, json.decoder.JSONDecodeError):
+            return HttpResponseBadRequest()
         if check_password(checked_password, request.user.password):
             user.name = edit_name
             user.date_of_birth = edit_date_of_birth
@@ -223,8 +213,7 @@ def user_fridge(request, id):
     elif request.method == 'POST':
         try:
             user = User.objects.get(id=id)
-            req_data = json.loads(request.body.decode())
-            ingredient_id = req_data['ingredient_id']
+            ingredient_id = request.data['ingredient_id']
             ingredient = Ingredient.objects.get(id=ingredient_id)
             FridgeIngredient.objects.get_or_create(
                 fridge=user.fridge, ingredient=ingredient)
