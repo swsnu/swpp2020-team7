@@ -38,7 +38,6 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 		} else if (password !== passwordConfirm) {
 			alert('Do not match password');
 		} else {
-			dispatch(getRegionList());
 			dispatch(
 				saveUserInfo({
 					name,

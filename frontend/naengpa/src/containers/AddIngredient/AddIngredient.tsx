@@ -18,7 +18,6 @@ const useIngredientList = () => {
 
 	const loadIngredientList = async () => {
 		dispatch(getIngredientList());
-		setCurrentIngredientList(ingredientList);
 	};
 	const loadCategoryList = async () => {
 		const categoryList = Object.keys(currentIngredientList).sort();
@@ -31,6 +30,7 @@ const useIngredientList = () => {
 		currentIngredientList,
 		selectedCategory,
 		setCurrentIngredientList,
+		setCategoryList,
 		setSelectedCategory,
 		loadIngredientList,
 		loadCategoryList,
@@ -44,6 +44,7 @@ const AddIngredient: React.FC = () => {
 		currentIngredientList,
 		selectedCategory,
 		setCurrentIngredientList,
+		setCategoryList,
 		setSelectedCategory,
 		loadIngredientList,
 		loadCategoryList,
@@ -58,24 +59,31 @@ const AddIngredient: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
+		setCurrentIngredientList(ingredientList);
+		loadCategoryList();
+	}, [ingredientList]);
+
+	useEffect(() => {
 		loadCategoryList();
 	}, [currentIngredientList]);
 
-	const onClickSearch = () => {
+	useEffect(() => {
 		if (!query) {
 			setCurrentIngredientList(ingredientList);
 		} else {
-			console.log(query);
 			const filteredCollection: IngredientCategoryCollection = {};
 			Object.keys(ingredientList).forEach((category) => {
-				filteredCollection[category] = ingredientList[category].filter((item) =>
+				const filtered = ingredientList[category].filter((item) =>
 					item.name.includes(query),
 				);
+				if (filtered && filtered.length) {
+					filteredCollection[category] = filtered;
+				}
 			});
 			setCurrentIngredientList(filteredCollection);
 			setSelectedIngredient(null);
 		}
-	};
+	}, [query]);
 
 	const onClickFoodCategory = (category: string) => {
 		setSelectedCategory(category);
@@ -83,10 +91,7 @@ const AddIngredient: React.FC = () => {
 	};
 	const onClickIngredient = (ingredient: IngredientEntity) => {
 		setSelectedIngredient(ingredient);
-		onClickAddIngredientToFridge();
-	};
-	const onClickAddIngredientToFridge = () => {
-		dispatch(addIngredientToFridge(user!.id, selectedIngredient!));
+		dispatch(addIngredientToFridge(user!.id, ingredient!));
 	};
 
 	const IngredientGrid = ({
@@ -124,12 +129,10 @@ const AddIngredient: React.FC = () => {
 					<InputBase
 						id="add-ingredient-search-input"
 						placeholder="가지고 있는 재료명을 검색해보세요!"
-						value={query}
 						autoFocus
 						fullWidth
 						inputProps={{ 'aria-label': 'search' }}
 						onChange={(e) => setQuery(e.target.value)}
-						onKeyDown={onClickSearch}
 					/>
 					<SearchIcon id="add-ingredient-search-icon" />
 				</div>
