@@ -64,25 +64,28 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	/* CLICK EVENT - redirect to extract-ml-feature page */
 	const onClickExtractMLFeature = () => {
-		// if one of the input field is empty, then the alert modal shows itself
-		if (foodImageFiles === [] || foodName === '' || cookTime === '' || recipeContent === '') {
-			setAlert(true);
-			setAlertContent(
-				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
-			);
-		} else {
-			const newRecipe: BaseRecipeEntity = {
-				foodName,
-				cookTime,
-				recipeContent,
-				foodImageFiles,
-			};
+		const extractMLFeatureClosure = async() => {
+			// if one of the input field is empty, then the alert modal shows itself
+			if (foodImageFiles === [] || foodName === '' || cookTime === '' || recipeContent === '') {
+				setAlert(true);
+				setAlertContent(
+					'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
+				);
+			} else {
+				const newRecipe: BaseRecipeEntity = {
+					foodName,
+					cookTime,
+					recipeContent,
+					foodImageFiles,
+				};
 
-			setLoading(true);
-			dispatch(extractMLFeatureFromRecipe(newRecipe));
-			setLoading(false);
-			history.push('/ingredients/extract');
+				setLoading(true);
+				await dispatch(extractMLFeatureFromRecipe(newRecipe));
+				setLoading(false);
+				history.push('/ingredients/extract');
+			}
 		}
+		extractMLFeatureClosure();
 	};
 
 	const image_list = !foodImageFiles.length
