@@ -9,7 +9,7 @@ from django.db import transaction
 
 from ingredient.models import Ingredient
 from utils.gis_utils import get_nearest_places_from_region
-from .models import Fridge, FridgeIngredient
+from .models import Fridge, FridgeIngredient, Region
 from django.contrib.auth.hashers import check_password
 
 User = get_user_model()
@@ -32,7 +32,6 @@ def get_region_list():
     return [get_region(region) for region in Region.objects.all()]
 
 
-@ensure_csrf_cookie
 def get_region_info(request):
     """ get region list information for searching Region """
     if request.method != 'GET':
@@ -187,7 +186,7 @@ def user(request, id):
             'dateOfBirth': user.date_of_birth,
             'naengpaScore': user.naengpa_score,
             'region': get_region(user.region),
-            'region_range': user.region_range,
+            'regionRange': user.region_range,
         }, status=201)
     return HttpResponseNotAllowed(['GET', 'PUT'])
 
@@ -206,7 +205,7 @@ def user_list(request):
                 "email": user.email,
                 "dateOfBirth": user.date_of_birth,
                 'region': get_region(user.region),
-                "naengpa_score": user.naengpa_score
+                "naengpaScore": user.naengpa_score
             } for user in User.objects.select_related('region').all()] if User.objects.count() != 0 else []
             cache.set('users', user_collection)
         return JsonResponse(user_collection, safe=False)
