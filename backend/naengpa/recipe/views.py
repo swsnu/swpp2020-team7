@@ -1,15 +1,14 @@
 """views for recipe"""
 import json
-from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseForbidden,  HttpResponseNotFound, HttpResponseNotAllowed
-from rest_framework.decorators import api_view
-from django.contrib.auth.decorators import login_required
-from .models import Recipe, Image, RecipeIngredient, RecipeLike
-from food_category.models import FoodCategory
-from django.db.models import Q
-from django.core import serializers
-from django.db import transaction
-from utils.aws_utils import upload_images
 from operator import itemgetter
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.db import transaction
+from rest_framework.decorators import api_view
+from utils.aws_utils import upload_images
+from food_category.models import FoodCategory
+from .models import Recipe, Image, RecipeIngredient, RecipeLike
 
 
 @api_view(['GET', 'POST'])
@@ -138,7 +137,5 @@ def recipe_like(request, id):
         RecipeLike.objects.create(user_id=user_id, recipe_id=recipe.id)
         user_like_exists = 1
     context = {"recipeLike": recipe.likes.count(),
-               "userLike": user_like_exists }
+               "userLike": user_like_exists}
     return JsonResponse(context, safe=False)
-
-    return HttpResponse(status=401)

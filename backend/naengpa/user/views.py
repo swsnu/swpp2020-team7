@@ -1,16 +1,16 @@
 """views for user"""
 import json
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound, HttpResponseNotAllowed, JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.hashers import check_password
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.db import transaction
+from rest_framework.decorators import api_view
 
 from ingredient.models import Ingredient
 from utils.gis_utils import get_nearest_places_from_region
 from .models import Fridge, FridgeIngredient, Region
-from django.contrib.auth.hashers import check_password
 
 User = get_user_model()
 
@@ -47,7 +47,7 @@ def get_region_info(request):
     return JsonResponse(region_list, safe=False)
 
 
-@ensure_csrf_cookie
+@api_view(['POST'])
 @transaction.atomic
 def signup(request):
     """signup"""
@@ -95,10 +95,9 @@ def signup(request):
             'region': get_region(checked_user.region),
             "regionRange": user.region_range,
         }, status=201)
-    return HttpResponseNotAllowed(['POST'])
 
 
-@ensure_csrf_cookie
+@api_view(['POST'])
 def signin(request):
     """signin"""
     if request.method == 'POST':
@@ -128,18 +127,17 @@ def signin(request):
     return HttpResponseNotAllowed(['POST'])
 
 
-@ensure_csrf_cookie
+@api_view(['GET'])
+@login_required
 def signout(request):
     """signout"""
     if request.method == 'GET':
-        if request.user.is_authenticated:
-            logout(request)
-            return HttpResponse(status=204)
-        return HttpResponse(status=401)
-    return HttpResponseNotAllowed(['GET'])
+        logout(request)
+        return HttpResponse(status=204)
 
 
-@ensure_csrf_cookie
+@api_view(['GET', 'PUT'])
+@login_required
 def user(request, id):
     """user"""
     # GET USER
@@ -186,10 +184,10 @@ def user(request, id):
             'region': get_region(user.region),
             'regionRange': user.region_range,
         }, status=201)
-    return HttpResponseNotAllowed(['GET', 'PUT'])
 
 
-@ensure_csrf_cookie
+@api_view(['GET'])
+@login_required
 def user_list(request):
     """user_list"""
     # GET USER LIST
@@ -207,17 +205,14 @@ def user_list(request):
             } for user in User.objects.select_related('region').all()] if User.objects.count() != 0 else []
             cache.set('users', user_collection)
         return JsonResponse(user_collection, safe=False)
-    else:
-        return HttpResponseNotAllowed(['GET'])
 
 
-@ensure_csrf_cookie
+@api_view(['GET', 'POST'])
+@login_required
 def user_fridge(request, id):
     """GET /api/users/:id/fridge/ Get Ingredient list in the fridge of the given user"""
     """POST /api/users/:id/fridge/ Add new ingredient to the fridge of the given user"""
     if request.method == 'GET':
-        if not request.user.is_authenticated:
-            return HttpResponse(status=401)
         try:
             user = User.objects.get(id=id)
             ingredient_list = [
@@ -226,8 +221,6 @@ def user_fridge(request, id):
             return HttpResponseBadRequest()
         return JsonResponse(ingredient_list, safe=False)
     elif request.method == 'POST':
-        if not request.user.is_authenticated:
-            return HttpResponse(status=401)
         try:
             user = User.objects.get(id=id)
             req_data = json.loads(request.body.decode())
@@ -243,31 +236,14 @@ def user_fridge(request, id):
         except Ingredient.DoesNotExist:
             return HttpResponseNotFound()
         return JsonResponse(ingredient_list, status=201, safe=False)
-    else:
-        return HttpResponseNotAllowed(['GET'])
 
 
-@ensure_csrf_cookie
+@api_view(['PUT', 'DELETE'])
+@login_required
 def user_ingredient(request, user_id, id):
-    """DELETE /api/users/:user_id/ingredients/:id/ Delete ingredient from the fridge of the given user"""
     """PUT /api/users/:user_id/ingredients/:id/ Toggle ingredient's is_today_ingredient attribute of the given user"""
-    if request.method == 'DELETE':
-        if not request.user.is_authenticated:
-            return HttpResponse(status=401)
-        try:
-            user = User.objects.get(id=user_id)
-            ingredient = Ingredient.objects.get(id=id)
-            user.fridge.ingredients.remove(ingredient)
-            ingredient_list = [
-                ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient')]
-        except User.DoesNotExist:
-            return HttpResponseBadRequest()
-        except Ingredient.DoesNotExist:
-            return HttpResponseNotFound()
-        return JsonResponse(ingredient_list, safe=False)
-    elif request.method == 'PUT':
-        if not request.user.is_authenticated:
-            return HttpResponse(status=401)
+    """DELETE /api/users/:user_id/ingredients/:id/ Delete ingredient from the fridge of the given user"""
+    if request.method == 'PUT':
         try:
             user = User.objects.get(id=user_id)
             ingredient = Ingredient.objects.get(id=id)
@@ -282,5 +258,15 @@ def user_ingredient(request, user_id, id):
         except Ingredient.DoesNotExist:
             return HttpResponseNotFound()
         return JsonResponse(ingredient_list, safe=False)
-    else:
-        return HttpResponseNotAllowed(['DELETE'])
+    elif request.method == 'DELETE':
+        try:
+            user = User.objects.get(id=user_id)
+            ingredient = Ingredient.objects.get(id=id)
+            user.fridge.ingredients.remove(ingredient)
+            ingredient_list = [
+                ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient')]
+        except User.DoesNotExist:
+            return HttpResponseBadRequest()
+        except Ingredient.DoesNotExist:
+            return HttpResponseNotFound()
+        return JsonResponse(ingredient_list, safe=False)

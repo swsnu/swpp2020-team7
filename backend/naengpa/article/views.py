@@ -1,11 +1,12 @@
 """views for article"""
 import json
 from operator import itemgetter
-from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseForbidden,  HttpResponseNotFound, HttpResponseNotAllowed
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.http import JsonResponse, HttpResponseBadRequest,  HttpResponseNotFound
+from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.db import transaction
 from django.db.models import F, Q, Value, CharField
+from rest_framework.decorators import api_view
 
 from ingredient.models import Ingredient
 from utils.aws_utils import upload_images
@@ -147,32 +148,23 @@ def article_list_post(request):
     }, status=201)
 
 
-@ensure_csrf_cookie
+@api_view(['GET', 'POST'])
+@login_required
 def article_list(request):
     """get article list or create an article"""
     if request.method == 'GET':
-        if not request.user.is_authenticated:
-            return HttpResponse(status=401)
-        else:
-            return article_list_get(request)
-
+        return article_list_get(request)
     elif request.method == 'POST':
-        if not request.user.is_authenticated:
-            return HttpResponse(status=401)
-        else:
-            return article_list_post(request)
-    else:
-        return HttpResponseNotAllowed(['GET', 'POST'])
+        return article_list_post(request)
 
 
-@ensure_csrf_cookie
+@api_view(['GET', 'DELETE'])
+@login_required
 @transaction.atomic
 def article_info(request, aid):
     '''process article of given id'''
     if request.method == 'GET':
         ''' GET /api/articles/:aid/ get article of given id '''
-        if not request.user.is_authenticated:
-            return HttpResponse(status=401)
         try:
             article = Article.objects.select_related(
                 'author', 'author__region', 'item').get(id=aid)
@@ -204,37 +196,34 @@ def article_info(request, aid):
 
     elif request.method == 'DELETE':
         ''' DELETE /api/articles/:aid/ delete article of given id '''
-        if not request.user.is_authenticated:
-            return HttpResponse(status=401)
         try:
             article = Article.objects.select_related(
                 'author', 'author__region', 'item').get(id=aid)
-            deleted_article = {
-                "id": article.id,
-                "authorId": article.author.id,
-                "author": article.author.username,
-                "region": article.author.region.name,
-                "title": article.title,
-                "content": article.content,
-                "item": {
-                    "id": article.item.id,
-                    "name": article.item.name,
-                    "category": article.item.category.name,
-                },
-                "price": article.price,
-                "views": article.views,
-                "options": {
-                    "isForSale": article.is_for_sale,
-                    "isForExchange": article.is_for_exchange,
-                    "isForShare": article.is_for_share
-                },
-                "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
-                "createdAt": article.created_at,
-            }
-            article.delete()
         except Article.DoesNotExist:
             return HttpResponseNotFound()
 
+        deleted_article = {
+            "id": article.id,
+            "authorId": article.author.id,
+            "author": article.author.username,
+            "region": article.author.region.name,
+            "title": article.title,
+            "content": article.content,
+            "item": {
+                "id": article.item.id,
+                "name": article.item.name,
+                "category": article.item.category.name,
+            },
+            "price": article.price,
+            "views": article.views,
+            "options": {
+                "isForSale": article.is_for_sale,
+                "isForExchange": article.is_for_exchange,
+                "isForShare": article.is_for_share
+            },
+            "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
+            "createdAt": article.created_at,
+        }
+        article.delete()
+
         return JsonResponse(data=deleted_article, status=201)
-    else:
-        return HttpResponseNotAllowed(['GET', 'DELETE'])

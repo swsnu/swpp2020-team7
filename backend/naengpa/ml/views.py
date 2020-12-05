@@ -1,13 +1,12 @@
 """views for ingredient"""
-from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
-from konlpy.tag import Kkma
-from naengpa.settings.env import LOGMEAL_TOKEN
-from ingredient.models import Ingredient
 from collections import OrderedDict
-import json
 import requests
-from io import BytesIO
+from konlpy.tag import Kkma
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from naengpa.settings.env import LOGMEAL_TOKEN
+from rest_framework.decorators import api_view
+from ingredient.models import Ingredient
 
 
 # def convertToJpeg(im):
@@ -15,7 +14,6 @@ from io import BytesIO
 #         im.save(f, format='JPEG')
 #         return f.getvalue()
 
-# @ensure_csrf_cookie
 def extract_foodcategory(request, food_images):
     print(food_images)
     # Parameters
@@ -67,21 +65,16 @@ def extract_ingredients(request, recipe_info):
     return context
 
 
-@ensure_csrf_cookie
+@api_view('[POST]')
+@login_required
 def extract_ml_feature(request):
     """/api/extract/ extract ml features"""
     if request.method == 'POST':
         ''' POST /api/recipes/ post new recipe '''
-        if not request.user.is_authenticated:
-            return HttpResponse(status=401)
-
         recipe_info = eval(request.POST.dict().get('recipe', ''))
         food_images = request.FILES.getlist('image')
         food_category = extract_foodcategory(request, food_images)
         ingredients = extract_ingredients(request, recipe_info)
         return_data = {'foodCategory': food_category,
                        'ingredients': ingredients}
-
         return JsonResponse(return_data, safe=False)
-    else:
-        return HttpResponseNotAllowed(['POST'])
