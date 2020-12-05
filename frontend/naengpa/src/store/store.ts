@@ -9,6 +9,7 @@ import userReducer from './reducers/user';
 import fridgeReducer from './reducers/fridge';
 import ingredientReducer from './reducers/ingredient';
 import foodCategoryReducer from './reducers/foodCategory';
+import regionReducer from './reducers/region';
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
 	fridge: fridgeReducer,
 	ingredient: ingredientReducer,
 	foodCategory: foodCategoryReducer,
+	region: regionReducer,
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

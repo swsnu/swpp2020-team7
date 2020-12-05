@@ -10,7 +10,9 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { Button, IconButton, Divider, Collapse, Typography, Avatar, Grid } from '@material-ui/core';
-import { deleteRecipe, editRecipe, toggleRecipe, getArticle } from '../../../store/actions/index';
+import EmailIcon from '@material-ui/icons/Email';
+
+import { getRecipe, createChatRoom, deleteRecipe, editRecipe, toggleRecipe, getArticle } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import Article from '../../../components/Article/Article';
 
@@ -31,7 +33,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const [page, setPage] = useState(1);
 	const [currentList, setCurrentList] = useState<RecipeImage[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
-	const images = recipe.foodImages as RecipeImage[];
+	const images = recipe.foodImagePaths as RecipeImage[];
 	const ingredients =
 		recipe.ingredients === undefined ? [] : (recipe.ingredients as RecipeIngredient[]);
 	const recipe_id = recipe.id as number;
@@ -53,6 +55,9 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		dispatch(deleteRecipe(recipe_id));
 		history.push('/recipes');
 	};
+
+	const onClickChatIcon = async () => {
+		if (recipe.authorId !== user!.id) dispatch(createChatRoom(recipe.authorId as string));
 
 	const onClickRecipeLike = () => {
 		if (userLike === 1) {
@@ -178,10 +183,19 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						<Grid item>
 							<Avatar aria-label="user-image" src="/icons/boy.png" />
 						</Grid>
-						<Grid item>
+						<Grid item id="profile-box">
 							<Typography id="profile-title" variant="h5">
 								{recipe.author}
 							</Typography>
+							{user!.id !== recipe.authorId && (
+								<button
+									id="chatting-icon"
+									type="button"
+									onClick={(e) => onClickChatIcon()}
+								>
+									<EmailIcon />
+								</button>
+							)}
 						</Grid>
 						<Grid item xs>
 							<div id="recipe-cook-time">

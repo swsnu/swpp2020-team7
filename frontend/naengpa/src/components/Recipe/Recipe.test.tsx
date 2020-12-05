@@ -5,7 +5,6 @@ import * as redux from 'react-redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
-import { unmountComponentAtNode } from 'react-dom';
 import { history } from '../../store/store';
 import Recipe from './Recipe';
 
@@ -32,10 +31,9 @@ const mockRecipe = {
 	foodName: '딸기',
 	cookTime: '100',
 	recipeContent: '레시피',
-	foodImages: [
+	foodImageFiles: [
 		{
 			id: 2,
-			recipe_id: 2,
 			file_path: 'path',
 		},
 	],
@@ -52,7 +50,7 @@ const mockRecipe2 = {
 	foodName: '딸기',
 	cookTime: '30',
 	recipeContent: '레시피',
-	foodImages: [],
+	foodImagePaths: [],
 	recipeLike: 0,
 	createdAt: '2000.00.00',
 	foodCategory: '밥류',

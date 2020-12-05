@@ -1,7 +1,8 @@
 """views for recipe"""
 import json
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseForbidden,  HttpResponseNotFound, HttpResponseNotAllowed
-from django.views.decorators.csrf import ensure_csrf_cookie
+from rest_framework.decorators import api_view
+from django.contrib.auth.decorators import login_required
 from .models import Recipe, Image, RecipeIngredient, RecipeLike
 from food_category.models import FoodCategory
 from django.db.models import Q
@@ -11,16 +12,11 @@ from utils.aws_utils import upload_images
 from operator import itemgetter
 
 
-@ensure_csrf_cookie
+@api_view(['GET', 'POST'])
+@login_required
 @transaction.atomic
 def recipe_list(request):
     """get recipe list"""
-    if request.method not in ['GET', 'POST']:
-        return HttpResponseNotAllowed(['GET', 'POST'])
-
-    if not request.user.is_authenticated:
-        return HttpResponse(status=401)
-
     if request.method == 'GET':
         ''' GET /api/recipes/ get recipe list '''
         if not Recipe.objects.count():
@@ -40,7 +36,7 @@ def recipe_list(request):
             "foodName": recipe.food_name,
             "cookTime": recipe.cook_time,
             "recipeContent": recipe.recipe_content,
-            "foodImages": list(recipe.images.values('id', 'file_path')),
+            "foodImagePaths": list(recipe.images.values('id', 'file_path')),
             "recipeLike": recipe.likes.count(),
             "userLike": recipe.likes.filter(user_id=user_id).count(),
             "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
@@ -88,7 +84,7 @@ def recipe_list(request):
             "author": recipe.author.username,
             "foodName": food_name,
             "cookTime": cook_time,
-            "foodImages": list(recipe.images.values('id', 'file_path')),
+            "foodImagePaths": list(recipe.images.values('id', 'file_path')),
             "recipeContent": recipe_content,
             "recipeLike": recipe.likes.count(),
             "userLike": 0,
@@ -98,10 +94,10 @@ def recipe_list(request):
         }, status=201)
 
 
+@api_view(['GET', 'DELETE'])
+@login_required
 def recipe_info(request, id):
     """get recipe of given id"""
-    if request.method not in ['GET', 'DELETE']:
-        return HttpResponse(status=405)
     recipe = Recipe.objects.get(id=id)
     user_id = request.user.id
     user_like = recipe.likes.filter(user_id=user_id).count()
@@ -111,41 +107,38 @@ def recipe_info(request, id):
         "author": recipe.author.username,
         "foodName": recipe.food_name,
         "cookTime": recipe.cook_time,
-        "foodImages": list(recipe.images.values('id', 'file_path')),
         "recipeContent": recipe.recipe_content,
+        "foodImagePaths": list(Image.objects.filter(recipe_id=recipe.id).values()),
         "recipeLike": recipe.likes.count(),
         "userLike": user_like,
         "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
         "foodCategory": recipe.food_category,
         "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
     }
-    if request.user.is_authenticated:
-        if request.method == 'GET':
-            return JsonResponse(data=response, status=201)
-        if request.method == 'DELETE':
-            Recipe.objects.filter(id=id).delete()
-            return HttpResponse(status=200)
-    else:
-        return HttpResponse(status=401)
+    if request.method == 'GET':
+        return JsonResponse(data=response, status=201)
+    if request.method == 'DELETE':
+        Recipe.objects.filter(id=id).delete()
+        return HttpResponse(status=200)
 
 
+@api_view(['GET'])
+@login_required
 def recipe_like(request, id):
     """like recipe of given id"""
-    if request.method != 'GET':
-        return HttpResponseNotAllowed(['GET'])
 
-    if request.user.is_authenticated:
-        recipe = Recipe.objects.get(id=id)
-        user_id = request.user.id
-        user_like = recipe.likes.filter(user_id=user_id)
-        user_like_exists = 0
-        if user_like.count() > 0:
-            recipe.likes.get(user_id=user_id).delete()
-        else:
-            RecipeLike.objects.create(user_id=user_id, recipe_id=recipe.id)
-            user_like_exists = 1
-        context = {"recipeLike": recipe.likes.count(),
-                   "userLike": user_like_exists }
-        return JsonResponse(context, safe=False)
+    recipe = Recipe.objects.get(id=id)
+    user_id = request.user.id
+    user_like = recipe.likes.filter(user_id=user_id)
+    user_like_exists = 0
+
+    if user_like.count() > 0:
+        recipe.likes.get(user_id=user_id).delete()
+    else:
+        RecipeLike.objects.create(user_id=user_id, recipe_id=recipe.id)
+        user_like_exists = 1
+    context = {"recipeLike": recipe.likes.count(),
+               "userLike": user_like_exists }
+    return JsonResponse(context, safe=False)
 
     return HttpResponse(status=401)

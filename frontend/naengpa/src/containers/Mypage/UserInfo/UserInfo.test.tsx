@@ -17,7 +17,7 @@ const getUserMocked = () => {
 		email: 'test@snu.ac.kr',
 		name: '테스트',
 		dateOfBirth: '20201112',
-		naengpa_score: 100,
+		naengpaScore: 100,
 	};
 
 	return user;

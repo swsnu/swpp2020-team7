@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
-import { CreateRecipeEntity, RecipeEntity } from '../../model/recipe';
+import { BaseRecipeEntity, RecipeEntity } from '../../model/recipe';
 
 /* CSRF TOKEN */
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -34,7 +34,7 @@ export function createRecipe(recipe: RecipeEntity) {
 	return async (dispatch: any) => {
 		const bodyFormData = new FormData();
 		bodyFormData.append('recipe', JSON.stringify(recipe));
-		(recipe.foodImages as File[])!.forEach((image, index) => {
+		recipe.foodImageFiles!.forEach((image, index) => {
 			bodyFormData.append('image', image);
 		});
 		const response = await axios({
@@ -54,11 +54,11 @@ export function createRecipe(recipe: RecipeEntity) {
 	};
 }
 
-export function extractMLFeatureFromRecipe(recipe: CreateRecipeEntity) {
+export function extractMLFeatureFromRecipe(recipe: BaseRecipeEntity) {
 	return async (dispatch: any) => {
 		const bodyFormData = new FormData();
 		bodyFormData.append('recipe', JSON.stringify(recipe));
-		recipe.foodImages!.forEach((image, index) => {
+		recipe.foodImageFiles!.forEach((image, index) => {
 			bodyFormData.append('image', image);
 		});
 		const response = await axios({
