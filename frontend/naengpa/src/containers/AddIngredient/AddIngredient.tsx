@@ -62,11 +62,10 @@ const AddIngredient: React.FC = () => {
 	}, [currentIngredientList]);
 
 	const onClickSearch = () => {
-		console.log('hihi')
 		if (!query) {
 			setCurrentIngredientList(ingredientList);
 		} else {
-			console.log(query)
+			console.log(query);
 			const filteredCollection: IngredientCategoryCollection = {};
 			Object.keys(ingredientList).forEach((category) => {
 				filteredCollection[category] = ingredientList[category].filter((item) =>
@@ -74,7 +73,6 @@ const AddIngredient: React.FC = () => {
 				);
 			});
 			setCurrentIngredientList(filteredCollection);
-			console.log(JSON.stringify(currentIngredientList))
 			setSelectedIngredient(null);
 		}
 	};
@@ -133,7 +131,6 @@ const AddIngredient: React.FC = () => {
 						onChange={(e) => setQuery(e.target.value)}
 						onKeyDown={onClickSearch}
 					/>
-					{"hi" + query}
 					<SearchIcon id="add-ingredient-search-icon" />
 				</div>
 				<div id="add-ingredient-category-list" className="grid-container">
