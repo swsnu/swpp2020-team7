@@ -2,7 +2,7 @@ import React from 'react';
 import { History } from 'history';
 // import './ChatRoomList.scss';
 import '../Mypage/UserInfo/UserInfo.scss';
-import Tap from '../../components/Tap/Tap';
+import Tab from '../../components/Tab/Tab';
 
 interface ChatRoomListProps {
 	history: History;
@@ -11,7 +11,7 @@ interface ChatRoomListProps {
 const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	return (
 		<div id="mypage">
-			<Tap history={history} />
+			<Tab history={history} />
 			<div id="info">
 				<p>ChatRoomList</p>
 			</div>

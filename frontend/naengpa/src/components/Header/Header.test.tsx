@@ -36,23 +36,23 @@ describe('TodayIngredient', () => {
 		expect(component.find('#header').length).toBe(1);
 	});
 
-	it('fridge-tap-button should be clicked correctly', () => {
+	it('fridge-tab-button should be clicked correctly', () => {
 		const component = mount(header);
-		const ingredientContentsWrapper = component.find('button#header-tap').at(0);
+		const ingredientContentsWrapper = component.find('button#header-tab').at(0);
 		ingredientContentsWrapper.simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/fridge');
 	});
 
-	it('recipe-tap-button should be clicked correctly', () => {
+	it('recipe-tab-button should be clicked correctly', () => {
 		const component = mount(header);
-		const ingredientContentsWrapper = component.find('button#header-tap').at(1);
+		const ingredientContentsWrapper = component.find('button#header-tab').at(1);
 		ingredientContentsWrapper.simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/recipes');
 	});
 
-	it('article-tap-button should be clicked correctly', () => {
+	it('article-tab-button should be clicked correctly', () => {
 		const component = mount(header);
-		const ingredientContentsWrapper = component.find('button#header-tap').at(2);
+		const ingredientContentsWrapper = component.find('button#header-tab').at(2);
 		ingredientContentsWrapper.simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/articles');
 	});
