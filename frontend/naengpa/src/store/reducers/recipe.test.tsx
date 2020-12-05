@@ -14,17 +14,16 @@ const recipeList: RecipeEntity[] = [
 		foodImages: [
 			{
 				id: 2,
-				recipe_id: 2,
 				file_path: 'path',
 			},
 		],
 		recipeLike: 1,
 		createdAt: '2000.00.00',
 		foodCategory: '밥류',
-		ingredients: ['돼지고기', '고추장'],
+		ingredients: [{ingredient: '돼지고기'}, {ingredient: '고추장'}],
 	},
 	{
-		id: 2,
+		id: 3,
 		authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 		author: 'test',
 		foodName: '딸기',
@@ -33,14 +32,13 @@ const recipeList: RecipeEntity[] = [
 		foodImages: [
 			{
 				id: 2,
-				recipe_id: 2,
 				file_path: 'path',
 			},
 		],
 		recipeLike: 1,
 		createdAt: '2000.00.00',
 		foodCategory: '밥류',
-		ingredients: ['돼지고기', '고추장'],
+		ingredients: [{ingredient: '돼지고기'}, {ingredient: '고추장'}],
 	},
 ];
 
@@ -112,12 +110,13 @@ describe('Recipe Reducer', () => {
 	});
 
 	it('should check if it can delete specific recipe', () => {
-		const newState = recipeReducer(RecipeState, {
+		const newState = recipeReducer({...RecipeState, recipeList}, {
 			type: actionTypes.DELETE_RECIPE,
-			target_id: 0,
+			target_id: 3,
 		});
 		expect(newState).toEqual({
 			...RecipeState,
+			recipeList: [recipeList[0]],
 		});
 	});
 

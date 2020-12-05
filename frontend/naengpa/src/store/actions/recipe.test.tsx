@@ -1,16 +1,11 @@
 import axios from 'axios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import * as actionTypes from './actionTypes';
 import * as actionCreators from './recipe';
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
-
-describe('ActionCreators', () => {
-	afterEach(() => {
-		jest.clearAllMocks();
-	});
-});
 
 const image = import('../../../public/icons/boy.png');
 const stubInitialState = {
@@ -57,109 +52,117 @@ const stubInitialState = {
 		],
 	},
 };
-
 const mockStore = store(stubInitialState);
-it('should return recipeList action correctly', () => {
-	const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
-		return new Promise((resolve, reject) => {
-			const result = {
-				status: 200,
-				data: null,
-			};
-			resolve(result);
-		});
-	});
-	mockStore.dispatch<any>(actionCreators.getRecipeList(''));
-	expect(spy).toBeCalled();
-});
 
-it('should return get Recipe action correctly', () => {
-	const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
-		return new Promise((resolve, reject) => {
-			const result = {
-				status: 200,
-				data: null,
-			};
-			resolve(result);
-		});
+describe('ActionCreators', () => {
+	afterEach(() => {
+		jest.clearAllMocks();
+		mockStore.clearActions();
 	});
-	mockStore.dispatch<any>(actionCreators.getRecipe(0));
-	expect(spy).toBeCalled();
-});
-
-it('should return create Recipe action correctly', () => {
-	const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
-		return new Promise((resolve, reject) => {
-			const result = {
-				status: 201,
-				data: null,
-			};
-			resolve(result);
+	it('should return recipeList action correctly', () => {
+		const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: null,
+				};
+				resolve(result);
+			});
 		});
+		mockStore.dispatch<any>(actionCreators.getRecipeList(''));
+		expect(spy).toBeCalled();
 	});
 
-	const mockData = new FormData();
-	mockData.append('recipe', JSON.stringify({}));
-	mockData.append('image', (image as unknown) as File);
-	mockStore.dispatch<any>(
-		actionCreators.createRecipe({
-			foodName: 'foodName',
-			cookTime: '100',
-			recipeContent: 'recipeContent',
-			foodImages: [(image as unknwon) as File],
-			recipeLike: 1,
-		}),
-	);
-	// expect(spy).toHaveBeenCalled();
-});
-
-it('should return extract ml features from Recipe action correctly', () => {
-	const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
-		return new Promise((resolve, reject) => {
-			const result = {
-				status: 201,
-				data: stubInitialState.recipe.recipeList[0],
-			};
-			resolve(result);
+	it('should return get Recipe action correctly', () => {
+		const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: null,
+				};
+				resolve(result);
+			});
 		});
+		mockStore.dispatch<any>(actionCreators.getRecipe(0));
+		expect(spy).toBeCalled();
 	});
 
-	mockStore.dispatch<any>(
-		actionCreators.createRecipe({
+	it('should return create Recipe action correctly', async () => {
+		const spy = jest.spyOn(axios, 'post').mockImplementation(() => 
+			new Promise((resolve, reject) => {
+				const result = {
+					status: 201,
+					data: { id: 1 },
+				};
+				resolve(result);
+			}));
+		const mockData = {
 			foodName: 'foodName',
 			cookTime: '100',
 			recipeContent: 'recipeContent',
 			foodImages: [(image as unknown) as File],
 			recipeLike: 1,
-		}),
-	);
-	// expect(spy).toBeCalled();
-});
+		}
 
-it('should return delete Recipe action correctly', () => {
-	const spy = jest.spyOn(axios, 'delete').mockImplementation((url) => {
-		return new Promise((resolve, reject) => {
-			const result = {
-				status: 200,
-				data: null,
-			};
-			resolve(result);
-		});
-	});
-	mockStore.dispatch<any>(actionCreators.deleteRecipe(0));
-	expect(spy).toBeCalled();
-});
+		await mockStore.dispatch<any>(actionCreators.createRecipe(mockData));
+		expect(spy).toBeCalledTimes(1);
 
-it('should return edit Recipe action correctly', () => {
-	const spy = jest.spyOn(axios, 'put').mockImplementation((url) => {
-		return new Promise((resolve, reject) => {
-			const result = {
-				status: 200,
-				data: null,
-			};
-			resolve(result);
-		});
+		const actions = mockStore.getActions();
+		const expectedPayload = { type: actionTypes.CREATE_RECIPE, recipe: { id: 1 } };
+		expect(actions[0]).toEqual(expectedPayload);
 	});
-	mockStore.dispatch<any>(actionCreators.editRecipe(stubInitialState.recipe.recipeList[0]));
-	expect(spy).toBeCalled();
+
+	it('should return extract ml features from Recipe action correctly', async () => {
+		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 201,
+					data: { id: 6 },
+				};
+				resolve(result);
+			});
+		});
+		const mockData = {
+			foodName: 'foodName',
+			cookTime: '100',
+			recipeContent: 'recipeContent',
+			foodImages: [(image as unknown) as File],
+			recipeLike: 1,
+		};
+
+		await mockStore.dispatch<any>(actionCreators.extractMLFeatureFromRecipe(mockData));
+		expect(spy).toBeCalledTimes(1);
+
+		const actions = mockStore.getActions();
+		const expectedPayload = { type: actionTypes.EXTRACT_ML_FEATURE_FROM_RECIPE, recipe: { id: 6, ...mockData } };
+		expect(actions[0]).toEqual(expectedPayload);
+	});
+
+	it('should return delete Recipe action correctly', async () => {
+		const spy = jest.spyOn(axios, 'delete').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: null,
+				};
+				resolve(result);
+			});
+		});
+		await mockStore.dispatch<any>(actionCreators.deleteRecipe(0));
+		expect(spy).toBeCalled();
+	});
+
+	it('should return edit Recipe action correctly', () => {
+		const spy = jest.spyOn(axios, 'put').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: null,
+				};
+				resolve(result);
+			});
+		});
+		mockStore.dispatch<any>(actionCreators.editRecipe(stubInitialState.recipe.recipeList[0]));
+		expect(spy).toBeCalled();
+	});
 });

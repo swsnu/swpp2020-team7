@@ -123,15 +123,14 @@ describe('ActionCreators', () => {
 	});
 
 	it('should return createArticle action correctly', async () => {
-		const spy = jest.spyOn(axios, 'post').mockImplementation(
-			() =>
-				new Promise((resolve, reject) => {
-					const result = {
-						status: 200,
-						data: { id: 1 },
-					};
-					resolve(result);
-				}),
+		const spy = jest.spyOn(axios, 'post').mockImplementation(() =>
+			new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: { id: 1 },
+				};
+				resolve(result);
+			}),
 		);
 
 		const mockData: CreateArticleEntity = {
