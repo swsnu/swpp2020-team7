@@ -95,9 +95,7 @@ def article_list_post(request):
     try:
         true, false = True, False
         author_id = request.user.id
-        print(request.POST)
-        req_data = eval(request.POST.dict().get('article', ''))
-        # req_data = json.loads(request.body.decode())
+        req_data = eval(request.POST['article'])
         title, content, item_str, price, options = itemgetter(
             'title', 'content', 'item', 'price', 'options')(req_data)
         if len(options) != 3 or True not in options.values():
