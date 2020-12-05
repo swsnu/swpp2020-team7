@@ -1,6 +1,7 @@
 """admin for chatroom"""
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse, HttpResponseBadRequest, HttpResponseNotFound
-from django.views.decorators.csrf import ensure_csrf_cookie
+from rest_framework.decorators import api_view
+from django.contrib.auth.decorators import login_required
 from chatroom.models import ChatRoom, ChatMember, Message
 from django.contrib.auth import get_user_model
 from django.utils import timezone
@@ -8,9 +9,6 @@ from django.db.models import Q
 import json
 
 User = get_user_model()
-# import socketio
-# sio = socketio.Client()
-# sio.connect('http://localhost:3000')
 
 
 def get_time_format(time_str):
@@ -18,7 +16,6 @@ def get_time_format(time_str):
         else time_str.strftime("%H:%M")
 
 
-@ensure_csrf_cookie
 def get_chatroom_list(request):
     try:
         user = request.user
@@ -50,7 +47,6 @@ def get_chatroom_list(request):
     return JsonResponse(chatroom_collection, safe=False)
 
 
-@ensure_csrf_cookie
 def make_chatroom(request):
     user = request.user
     try:
@@ -90,13 +86,10 @@ def make_chatroom(request):
     }, safe=False)
 
 
-@ensure_csrf_cookie
+@api_view(['GET', 'POST'])
+@login_required
 def chatroom_list(request):
     """ GET POST 'chatrooms/' get chatroom list of given user """
-    if request.method not in ['GET', 'POST']:
-        return HttpResponseNotAllowed(['GET', 'POST'])
-    if not request.user.is_authenticated:
-        return HttpResponse(status=401)
     if request.method == 'GET':
         return get_chatroom_list(request)
     elif request.method == 'POST':
@@ -105,7 +98,6 @@ def chatroom_list(request):
         return HttpResponse(status=400)
 
 
-@ensure_csrf_cookie
 def get_chatroom(request, id):
     """ get chatroom information """
     try:
@@ -134,7 +126,6 @@ def get_chatroom(request, id):
     return JsonResponse(chatroom_collection, safe=False)
 
 
-@ensure_csrf_cookie
 def send_message(request, id):
     """ send message to given chatroom """
     try:
@@ -171,7 +162,6 @@ def send_message(request, id):
     }, safe=False)
 
 
-@ensure_csrf_cookie
 def delete_chatroom(request, id):
     """ delete ChatRoom """
     try:
@@ -184,13 +174,10 @@ def delete_chatroom(request, id):
     return JsonResponse([], status=201)
 
 
-@ensure_csrf_cookie
+@api_view(['GET', 'PUT', 'POST'])
+@login_required
 def chatroom(request, id):
     """ GET, PUT, POST 'chatrooms/:id' request to given chatroom """
-    if request.method not in ['GET', 'PUT', 'POST']:
-        return HttpResponseNotAllowed(['GET', 'PUT', 'POST'])
-    if not request.user.is_authenticated:
-        return HttpResponse(status=401)
     if request.method == 'GET':
         return get_chatroom(request, id)
     elif request.method == 'PUT':
