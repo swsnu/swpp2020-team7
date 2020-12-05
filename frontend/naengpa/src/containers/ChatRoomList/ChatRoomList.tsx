@@ -4,9 +4,10 @@ import { History } from 'history';
 import './ChatRoomList.scss';
 import '../Mypage/UserInfo/UserInfo.scss';
 import { Button, Divider, Typography } from '@material-ui/core';
-import Tap from '../../components/Tap/Tap';
+import Tab from '../../components/Tab/Tab';
 import { getChatRoomList, getChatRoom } from '../../store/actions/index';
 import { AppState } from '../../store/store';
+
 
 interface ChatRoomListProps {
 	history: History;
@@ -35,7 +36,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tap history={history} />
+			<Tab history={history} />
 			<div id="info">
 				<Typography id="chatroom-header" gutterBottom>
 					쪽지함

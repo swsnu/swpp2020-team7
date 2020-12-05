@@ -4,21 +4,21 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { history } from '../../store/store';
-import Tap from './Tap';
+import Tab from './Tab';
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
 describe('User', () => {
-	let tap: any;
+	let tab: any;
 	let spyHistoryPush: any;
 
 	beforeEach(() => {
 		const mockStore = store([]);
 
-		tap = (
+		tab = (
 			<Provider store={mockStore}>
-				<Tap history={history} />
+				<Tab history={history} />
 			</Provider>
 		);
 
@@ -32,7 +32,7 @@ describe('User', () => {
 	});
 
 	it('Tap renders without crashing', () => {
-		const component = mount(tap);
+		const component = mount(tab);
 		expect(component.find('#button-list').length).toBe(1);
 	});
 });

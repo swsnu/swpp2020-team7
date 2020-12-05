@@ -37,6 +37,7 @@ let filteredChatRoomList = null;
 let filteredChatRoom = null;
 
 function userReducer(state: InitialState = UserState, action: Action): InitialState {
+	let userList;
 	switch (action.type) {
 		/* SAVE USER INFO */
 		case actionTypes.SAVE_USER_INFO:
@@ -54,11 +55,13 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 		case actionTypes.LOGOUT:
 			return { ...state, user: null };
 
-		/* GET USET LIST */
+		/* GET USER LIST */
 		case actionTypes.GET_USER_LIST:
-			return { ...state, userList: action.userList };
+			userList = action.userList.sort((a: any, b: any) => b.naengpa_score - a.naengpa_score);
+			userList = userList.slice(0, Math.min(2, userList.length));
+			return { ...state, userList };
 
-		/* GET USET */
+		/* GET USER */
 		case actionTypes.GET_USER:
 			return { ...state, user: action.user };
 

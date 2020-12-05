@@ -1,17 +1,17 @@
 import React from 'react';
 import { History } from 'history';
-import './Tap.scss';
+import './Tab.scss';
 
-interface TapProps {
+interface TabProps {
 	history: History;
 }
 
-const Tap: React.FC<TapProps> = ({ history }) => {
+const Tap: React.FC<TabProps> = ({ history }) => {
 	return (
 		<div id="button-list">
 			<div id="myinfo-check">
 				<button
-					id="myinfo-tap"
+					id="mypage-tab"
 					type="button"
 					onClick={() => history.push('/@:username/info')}
 				>
@@ -20,7 +20,7 @@ const Tap: React.FC<TapProps> = ({ history }) => {
 			</div>
 			<div>
 				<button
-					id="myrecipe-tap"
+					id="mypage-tab"
 					type="button"
 					onClick={() => history.push('/@:username/recipes')}
 				>
@@ -29,7 +29,7 @@ const Tap: React.FC<TapProps> = ({ history }) => {
 			</div>
 			<div>
 				<button
-					id="notification-tap"
+					id="mypage-tab"
 					type="button"
 					onClick={() => history.push('/notifications')}
 				>
@@ -37,7 +37,7 @@ const Tap: React.FC<TapProps> = ({ history }) => {
 				</button>
 			</div>
 			<div>
-				<button id="chatting-tap" type="button" onClick={() => history.push('/chatrooms')}>
+				<button id="mypage-tab" type="button" onClick={() => history.push('/chatrooms')}>
 					채팅
 				</button>
 			</div>

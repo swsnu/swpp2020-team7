@@ -71,7 +71,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							<p id="invalid-name">INVALID NAME</p>
 						)}
 					</div>
-					<div>
+					<div id="input-username">
 						<input
 							id="username"
 							type="text"
@@ -79,7 +79,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							onChange={(e) => setUserName(e.target.value)}
 						/>
 					</div>
-					<div>
+					<div id="input-password">
 						<input
 							id="password"
 							type="password"
@@ -87,7 +87,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							onChange={(e) => setPassword(e.target.value)}
 						/>
 					</div>
-					<div>
+					<div id="input-password-confirm">
 						<input
 							id="password-confirm"
 							type="password"
@@ -98,7 +98,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							<p id="checkPassword">DO NOT MATCH TO PASSWORD</p>
 						)}
 					</div>
-					<div>
+					<div id="input-date-of-birth">
 						<input
 							id="date-of-birth"
 							type="text"
@@ -110,7 +110,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							<p id="invalidBirth">INVALID DATE OF BIRTH</p>
 						)}
 					</div>
-					<div>
+					<div id="input-email">
 						<input
 							id="email"
 							type="text"

@@ -6,7 +6,7 @@ import Pagination from '@material-ui/lab/Pagination';
 
 import '../Mypage/UserInfo/UserInfo.scss';
 import './UserRecipe.scss';
-import Tap from '../../components/Tap/Tap';
+import Tab from '../../components/Tab/Tab';
 import Recipe from '../../components/Recipe/Recipe';
 import { AppState } from '../../store/store';
 import { getRecipeList } from '../../store/actions/index';
@@ -51,7 +51,7 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tap history={history} />
+			<Tab history={history} />
 			<div id="info">
 				<div id="user-recipes">{recipe}</div>
 				<Pagination

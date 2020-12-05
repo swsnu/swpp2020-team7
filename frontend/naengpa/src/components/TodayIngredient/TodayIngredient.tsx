@@ -72,7 +72,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 	return (
 		<div id="today-ingredient">
 			<div id="today-ingredient-header">-오늘의 재료-</div>
-			<AddCircleIcon type="button" id="add-today-ingredient" onClick={() => setAlert(true)} />
+			{/* <AddCircleIcon type="button" id="add-today-ingredient" onClick={() => setAlert(true)} />
 			<Collapse in={alert}>
 				<Alert id="add-today-ingredient-alert" icon={false}>
 					<div id="naengpa-logo-box">
@@ -93,7 +93,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ history }) => {
 						</div>
 					)}
 				</Alert>
-			</Collapse>
+			</Collapse> */}
 			<div id="today-ingredient-contents">{todays_ingredient_contents}</div>
 		</div>
 	);

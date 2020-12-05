@@ -33,6 +33,7 @@ export {
 	extractMLFeatureFromRecipe,
 	deleteRecipe,
 	editRecipe,
+	toggleRecipe,
 } from './recipe';
 
 /* Ingredient actions */

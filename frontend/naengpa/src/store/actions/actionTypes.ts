@@ -32,6 +32,7 @@ export const CREATE_RECIPE = 'CREATE_RECIPE' as const;
 export const EXTRACT_ML_FEATURE_FROM_RECIPE = 'EXTRACT_ML_FEATURE_FROM_RECIPE' as const;
 export const DELETE_RECIPE = 'DELETE_RECIPE' as const;
 export const EDIT_RECIPE = 'EDIT_RECIPE' as const;
+export const TOGGLE_RECIPE = 'TOGGLE_RECIPE' as const;
 
 // INGREDIENT related ACTIONS
 export const GET_INGREDIENT_LIST = 'GET_INGREDIENT_LIST' as const;

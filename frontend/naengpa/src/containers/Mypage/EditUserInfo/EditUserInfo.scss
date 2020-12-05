@@ -1,0 +1,56 @@
+#mypage {
+    background-size: cover;
+    background-color: #f7f7f7;
+    min-height: 870px;
+    width: 100%;
+    padding-top: 30px;
+    font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: #5f5f5f;
+
+    #edit-info-header {
+        display: flex;
+        flex-direction: row;
+        margin-left: 50px;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    #edit-user-info {
+        width: 90px;
+        height: 20px;
+        margin-top: 20px;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+        border: none;
+        outline: none;
+        background-color: white;
+        color: #ff8a3d;
+        margin-left: 558px;
+    }
+
+    #edit-info-list {
+        margin-top: 40px;
+        margin-left: 57px;
+    }
+
+    #name-part, #date-of-birth-part, #email-part, #region-part {
+        margin-bottom: 19px;
+    }
+
+    #edit-name, #edit-date-of-birth, #edit-email, #password-confirm {
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom-color: #bbbbbb;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        color: #5f5f5f;
+    }
+
+    #edit-name {margin-left: 46px;}
+    #edit-date-of-birth {margin-left: 10px;}
+    #edit-email {margin-left: 28px;}
+    #password-confirm {margin-left: 10px;}
+}

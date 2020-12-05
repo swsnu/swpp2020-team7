@@ -27,6 +27,7 @@ def recipe_list(request):
             'author')
         sorted_list = selected_list.filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)).order_by('-created_at') if query else \
             selected_list.order_by('-created_at')
+        user_id = request.user.id
 
         recipe_collection = [{
             "id": recipe.id,
@@ -37,6 +38,7 @@ def recipe_list(request):
             "recipeContent": recipe.recipe_content,
             "foodImagePaths": list(recipe.images.values('id', 'file_path')),
             "recipeLike": recipe.likes.count(),
+            "userLike": recipe.likes.filter(user_id=user_id).count(),
             "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
             "foodCategory": recipe.food_category,
             "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
@@ -85,7 +87,8 @@ def recipe_list(request):
             "foodImagePaths": list(recipe.images.values('id', 'file_path')),
             "recipeContent": recipe_content,
             "recipeLike": recipe.likes.count(),
-            "createdAt": recipe.created_at,
+            "userLike": 0,
+            "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
             "foodCategory": recipe.food_category,
             "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
         }, status=201)
@@ -96,6 +99,8 @@ def recipe_list(request):
 def recipe_info(request, id):
     """get recipe of given id"""
     recipe = Recipe.objects.get(id=id)
+    user_id = request.user.id
+    user_like = recipe.likes.filter(user_id=user_id).count()
     response = {
         "id": recipe.id,
         "authorId": recipe.author.id,
@@ -104,8 +109,11 @@ def recipe_info(request, id):
         "cookTime": recipe.cook_time,
         "recipeContent": recipe.recipe_content,
         "foodImagePaths": list(Image.objects.filter(recipe_id=recipe.id).values()),
-        "recipeLike": 0,
-        "createdAt": recipe.created_at.strftime("%Y.%m.%d")
+        "recipeLike": recipe.likes.count(),
+        "userLike": user_like,
+        "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
+        "foodCategory": recipe.food_category,
+        "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
     }
     if request.method == 'GET':
         return JsonResponse(data=response, status=201)
@@ -122,11 +130,15 @@ def recipe_like(request, id):
     recipe = Recipe.objects.get(id=id)
     user_id = request.user.id
     user_like = recipe.likes.filter(user_id=user_id)
+    user_like_exists = 0
+
     if user_like.count() > 0:
-        recipe.like_count.get(user_id=user_id).delete()
+        recipe.likes.get(user_id=user_id).delete()
     else:
         RecipeLike.objects.create(user_id=user_id, recipe_id=recipe.id)
-
-    context = {'likeCounts': recipe.likes.count(),
-               'userLike': user_like.count()}
+        user_like_exists = 1
+    context = {"recipeLike": recipe.likes.count(),
+               "userLike": user_like_exists }
     return JsonResponse(context, safe=False)
+
+    return HttpResponse(status=401)

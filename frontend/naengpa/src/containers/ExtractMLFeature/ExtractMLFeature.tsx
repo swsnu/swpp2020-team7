@@ -127,6 +127,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				recipeContent,
 				foodImageFiles,
 				recipeLike: 0,
+				userLike: 0,
 				foodCategory,
 				ingredients: newIngredientList,
 			};
