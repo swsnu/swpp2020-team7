@@ -64,30 +64,30 @@ describe('UserInfo', () => {
 	});
 	*/
 
-	it('myinfo-tap should be clicked correctly', () => {
+	it('myinfo-tab should be clicked correctly', () => {
 		const component = mount(userInfo);
-		const ingredientContentsWrapper = component.find('button#myinfo-tap').at(0);
+		const ingredientContentsWrapper = component.find('button#myinfo-tab').at(0);
 		ingredientContentsWrapper.simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/@:username/info');
 	});
 
-	it('myrecipe-tap should be clicked correctly', () => {
+	it('myrecipe-tab should be clicked correctly', () => {
 		const component = mount(userInfo);
-		const ingredientContentsWrapper = component.find('button#myrecipe-tap').at(0);
+		const ingredientContentsWrapper = component.find('button#myrecipe-tab').at(0);
 		ingredientContentsWrapper.simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/@:username/recipes');
 	});
 
-	it('notification-tap should be clicked correctly', () => {
+	it('notification-tab should be clicked correctly', () => {
 		const component = mount(userInfo);
-		const ingredientContentsWrapper = component.find('button#notification-tap').at(0);
+		const ingredientContentsWrapper = component.find('button#notification-tab').at(0);
 		ingredientContentsWrapper.simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/notifications');
 	});
 
-	it('chatting-tap should be clicked correctly', () => {
+	it('chatting-tab should be clicked correctly', () => {
 		const component = mount(userInfo);
-		const ingredientContentsWrapper = component.find('button#chatting-tap').at(0);
+		const ingredientContentsWrapper = component.find('button#chatting-tab').at(0);
 		ingredientContentsWrapper.simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/chatrooms');
 	});

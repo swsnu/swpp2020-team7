@@ -53,6 +53,16 @@
         font-family: 'Arial', sans-serif;
     }
 
+    #input-name {
+        height: 77.5px;
+        min-height: 77.5px;
+    }
+
+    #input-username, #input-password, #input-password-confirm, #input-date-of-birth, #input-email{
+        height: 92.5px;
+        min-height: 92.5px;
+    }
+
     #name:invalid {
         border-bottom-color: rgb(252, 67, 67);
     }
@@ -73,7 +83,7 @@
         outline: none;
     }
 
-    #invaild-name {
+    #invalid-name {
         margin-top: 1%;
         margin-left: 10.5%;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
@@ -128,6 +138,10 @@
         font-size: 200%;
         border-bottom-color: #bbbbbb;
         outline: none;
+    }
+
+    #password-confirm:invalid {
+        border-bottom-color: rgb(252, 67, 67);
     }
 
     #checkPassword {
