@@ -18,6 +18,7 @@ ALLOWED_HOSTS = []  # to be overridden
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
