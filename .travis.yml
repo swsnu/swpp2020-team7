@@ -9,9 +9,9 @@ jobs:
         - yarn: true
       addons:
         sonarcloud:
-          organization: "swsnu"
+          organization: swsnu
           token:
-            secure: "FJ3gXitz8KWhOeJIECTpAxcF8yaiU33BLrfD405pKBjp0vhSKBRorOwoU4hvNIAxE9StgsJ6HYdlt6S2mNZVnMbVibuzMi0xaikKKah9Yq+LfWxwixJ2TcsRSFSzcYiGWQ/P+Lna4eFH0l5IqrYNx0zlu0vzm+x/VBWIR+wziQV+jjLPi/hOkG+sqgFB/+UwbNfGPY+17x2A1D09p/LziEzB5kTtP/c1vdL1L1l+LDDQoq5dtbGEyEWWyDEr1sQEe8utTxnk2hDVgqO4j4q4nYrsIdqeZnF0/agjouY5ppeGLXuxQon8X6igT3o5CpgzhK/qeXclC1yvbdxB+WnhggGm1Kq90FfpDjzoO0pu+jlqA/6OBOgoCWv8RclxaD98yBy2bBR3bcCFtKIvMtC3wUvTAVVboUdmxL8x92h4MKqgCeqoU6SzQcBN4ZYoD2iUledR1ObD+FmWRjOONRMyjHtFLr3F7sZnLNAD376x6cxgNgwTZzopLAI8J8cBZOsydch1ud9qfmVIpBqMmZK2XFNqQk94Ob2MzS4SUlzODj2MMcoTBsIFxUdui4nedDRDGs0CRucN6n1tmVVOquYIQzL+h+2F1E3wNY76kXO1Kdn9qt3Akoj6soW4KUFpEB/FEJqD3itAgWx+uMtr3Mgp0hH9y1fs7aybsSivlM2+OIE="
+            secure: FJ3gXitz8KWhOeJIECTpAxcF8yaiU33BLrfD405pKBjp0vhSKBRorOwoU4hvNIAxE9StgsJ6HYdlt6S2mNZVnMbVibuzMi0xaikKKah9Yq+LfWxwixJ2TcsRSFSzcYiGWQ/P+Lna4eFH0l5IqrYNx0zlu0vzm+x/VBWIR+wziQV+jjLPi/hOkG+sqgFB/+UwbNfGPY+17x2A1D09p/LziEzB5kTtP/c1vdL1L1l+LDDQoq5dtbGEyEWWyDEr1sQEe8utTxnk2hDVgqO4j4q4nYrsIdqeZnF0/agjouY5ppeGLXuxQon8X6igT3o5CpgzhK/qeXclC1yvbdxB+WnhggGm1Kq90FfpDjzoO0pu+jlqA/6OBOgoCWv8RclxaD98yBy2bBR3bcCFtKIvMtC3wUvTAVVboUdmxL8x92h4MKqgCeqoU6SzQcBN4ZYoD2iUledR1ObD+FmWRjOONRMyjHtFLr3F7sZnLNAD376x6cxgNgwTZzopLAI8J8cBZOsydch1ud9qfmVIpBqMmZK2XFNqQk94Ob2MzS4SUlzODj2MMcoTBsIFxUdui4nedDRDGs0CRucN6n1tmVVOquYIQzL+h+2F1E3wNY76kXO1Kdn9qt3Akoj6soW4KUFpEB/FEJqD3itAgWx+uMtr3Mgp0hH9y1fs7aybsSivlM2+OIE=
       install:
         - cd frontend/naengpa
         - yarn
@@ -43,7 +43,6 @@ jobs:
         - cd backend/naengpa
         - coveralls --merge=../../frontend/naengpa/coverage.json
         - cd ../..
-
     - language: node_js
       node_js:
         - "12"
@@ -55,7 +54,6 @@ jobs:
       script:
         - yarn lint
         - yarn test
-
     - language: python
       dist: bionic
       python: "3.7"
@@ -72,3 +70,15 @@ jobs:
         - pylint **/*.py --load-plugins pylint_django
         - coverage run --source='.' manage.py test
         - coverage report -m
+before_install:
+  - openssl aes-256-cbc -K $encrypted_db2095f63ba3_key -iv $encrypted_db2095f63ba3_iv
+    -in deploy_rsa.enc -out deploy_rsa -d
+  - eval "$(ssh-agent -s)"
+  - chmod 600 /tmp/deploy_rsa
+  - ssh-add /tmp/deploy_rsa
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: ssh ubuntu@54.225.50.176 'bash ./setup-deploy.sh && bash ./deploy.sh'
+  on:
+    branch: master

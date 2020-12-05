@@ -147,11 +147,11 @@ def article_list_post(request):
     }, status=201)
 
 
-@ ensure_csrf_cookie
+@ensure_csrf_cookie
 def article_list(request):
     """get article list or create an article"""
     if request.method == 'GET':
-        if False:  # not request.user.is_authenticated:
+        if not request.user.is_authenticated:
             return HttpResponse(status=401)
         else:
             return article_list_get(request)
@@ -165,8 +165,8 @@ def article_list(request):
         return HttpResponseNotAllowed(['GET', 'POST'])
 
 
-@ ensure_csrf_cookie
-@ transaction.atomic
+@ensure_csrf_cookie
+@transaction.atomic
 def article_info(request, aid):
     '''process article of given id'''
     if request.method == 'GET':
