@@ -9,7 +9,9 @@ else
 fi
 
 cd backend/naengpa
-pip install -r requirements.txt 
-python manage.py makemigrations
-python manage.py migrate
-python manage.py runserver
+pip3 install -r requirements.txt 
+python3 manage.py makemigrations
+python3 manage.py migrate
+
+redis-server --daemonize yes
+python3 manage.py runserver

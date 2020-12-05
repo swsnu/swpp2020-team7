@@ -1,9 +1,10 @@
 """utils for aws s3"""
 from datetime import datetime
+from django.utils import timezone
 import os
 import boto3
 
-from naengpa.settings import S3_URL, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_REGION_NAME
+from naengpa.settings.env import S3_URL, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_REGION_NAME
 
 
 session = boto3.Session(
@@ -25,7 +26,8 @@ def get_filename_format(prefix, fid, user_id, file_idx, fname):
     fname: given input file name
     """
     current_time = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
-    return "{}/{}/{}-{}-{}{}".format(prefix, fid, user_id, current_time, file_idx, os.path.splitext(fname)[1])
+    current_time_aware = timezone.make_aware(current_time)
+    return "{}/{}/{}-{}-{}{}".format(prefix, fid, user_id, current_time_aware, file_idx, os.path.splitext(fname)[1])
 
 
 def upload_images(files, prefix, feed_id, user_id):

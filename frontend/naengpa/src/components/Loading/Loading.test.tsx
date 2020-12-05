@@ -1,14 +1,7 @@
 import React from 'react';
-import { act } from '@testing-library/react';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
+import waitForComponentToPaint from '../../../utils/waitForComponentToPaint';
 import Loading from './Loading';
-
-async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount = 0) {
-	await act(async () => {
-		await new Promise((resolve) => setTimeout(resolve, 0));
-		wrapper.update();
-	});
-}
 
 describe('Loading', () => {
 	let loading: any;
