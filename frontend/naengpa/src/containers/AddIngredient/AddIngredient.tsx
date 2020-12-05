@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { InputBase } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 import { getIngredientList, addIngredientToFridge } from '../../store/actions/index';
 import { IngredientCategoryCollection, IngredientEntity } from '../../model/ingredient';
 import { AppState } from '../../store/store';
-import { InputBase } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
 import './AddIngredient.scss';
 
 const useIngredientList = () => {
@@ -73,8 +73,10 @@ const AddIngredient: React.FC = () => {
 		} else {
 			const filteredCollection: IngredientCategoryCollection = {};
 			Object.keys(ingredientList).forEach((category) => {
-				const filtered = ingredientList[category].filter((item) => item.name.includes(query));
-				if(filtered && filtered.length) {
+				const filtered = ingredientList[category].filter((item) =>
+					item.name.includes(query),
+				);
+				if (filtered && filtered.length) {
 					filteredCollection[category] = filtered;
 				}
 			});
