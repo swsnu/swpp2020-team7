@@ -7,7 +7,7 @@ import InputBase from '@material-ui/core/InputBase';
 import { io } from 'socket.io-client';
 import { sendChat } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
-import Tap from '../../../components/Tap/Tap';
+import Tab from '../../../components/Tab/Tab';
 
 const ENDPOINT = '127.0.0.0:8000';
 
@@ -72,7 +72,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tap history={history} />
+			<Tab history={history} />
 			<div id="info">
 				<Typography id="chatroom-header" gutterBottom variant="h3">
 					<Button

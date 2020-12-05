@@ -17,7 +17,7 @@ class Region(models.Model):
 
     @property
     def name(self):
-        return "{} {} {}".format(self.si_name, self.gu_name, self.dong_name)
+        return "{} {}".format(self.gu_name, self.dong_name)
 
     @property
     def latitude(self):

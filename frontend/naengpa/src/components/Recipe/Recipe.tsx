@@ -7,11 +7,8 @@ import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import './Recipe.scss';
-import { RecipeEntity } from '../../model/recipe';
-import { getRecipe } from '../../store/actions/index';
 import { RecipeEntity, RecipeImage } from '../../model/recipe';
 import { getRecipe, toggleRecipe, getRecipeList } from '../../store/actions/index';
-
 
 interface RecipeProps {
 	recipe: RecipeEntity;

@@ -5,10 +5,11 @@ import Pagination from '@material-ui/lab/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-import { AppState } from '../../store/store';
-import { getArticle, getArticleList } from '../../store/actions/index';
-import Article from '../../components/Article/Article';
+import CreateIcon from '@material-ui/icons/Create';
 import { ArticleEntity, ArticleOptions } from '../../model/article';
+import Article from '../../components/Article/Article';
+import { getArticle, getArticleList } from '../../store/actions/index';
+import { AppState } from '../../store/store';
 
 import './ArticleList.scss';
 
@@ -23,6 +24,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 
 	const [page, setPage] = useState(1);
 	const [currentList, setCurrentList] = useState<ArticleEntity[]>([]);
+	const [currentPage, setCurrentPage] = useState<ArticleEntity[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
 	const [optionsFilter, setOptionsFilter] = useState<ArticleOptions>({
 		isForSale: false,
@@ -35,10 +37,25 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	useEffect(() => {
 		setLoading(true);
 		dispatch(getArticleList(query, optionsFilter));
-		setMaxPageIndex(Math.ceil(articleList.length / 9.0));
-		setCurrentList(articleList.slice((page - 1) * 9, (page - 1) * 9 + 9));
+	}, [dispatch]);
+
+	useEffect(() => {
+		setLoading(true);
+		setCurrentList(
+			articleList
+				.filter((a) => !optionsFilter.isForSale || a.options.isForSale)
+				.filter((a) => !optionsFilter.isForExchange || a.options.isForExchange)
+				.filter((a) => !optionsFilter.isForShare || a.options.isForShare),
+		);
+		setMaxPageIndex(Math.ceil(currentList.length / 9.0));
+		setCurrentPage(currentList.slice((page - 1) * 9, (page - 1) * 9 + 9));
 		setLoading(false);
-	}, [dispatch, optionsFilter.isForSale, optionsFilter.isForExchange, optionsFilter.isForShare]);
+	}, [
+		articleList,
+		optionsFilter.isForSale,
+		optionsFilter.isForExchange,
+		optionsFilter.isForShare,
+	]);
 
 	const onClickOptions = (target: string) => {
 		switch (target) {
@@ -56,17 +73,15 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	};
 	const onClickSearch = (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter') {
+			setLoading(true);
 			dispatch(getArticleList(query));
-			setMaxPageIndex(Math.ceil(articleList.length / 9.0));
-			setCurrentList(articleList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-			setLoading(false);
 		}
 	};
 
 	const onChangePage = (e: React.ChangeEvent<unknown>, value: number): void => {
 		e.preventDefault();
 		setPage(value);
-		setCurrentList(articleList.slice((value - 1) * 9, (value - 1) * 9 + 9));
+		setCurrentPage(currentList.slice((value - 1) * 9, (value - 1) * 9 + 9));
 	};
 
 	const onClickCreateArticle = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -79,26 +94,16 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		history.push(`/articles/:${id}`);
 	};
 
-	const articles = currentList.map((item) => (
+	const articles = currentPage.map((item) => (
 		<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
 	));
-
-	useEffect(() => {
-		const func = async () => {
-			dispatch(getArticleList(query));
-			setMaxPageIndex(Math.ceil(articleList.length / 9.0));
-			setCurrentList(articleList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-			setLoading(false);
-		};
-		func();
-	}, [dispatch, articleList.length]);
 
 	return (
 		<div id="article-list">
 			<div id="article-list-header">
 				<div id="article-list-header-primary">
 					<h1 id="article-list-header-title">우리 동네 장터</h1>
-					<span>{user!.region}</span>
+					<span>{user!.region.name}</span>
 				</div>
 				<div id="article-list-helper">
 					<div id="article-search">
@@ -145,7 +150,8 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 							type="button"
 							onClick={onClickCreateArticle}
 						>
-							글쓰기
+							글쓰기&nbsp;
+							<CreateIcon id="article-list-create-icon" />
 						</button>
 					</div>
 				</div>

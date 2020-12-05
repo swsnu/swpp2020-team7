@@ -17,14 +17,15 @@ User = get_user_model()
 
 def get_region(region):
     """ get specific user Region Information """
-    return {
-        "id": region.id,
-        "name": region.name,
-        "location": {
-            "latitude": region.latitude,
-            "longitude": region.longitude,
+    if region:
+        return {
+            "id": region.id,
+            "name": region.name,
+            "location": {
+                "latitude": region.latitude,
+                "longitude": region.longitude,
+            }
         }
-    }
 
 
 def get_region_list():
@@ -69,34 +70,31 @@ def signup(request):
         except Region.DoesNotExist:
             return HttpResponseNotFound()
 
-        try:
-            user = User.objects.create_user(
-                username=username,
-                password=password,
-                email=email,
-                name=name,
-                date_of_birth=date_of_birth,
-                region=user_region,
-                region_range=region_range,
-            )
-            user.save()
-            my_fridge = Fridge(user=user)
-            my_fridge.save()
-            checked_user = authenticate(
-                request, username=username, password=password)
-            login(request, checked_user)
-            return JsonResponse(data={
-                'id': checked_user.id,
-                'username': checked_user.username,
-                'email': checked_user.email,
-                'name': checked_user.name,
-                'dateOfBirth': checked_user.date_of_birth,
-                'naengpaScore': checked_user.naengpa_score,
-                'region': get_region(checked_user.region),
-                "regionRange": user.region_range,
-            }, status=201)
-        except:
-            return HttpResponse(status=500)
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=email,
+            name=name,
+            date_of_birth=date_of_birth,
+            region=user_region,
+            region_range=region_range,
+        )
+        user.save()
+        my_fridge = Fridge(user=user)
+        my_fridge.save()
+        checked_user = authenticate(
+            request, username=username, password=password)
+        login(request, checked_user)
+        return JsonResponse(data={
+            'id': checked_user.id,
+            'username': checked_user.username,
+            'email': checked_user.email,
+            'name': checked_user.name,
+            'dateOfBirth': checked_user.date_of_birth,
+            'naengpaScore': checked_user.naengpa_score,
+            'region': get_region(checked_user.region),
+            "regionRange": user.region_range,
+        }, status=201)
     return HttpResponseNotAllowed(['POST'])
 
 

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Dispatch } from 'redux';
 import * as actionTypes from './actionTypes';
 import { BaseRecipeEntity, RecipeEntity } from '../../model/recipe';
 
@@ -9,8 +10,11 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 /* GET RECIPE LIST */
 export function getRecipeList(query: string) {
 	return async (dispatch: any) => {
-		const response: any = await axios.get(`/api/recipes/?value=${query}`);
-
+		const response = await axios.get('/api/recipes/', {
+			params: {
+				value: query,
+			},
+		});
 		dispatch({
 			type: actionTypes.GET_RECIPE_LIST,
 			recipeList: response.data,
@@ -21,7 +25,7 @@ export function getRecipeList(query: string) {
 /* GET RECIPE */
 export function getRecipe(id: number) {
 	return async (dispatch: any) => {
-		const response: any = await axios.get(`/api/recipes/${id}`);
+		const response = await axios.get(`/api/recipes/${id}`);
 		dispatch({
 			type: actionTypes.GET_RECIPE,
 			recipe: response.data,
@@ -31,21 +35,11 @@ export function getRecipe(id: number) {
 
 /* CREATE RECIPE */
 export function createRecipe(recipe: RecipeEntity) {
-	return async (dispatch: any) => {
+	return async (dispatch: Dispatch<any>) => {
 		const bodyFormData = new FormData();
 		bodyFormData.append('recipe', JSON.stringify(recipe));
-		recipe.foodImageFiles!.forEach((image, index) => {
-			bodyFormData.append('image', image);
-		});
-		const response = await axios({
-			method: 'post',
-			url: '/api/recipes/',
-			data: bodyFormData,
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'multipart/form-data',
-			},
-		});
+		recipe.foodImageFiles.forEach((image: any) => bodyFormData.append('image', image));
+		const response = await axios.post('/api/articles/', bodyFormData);
 
 		dispatch({
 			type: actionTypes.CREATE_RECIPE,
@@ -58,18 +52,8 @@ export function extractMLFeatureFromRecipe(recipe: BaseRecipeEntity) {
 	return async (dispatch: any) => {
 		const bodyFormData = new FormData();
 		bodyFormData.append('recipe', JSON.stringify(recipe));
-		recipe.foodImageFiles!.forEach((image, index) => {
-			bodyFormData.append('image', image);
-		});
-		const response = await axios({
-			method: 'post',
-			url: '/api/extract/',
-			data: bodyFormData,
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'multipart/form-data',
-			},
-		});
+		recipe.foodImageFiles!.forEach((image) => bodyFormData.append('image', image));
+		const response = await axios.post('/api/extract/', bodyFormData);
 
 		dispatch({
 			type: actionTypes.EXTRACT_ML_FEATURE_FROM_RECIPE,

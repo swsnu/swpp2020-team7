@@ -12,7 +12,14 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { Button, IconButton, Divider, Collapse, Typography, Avatar, Grid } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
 
-import { getRecipe, createChatRoom, deleteRecipe, editRecipe, toggleRecipe, getArticle } from '../../../store/actions/index';
+import {
+	getRecipe,
+	createChatRoom,
+	deleteRecipe,
+	editRecipe,
+	toggleRecipe,
+	getArticle,
+} from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import Article from '../../../components/Article/Article';
 
@@ -58,6 +65,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 
 	const onClickChatIcon = async () => {
 		if (recipe.authorId !== user!.id) dispatch(createChatRoom(recipe.authorId as string));
+	};
 
 	const onClickRecipeLike = () => {
 		if (userLike === 1) {
@@ -271,4 +279,5 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		</div>
 	);
 };
+
 export default RecipeDetail;

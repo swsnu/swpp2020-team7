@@ -24,8 +24,8 @@ div#add-ingredient {
 }
 
 #add-ingredient-body.grid-container {
-    grid-template-rows: 1fr 4fr;
-    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 1fr 5fr;
+    grid-template-columns: 3fr 8fr;
     width: 100%;
     height: 90%;
     // max-width: 450px;
@@ -72,6 +72,32 @@ button#add-ingredient-tag {
     display: flex;
     justify-content: space-around;
     align-items: center;
+}
+
+div#add-ingredient-search {
+    display: flex;
+    height: 99%;
+    padding: {
+        left: 3%;
+        right: 5%;
+        top: 1%;
+        bottom: 0;
+    };
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+
+    border-left: solid 1px #e3e3e3;
+    border-bottom: solid 1px #e3e3e3;
+
+    font-family: 'Jua', sans-serif;
+    font-size: 60%;
+    font-weight: 100;
+    font-stretch: condensed;
+    letter-spacing: 1.2px;
+    color: #000000;
+    font-style: normal;
+    text-align: center;
 }
 
 #selected-status.grid-container {

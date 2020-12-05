@@ -9,7 +9,11 @@ const mockArticle: ArticleEntity = {
 	region: '서울시 관악구 대학동',
 	title: 'for test',
 	content: 'this is test',
-	item: '딸기',
+	item: {
+		id: 2,
+		category: '과일',
+		name: '딸기',
+	},
 	price: 1000,
 	views: 77,
 	options: {
@@ -34,7 +38,11 @@ const mockArticleList: ArticleEntity[] = [
 		region: '서울시 관악구 청룡동',
 		title: 'for test 2',
 		content: 'this is test 2',
-		item: '딸기 2',
+		item: {
+			id: 2,
+			category: '과일',
+			name: '딸기',
+		},
 		price: 1000,
 		views: 77,
 		options: {
