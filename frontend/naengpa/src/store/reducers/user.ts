@@ -30,6 +30,7 @@ type Action =
 	| { type: 'GET_CHATROOM_LIST'; chatRoomList: ChatEntity[] }
 	| { type: 'GET_CHATROOM'; chatRoom: ChatEntity }
 	| { type: 'SEND_CHAT'; chatRoom: ChatEntity }
+	| { type: 'RECEIVE_CHAT'; chatRoomList: ChatEntity[] }
 	| { type: 'DELETE_CHATROOM'; id: string };
 
 function userReducer(state: InitialState = UserState, action: Action): InitialState {
@@ -84,6 +85,18 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 		case actionTypes.SEND_CHAT:
 			return { ...state, chatRoom: action.chatRoom };
 
+		/* RECEIVE CHAT */
+		case actionTypes.RECEIVE_CHAT:
+			let newChatRoom = null;
+			if(state.chatRoom) {
+				newChatRoom = action.chatRoomList.find((chatroom) => {
+					return (chatroom.id === state.chatRoom!.id)
+				});
+			} 
+			if(newChatRoom === undefined) newChatRoom = state.chatRoom;
+			return { ...state, chatRoomList: action.chatRoomList, chatRoom:newChatRoom };
+
+		/* DELETE CHATROOM */
 		case actionTypes.DELETE_CHATROOM:
 			const modifiedChatRoomList = state.chatRoomList.filter((item) => {
 				return item.id !== action.id;
