@@ -26,10 +26,6 @@ jest.mock('@material-ui/icons/LocalDining', () =>
 	jest.fn((props) => <div {...props} className="spyLocalDiningIcon" />),
 );
 
-const useStateSpy = jest.spyOn(React, 'useState');
-const setStateSpy: Dispatch<unknown> = jest.fn();
-useStateSpy.mockImplementation((init: unknown) => [init, setStateSpy]);
-
 const middleware = [thunk];
 const store = configureStore(middleware);
 
@@ -88,12 +84,17 @@ describe('ExtractMLFeature', () => {
 	let spyHistoryPush: any;
 	let spyCreateRecipe: any;
 	let spyGetFoodCategory: any;
+	let spyUseState: any;
+	let spySetState: any;
 
 	beforeEach(() => {
 		const mockStore = store(stubInitialState);
 		const mockStore2 = store(stubInitialState2);
+
 		jest.mock('react-redux', () => ({
+			useSelector: jest.fn((fn) => fn(mockStore.getState())),
 			useDispatch: () => jest.fn(),
+			useState: () => jest.fn(),
 		}));
 
 		act(() => {
@@ -119,6 +120,9 @@ describe('ExtractMLFeature', () => {
 			.spyOn(recipeActionCreators, 'createRecipe')
 			.mockImplementation(() => jest.fn());
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
+		spySetState = jest.fn();
+		spyUseState = jest.spyOn(React, 'useState');
+		spyUseState.mockImplementation((init: any) => [init, spySetState]);
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
