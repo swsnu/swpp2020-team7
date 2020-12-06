@@ -62,6 +62,9 @@ def recipe_list(request):
                 food_category=food_category_str,
             )
 
+            request.user.naengpa_score += 100
+            request.user.save()
+
             print(ingredients, "list")
             ingredient_list = [RecipeIngredient.objects.create(
                 ingredient=item.get('ingredient', ''), quantity=item.get('quantity', ''), recipe_id=recipe.id
@@ -128,15 +131,19 @@ def recipe_like(request, id):
     """like recipe of given id"""
 
     recipe = Recipe.objects.get(id=id)
+
     user_id = request.user.id
     user_like = recipe.likes.filter(user_id=user_id)
     user_like_exists = 0
 
     if user_like.count() > 0:
         recipe.likes.get(user_id=user_id).delete()
+        request.user.naengpa_score -= 10
     else:
         RecipeLike.objects.create(user_id=user_id, recipe_id=recipe.id)
         user_like_exists = 1
+        request.user.naengpa_score += 10
+    request.user.save()
     context = {"recipeLike": recipe.likes.count(),
                "userLike": user_like_exists }
     return JsonResponse(context, safe=False)

@@ -130,14 +130,13 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						{item.ingredient}
 					</Button>
 				) : (
-						<Button key={`${item.ingredient}-${i}` as string} id="ingredient-no-button">
-							{item.ingredient}
-						</Button>
-					)}
+					<Button key={`${item.ingredient}-${i}` as string} id="ingredient-no-button">
+						{item.ingredient}
+					</Button>
+				)}
 			</div>
 		);
 	});
-
 
 	useEffect(() => {
 		const func = () => {
@@ -220,12 +219,12 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 										onClick={() => onClickRecipeLike()}
 									/>
 								) : (
-										<FavoriteBorderIcon
-											id="recipe-like-count-icon"
-											fontSize="large"
-											onClick={() => onClickRecipeLike()}
-										/>
-									)}
+									<FavoriteBorderIcon
+										id="recipe-like-count-icon"
+										fontSize="large"
+										onClick={() => onClickRecipeLike()}
+									/>
+								)}
 								{recipeLike}
 							</div>
 						</Grid>

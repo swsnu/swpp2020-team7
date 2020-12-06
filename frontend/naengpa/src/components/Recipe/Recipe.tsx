@@ -52,11 +52,11 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 			<CardHeader
 				id="recipe-card-header"
 				avatar={<Avatar aria-label="recipe">R</Avatar>}
-				action={
-					<IconButton aria-label="settings">
-						<MoreVertIcon />
-					</IconButton>
-				}
+				// action={
+				// 	<IconButton aria-label="settings">
+				// 		<MoreVertIcon />
+				// 	</IconButton>
+				// }
 				title={recipe.author}
 				subheaderTypographyProps={{ variant: titleSize }}
 				subheader={subheader}
@@ -71,8 +71,8 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 					}}
 				/>
 			) : (
-					<></>
-				)}
+				<></>
+			)}
 			<div id="recipe-card-footer">
 				<CardContent
 					id="recipe-content"
@@ -97,12 +97,12 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 								onClick={() => onClickRecipeLike()}
 							/>
 						) : (
-								<FavoriteBorderIcon
-									id="recipe-like-count-icon"
-									fontSize={fontSize}
-									onClick={() => onClickRecipeLike()}
-								/>
-							)}
+							<FavoriteBorderIcon
+								id="recipe-like-count-icon"
+								fontSize={fontSize}
+								onClick={() => onClickRecipeLike()}
+							/>
+						)}
 						{recipeLike}
 					</div>
 				</div>

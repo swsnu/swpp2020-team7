@@ -68,7 +68,7 @@ export const editArticle_ = (article: ArticleEntity) => ({
 	payload: article,
 });
 
-export const editArticle = (id: number, article: CreateArticleEntity) => {
+export const editArticle = (id: number, article: ArticleEntity) => {
 	return async (dispatch: Dispatch<any>) => {
 		const response = await axios.put(`/api/articles/${id}/`, article);
 
