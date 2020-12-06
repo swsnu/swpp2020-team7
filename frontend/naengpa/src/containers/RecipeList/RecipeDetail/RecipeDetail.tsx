@@ -266,7 +266,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 			<Divider variant="middle" />
 			<div id="recipe-section4">
 				<Typography gutterBottom variant="h5">
-					{user?.username}님! 지금 {notInFridgeJoined}을(를) 주변 이웃과 거래해보세요!
+					{user!.username}님! 지금 {notInFridgeJoined}을(를) 주변 이웃과 거래해보세요!
 				</Typography>
 				{article}
 			</div>
