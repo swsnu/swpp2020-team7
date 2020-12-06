@@ -17,7 +17,9 @@ const useIngredientList = () => {
 	const dispatch = useDispatch();
 
 	const loadIngredientList = async () => {
-		dispatch(getIngredientList());
+		if (!ingredientList || !ingredientList.length) {
+			dispatch(getIngredientList());
+		}
 	};
 	const loadCategoryList = async () => {
 		const categoryList = Object.keys(currentIngredientList).sort();
