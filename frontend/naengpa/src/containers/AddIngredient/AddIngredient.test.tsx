@@ -3,12 +3,12 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import waitForComponentToPaint from '../../../test-utils/waitForComponentToPaint';
 import { Dictionary } from '../../model/general';
 import * as ingredientActionCreators from '../../store/actions/ingredient';
 import * as fridgeActionCreators from '../../store/actions/fridge';
-import AddIngredient from './AddIngredient';
 import { IngredientCategoryCollection } from '../../model/ingredient';
-import waitForComponentToPaint from '../../../utils/waitForComponentToPaint';
+import AddIngredient from './AddIngredient';
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
@@ -142,7 +142,6 @@ describe('AddIngredient', () => {
 		searchBar.simulate('change', event);
 		searchBar.simulate('keydown');
 		component.update();
-		console.log(component.debug());
 
 		wrapper = component.find('div#add-ingredient-category-list');
 		expect(wrapper.find('button').length).toBe(1);
