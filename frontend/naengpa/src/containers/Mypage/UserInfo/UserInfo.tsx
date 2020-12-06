@@ -20,7 +20,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tab history={history} />
+			<Tab username={user?.username} history={history} />
 			<div id="info">
 				<div id="myinfo-header">
 					<p id="myinfo-title">내 정보</p>
