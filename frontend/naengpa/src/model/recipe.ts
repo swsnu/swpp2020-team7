@@ -4,7 +4,7 @@ export interface BaseRecipeEntity {
 	foodName: string;
 	cookTime: string;
 	recipeContent: string;
-	foodImageFiles: File[];
+	foodImageFiles?: File[];
 }
 
 export interface RecipeEntity extends BaseRecipeEntity {

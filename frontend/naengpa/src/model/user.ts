@@ -40,6 +40,6 @@ export interface RegionEntity {
 	location?: LocationEntity;
 }
 export interface LocationEntity {
-	latitude: string;
-	longitude: string;
+	latitude: number;
+	longitude: number;
 }
