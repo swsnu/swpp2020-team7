@@ -3,33 +3,34 @@ import { History } from 'history';
 import './Tab.scss';
 
 interface TabProps {
+	username: string;
 	history: History;
 }
 
-const Tap: React.FC<TabProps> = ({ history }) => {
+const Tab: React.FC<TabProps> = ({ username, history }) => {
 	return (
 		<div id="button-list">
 			<div id="myinfo-check">
 				<button
-					id="mypage-tab"
+					id="myinfo-tab"
 					type="button"
-					onClick={() => history.push('/@:username/info')}
+					onClick={() => history.push(`/@${username}/info`)}
 				>
 					내 정보
 				</button>
 			</div>
 			<div>
 				<button
-					id="mypage-tab"
+					id="myrecipe-tab"
 					type="button"
-					onClick={() => history.push('/@:username/recipes')}
+					onClick={() => history.push(`/@${username}/recipes`)}
 				>
 					나의 레시피
 				</button>
 			</div>
 			<div>
 				<button
-					id="mypage-tab"
+					id="notification-tab"
 					type="button"
 					onClick={() => history.push('/notifications')}
 				>
@@ -37,7 +38,7 @@ const Tap: React.FC<TabProps> = ({ history }) => {
 				</button>
 			</div>
 			<div>
-				<button id="mypage-tab" type="button" onClick={() => history.push('/chatrooms')}>
+				<button id="chatting-tab" type="button" onClick={() => history.push('/chatrooms')}>
 					채팅
 				</button>
 			</div>
@@ -45,4 +46,4 @@ const Tap: React.FC<TabProps> = ({ history }) => {
 	);
 };
 
-export default Tap;
+export default Tab;
