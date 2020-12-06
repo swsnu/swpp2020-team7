@@ -99,7 +99,7 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 					return chatroom.id === state.chatRoom!.id;
 				});
 			}
-			if (filteredChatRoom === undefined) filteredChatRoom = state.chatRoom;
+			if (!filteredChatRoom) filteredChatRoom = state.chatRoom;
 			return { ...state, chatRoomList: action.chatRoomList, chatRoom: filteredChatRoom };
 
 		/* DELETE CHATROOM */
