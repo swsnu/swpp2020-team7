@@ -44,7 +44,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 
 	// alert state is true if alert is necessary, otherwise false.
 	const [alert, setAlert] = useState('거래품명, 제목, 내용, 가격 및 사진을 모두 입력해 주세요');
-
+	const [onAlert, setOnAlert] = useState(true);
 	const dispatch = useDispatch();
 
 	/* CLICK EVENT - ADD IMAGE */
@@ -87,6 +87,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 		} else if (!options.isForSale && !options.isForExchange && !options.isForShare) {
 			setAlert('희망 거래 옵션을 선택해주세요.');
 		} else {
+			setOnAlert(false);
 			const newArticle: CreateArticleEntity = {
 				title,
 				content,
@@ -116,7 +117,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 		: images.map((item, idx) => {
 				return (
 					<div key={`#${item}`} id="delete-image-icon-box">
-						{!alert && (
+						{!onAlert && (
 							<CancelIcon
 								key={URL.createObjectURL(item) as string}
 								id="delete-image-button"
@@ -137,8 +138,8 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 		  });
 
 	const alertBox = (
-		<Collapse className="collapse" in={Boolean(alert)}>
-			<Alert id="create-recipe-alert" icon={false}>
+		<Collapse className="collapse" in={onAlert}>
+			<Alert id="create-article-alert" icon={false}>
 				<div id="naengpa-logo-box">
 					<div id="naengpa-logo">
 						<LocalDiningIcon id="naengpa-logo-image" />
@@ -147,7 +148,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 					<CancelIcon
 						id="close-alert-button"
 						onClick={() => {
-							setAlert('');
+							setOnAlert(false);
 						}}
 					/>
 				</div>
@@ -156,7 +157,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 					<Button
 						id="confirm-alert-button"
 						onClick={() => {
-							setAlert('');
+							setOnAlert(false);
 						}}
 					>
 						확인
@@ -193,7 +194,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 								<Button
 									id="back-to-article-list"
 									type="button"
-									disabled={Boolean(alert)}
+									disabled={onAlert}
 									onClick={onClickBackToArticleList}
 								>
 									취소
@@ -201,7 +202,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 								<div id="create-article-title">게시글 등록</div>
 								<Button
 									id="create-article-button"
-									disabled={Boolean(alert)}
+									disabled={onAlert}
 									onClick={onClickCreateArticle}
 								>
 									등록
@@ -216,7 +217,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 									disableUnderline
 									fullWidth
 									required
-									disabled={Boolean(alert)}
+									disabled={onAlert}
 									placeholder="제목"
 									id="title-input"
 									style={{ flexGrow: 3 }}
@@ -231,7 +232,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 									disableUnderline
 									fullWidth
 									required
-									disabled={Boolean(alert)}
+									disabled={onAlert}
 									placeholder="품목명"
 									id="item-input"
 									onChange={(e) => setItem(e.target.value)}
@@ -243,18 +244,13 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 								<Input
 									disableUnderline
 									required
-									disabled={Boolean(alert)}
+									disabled={onAlert}
 									type="number"
 									placeholder="희망가격 (원)"
 									id="price-input"
 									inputProps={{ min: '0', step: '100' }}
 									onChange={(e) => setPrice(e.target.value)}
 								/>
-							</TableCell>
-						</TableRow>
-						<TableRow>
-							<TableCell>
-								<div id="ingredient-name">필수재료</div>
 							</TableCell>
 						</TableRow>
 						<TableRow id="article-row-box">
@@ -267,7 +263,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 											type="file"
 											id="food-image"
 											required
-											disabled={Boolean(alert)}
+											disabled={onAlert}
 											onChange={(e: ChangeEvent<HTMLInputElement>) =>
 												onClickAddImage(e)
 											}
@@ -276,14 +272,16 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 									<PhotoCameraIcon id="add-image-icon" />
 								</Box>
 							</TableCell>
-							<Divider orientation="vertical" flexItem />
+							<TableCell>
+								<Divider orientation="vertical" />
+							</TableCell>
 							<TableCell width="100%" id="article-row">
 								<TextField
 									placeholder="안녕하세요, 좋은 아침입니다.&#10;장터에 올릴 게시글 내용을 적어주세요.&#10;판매금지품목은 게시가 제한될 수 있어요."
 									id="article-content"
 									fullWidth
 									required
-									disabled={Boolean(alert)}
+									disabled={onAlert}
 									multiline
 									rows={20}
 									type="text"
