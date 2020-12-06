@@ -10,7 +10,7 @@ export const getFoodCategoryList_ = (foodCategoryList: FoodCategoryEntity[]) => 
 export const getFoodCategoryList = () => {
 	return async (dispatch: any) => {
 		const response = await axios.get('/api/foodcategory/');
-		console.log(response.data, "food Category");
+		console.log(response.data, 'food Category');
 		dispatch(getFoodCategoryList_(response.data));
 	};
 };

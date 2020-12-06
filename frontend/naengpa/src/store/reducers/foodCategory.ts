@@ -16,7 +16,7 @@ function Food_category_reducer(
 ): FoodCategoryState {
 	switch (action.type) {
 		case actionTypes.GET_FOOD_CATEGORY_LIST:
-			return { ...state, foodCategoryList: action.foodCategoryList};
+			return { ...state, foodCategoryList: action.foodCategoryList };
 		default:
 			return state;
 	}

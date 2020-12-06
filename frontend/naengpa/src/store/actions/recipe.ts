@@ -7,36 +7,40 @@ import { BaseRecipeEntity, RecipeEntity } from '../../model/recipe';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-
-export const getRecipeList_ = (recipeList:RecipeEntity[], recipeCount:number) => ({
+export const getRecipeList_ = (recipeList: RecipeEntity[], recipeCount: number) => ({
 	type: actionTypes.GET_RECIPE_LIST,
 	recipeList,
 	recipeCount,
 });
 
 /* GET RECIPE LIST */
-export const getRecipeList = (query?: string, sortBy?: string, category?:string, filterBy?:boolean, page: number = 0) => {
+export const getRecipeList = (
+	query?: string,
+	sortBy?: string,
+	category?: string,
+	filterBy?: boolean,
+	page = 0,
+) => {
 	return async (dispatch: any) => {
 		try {
 			const response = await axios.get('/api/recipes/', {
 				params: {
-					query: query,
+					query,
 					sort_by: sortBy,
-					category: category,
+					category,
 					filter: filterBy,
-					page: page,
+					page,
 				},
 			});
 			const { recipeList, recipeCount } = response.data;
 			dispatch(getRecipeList_(recipeList, recipeCount));
-			
 		} catch {
-			console.log("레시피 리스트 정보를 가져오지 못했습니다! 다시 시도해주세요!");
+			console.log('레시피 리스트 정보를 가져오지 못했습니다! 다시 시도해주세요!');
 		}
 	};
-}
+};
 
-export const getTodayRecipeList_ = (todayRecipeList:RecipeEntity[]) => ({
+export const getTodayRecipeList_ = (todayRecipeList: RecipeEntity[]) => ({
 	type: actionTypes.GET_TODAY_RECIPE_LIST,
 	todayRecipeList,
 });
@@ -47,12 +51,12 @@ export const getTodayRecipeList = () => {
 			const response = await axios.get(`/api/recipes/today/`);
 			dispatch(getRecipe_(response.data));
 		} catch {
-			console.log("오늘의 레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!");
+			console.log('오늘의 레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!');
 		}
 	};
-}
+};
 
-export const getRecipe_ = (recipe:RecipeEntity) => ({
+export const getRecipe_ = (recipe: RecipeEntity) => ({
 	type: actionTypes.GET_RECIPE,
 	recipe,
 });
@@ -64,12 +68,12 @@ export const getRecipe = (id: number) => {
 			const response = await axios.get(`/api/recipes/${id}`);
 			dispatch(getRecipe_(response.data));
 		} catch {
-			console.log("레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!");
+			console.log('레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!');
 		}
 	};
-}
+};
 
-export const createRecipe_ = (recipe:RecipeEntity) => ({
+export const createRecipe_ = (recipe: RecipeEntity) => ({
 	type: actionTypes.CREATE_RECIPE,
 	recipe,
 });
@@ -85,15 +89,15 @@ export const createRecipe = (recipe: RecipeEntity) => {
 
 			dispatch(createRecipe_(response.data));
 		} catch {
-			console.log("레시피를 생성하던 중 문제가 발생했습니다! 다시 시도해주세요!");
+			console.log('레시피를 생성하던 중 문제가 발생했습니다! 다시 시도해주세요!');
 		}
 	};
-}
+};
 
-export const extractMLFeatureFromRecipe_ = (recipe:RecipeEntity) => ({
+export const extractMLFeatureFromRecipe_ = (recipe: RecipeEntity) => ({
 	type: actionTypes.EXTRACT_ML_FEATURE_FROM_RECIPE,
 	recipe,
-})
+});
 
 export const extractMLFeatureFromRecipe = (recipe: BaseRecipeEntity) => {
 	return async (dispatch: any) => {
@@ -105,33 +109,32 @@ export const extractMLFeatureFromRecipe = (recipe: BaseRecipeEntity) => {
 
 			dispatch(extractMLFeatureFromRecipe_({ ...response.data, ...recipe }));
 		} catch {
-			console.log("ml 기반 재료와 요리 분류 추천 중 문제가 발생했습니다. 다시 시도해주세요!");
+			console.log('ml 기반 재료와 요리 분류 추천 중 문제가 발생했습니다. 다시 시도해주세요!');
 		}
 	};
-}
+};
 
-export const deleteRecipe_ = (target_id:number) => ({
+export const deleteRecipe_ = (target_id: number) => ({
 	type: actionTypes.DELETE_RECIPE,
 	target_id,
-})
+});
 
 /* DELETE RECIPE */
 export const deleteRecipe = (id: number) => {
 	return async (dispatch: any) => {
-		try{
+		try {
 			await axios.delete(`/api/recipes/${id}`);
 			dispatch(deleteRecipe_(id));
-		} 
-		catch {
-			console.log("레시피를 삭제하지 못했습니다! 다시 시도해주세요!");
+		} catch {
+			console.log('레시피를 삭제하지 못했습니다! 다시 시도해주세요!');
 		}
 	};
-}
+};
 
-export const editRecipe_ = (recipe:RecipeEntity) => ({
+export const editRecipe_ = (recipe: RecipeEntity) => ({
 	type: actionTypes.EDIT_RECIPE,
 	recipe,
-})
+});
 
 /* EDIT RECIPE */
 export const editRecipe = (recipe: RecipeEntity) => {
@@ -139,18 +142,17 @@ export const editRecipe = (recipe: RecipeEntity) => {
 		try {
 			const response = await axios.put(`/api/recipes/${recipe.id}`, recipe);
 			dispatch(editRecipe_(response.data));
-		} 
-		catch {
-			console.log("레시피를 수정하지 못했습니다. 다시 시도해주세요!");
+		} catch {
+			console.log('레시피를 수정하지 못했습니다. 다시 시도해주세요!');
 		}
 	};
-}
+};
 
-export const toggleRecipe_ = (target_id:number, recipeLikeInfo:number) => ({
+export const toggleRecipe_ = (target_id: number, recipeLikeInfo: number) => ({
 	type: actionTypes.TOGGLE_RECIPE,
 	target_id,
 	recipeLikeInfo,
-})
+});
 
 /* TOGGLE RECIPE LIKE */
 export function toggleRecipe(id: number) {
@@ -159,14 +161,14 @@ export function toggleRecipe(id: number) {
 			const response: any = await axios.get(`/api/recipes/${id}/like`);
 			dispatch(toggleRecipe_(id, response.data));
 		} catch {
-			console.log("레시피 좋아요를 누르지 못했습니다! 다시 시도해주세요!");
+			console.log('레시피 좋아요를 누르지 못했습니다! 다시 시도해주세요!');
 		}
 	};
 }
 
 export type RecipeAction =
 	| ReturnType<typeof getRecipeList_>
-	| ReturnType<typeof getTodayRecipeList_> 
+	| ReturnType<typeof getTodayRecipeList_>
 	| ReturnType<typeof getRecipe_>
 	| ReturnType<typeof createRecipe_>
 	| ReturnType<typeof extractMLFeatureFromRecipe_>

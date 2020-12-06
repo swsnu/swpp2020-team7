@@ -19,13 +19,17 @@ const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
 		dispatch(getTodayRecipeList());
 		const recipe = recipeList.map((item: any) => {
 			return (
-				<Recipe key={item.id} recipe={item} attribute="todays-recipe-child" history={history} />
+				<Recipe
+					key={item.id}
+					recipe={item}
+					attribute="todays-recipe-child"
+					history={history}
+				/>
 			);
 		});
-		if(recipe) setRecipe(recipe);
+		if (recipe) setRecipe(recipe);
 		else setRecipe([]);
 	}, [dispatch]);
-
 
 	return (
 		<div id="today-recipe">

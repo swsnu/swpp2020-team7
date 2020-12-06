@@ -6,7 +6,7 @@ export type InitialState = {
 	recipeList: RecipeEntity[];
 	todayRecipeList: RecipeEntity[];
 	recipe: RecipeEntity | null;
-	recipeCount: number
+	recipeCount: number;
 	createdRecipe: RecipeEntity | null;
 };
 
@@ -19,14 +19,14 @@ const RecipeState: InitialState = {
 };
 
 function recipeReducer(state: InitialState = RecipeState, action: RecipeAction): InitialState {
-	let recipeList:RecipeEntity[] = [];
+	let recipeList: RecipeEntity[] = [];
 	switch (action.type) {
 		/* GET RECIPE LIST */
 		case actionTypes.GET_RECIPE_LIST:
 			return { ...state, recipeList: action.recipeList, recipeCount: action.recipeCount };
 
-		case actionTypes.GET_TODAY_RECIPE_LIST: 
-			return {...state, todayRecipeList:action.todayRecipeList};
+		case actionTypes.GET_TODAY_RECIPE_LIST:
+			return { ...state, todayRecipeList: action.todayRecipeList };
 
 		/* GET RECIPE */
 		case actionTypes.GET_RECIPE:
@@ -36,8 +36,8 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 		case actionTypes.CREATE_RECIPE: {
 			return {
 				...state,
-				recipeList: [...state.recipeList, action.recipe ],
-				recipeCount: state.recipeCount +1 ,
+				recipeList: [...state.recipeList, action.recipe],
+				recipeCount: state.recipeCount + 1,
 				recipe: action.recipe,
 				createdRecipe: null,
 			};
@@ -56,12 +56,12 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 			recipeList = state.recipeList?.filter((recipe) => {
 				return (recipe.id as number) !== action.target_id;
 			});
-			recipeList = (recipeList === undefined) ? [] : recipeList;
+			recipeList = recipeList === undefined ? [] : recipeList;
 
-			return { 
-				...state, 
-				recipeList: recipeList, 
-				recipeCount: state.recipeCount-1 ,
+			return {
+				...state,
+				recipeList,
+				recipeCount: state.recipeCount - 1,
 			};
 		}
 
@@ -72,8 +72,8 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 			};
 
 		case actionTypes.TOGGLE_RECIPE: {
-			recipeList = []
-			if(state.recipeList !== []) {
+			recipeList = [];
+			if (state.recipeList !== []) {
 				recipeList = state.recipeList?.map((recipe) => {
 					if ((recipe.id as number) === action.target_id) {
 						recipe.recipeLike =
@@ -83,7 +83,7 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 					}
 					return recipe;
 				});
-			} 
+			}
 			return { ...state, recipeList };
 		}
 

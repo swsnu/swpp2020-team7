@@ -60,7 +60,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	// if the value is false => then each modal pops off.
 	const [showCategoryModal, setShowCategoryModal] = useState(false);
-	const [modifiedCategory, setModifiedCategory] = useState("");
+	const [modifiedCategory, setModifiedCategory] = useState('');
 	const [showIngredientModal, setShowIngredientModal] = useState(false);
 	const [modifiedIngredients, setModifiedIngredients] = useState<RecipeIngredient[]>([]);
 	const [goBackButton, setGoBackButton] = useState(false);

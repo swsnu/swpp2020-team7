@@ -14,7 +14,7 @@ import { AppState } from '../../store/store';
 import { getRecipeList, getFoodCategoryList } from '../../store/actions/index';
 
 import './RecipeList.scss';
-import { RecipeEntity} from '../../model/recipe';
+import { RecipeEntity } from '../../model/recipe';
 
 interface RecipeListProps {
 	history: History;
@@ -22,10 +22,10 @@ interface RecipeListProps {
 
 const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const recipeList = useSelector((state: AppState) => state.recipe.recipeList);
-	const recipeCount = useSelector((state:AppState) => state.recipe.recipeCount);
-	const foodCategoryList = useSelector((state:AppState) => state.foodCategory.foodCategoryList);
+	const recipeCount = useSelector((state: AppState) => state.recipe.recipeCount);
+	const foodCategoryList = useSelector((state: AppState) => state.foodCategory.foodCategoryList);
 	const [page, setPage] = useState(1);
-	const [currentList, setCurrentList] = useState<RecipeEntity[]|null>(null);
+	const [currentList, setCurrentList] = useState<RecipeEntity[] | null>(null);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
 	const [sortBy, setSortBy] = useState('-created_at');
 	const [filterBy, setFilterBy] = useState(true);
@@ -34,16 +34,16 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const [query, setQuery] = useState('');
 	const dispatch = useDispatch();
 
-	const getListIndex = (page: number) => ((page)-1)*9;
+	const getListIndex = (page: number) => (page - 1) * 9;
 
 	const onLoadRecipeList = async (page: number) => {
 		setLoading(true);
 		await dispatch(getRecipeList(query, sortBy, searchCategory, filterBy, getListIndex(page)));
 		setMaxPageIndex(Math.ceil(recipeCount / 9.0));
 		setPage(page);
-		setCurrentList(recipeList);	
+		setCurrentList(recipeList);
 		setLoading(false);
-	}
+	};
 
 	const onClickSearch = async (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter') {
@@ -51,26 +51,26 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		}
 	};
 
-	const onClickRecentFilter = async (e:MouseEvent<HTMLButtonElement>) => {
+	const onClickRecentFilter = async (e: MouseEvent<HTMLButtonElement>) => {
 		setSortBy('-created_at');
 		setFilterBy(false);
 		e.preventDefault();
 		await onLoadRecipeList(1);
-	}
+	};
 
-	const onClickPopularFilter = async (e:MouseEvent<HTMLButtonElement>) => {
+	const onClickPopularFilter = async (e: MouseEvent<HTMLButtonElement>) => {
 		setSortBy('like_users');
 		setFilterBy(false);
 		e.preventDefault();
 		await onLoadRecipeList(1);
-	}
+	};
 
-	const onClickRecommendedFilter = async (e:MouseEvent<HTMLButtonElement>) => {
+	const onClickRecommendedFilter = async (e: MouseEvent<HTMLButtonElement>) => {
 		setSortBy('-created_at');
 		setFilterBy(true);
 		e.preventDefault();
 		await onLoadRecipeList(1);
-	}
+	};
 
 	const onChangePage = async (e: React.ChangeEvent<unknown>, value: number) => {
 		e.preventDefault();
@@ -90,16 +90,18 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 
 	const selectOption = foodCategoryList?.map((item: any) => {
 		return (
-			<MenuItem value={item.name} onClick={(e) =>setSearchCategory(item.name)}>{item.name}</MenuItem>
-		)
-	})
+			<MenuItem value={item.name} onClick={(e) => setSearchCategory(item.name)}>
+				{item.name}
+			</MenuItem>
+		);
+	});
 
 	useEffect(() => {
-		const func = async () => { 
+		const func = async () => {
 			await dispatch(getFoodCategoryList());
 			await onLoadRecipeList(1);
-		}
-		func()
+		};
+		func();
 	}, []);
 
 	return (
@@ -121,22 +123,40 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 							disableUnderline
 							onChange={(e) => setSearchCategory(e.target.value as string)}
 						>
-						<MenuItem value="전체" onClick={(e) =>setSearchCategory("전체")}>전체</MenuItem>
-						{selectOption}
+							<MenuItem value="전체" onClick={(e) => setSearchCategory('전체')}>
+								전체
+							</MenuItem>
+							{selectOption}
 						</Select>
 					</div>
 				</div>
 				<div id="recipe-list-buttons">
-					<button id="most-recent-filter" type="button" onClick={(e) => onClickRecentFilter(e)}>
+					<button
+						id="most-recent-filter"
+						type="button"
+						onClick={(e) => onClickRecentFilter(e)}
+					>
 						최신
 					</button>
-					<button id="most-popular-filter" type="button" onClick={(e) => onClickPopularFilter(e)}>
+					<button
+						id="most-popular-filter"
+						type="button"
+						onClick={(e) => onClickPopularFilter(e)}
+					>
 						인기
 					</button>
-					<button id="most-recommended-filter" type="button" onClick={(e) => onClickRecommendedFilter(e)}>
+					<button
+						id="most-recommended-filter"
+						type="button"
+						onClick={(e) => onClickRecommendedFilter(e)}
+					>
 						추천
 					</button>
-					<button id="create-recipe-button" type="button" onClick={(e) => onClickCreateRecipe(e)}>
+					<button
+						id="create-recipe-button"
+						type="button"
+						onClick={(e) => onClickCreateRecipe(e)}
+					>
 						레시피 등록
 					</button>
 				</div>
