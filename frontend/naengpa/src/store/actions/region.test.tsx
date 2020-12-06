@@ -16,20 +16,20 @@ const mockStore = store(stubInitialState);
 
 const mockRegionList = [
 	{
-		"id": 4,
-		"name": "종로구 청운효자동",
-		"location": {
-			"latitude": 37.5841161738354,
-			"longitude": 126.97064969123
-		}
+		id: 4,
+		name: '종로구 청운효자동',
+		location: {
+			latitude: 37.5841161738354,
+			longitude: 126.97064969123,
+		},
 	},
 	{
-		"id": 5,
-		"name": "종로구 사직동",
-		"location": {
-			"latitude": 37.5761869658796,
-			"longitude": 126.968846056089
-		}
+		id: 5,
+		name: '종로구 사직동',
+		location: {
+			latitude: 37.5761869658796,
+			longitude: 126.968846056089,
+		},
 	},
 ];
 

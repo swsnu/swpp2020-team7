@@ -16,7 +16,7 @@ const stubInitialState = {
 			name: '테스트',
 			dateOfBirth: '20201112',
 			region: {
-				name: "관악구 대학동"
+				name: '관악구 대학동',
 			},
 		},
 	},
@@ -215,7 +215,6 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalled();
 	});
 
-
 	it('should return saveUserInfo action correctly', async () => {
 		const mockSignupUser = {
 			name: 'test',
@@ -223,7 +222,7 @@ describe('ActionCreators', () => {
 			password: 'test',
 			dateOfBirth: '999999',
 			email: 'test',
-		}
+		};
 
 		await mockStore.dispatch<any>(actionCreators.saveUserInfo(mockSignupUser));
 
@@ -237,18 +236,18 @@ describe('ActionCreators', () => {
 			return new Promise((resolve, reject) => {
 				const result = {
 					status: 200,
-					data: { id: "1" },
+					data: { id: '1' },
 				};
 				resolve(result);
 			});
 		});
 
-		await mockStore.dispatch<any>(actionCreators.sendChat("1", "hi"));
+		await mockStore.dispatch<any>(actionCreators.sendChat('1', 'hi'));
 		expect(spy).toBeCalledTimes(1);
-		expect(spy).toBeCalledWith("/api/chatrooms/1/", { content: "hi" });
+		expect(spy).toBeCalledWith('/api/chatrooms/1/', { content: 'hi' });
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.SEND_CHAT, chatRoom: { id: "1" } };
+		const expectedPayload = { type: actionTypes.SEND_CHAT, chatRoom: { id: '1' } };
 		expect(actions[0]).toEqual(expectedPayload);
 	});
 
@@ -258,7 +257,7 @@ describe('ActionCreators', () => {
 				reject();
 			});
 		});
-		await mockStore.dispatch<any>(actionCreators.sendChat("1", "hi"));
+		await mockStore.dispatch<any>(actionCreators.sendChat('1', 'hi'));
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
@@ -270,24 +269,24 @@ describe('ActionCreators', () => {
 			return new Promise((resolve, reject) => {
 				const result = {
 					status: 200,
-					data: {id: "1"},
+					data: { id: '1' },
 				};
 				resolve(result);
 			});
 		});
 
 		const mockChatRoom = {
-			id: "1",
-			lastChat: "hi",
-			member: "me",
-			updatedAt: "00",
+			id: '1',
+			lastChat: 'hi',
+			member: 'me',
+			updatedAt: '00',
 			chatCount: 1,
 		};
 		await mockStore.dispatch<any>(actionCreators.getChatRoom(mockChatRoom));
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.GET_CHATROOM, chatRoom: { id: "1" } };
+		const expectedPayload = { type: actionTypes.GET_CHATROOM, chatRoom: { id: '1' } };
 		expect(actions[0]).toEqual(expectedPayload);
 	});
 
@@ -299,10 +298,10 @@ describe('ActionCreators', () => {
 		});
 
 		const mockChatRoom = {
-			id: "1",
-			lastChat: "hi",
-			member: "me",
-			updatedAt: "00",
+			id: '1',
+			lastChat: 'hi',
+			member: 'me',
+			updatedAt: '00',
 			chatCount: 1,
 		};
 		await mockStore.dispatch<any>(actionCreators.getChatRoom(mockChatRoom));
@@ -317,7 +316,7 @@ describe('ActionCreators', () => {
 			return new Promise((resolve, reject) => {
 				const result = {
 					status: 200,
-					data: [{ id: "1" }],
+					data: [{ id: '1' }],
 				};
 				resolve(result);
 			});
@@ -328,7 +327,10 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalledWith('/api/chatrooms/');
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.GET_CHATROOM_LIST, chatRoomList: [{ id: "1" }] };
+		const expectedPayload = {
+			type: actionTypes.GET_CHATROOM_LIST,
+			chatRoomList: [{ id: '1' }],
+		};
 		expect(actions[0]).toEqual(expectedPayload);
 	});
 
@@ -351,24 +353,24 @@ describe('ActionCreators', () => {
 			return new Promise((resolve, reject) => {
 				const result = {
 					status: 200,
-					data: {id: "1"},
+					data: { id: '1' },
 				};
 				resolve(result);
 			});
 		});
 
 		const mockChatRoom = {
-			id: "1",
-			lastChat: "hi",
-			member: "me",
-			updatedAt: "00",
+			id: '1',
+			lastChat: 'hi',
+			member: 'me',
+			updatedAt: '00',
 			chatCount: 1,
 		};
 		await mockStore.dispatch<any>(actionCreators.getChatRoom(mockChatRoom));
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.GET_CHATROOM, chatRoom: { id: "1" } };
+		const expectedPayload = { type: actionTypes.GET_CHATROOM, chatRoom: { id: '1' } };
 		expect(actions[0]).toEqual(expectedPayload);
 	});
 
@@ -380,10 +382,10 @@ describe('ActionCreators', () => {
 		});
 
 		const mockChatRoom = {
-			id: "1",
-			lastChat: "hi",
-			member: "me",
-			updatedAt: "00",
+			id: '1',
+			lastChat: 'hi',
+			member: 'me',
+			updatedAt: '00',
 			chatCount: 1,
 		};
 		await mockStore.dispatch<any>(actionCreators.getChatRoom(mockChatRoom));
@@ -393,23 +395,22 @@ describe('ActionCreators', () => {
 		expect(actions.length).toEqual(0);
 	});
 
-
 	it('should return createChatRoom action correctly', async () => {
 		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
 			return new Promise((resolve, reject) => {
 				const result = {
 					status: 200,
-					data: {id: "1"},
+					data: { id: '1' },
 				};
 				resolve(result);
 			});
 		});
 
-		await mockStore.dispatch<any>(actionCreators.createChatRoom("1"));
+		await mockStore.dispatch<any>(actionCreators.createChatRoom('1'));
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.CREATE_CHATROOM, chatRoom: { id: "1" } };
+		const expectedPayload = { type: actionTypes.CREATE_CHATROOM, chatRoom: { id: '1' } };
 		expect(actions[0]).toEqual(expectedPayload);
 	});
 
@@ -423,7 +424,7 @@ describe('ActionCreators', () => {
 				resolve(result);
 			});
 		});
-		await mockStore.dispatch<any>(actionCreators.createChatRoom("1"));
+		await mockStore.dispatch<any>(actionCreators.createChatRoom('1'));
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
@@ -436,7 +437,7 @@ describe('ActionCreators', () => {
 				reject();
 			});
 		});
-		await mockStore.dispatch<any>(actionCreators.createChatRoom("1"));
+		await mockStore.dispatch<any>(actionCreators.createChatRoom('1'));
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
@@ -454,11 +455,11 @@ describe('ActionCreators', () => {
 			});
 		});
 
-		await mockStore.dispatch<any>(actionCreators.deleteChatRoom("1"));
+		await mockStore.dispatch<any>(actionCreators.deleteChatRoom('1'));
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.DELETE_CHATROOM, id: "1" };
+		const expectedPayload = { type: actionTypes.DELETE_CHATROOM, id: '1' };
 		expect(actions[0]).toEqual(expectedPayload);
 	});
 
@@ -468,7 +469,7 @@ describe('ActionCreators', () => {
 				reject();
 			});
 		});
-		await mockStore.dispatch<any>(actionCreators.deleteChatRoom("1"));
+		await mockStore.dispatch<any>(actionCreators.deleteChatRoom('1'));
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();

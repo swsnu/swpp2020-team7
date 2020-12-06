@@ -33,7 +33,7 @@ const stubInitialState = {
 					{
 						ingredient: '돼지고기',
 					},
-					{ 
+					{
 						ingredient: '고추장',
 					},
 				],
@@ -60,7 +60,7 @@ const stubInitialState = {
 					{
 						ingredient: '돼지고기',
 					},
-					{ 
+					{
 						ingredient: '고추장',
 					},
 				],
@@ -203,7 +203,11 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.TOGGLE_RECIPE, target_id: 2, recipeLikeInfo: null };
+		const expectedPayload = {
+			type: actionTypes.TOGGLE_RECIPE,
+			target_id: 2,
+			recipeLikeInfo: null,
+		};
 		expect(actions[0]).toEqual(expectedPayload);
 	});
 });

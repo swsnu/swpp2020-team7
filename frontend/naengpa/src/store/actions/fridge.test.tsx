@@ -7,8 +7,6 @@ const middlewares = [thunk];
 const store = configureStore(middlewares);
 
 describe('ActionCreators', () => {
-	const image = import('../../../public/icons/boy.png');
-
 	const stubInitialState = {
 		fridge: {
 			ingredientList: [

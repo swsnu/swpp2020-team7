@@ -17,23 +17,23 @@ const mockUser = {
 	name: '테스트',
 	dateOfBirth: '20201112',
 	region: {
-		name: "관악구 대학동",
-	}
+		name: '관악구 대학동',
+	},
 };
 const mockChatRoom = {
-	id: "1",
-	lastChat: "hi",
-	member: "me",
-	updatedAt: "00",
+	id: '1',
+	lastChat: 'hi',
+	member: 'me',
+	updatedAt: '00',
 	chatCount: 1,
 };
 const mockChatRoomList = [
 	mockChatRoom,
 	{
-		id: "2",
-		lastChat: "hi",
-		member: "me",
-		updatedAt: "00",
+		id: '2',
+		lastChat: 'hi',
+		member: 'me',
+		updatedAt: '00',
 		chatCount: 1,
 	},
 ];
@@ -43,7 +43,6 @@ describe('User Reducer', () => {
 		const newState = userReducer(userState, { type: 'none' });
 		expect(newState).toEqual(userState);
 	});
-
 
 	it('should check if get user list done correctly', () => {
 		const newState = userReducer(userState, {
@@ -66,8 +65,8 @@ describe('User Reducer', () => {
 				name: '테스트',
 				dateOfBirth: '20201112',
 				region: {
-					name: "관악구 대학동",
-				}
+					name: '관악구 대학동',
+				},
 			},
 		});
 		expect(newState).toEqual({
@@ -79,8 +78,8 @@ describe('User Reducer', () => {
 				name: '테스트',
 				dateOfBirth: '20201112',
 				region: {
-					name: "관악구 대학동",
-				}
+					name: '관악구 대학동',
+				},
 			},
 		});
 	});
@@ -95,8 +94,8 @@ describe('User Reducer', () => {
 				name: '테스트',
 				dateOfBirth: '20201112',
 				region: {
-					name: "관악구 대학동",
-				}
+					name: '관악구 대학동',
+				},
 			},
 		});
 		expect(newState).toEqual({
@@ -108,8 +107,8 @@ describe('User Reducer', () => {
 				name: '테스트',
 				dateOfBirth: '20201112',
 				region: {
-					name: "관악구 대학동",
-				}
+					name: '관악구 대학동',
+				},
 			},
 		});
 	});
@@ -131,7 +130,7 @@ describe('User Reducer', () => {
 		});
 		expect(newState).toEqual({
 			...userState,
-			saved_user: mockUser
+			saved_user: mockUser,
 		});
 	});
 
@@ -145,8 +144,8 @@ describe('User Reducer', () => {
 				name: '테스트',
 				dateOfBirth: '20201112',
 				region: {
-					name: "관악구 대학동",
-				}
+					name: '관악구 대학동',
+				},
 			},
 		});
 		expect(newState).toEqual({
@@ -158,8 +157,8 @@ describe('User Reducer', () => {
 				name: '테스트',
 				dateOfBirth: '20201112',
 				region: {
-					name: "관악구 대학동",
-				}
+					name: '관악구 대학동',
+				},
 			},
 		});
 	});
@@ -179,8 +178,8 @@ describe('User Reducer', () => {
 				name: '테스트',
 				dateOfBirth: '20201112',
 				region: {
-					name: "관악구 대학동",
-				}
+					name: '관악구 대학동',
+				},
 			},
 		});
 	});
@@ -192,7 +191,7 @@ describe('User Reducer', () => {
 		});
 		expect(newState).toEqual({
 			...userState,
-			chatRoom: mockChatRoom
+			chatRoom: mockChatRoom,
 		});
 	});
 
@@ -203,7 +202,7 @@ describe('User Reducer', () => {
 		});
 		expect(newState).toEqual({
 			...userState,
-			chatRoomList: mockChatRoomList
+			chatRoomList: mockChatRoomList,
 		});
 	});
 
@@ -214,27 +213,33 @@ describe('User Reducer', () => {
 		});
 		expect(newState).toEqual({
 			...userState,
-			chatRoom: mockChatRoom
+			chatRoom: mockChatRoom,
 		});
 	});
 
 	it('should check if receive chat is done correctly', () => {
-		const newState = userReducer({...userState, chatRoom: mockChatRoom, chatRoomList: mockChatRoomList}, {
-			type: actionTypes.RECEIVE_CHAT,
-			chatRoomList: mockChatRoomList,
-		});
+		const newState = userReducer(
+			{ ...userState, chatRoom: mockChatRoom, chatRoomList: mockChatRoomList },
+			{
+				type: actionTypes.RECEIVE_CHAT,
+				chatRoomList: mockChatRoomList,
+			},
+		);
 		expect(newState).toEqual({
 			...userState,
 			chatRoomList: mockChatRoomList,
-			chatRoom: mockChatRoom
+			chatRoom: mockChatRoom,
 		});
 	});
 
 	it('should check if receive chat with no chatroom is done correctly', () => {
-		const newState = userReducer({...userState, chatRoomList: mockChatRoomList}, {
-			type: actionTypes.RECEIVE_CHAT,
-			chatRoomList: mockChatRoomList,
-		});
+		const newState = userReducer(
+			{ ...userState, chatRoomList: mockChatRoomList },
+			{
+				type: actionTypes.RECEIVE_CHAT,
+				chatRoomList: mockChatRoomList,
+			},
+		);
 		expect(newState).toEqual({
 			...userState,
 			chatRoomList: mockChatRoomList,
@@ -243,10 +248,13 @@ describe('User Reducer', () => {
 	});
 
 	it('should check if create chatroom is done correctly', () => {
-		const newState = userReducer({...userState, chatRoomList: [mockChatRoomList[0]]}, {
-			type: actionTypes.CREATE_CHATROOM,
-			chatRoom: mockChatRoomList[1],
-		});
+		const newState = userReducer(
+			{ ...userState, chatRoomList: [mockChatRoomList[0]] },
+			{
+				type: actionTypes.CREATE_CHATROOM,
+				chatRoom: mockChatRoomList[1],
+			},
+		);
 		expect(newState).toEqual({
 			...userState,
 			chatRoomList: mockChatRoomList,
@@ -255,10 +263,13 @@ describe('User Reducer', () => {
 	});
 
 	it('should check if create chatroom with given chatroom is done correctly', () => {
-		const newState = userReducer({...userState, chatRoomList: mockChatRoomList}, {
-			type: actionTypes.CREATE_CHATROOM,
-			chatRoom: mockChatRoom,
-		});
+		const newState = userReducer(
+			{ ...userState, chatRoomList: mockChatRoomList },
+			{
+				type: actionTypes.CREATE_CHATROOM,
+				chatRoom: mockChatRoom,
+			},
+		);
 		expect(newState).toEqual({
 			...userState,
 			chatRoomList: [mockChatRoom],
@@ -266,12 +277,14 @@ describe('User Reducer', () => {
 		});
 	});
 
-
 	it('should check if delete chatroom is done correctly', () => {
-		const newState = userReducer({...userState, chatRoomList: mockChatRoomList}, {
-			type: actionTypes.DELETE_CHATROOM,
-			id: "1",
-		});
+		const newState = userReducer(
+			{ ...userState, chatRoomList: mockChatRoomList },
+			{
+				type: actionTypes.DELETE_CHATROOM,
+				id: '1',
+			},
+		);
 		expect(newState).toEqual({
 			...userState,
 			chatRoomList: [mockChatRoomList[1]],
