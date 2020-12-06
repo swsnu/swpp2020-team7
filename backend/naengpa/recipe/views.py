@@ -121,11 +121,10 @@ def recipe_info(request, id):
         return HttpResponse(status=200)
 
 
-@api_view(['GET'])
+@api_view(['PUT'])
 @login_required
 def recipe_like(request, id):
     """like recipe of given id"""
-
     recipe = Recipe.objects.get(id=id)
     user_id = request.user.id
     user_like = recipe.likes.filter(user_id=user_id)
