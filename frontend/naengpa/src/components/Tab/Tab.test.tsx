@@ -31,7 +31,7 @@ describe('User', () => {
 		jest.restoreAllMocks();
 	});
 
-	it('Tap renders without crashing', () => {
+	it('Tab renders without crashing', () => {
 		const component = mount(tab);
 		expect(component.find('#button-list').length).toBe(1);
 	});
