@@ -2,7 +2,8 @@
 # from django.test import TestCase
 from django.test import TestCase, Client
 import json
-from .models import Food, FoodCategory
+from .models import FoodCategory
+
 # Create your tests here.
 
 
