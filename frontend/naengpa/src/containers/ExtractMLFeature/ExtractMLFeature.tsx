@@ -420,10 +420,15 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					{ingredientSet}
 					{/* New Ingredient */}
 					<div id="ingredient-element">
-						<FormControlLabel
-							control={<Checkbox checkedIcon={<CheckBoxIcon id="checkbox" />} />}
-							label=""
-						/>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={false}
+								checkedIcon={<CheckBoxIcon id="checkbox" />}
+							/>
+						}
+						label=""
+					/>
 						<Input
 							id="ingredient-name"
 							placeholder="재료"
@@ -566,6 +571,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 									>
 										{/* RECIPE INGREDIENT 추출 재료들 */}
 										<div id="ingredient-name">필수재료</div>
+										{ !`${ingredientSetForRecipe}` && <div>선택된/추천된 재료가 없습니다! 직접 입력해 주세요.</div>}
 										<div id="ingredient-list">{ingredientSetForRecipe}</div>
 									</TableCell>
 								</TableRow>
