@@ -15,10 +15,7 @@ const mockChatRoom = {
 	member: 'me',
 	updatedAt: '00',
 	chatCount: 1,
-	messages: [
-		'hi',
-		'hello',
-	]
+	messages: ['hi', 'hello'],
 };
 const stubInitialState = {
 	user: {

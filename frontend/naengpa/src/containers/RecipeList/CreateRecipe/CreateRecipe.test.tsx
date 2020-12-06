@@ -77,7 +77,7 @@ describe('CreateRecipe', () => {
 	it('should work well with the input changes', async () => {
 		const component = mount(createRecipe);
 		await waitForComponentToPaint(component);
-		
+
 		act(() => {
 			const confirmAlertButton = component.find('#confirm-alert-button').at(0);
 			confirmAlertButton.simulate('click');
@@ -86,7 +86,9 @@ describe('CreateRecipe', () => {
 			const cookTime = component.find('input#cook-time').find('input');
 			const foodImage = component.find('input#food-image').find('input');
 			const recipeContent = component.find('#recipe-content').find('textarea');
-			const extractMLFeatureButton = component.find('#extract-ml-feature-button').find('button');
+			const extractMLFeatureButton = component
+				.find('#extract-ml-feature-button')
+				.find('button');
 
 			foodName.simulate('change', { target: { value: 'ice Cream' } });
 			cookTime.simulate('change', { target: { value: '40' } });
