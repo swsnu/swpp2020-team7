@@ -26,6 +26,7 @@ type Action =
 	| { type: 'GET_USER_LIST'; userList: UserEntity[] }
 	| { type: 'GET_USER'; user: UserEntity }
 	| { type: 'EDIT_USER'; user: UserEntity }
+	| { type: 'CHANGE_PASSWORD'; user: UserEntity }
 	| { type: 'CREATE_CHATROOM'; chatRoom: ChatEntity }
 	| { type: 'GET_CHATROOM_LIST'; chatRoomList: ChatEntity[] }
 	| { type: 'GET_CHATROOM'; chatRoom: ChatEntity }
@@ -67,6 +68,10 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 
 		/* EDIT USER */
 		case actionTypes.EDIT_USER:
+			return { ...state, user: action.user };
+
+		/* CHANGE PASSWORD */
+		case actionTypes.CHANGE_PASSWORD:
 			return { ...state, user: action.user };
 
 		/* CREAT CHATROOM */

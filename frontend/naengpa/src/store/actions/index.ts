@@ -7,6 +7,7 @@ export {
 	getUserList,
 	getUser,
 	editUser,
+	changePassword,
 	deleteUser,
 	getChatRoomList,
 	getChatRoom,

@@ -86,11 +86,20 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 							// onChange={(e) => setSearchCategory(e.target.value as string)}
 						>
 							<MenuItem value="전체">전체</MenuItem>
-							<MenuItem id="recipe-search-select-item" value="한식">
-								한식
-							</MenuItem>
-							<MenuItem value="양식">양식</MenuItem>
-							<MenuItem value="중식">중식</MenuItem>
+							<MenuItem value="고기류">고기류</MenuItem>
+							<MenuItem value="디저트류">디저트류</MenuItem>
+							<MenuItem value="유제품류">유제품류</MenuItem>
+							<MenuItem value="해물류">해물류</MenuItem>
+							<MenuItem value="밥류">밥류</MenuItem>
+							<MenuItem value="과일류">과일류</MenuItem>
+							<MenuItem value="면류">면류</MenuItem>
+							<MenuItem value="채소류">채소류</MenuItem>
+							<MenuItem value="생선류">생선류</MenuItem>
+							<MenuItem value="빵류">빵류</MenuItem>
+							<MenuItem value="튀김류">튀김류</MenuItem>
+							<MenuItem value="계란/알류">계란/알류</MenuItem>
+							<MenuItem value="수프/국/찌개류">수프/국/찌개류</MenuItem>
+							<MenuItem value="기타">기타</MenuItem>
 						</Select>
 					</div>
 					{/* <SearchIcon onClick={() => onClickSearch} /> */}

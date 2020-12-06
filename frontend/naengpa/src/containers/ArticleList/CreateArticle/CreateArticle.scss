@@ -24,6 +24,10 @@
   }
 }
 
+#create-article {
+  margin-top: 100px;
+}
+
 #create-article-options {
   width: 35%;
   position: relative; 
@@ -43,8 +47,8 @@
     }
     padding: 0;
     border-radius: 11px;
-    border: solid 1px #f7f7f7;
-    background-color: #f7f7f7;
+    border: none;
+    background-color: #e4e4e4;
     
     font-family: 'Jua', sans-serif;
     font-size: 100%;
@@ -54,11 +58,13 @@
     letter-spacing: normal;
     text-align: center;
     color: #696464;
+    outline: none;
   }
     
   button.selected {
     color: #ffffff;
     background-color: #ff8a3d;
+    outline: none;
   }
 }
 

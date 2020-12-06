@@ -190,6 +190,36 @@ def user(request, id):
 
 
 @ensure_csrf_cookie
+def change_password(request, id):
+    # CHANGE PASSWORD
+    if request.method == 'PUT':
+        try:
+            user = User.objects.get(id=id)
+        except User.DoesNotExist:
+            return HttpResponseBadRequest()
+        req_data = json.loads(request.body.decode())
+        currentPassword = req_data['currentPassword']
+        newPassword = req_data['newPassword']
+        if check_password(currentPassword, request.user.password):
+            user.set_password(newPassword)
+            user.save()
+        else:
+            return HttpResponse(status=401)
+        # user.save()
+        return JsonResponse(data={
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'name': user.name,
+            'dateOfBirth': user.date_of_birth,
+            'naengpaScore': user.naengpa_score,
+            'region': get_region(user.region),
+            'regionRange': user.region_range,
+        }, status=201)
+    return HttpResponseNotAllowed(['PUT'])
+
+
+@ensure_csrf_cookie
 def user_list(request):
     """user_list"""
     # GET USER LIST
