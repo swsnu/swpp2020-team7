@@ -10,13 +10,13 @@ const middlewares = [thunk];
 const store = configureStore(middlewares);
 
 describe('Tab', () => {
-	const username = "test"
+	const username = 'test';
 	let tab: any;
 	let spyHistoryPush: any;
 
 	beforeEach(() => {
 		const mockStore = store([]);
-		
+
 		tab = (
 			<Provider store={mockStore}>
 				<Tab username={username} history={history} />

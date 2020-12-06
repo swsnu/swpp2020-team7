@@ -173,27 +173,27 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const imageList = !foodImageFiles?.length
 		? []
 		: foodImageFiles?.map((item, idx) => {
-			return (
-				<div key={`${idx} ` as string} id="delete-image-icon-box">
-					{!alert && (
-						<CancelIcon
-							key={URL.createObjectURL(item) as string}
-							id="delete-image-button"
-							type="button"
-							onClick={() => onClickDeleteImage(idx)}
+				return (
+					<div key={`${idx} ` as string} id="delete-image-icon-box">
+						{!alert && (
+							<CancelIcon
+								key={URL.createObjectURL(item) as string}
+								id="delete-image-button"
+								type="button"
+								onClick={() => onClickDeleteImage(idx)}
+							/>
+						)}
+						<img
+							key={`${idx}-` as string}
+							id="delete-image-icon"
+							src={URL.createObjectURL(item) as string}
+							height="150px"
+							width="150px"
+							alt="/api/images" // TODO: check alt path
 						/>
-					)}
-					<img
-						key={`${idx}-` as string}
-						id="delete-image-icon"
-						src={URL.createObjectURL(item) as string}
-						height="150px"
-						width="150px"
-						alt="/api/images" // TODO: check alt path
-					/>
-				</div>
-			);
-		});
+					</div>
+				);
+		  });
 
 	const alertModal = (
 		<Collapse className="collapse" in={alert}>
@@ -412,10 +412,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							추가할 수 없습니다!
 						</div>
 					</div>
-					<CancelIcon
-						id="close-modal-button"
-						onClick={onClickCloseModal}
-					/>
+					<CancelIcon id="close-modal-button" onClick={onClickCloseModal} />
 				</div>
 				<Divider />
 				<div id="ingredient-list">
@@ -459,10 +456,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				</div>
 
 				<div id="confirm-modal-button-box">
-					<Button
-						id="confirm-modal-button"
-						onClick={onClickConfirmModal}
-					>
+					<Button id="confirm-modal-button" onClick={onClickConfirmModal}>
 						수정
 					</Button>
 				</div>

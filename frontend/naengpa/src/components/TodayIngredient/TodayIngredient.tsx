@@ -9,7 +9,9 @@ const TodayIngredient: React.FC = () => {
 	const dispatch = useDispatch();
 	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
 	const user = useSelector((state: AppState) => state.user.user);
-	const todays_ingredient = ingredientList.filter((ingredient) => ingredient.isTodayIngredient === true);
+	const todays_ingredient = ingredientList.filter(
+		(ingredient) => ingredient.isTodayIngredient === true,
+	);
 
 	useEffect(() => {
 		dispatch(getFridge(user!.id));

@@ -3,11 +3,11 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { IconButton } from '@material-ui/core';
 import { Dictionary } from '../../model/general';
 import * as fridgeActionCreators from '../../store/actions/fridge';
 import Fridge from './Fridge';
 import { history } from '../../store/store';
-import { IconButton } from '@material-ui/core';
 
 jest.mock('../../components/Ingredient/Ingredient', () =>
 	jest.fn((props) => <div {...props} className="ingredient" />),
@@ -86,10 +86,10 @@ describe('Fridge', () => {
 	it('should set page correctly on clicking page', async () => {
 		const component = mount(fridge);
 
-		component.find("#next-fridge").first().simulate('click');
+		component.find('#next-fridge').first().simulate('click');
 		expect(component.find('div.ingredient').length).toBe(3);
 
-		component.find("#prev-fridge").first().simulate('click');
+		component.find('#prev-fridge').first().simulate('click');
 		expect(component.find('div.ingredient').length).toBe(9);
 	});
 });

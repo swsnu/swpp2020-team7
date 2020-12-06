@@ -80,7 +80,13 @@ describe('EditUserInfo', () => {
 
 		expect(spyAlert).toBeCalledTimes(0);
 		expect(spyEditUserAction).toBeCalledTimes(1);
-		expect(spyEditUserAction).toBeCalledWith({id: mockUser.id, name: mockUser.name, password: mockUser.password, dateOfBirth: mockUser.dateOfBirth, email: mockUser.email});
+		expect(spyEditUserAction).toBeCalledWith({
+			id: mockUser.id,
+			name: mockUser.name,
+			password: mockUser.password,
+			dateOfBirth: mockUser.dateOfBirth,
+			email: mockUser.email,
+		});
 	});
 
 	it('Edit user info should not dispatch user info with wrong input form', () => {

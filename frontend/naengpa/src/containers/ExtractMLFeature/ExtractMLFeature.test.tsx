@@ -4,9 +4,9 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
+import { createMemoryHistory } from 'history';
 import waitForComponentToPaint from '../../../test-utils/waitForComponentToPaint';
 import ExtractMLFeature from './ExtractMLFeature';
-import { createMemoryHistory } from 'history';
 import * as recipeActionCreators from '../../store/actions/recipe';
 import * as foodCategoryActionCreators from '../../store/actions/foodCategory';
 
@@ -144,7 +144,6 @@ describe('ExtractMLFeature', () => {
 			confirmAlertButton.simulate('click');
 			expect(spyGetFoodCategory).toBeCalledTimes(1);
 
-
 			const cookTime = component.find('input#cook-time').find('input');
 			const foodImage = component.find('input#food-image').find('input');
 			const recipeContent = component.find('#recipe-content').find('textarea');
@@ -152,7 +151,10 @@ describe('ExtractMLFeature', () => {
 				.find('#extract-ml-feature-button')
 				.find('button')
 				.at(0);
-			const registerRecipeButton = component.find('#register-recipe-button').find('button').at(0);
+			const registerRecipeButton = component
+				.find('#register-recipe-button')
+				.find('button')
+				.at(0);
 
 			cookTime.simulate('change', { target: { value: '100' } });
 			foodImage.simulate('change', { target: { files: [(image as unknown) as File] } });

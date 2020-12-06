@@ -1,11 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../store/store';
 import { History } from 'history';
-import { RegionEntity, UserSignupInputDTO } from '../../model/user';
-import { signup, getRegionList } from '../../store/actions/index';
-import getKakaoMap from '../../utils/kakao';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { withStyles, Collapse, Button, Slider } from '@material-ui/core';
@@ -15,9 +11,12 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import getKakaoMap from '../../utils/kakao';
+import { signup, getRegionList } from '../../store/actions/index';
+import { RegionEntity, UserSignupInputDTO } from '../../model/user';
+import { AppState } from '../../store/store';
 
 import './RegionalSetting.scss';
-
 
 interface RegionalSettingProps {
 	history: History;

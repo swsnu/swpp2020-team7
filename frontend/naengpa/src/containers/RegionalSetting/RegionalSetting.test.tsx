@@ -6,9 +6,7 @@ import configureStore from 'redux-mock-store';
 import { createMemoryHistory } from 'history';
 import RegionalSetting from './RegionalSetting';
 
-jest.mock('../../utils/kakao', () =>
-	jest.fn((props) => <div {...props} className="kakaoMap" />),
-);
+jest.mock('../../utils/kakao', () => jest.fn((props) => <div {...props} className="kakaoMap" />));
 
 const middleware = [thunk];
 const store = configureStore(middleware);
@@ -17,20 +15,20 @@ const history = createMemoryHistory({ initialEntries: ['/'] });
 
 const mockRegionList = [
 	{
-		"id": 4,
-		"name": "종로구 청운효자동",
-		"location": {
-			"latitude": 37.5841161738354,
-			"longitude": 126.97064969123
-		}
+		id: 4,
+		name: '종로구 청운효자동',
+		location: {
+			latitude: 37.5841161738354,
+			longitude: 126.97064969123,
+		},
 	},
 	{
-		"id": 5,
-		"name": "종로구 사직동",
-		"location": {
-			"latitude": 37.5761869658796,
-			"longitude": 126.968846056089
-		}
+		id: 5,
+		name: '종로구 사직동',
+		location: {
+			latitude: 37.5761869658796,
+			longitude: 126.968846056089,
+		},
 	},
 ];
 const stubInitialState = {
@@ -43,7 +41,7 @@ const stubInitialState = {
 			name: '테스트',
 			dateOfBirth: '20201112',
 			region: {
-				name: "관악구 대학동"
+				name: '관악구 대학동',
 			},
 		},
 	},
@@ -62,7 +60,6 @@ describe('RegionalSetting', () => {
 				<RegionalSetting history={history} />;
 			</Provider>
 		);
-		
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
