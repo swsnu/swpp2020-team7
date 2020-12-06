@@ -11,7 +11,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Recipe from '../../components/Recipe/Recipe';
 import { AppState } from '../../store/store';
-import { getRecipeList } from '../../store/actions/index';
+import { getRecipeList, getFoodCategoryList } from '../../store/actions/index';
 
 import './RecipeList.scss';
 import { RecipeEntity } from '../../model/recipe';
@@ -21,28 +21,60 @@ interface RecipeListProps {
 }
 
 const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
-	const recipe_list = useSelector((state: AppState) => state.recipe.recipeList);
+	const recipeList = useSelector((state: AppState) => state.recipe.recipeList);
+	const recipeCount = useSelector((state: AppState) => state.recipe.recipeCount);
+	const foodCategoryList = useSelector((state: AppState) => state.foodCategory.foodCategoryList);
 	const [page, setPage] = useState(1);
-	const [currentList, setCurrentList] = useState<RecipeEntity[]>([]);
+	const [currentList, setCurrentList] = useState<RecipeEntity[] | null>(null);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
-	// const [searchCategory, setSearchCategory] = useState<string>('전체');
+	const [sortBy, setSortBy] = useState('-created_at');
+	const [filterBy, setFilterBy] = useState(true);
+	const [searchCategory, setSearchCategory] = useState('전체');
 	const [loading, setLoading] = useState<boolean>(true);
 	const [query, setQuery] = useState('');
 	const dispatch = useDispatch();
 
-	const onClickSearch = (e: React.KeyboardEvent) => {
+	const getListIndex = (page: number) => (page - 1) * 9;
+
+	const onLoadRecipeList = async (page: number) => {
+		setLoading(true);
+		await dispatch(getRecipeList(query, sortBy, searchCategory, filterBy, getListIndex(page)));
+		setMaxPageIndex(Math.ceil(recipeCount / 9.0));
+		setPage(page);
+		setCurrentList(recipeList);
+		setLoading(false);
+	};
+
+	const onClickSearch = async (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter') {
-			dispatch(getRecipeList(query));
-			setMaxPageIndex(Math.ceil(recipe_list.length / 9.0));
-			setCurrentList(recipe_list.slice((page - 1) * 9, (page - 1) * 9 + 9));
-			setLoading(false);
+			await onLoadRecipeList(1);
 		}
 	};
 
-	const onChangePage = (e: React.ChangeEvent<unknown>, value: number): void => {
+	const onClickRecentFilter = async (e: MouseEvent<HTMLButtonElement>) => {
+		setSortBy('-created_at');
+		setFilterBy(false);
 		e.preventDefault();
-		setPage(value);
-		setCurrentList(recipe_list.slice((value - 1) * 9, (value - 1) * 9 + 9));
+		await onLoadRecipeList(1);
+	};
+
+	const onClickPopularFilter = async (e: MouseEvent<HTMLButtonElement>) => {
+		setSortBy('like_users');
+		setFilterBy(false);
+		e.preventDefault();
+		await onLoadRecipeList(1);
+	};
+
+	const onClickRecommendedFilter = async (e: MouseEvent<HTMLButtonElement>) => {
+		setSortBy('-created_at');
+		setFilterBy(true);
+		e.preventDefault();
+		await onLoadRecipeList(1);
+	};
+
+	const onChangePage = async (e: React.ChangeEvent<unknown>, value: number) => {
+		e.preventDefault();
+		await onLoadRecipeList(value);
 	};
 
 	const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -50,21 +82,27 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		history.push('/recipes/create');
 	};
 
-	const recipe = currentList.map((item: any) => {
+	const recipe = currentList?.map((item: any) => {
 		return (
 			<Recipe key={item.id} recipe={item} attribute="recipe-list-child" history={history} />
 		);
 	});
 
+	const selectOption = foodCategoryList?.map((item: any) => {
+		return (
+			<MenuItem value={item.name} onClick={(e) => setSearchCategory(item.name)}>
+				{item.name}
+			</MenuItem>
+		);
+	});
+
 	useEffect(() => {
-		const func = () => {
-			dispatch(getRecipeList(query));
-			setMaxPageIndex(Math.ceil(recipe_list.length / 9.0));
-			setCurrentList(recipe_list.slice((page - 1) * 9, (page - 1) * 9 + 9));
-			setLoading(false);
+		const func = async () => {
+			await dispatch(getFoodCategoryList());
+			await onLoadRecipeList(1);
 		};
 		func();
-	}, [dispatch, recipe_list.length]);
+	}, []);
 
 	return (
 		<div id="recipe-list">
@@ -76,45 +114,49 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 							placeholder="검색어를 입력해 주세요."
 							inputProps={{ 'aria-label': 'search' }}
 							onChange={(e) => setQuery(e.target.value)}
-							onKeyDown={onClickSearch}
+							onKeyPress={onClickSearch}
 						/>
 						<Select
 							labelId="recipe-search-select-label"
 							id="recipe-search-select"
-							value="전체"
+							value={searchCategory}
 							disableUnderline
-							// onChange={(e) => setSearchCategory(e.target.value as string)}
+							onChange={(e) => setSearchCategory(e.target.value as string)}
 						>
-							<MenuItem value="전체">전체</MenuItem>
-							<MenuItem value="고기류">고기류</MenuItem>
-							<MenuItem value="디저트류">디저트류</MenuItem>
-							<MenuItem value="유제품류">유제품류</MenuItem>
-							<MenuItem value="해물류">해물류</MenuItem>
-							<MenuItem value="밥류">밥류</MenuItem>
-							<MenuItem value="과일류">과일류</MenuItem>
-							<MenuItem value="면류">면류</MenuItem>
-							<MenuItem value="채소류">채소류</MenuItem>
-							<MenuItem value="생선류">생선류</MenuItem>
-							<MenuItem value="빵류">빵류</MenuItem>
-							<MenuItem value="튀김류">튀김류</MenuItem>
-							<MenuItem value="계란/알류">계란/알류</MenuItem>
-							<MenuItem value="수프/국/찌개류">수프/국/찌개류</MenuItem>
-							<MenuItem value="기타">기타</MenuItem>
+							<MenuItem value="전체" onClick={(e) => setSearchCategory('전체')}>
+								전체
+							</MenuItem>
+							{selectOption}
 						</Select>
 					</div>
-					{/* <SearchIcon onClick={() => onClickSearch} /> */}
 				</div>
 				<div id="recipe-list-buttons">
-					<button id="most-recent-filter" type="button">
+					<button
+						id="most-recent-filter"
+						type="button"
+						onClick={(e) => onClickRecentFilter(e)}
+					>
 						최신
 					</button>
-					<button id="most-popular-filter" type="button">
+					<button
+						id="most-popular-filter"
+						type="button"
+						onClick={(e) => onClickPopularFilter(e)}
+					>
 						인기
 					</button>
-					<button id="most-recommended-filter" type="button">
+					<button
+						id="most-recommended-filter"
+						type="button"
+						onClick={(e) => onClickRecommendedFilter(e)}
+					>
 						추천
 					</button>
-					<button id="create-recipe-button" type="button" onClick={onClickCreateRecipe}>
+					<button
+						id="create-recipe-button"
+						type="button"
+						onClick={(e) => onClickCreateRecipe(e)}
+					>
 						레시피 등록
 					</button>
 				</div>

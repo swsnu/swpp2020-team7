@@ -1,33 +1,32 @@
 import * as actionTypes from '../actions/actionTypes';
+import { RecipeAction } from '../actions/recipe';
 import { RecipeEntity, RecipeLike } from '../../model/recipe';
 
 export type InitialState = {
 	recipeList: RecipeEntity[];
+	todayRecipeList: RecipeEntity[];
 	recipe: RecipeEntity | null;
+	recipeCount: number;
 	createdRecipe: RecipeEntity | null;
 };
 
 const RecipeState: InitialState = {
 	recipeList: [],
+	todayRecipeList: [],
 	recipe: null,
+	recipeCount: 0,
 	createdRecipe: null,
 };
 
-export type Action =
-	| { type: 'GET_RECIPE_LIST'; recipeList: RecipeEntity[] }
-	| { type: 'GET_RECIPE'; recipe: RecipeEntity }
-	| { type: 'CREATE_RECIPE'; recipe: RecipeEntity }
-	| { type: 'EXTRACT_ML_FEATURE_FROM_RECIPE'; recipe: RecipeEntity }
-	| { type: 'DELETE_RECIPE'; target_id: number }
-	| { type: 'EDIT_RECIPE'; recipe: RecipeEntity }
-	| { type: 'TOGGLE_RECIPE'; target_id: number; recipeLikeInfo: RecipeLike };
-
-function recipeReducer(state: InitialState = RecipeState, action: Action): InitialState {
-	let recipeList = [];
+function recipeReducer(state: InitialState = RecipeState, action: RecipeAction): InitialState {
+	let recipeList: RecipeEntity[] = [];
 	switch (action.type) {
 		/* GET RECIPE LIST */
 		case actionTypes.GET_RECIPE_LIST:
-			return { ...state, recipeList: action.recipeList };
+			return { ...state, recipeList: action.recipeList, recipeCount: action.recipeCount };
+
+		case actionTypes.GET_TODAY_RECIPE_LIST:
+			return { ...state, todayRecipeList: action.todayRecipeList };
 
 		/* GET RECIPE */
 		case actionTypes.GET_RECIPE:
@@ -38,6 +37,7 @@ function recipeReducer(state: InitialState = RecipeState, action: Action): Initi
 			return {
 				...state,
 				recipeList: [...state.recipeList, action.recipe],
+				recipeCount: state.recipeCount + 1,
 				recipe: action.recipe,
 				createdRecipe: null,
 			};
@@ -53,10 +53,16 @@ function recipeReducer(state: InitialState = RecipeState, action: Action): Initi
 
 		/* DELETE RECIPE */
 		case actionTypes.DELETE_RECIPE: {
-			recipeList = state.recipeList.filter((recipe) => {
+			recipeList = state.recipeList?.filter((recipe) => {
 				return (recipe.id as number) !== action.target_id;
 			});
-			return { ...state, recipeList };
+			recipeList = recipeList === undefined ? [] : recipeList;
+
+			return {
+				...state,
+				recipeList,
+				recipeCount: state.recipeCount - 1,
+			};
 		}
 
 		/* EDIT RECIPE */
@@ -66,15 +72,18 @@ function recipeReducer(state: InitialState = RecipeState, action: Action): Initi
 			};
 
 		case actionTypes.TOGGLE_RECIPE: {
-			recipeList = state.recipeList.map((recipe) => {
-				if ((recipe.id as number) === action.target_id) {
-					recipe.recipeLike =
-						recipe.userLike === 1 ? recipe.recipeLike - 1 : recipe.recipeLike + 1;
-					recipe.userLike = recipe.userLike === 1 ? 0 : 1;
+			recipeList = [];
+			if (state.recipeList !== []) {
+				recipeList = state.recipeList?.map((recipe) => {
+					if ((recipe.id as number) === action.target_id) {
+						recipe.recipeLike =
+							recipe.userLike === 1 ? recipe.recipeLike - 1 : recipe.recipeLike + 1;
+						recipe.userLike = recipe.userLike === 1 ? 0 : 1;
+						return recipe;
+					}
 					return recipe;
-				}
-				return recipe;
-			});
+				});
+			}
 			return { ...state, recipeList };
 		}
 

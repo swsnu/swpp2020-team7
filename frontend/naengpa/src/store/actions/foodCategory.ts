@@ -1,32 +1,17 @@
 import axios from 'axios';
-import { FoodCategoryCollection } from '../../model/foodCategory';
+import { FoodCategoryEntity } from '../../model/foodCategory';
 import * as actionTypes from './actionTypes';
 
-export const getFoodCategoryList_ = (foodCategories: string[]) => ({
+export const getFoodCategoryList_ = (foodCategoryList: FoodCategoryEntity[]) => ({
 	type: actionTypes.GET_FOOD_CATEGORY_LIST,
-	payload: foodCategories,
+	foodCategoryList,
 });
 
 export const getFoodCategoryList = () => {
 	return async (dispatch: any) => {
-		// const response = await axios.get('/api/foodcategories/');
-		// const foodCategoryList: FoodCategoryCollection = response.data;
-		const foodCategoryList: string[] = [
-			'육류',
-			'디저트류',
-			'유제품류',
-			'해물류',
-			'밥류',
-			'과일류',
-			'면류',
-			'채소류',
-			'생선류',
-			'빵류',
-			'튀김류',
-			'계란/알류',
-			'수프/국/찌개류',
-		];
-		dispatch(getFoodCategoryList_(foodCategoryList));
+		const response = await axios.get('/api/foodcategory/');
+		console.log(response.data, 'food Category');
+		dispatch(getFoodCategoryList_(response.data));
 	};
 };
 

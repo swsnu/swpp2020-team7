@@ -60,7 +60,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	// if the value is false => then each modal pops off.
 	const [showCategoryModal, setShowCategoryModal] = useState(false);
-	const [modifiedCategory, setModifiedCategory] = useState(foodCategory);
+	const [modifiedCategory, setModifiedCategory] = useState('');
 	const [showIngredientModal, setShowIngredientModal] = useState(false);
 	const [modifiedIngredients, setModifiedIngredients] = useState<RecipeIngredient[]>([]);
 	const [goBackButton, setGoBackButton] = useState(false);
@@ -237,14 +237,14 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const foodCategoryButtonSet = foodCategoryList?.map((item, idx) => {
 		return (
 			<Button
-				key={item}
+				key={item.name}
 				id="food-category-button"
-				className={`food-category-${item === modifiedCategory}`}
+				className={`food-category-${item.name === modifiedCategory}`}
 				onClick={() => {
-					setModifiedCategory(item);
+					setModifiedCategory(item.name);
 				}}
 			>
-				{item}
+				{item.name}
 			</Button>
 		);
 	});

@@ -6,7 +6,7 @@ interface TabProps {
 	history: History;
 }
 
-const Tap: React.FC<TabProps> = ({ history }) => {
+const Tab: React.FC<TabProps> = ({ history }) => {
 	return (
 		<div id="button-list">
 			<div id="myinfo-check">
@@ -45,4 +45,4 @@ const Tap: React.FC<TabProps> = ({ history }) => {
 	);
 };
 
-export default Tap;
+export default Tab;
