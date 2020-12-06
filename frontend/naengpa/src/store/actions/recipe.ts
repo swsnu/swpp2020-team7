@@ -38,7 +38,7 @@ export function createRecipe(recipe: RecipeEntity) {
 	return async (dispatch: Dispatch<any>) => {
 		const bodyFormData = new FormData();
 		bodyFormData.append('recipe', JSON.stringify(recipe));
-		recipe.foodImageFiles.forEach((image: any) => bodyFormData.append('image', image));
+		recipe.foodImageFiles!.forEach((image: any) => bodyFormData.append('image', image));
 		const response = await axios.post('/api/articles/', bodyFormData);
 
 		dispatch({
@@ -89,8 +89,8 @@ export function editRecipe(recipe: RecipeEntity) {
 /* TOGGLE RECIPE LIKE */
 export function toggleRecipe(id: number) {
 	return async (dispatch: any) => {
-		const response: any = await axios.get(`/api/recipes/${id}/like`);
-		console.log(response);
+		const response = await axios.put(`/api/recipes/${id}/like`);
+
 		dispatch({
 			type: actionTypes.TOGGLE_RECIPE,
 			target_id: id,
