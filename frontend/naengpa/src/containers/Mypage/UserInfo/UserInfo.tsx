@@ -43,7 +43,10 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 							<p>생년월일 {user!.dateOfBirth}</p>
 							<p>이메일 {user!.email}</p>
 							<p>지역 </p>
-							{/* region */}
+							{/*
+							{user!.region}
+							{user!.regionRange}
+							*/}
 						</div>
 						<button
 							type="button"

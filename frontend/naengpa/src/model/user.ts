@@ -34,6 +34,12 @@ export interface EditUserInputDTO {
 	regionRange?: string;
 }
 
+export interface ChangePasswordInputDTO {
+	id: string;
+	currentPassword: string;
+	newPassword: string;
+}
+
 export interface RegionEntity {
 	id?: number;
 	name: string;
