@@ -92,10 +92,8 @@ def chatroom_list(request):
     """ GET POST 'chatrooms/' get chatroom list of given user """
     if request.method == 'GET':
         return get_chatroom_list(request)
-    elif request.method == 'POST':
-        return make_chatroom(request)
     else:
-        return HttpResponse(status=400)
+        return make_chatroom(request)
 
 
 def get_chatroom(request, id):

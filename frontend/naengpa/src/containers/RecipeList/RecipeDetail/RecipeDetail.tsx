@@ -46,6 +46,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const recipe_id = recipe.id as number;
 	const [userLike, setUserLike] = useState(recipe.userLike);
 	const [recipeLike, setRecipeLike] = useState(recipe.recipeLike);
+	const dispatch = useDispatch();
 
 	const onClickPage = (e: React.ChangeEvent<unknown>, value: number): void => {
 		e.preventDefault();
@@ -136,8 +137,6 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 			</div>
 		);
 	});
-
-	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const func = () => {

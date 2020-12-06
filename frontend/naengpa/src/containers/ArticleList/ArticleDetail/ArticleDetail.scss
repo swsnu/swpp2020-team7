@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+#article-detail {
+    margin: 5% 10% 10% 15%;
+    width: 70%;
+    height: 80%;
+    border: solid 1px #dcdcdc;
+    align-items: center;
+  
+    #article-header {
+      margin: 5% 5% 5% 5%;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+    }
+  
+    #article-section1 {
+      font: {
+          stretch: normal;
+          style: normal;
+      }
+      margin: 5% 5% 0% 5%;
+    }
+
+    #article-section2 {
+        margin: 0% 5% 2% 5%;
+
+        #chatting-icon {
+            outline: none;
+            border: none;
+            margin-top: 4px;
+            background-color: white;
+        }
+
+        #article-options {
+          font: {
+            weight: bold;
+          }
+          letter-spacing: normal;
+          text-align: left;
+          border-radius: 25px;
+          align-self: right;
+
+          Button {
+            padding: 0;
+            margin-top: 8px;
+            border-radius: 11px;
+            border: solid 1px #f7f7f7;
+            background-color: #f7f7f7;
+    
+            font-family: 'Jua', sans-serif;
+            font-size: 100%;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            letter-spacing: normal;
+            text-align: center;
+            color: #ffffff;
+            background-color: #ff8a3d;
+          }
+        }
+
+        #article-setting-alert {
+          position: absolute;
+          display: inline-block;
+          z-index: 1;
+          background-color: #ffffff;
+          border: solid 1px #707070; 
+        }
+    }
+
+    #article-section3 {
+        margin: 2% 5% 2% 5%;
+    }
+}

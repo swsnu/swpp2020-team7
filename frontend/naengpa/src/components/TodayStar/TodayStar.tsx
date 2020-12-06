@@ -12,15 +12,13 @@ interface TodayStarProps {
 
 const TodayStar: React.FC<TodayStarProps> = ({ history }) => {
 	const user_list = useSelector((state: AppState) => state.user.userList);
-	let sorted_user = user_list.sort((a: any, b: any) => b.naengpaScore - a.naengpaScore);
-	sorted_user = sorted_user.slice(0, Math.min(2, sorted_user.length));
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dispatch(getUserList());
 	}, []);
 
-	const user = sorted_user.map((item: any) => {
+	const user = user_list.map((item: any) => {
 		return <Profile key={item.id} profile={item} />;
 	});
 

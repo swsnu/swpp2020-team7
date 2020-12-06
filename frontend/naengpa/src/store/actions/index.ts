@@ -7,6 +7,7 @@ export {
 	getUserList,
 	getUser,
 	editUser,
+	changePassword,
 	deleteUser,
 	getChatRoomList,
 	getChatRoom,
@@ -28,6 +29,7 @@ export {
 /* Recipe actions */
 export {
 	getRecipeList,
+	getTodayRecipeList,
 	getRecipe,
 	createRecipe,
 	extractMLFeatureFromRecipe,

@@ -7,6 +7,7 @@ export const GET_USER_LIST = 'GET_USER_LIST' as const;
 export const GET_USER = 'GET_USER' as const;
 export const DELETE_USER = 'DELETE_USER' as const;
 export const EDIT_USER = 'EDIT_USER' as const;
+export const CHANGE_PASSWORD = 'CHANGE_PASSWORD' as const;
 
 // CHATROOM related ACTIONS
 export const GET_CHATROOM_LIST = 'GET_CHATROOM_LIST' as const;
@@ -27,6 +28,7 @@ export const TOGGLE_TODAY_INGREDIENT = 'TOGGLE_TODAY_INGREDIENT' as const;
 
 // RECIPE related ACTIONS
 export const GET_RECIPE_LIST = 'GET_RECIPE_LIST' as const;
+export const GET_TODAY_RECIPE_LIST = 'GET_RODAY_RECIPE_LIST' as const;
 export const GET_RECIPE = 'GET_RECIPE' as const;
 export const CREATE_RECIPE = 'CREATE_RECIPE' as const;
 export const EXTRACT_ML_FEATURE_FROM_RECIPE = 'EXTRACT_ML_FEATURE_FROM_RECIPE' as const;

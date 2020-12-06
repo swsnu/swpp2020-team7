@@ -135,7 +135,7 @@
           
           button:focus {
             outline: 0 !important;
-            color: #408bf9
+            //color: #408bf9
           }   
         }
       }
@@ -154,6 +154,7 @@
         color: #020215;
 
         border: none;
+        outline: none;
       }
     }
   }

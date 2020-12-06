@@ -6,6 +6,7 @@ import {
 	UserLoginInputDTO,
 	UserSignupInputDTO,
 	EditUserInputDTO,
+	ChangePasswordInputDTO,
 } from '../../model/user';
 
 import { ChatEntity, MessageEntity } from '../../model/chat';
@@ -106,6 +107,22 @@ export const editUser = (user: EditUserInputDTO) => {
 			response = await axios.put(`/api/users/${user.id}/`, user);
 			const currentUser: UserEntity = response.data;
 			dispatch(editUser_(currentUser));
+			dispatch(push('/@:username/info'));
+		} catch (e) {
+			alert('비밀번호가 일치하지 않습니다.');
+		}
+	};
+};
+
+export const changePassword_ = (user: UserEntity) => ({ type: actionTypes.CHANGE_PASSWORD, user });
+
+export const changePassword = (user: ChangePasswordInputDTO) => {
+	return async (dispatch: any) => {
+		let response;
+		try {
+			response = await axios.put(`/api/users/${user.id}/changePassword/`, user);
+			const currentUser: UserEntity = response.data;
+			dispatch(changePassword_(currentUser));
 			dispatch(push('/@:username/info'));
 		} catch (e) {
 			alert('비밀번호가 일치하지 않습니다.');

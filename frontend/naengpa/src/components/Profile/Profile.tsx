@@ -13,7 +13,11 @@ const Profile: React.FC<ProfileProps> = ({ profile }) => {
 			<CardHeader
 				id="profile-card-header"
 				avatar={<Avatar aria-label="user-image" src="/icons/boy.png" />}
-				title={<Typography id="profile-title">{profile.username}</Typography>}
+				title={
+					<Typography id="profile-title" align="left">
+						{profile.username}
+					</Typography>
+				}
 				subheader={
 					<div>
 						<img id="profile-star" src="/icons/star.png" alt="/icons/star.png" />

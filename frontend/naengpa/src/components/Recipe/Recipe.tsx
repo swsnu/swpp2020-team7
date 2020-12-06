@@ -52,11 +52,11 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 			<CardHeader
 				id="recipe-card-header"
 				avatar={<Avatar aria-label="recipe">R</Avatar>}
-				action={
-					<IconButton aria-label="settings">
-						<MoreVertIcon />
-					</IconButton>
-				}
+				// action={
+				// 	<IconButton aria-label="settings">
+				// 		<MoreVertIcon />
+				// 	</IconButton>
+				// }
 				title={recipe.author}
 				subheaderTypographyProps={{ variant: titleSize }}
 				subheader={subheader}

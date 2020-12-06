@@ -111,6 +111,8 @@ def article_list_post(request):
             is_for_sale=options['isForSale'],
             is_for_exchange=options['isForExchange'],
             is_for_share=options['isForShare'])
+        request.user.naengpa_score += 100
+        request.user.save()
     except (KeyError, json.decoder.JSONDecodeError):
         return HttpResponseBadRequest()
     except (Ingredient.DoesNotExist, InvalidOptionsGivenError):

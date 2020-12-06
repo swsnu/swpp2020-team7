@@ -3,6 +3,7 @@ import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { AppState } from '../../../store/store';
+import { changePassword } from '../../../store/actions/index';
 import '../UserInfo/UserInfo.scss';
 import './ChangePassword.scss';
 import Tab from '../../../components/Tab/Tab';
@@ -13,10 +14,25 @@ interface ChangePasswordProps {
 
 const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user.user);
-	const [curruntPassword, setCurrentPassword] = useState('');
+	const { id } = user!;
+	const [currentPassword, setCurrentPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
 	const [confirmNewPassword, setConfirmNewPassword] = useState('');
-	const dispatch = useDispatch(); // 수정한 정보 dispatch하는 용도
+	const dispatch = useDispatch();
+
+	const onClickChangePassword = () => {
+		if (newPassword !== confirmNewPassword) {
+			alert('새 비밀번호가 일치하지 않습니다.');
+		} else {
+			dispatch(
+				changePassword({
+					id,
+					currentPassword,
+					newPassword,
+				}),
+			);
+		}
+	};
 
 	return (
 		<div id="mypage">
@@ -24,7 +40,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 			<div id="info">
 				<div id="myinfo-header">
 					<p>비밀번호 변경</p>
-					<button type="button" id="change-password">
+					<button type="button" id="change-password" onClick={onClickChangePassword}>
 						저장하기
 					</button>
 				</div>
