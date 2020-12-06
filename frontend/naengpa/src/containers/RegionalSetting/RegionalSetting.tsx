@@ -145,6 +145,10 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 		});
 
 		marker.setMap(map);
+
+		if (!userInfo) {
+			history.push('/signup');
+		}
 	}, [latitude, longitude, level]);
 
 	const defaultRegions = {

@@ -34,6 +34,7 @@ export const signup_ = (user: UserEntity) => ({ type: actionTypes.SIGNUP, user }
 
 export const signup = (user: UserSignupInputDTO) => {
 	return async (dispatch: any) => {
+		console.log(JSON.stringify(user));
 		const response = await axios.post('/api/signup/', user);
 		const currentUser: UserEntity = response.data;
 		dispatch(push('/regional-setting'));
@@ -46,9 +47,8 @@ export const login_ = (user: UserEntity) => ({ type: actionTypes.LOGIN, user });
 
 export const login = (user: UserLoginInputDTO) => {
 	return async (dispatch: any) => {
-		let response;
 		try {
-			response = await axios.post('/api/login/', user);
+			const response = await axios.post('/api/login/', user);
 			const currentUser: UserEntity = response.data;
 			dispatch(login_(currentUser));
 			dispatch(push('/fridge'));
