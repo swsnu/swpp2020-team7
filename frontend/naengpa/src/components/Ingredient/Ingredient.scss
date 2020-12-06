@@ -38,9 +38,20 @@ div#ingredient {
   border-radius: 20px;
 }
 
-#toggle-ingredient-button {
+#yes-ingredient-button {
   position: absolute;
-  color: gold;
+  color: #f9fd15;
+  top: 0;
+  right: 22px;
+
+  margin: {
+    top: -15px;
+  }
+}
+
+#no-ingredient-button {
+  position: absolute;
+  color: rgb(139, 139, 139);
   top: 0;
   right: 22px;
 

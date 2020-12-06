@@ -78,21 +78,22 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 				onMouseOver={onMouseOverIngredient}
 				onMouseLeave={onMouseLeaveIngredient}
 				onFocus={onFocusIngredient}
+				onClick={onClickToggleTodayIngredient}
 			>
 				{todayIngredient &&
 					(isTodayIngredient ? (
 						<StarIcon
-							id="toggle-ingredient-button"
+							id="yes-ingredient-button"
 							type="button"
 							onClick={() => onClickToggleTodayIngredient()}
 						/>
 					) : (
-						<StarBorderIcon
-							id="toggle-ingredient-button"
-							type="button"
-							onClick={() => onClickToggleTodayIngredient()}
-						/>
-					))}
+							<StarIcon
+								id="no-ingredient-button"
+								type="button"
+								onClick={() => onClickToggleTodayIngredient()}
+							/>
+						))}
 				{deleteIngredient && (
 					<CancelIcon
 						id="delete-ingredient-button"

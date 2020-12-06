@@ -90,7 +90,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	};
 
 	const onClickArticle = (id: number) => async () => {
-		dispatch(getArticle(id));
+		await dispatch(getArticle(id));
 		history.push(`/articles/:${id}`);
 	};
 
