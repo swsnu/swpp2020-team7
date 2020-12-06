@@ -6,16 +6,19 @@ import { createMemoryHistory } from 'history';
 import thunk from 'redux-thunk';
 import ChatDetail from './ChatDetail';
 
-
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
 const mockChatRoom = {
-	id: "1",
-	lastChat: "hi",
-	member: "me",
-	updatedAt: "00",
+	id: '1',
+	lastChat: 'hi',
+	member: 'me',
+	updatedAt: '00',
 	chatCount: 1,
+	messages: [
+		'hi',
+		'hello',
+	]
 };
 const stubInitialState = {
 	user: {
@@ -26,7 +29,7 @@ const stubInitialState = {
 			email: 'test@snu.ac.kr',
 			dateOfBirth: '20201112',
 			region: {
-				name: "관악구 대학동",
+				name: '관악구 대학동',
 			},
 		},
 		chatRoom: mockChatRoom,
