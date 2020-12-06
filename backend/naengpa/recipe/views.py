@@ -10,6 +10,8 @@ from rest_framework.decorators import api_view
 from utils.aws_utils import upload_images
 from food_category.models import FoodCategory
 from .models import Recipe, Image, RecipeIngredient, RecipeLike
+from user.models import FridgeIngredient
+from django.utils import timezone
 
 
 @api_view(['GET', 'POST'])
@@ -22,33 +24,66 @@ def recipe_list(request):
         if not Recipe.objects.count():
             return JsonResponse([], safe=False)
 
-        query = request.GET.get('value', "")
-        user_id = request.user.id
+        query = request.GET.get('query', "")
+        sort_condition = request.GET.get('sort_by', "-created_at")
+        food_category = request.GET.get('category', "")
+        sort_by_ingredient = request.GET.get('filter', False)
+        page = request.GET.get('page', 1)
+        str_idx = int(int(page)-1)*9
+        end_idx = int(int(page)-1)*9+9
 
+        user = request.user
+        print(query, ": query", sort_condition, ": condition ", food_category,
+              ": food_category", sort_by_ingredient, ": sort by ingredient ")
+
+        # User Clicks the Filter Tab(most recent, most popular and most recommended button)
         if not query:
-            recipe_collection = cache.get('recipes')
-            if not recipe_collection:
-                sorted_list = Recipe.objects.select_related(
-                    'author')
-        else:
-            sorted_list = selected_list.filter(Q(recipe_content__icontains=query) | Q(
-                food_name__icontains=query) | Q(food_category__icontains=query) | Q(ingredients__ingredient__icontains=query))
+            if sort_by_ingredient == 'true':
+                # Sort by User Ingredients in fridge and today's ingredient
+                user_ingredients = FridgeIngredient.objects.filter(
+                    fridge=user.fridge).all()
 
-            recipe_collection = [{
-                "id": recipe.id,
-                "authorId": recipe.author.id,
-                "author": recipe.author.username,
-                "foodName": recipe.food_name,
-                "cookTime": recipe.cook_time,
-                "recipeContent": recipe.recipe_content,
-                "foodImagePaths": list(recipe.images.values('id', 'file_path')),
-                "recipeLike": recipe.likes.count(),
-                "userLike": recipe.likes.filter(user_id=user_id).count(),
-                "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-                "foodCategory": recipe.food_category,
-                "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
-            } for recipe in sorted_list]
-        return JsonResponse(recipe_collection, safe=False)
+                result = [(recipe, (user_ingredients.intersection(FridgeIngredient.objects.filter(fridge=recipe.author.fridge))).count())
+                          for recipe in Recipe.objects.select_related('author', 'author__fridge')]
+                sorted_list = [x[0] for x in result.sort(
+                    key=lambda x: -x[1])] if not len(result) else []
+            else:
+                # Sort by mosot recent, most popular button
+                recipe_collection = cache.get(
+                    'recipes_' + sort_condition + "_" + food_category)
+                if not recipe_collection:
+                    sorted_list = Recipe.objects.all().order_by(sort_condition)
+                else:
+                    return JsonResponse(recipe_collection[str_idx: end_idx], safe=False)
+
+        # User Search the Recipe List with query and food category
+        else:
+            # Sort By Query
+            filtered_list = Recipe.objecsts.select_related('ingredients', 'ingredients__ingredient').filter(Q(recipe_content__icontains=query) | Q(
+                food_name__icontains=query) | Q(food_category__icontains=query) | Q(ingredients__ingredient__icontains=query))
+            # Sort By Food Category
+            sorted_list = filtered_list.order_by(sort_condition).filter(
+                food_category=food_category) if food_category != '전체' else sorted_list
+
+        recipe_collection = [{
+            "id": recipe.id,
+            "authorId": recipe.author.id,
+            "author": recipe.author.username,
+            "foodName": recipe.food_name,
+            "cookTime": recipe.cook_time,
+            "recipeContent": recipe.recipe_content,
+            "foodImagePaths": list(recipe.images.values('id', 'file_path')),
+            "recipeLike": recipe.likes.count(),
+            "userLike": recipe.likes.filter(user_id=user.id).count(),
+            "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
+            "foodCategory": recipe.food_category,
+            "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
+        } for recipe in sorted_list]
+
+        cache.set(recipe_collection, 'recipes_' +
+                  sort_condition + "_" + food_category + '_' + page)
+
+        return JsonResponse({"recipeList": recipe_collection[str_idx: end_idx], "count": len(recipe_collection)}, safe=False)
 
     else:
         ''' POST /api/recipes/ post new recipe '''
@@ -99,29 +134,65 @@ def recipe_list(request):
         }, status=201)
 
 
+@api_view(['GET', 'POST'])
+@login_required
+@transaction.atomic
+def today_recipe_list(request):
+    """ get Today recipe list """
+    today = timezone.now().strftime('%Y-%m-%d')
+    yesterday = timezone.now()-timezone.timedelta(days=1)
+    today_recipe = cache.get('today_recipe_'+str(today))
+    if not today_recipe:
+        recipe_list = Recipe.objects.filter(
+            created_at__gte=yesterday).order_by('like_users')
+        if recipe_list == [] and Recipe.objects.all():
+            recipe_list = Recipe.objects.all().order_by('like_users', '-created_at')
+        today_recipe = [{
+            "id": recipe.id,
+            "authorId": recipe.author.id,
+            "author": recipe.author.username,
+            "foodName": recipe.food_name,
+            "cookTime": recipe.cook_time,
+            "recipeContent": recipe.recipe_content,
+            "foodImagePaths": list(Image.objects.filter(recipe_id=recipe.id).values()),
+            "recipeLike": recipe.likes.count(),
+            "userLike": user_like,
+            "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
+            "foodCategory": recipe.food_category,
+            "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
+        } for recipe in list(recipe_list)[:4]]
+        cache.set(today_recipe, 'today_recipe_'+str(today))
+
+    return JsonResponse(today_recipe, safe=False)
+
+
 @api_view(['GET', 'DELETE'])
 @login_required
 def recipe_info(request, id):
     """get recipe of given id"""
-    recipe = Recipe.objects.get(id=id)
     user_id = request.user.id
-    user_like = recipe.likes.filter(user_id=user_id).count()
-    response = {
-        "id": recipe.id,
-        "authorId": recipe.author.id,
-        "author": recipe.author.username,
-        "foodName": recipe.food_name,
-        "cookTime": recipe.cook_time,
-        "recipeContent": recipe.recipe_content,
-        "foodImagePaths": list(Image.objects.filter(recipe_id=recipe.id).values()),
-        "recipeLike": recipe.likes.count(),
-        "userLike": user_like,
-        "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-        "foodCategory": recipe.food_category,
-        "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
-    }
+    recipe_reponse = cache.get('recipe_' + id + "_" + user_id)
+
+    if not recipe_response:
+        recipe = Recipe.objects.get(id=id)
+        user_like = recipe.likes.filter(user_id=user_id).count()
+        recipe_response = {
+            "id": recipe.id,
+            "authorId": recipe.author.id,
+            "author": recipe.author.username,
+            "foodName": recipe.food_name,
+            "cookTime": recipe.cook_time,
+            "recipeContent": recipe.recipe_content,
+            "foodImagePaths": list(Image.objects.filter(recipe_id=recipe.id).values()),
+            "recipeLike": recipe.likes.count(),
+            "userLike": user_like,
+            "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
+            "foodCategory": recipe.food_category,
+            "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
+        }
+        cachet.set(recipe_response, 'recipe_' + id + "_" + user_id)
     if request.method == 'GET':
-        return JsonResponse(data=response, status=201)
+        return JsonResponse(data=response_response, status=201)
     if request.method == 'DELETE':
         Recipe.objects.filter(id=id).delete()
         return HttpResponse(status=200)
