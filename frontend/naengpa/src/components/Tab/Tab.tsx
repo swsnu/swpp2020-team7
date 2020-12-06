@@ -5,7 +5,6 @@ import { AppState } from '../../store/store';
 import './Tab.scss';
 
 interface TabProps {
-	username: string;
 	history: History;
 }
 
