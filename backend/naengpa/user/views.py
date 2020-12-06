@@ -206,7 +206,11 @@ def user_fridge(request, id):
         try:
             user = User.objects.get(id=id)
             ingredient_list = [
-                ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient')]
+                ingredient for ingredient in FridgeIngredient.objects.filter(
+                    fridge=user.fridge
+                ).all().values(
+                    'ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient'
+                ).order_by('-created_at')]
         except User.DoesNotExist:
             return HttpResponseBadRequest()
         return JsonResponse(ingredient_list, safe=False)
