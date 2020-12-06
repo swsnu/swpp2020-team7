@@ -13,7 +13,7 @@ export const getRegionList = () => {
 			/* 
         'Region List' in Seoul should be come from backend
       */
-			const response = await axios.get('/api/users/regions/');
+			const response = await axios.get('/api/regions/');
 			const regionList: RegionEntity[] = response.data;
 			dispatch(getRegionList_(regionList));
 		} catch (e) {
