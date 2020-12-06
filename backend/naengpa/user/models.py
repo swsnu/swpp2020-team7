@@ -5,6 +5,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
 from django.core.cache import cache
 from ingredient.models import Ingredient
+from django.utils import timezone
 
 
 class Region(models.Model):
@@ -80,3 +81,4 @@ class FridgeIngredient(models.Model):
     fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     is_today_ingredient = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
