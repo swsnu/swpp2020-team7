@@ -174,7 +174,7 @@ def today_recipe_list(request):
 def recipe_info(request, id):
     """get recipe of given id"""
     user_id = request.user.id
-    recipe_reponse = cache.get('recipe_' + str(id) + "_" + user_id)
+    recipe_reponse = cache.get('recipe_' + str(id) + "_" + str(user_id))
 
     if not recipe_response:
         recipe = Recipe.objects.get(id=id)
@@ -192,7 +192,7 @@ def recipe_info(request, id):
             "foodCategory": recipe.food_category,
             "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
         }
-        cache.set(recipe_response, 'recipe_' + str(id) + "_" + user_id)
+        cache.set(recipe_response, 'recipe_' + str(id) + "_" + str(user_id))
     if request.method == 'GET':
         return JsonResponse(data=recipe_response, status=201)
     if request.method == 'DELETE':
