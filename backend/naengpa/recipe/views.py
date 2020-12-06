@@ -143,13 +143,13 @@ def today_recipe_list(request):
     today = timezone.now().strftime('%Y-%m-%d')
     yesterday = timezone.now()-timezone.timedelta(days=1)
     today_recipe = cache.get('today_recipe_'+str(today))
+    user_id = request.user.id
     if not today_recipe:
         recipe_list = Recipe.objects.filter(
             created_at__gte=yesterday).order_by('like_users')
         if recipe_list == [] and Recipe.objects.all():
             recipe_list = Recipe.objects.all().order_by('like_users', '-created_at')
 
-        user_like = recipe.likes.filter(user_id=user_id).count()
         today_recipe = [{
             "id": recipe.id,
             "authorId": recipe.author.id,
@@ -159,7 +159,7 @@ def today_recipe_list(request):
             "recipeContent": recipe.recipe_content,
             "foodImagePaths": list(Image.objects.filter(recipe_id=recipe.id).values()),
             "recipeLike": recipe.likes.count(),
-            "userLike": user_like,
+            "userLike": recipe.likes.filter(user_id=user_id).count(),
             "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
             "foodCategory": recipe.food_category,
             "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
@@ -178,7 +178,6 @@ def recipe_info(request, id):
 
     if not recipe_response:
         recipe = Recipe.objects.get(id=id)
-        user_like = recipe.likes.filter(user_id=user_id).count()
         recipe_response = {
             "id": recipe.id,
             "authorId": recipe.author.id,
@@ -188,7 +187,7 @@ def recipe_info(request, id):
             "recipeContent": recipe.recipe_content,
             "foodImagePaths": list(Image.objects.filter(recipe_id=recipe.id).values()),
             "recipeLike": recipe.likes.count(),
-            "userLike": user_like,
+            "userLike": recipe.likes.filter(user_id=user_id).count(),
             "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
             "foodCategory": recipe.food_category,
             "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
