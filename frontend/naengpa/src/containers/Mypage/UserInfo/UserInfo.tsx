@@ -20,14 +20,14 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tab username={user!.username} history={history} />
+			<Tab history={history} />
 			<div id="info">
 				<div id="myinfo-header">
 					<p id="myinfo-title">내 정보</p>
 					<button
 						type="button"
 						id="edit-info-button"
-						onClick={() => history.push('/@:username/edit')}
+						onClick={() => history.push(`/@${user.username}/edit`)}
 					>
 						수정하기
 					</button>
@@ -48,7 +48,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 						<button
 							type="button"
 							id="change-password-button"
-							onClick={() => history.push('/@:username/password')}
+							onClick={() => history.push(`/@${user.username}/password`)}
 						>
 							비밀번호 변경
 						</button>

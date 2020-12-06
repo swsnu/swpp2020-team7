@@ -10,11 +10,9 @@ interface UserNotificationProps {
 }
 
 const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
-	const user = useSelector((state: AppState) => state.user.user);
-
 	return (
 		<div id="mypage">
-			<Tab username={user!.username} history={history} />
+			<Tab history={history} />
 			<div id="info">
 				<p>user notification</p>
 			</div>

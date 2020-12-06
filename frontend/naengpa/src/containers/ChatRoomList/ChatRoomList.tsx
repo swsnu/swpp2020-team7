@@ -35,7 +35,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tab username={user!.username} history={history} />
+			<Tab history={history} />
 			<div id="info">
 				<Typography id="chatroom-header" gutterBottom>
 					쪽지함

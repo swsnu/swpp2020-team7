@@ -1,5 +1,7 @@
 import React from 'react';
 import { History } from 'history';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store/store';
 import './Tab.scss';
 
 interface TabProps {
@@ -7,14 +9,16 @@ interface TabProps {
 	history: History;
 }
 
-const Tab: React.FC<TabProps> = ({ username, history }) => {
+const Tab: React.FC<TabProps> = ({ history }) => {
+	const user = useSelector((state: AppState) => state.user.user);
+
 	return (
 		<div id="button-list">
 			<div id="myinfo-check">
 				<button
 					id="myinfo-tab"
 					type="button"
-					onClick={() => history.push(`/@${username}/info`)}
+					onClick={() => history.push(`/@${user!.username}/info`)}
 				>
 					내 정보
 				</button>
@@ -23,7 +27,7 @@ const Tab: React.FC<TabProps> = ({ username, history }) => {
 				<button
 					id="myrecipe-tab"
 					type="button"
-					onClick={() => history.push(`/@${username}/recipes`)}
+					onClick={() => history.push(`/@${user!.username}/recipes`)}
 				>
 					나의 레시피
 				</button>

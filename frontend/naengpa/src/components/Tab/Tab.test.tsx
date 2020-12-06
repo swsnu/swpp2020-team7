@@ -19,7 +19,7 @@ describe('Tab', () => {
 
 		tab = (
 			<Provider store={mockStore}>
-				<Tab username={username} history={history} />
+				<Tab history={history} />
 			</Provider>
 		);
 

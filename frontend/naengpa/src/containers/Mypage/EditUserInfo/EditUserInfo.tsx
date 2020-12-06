@@ -58,7 +58,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tab username={user!.username} history={history} />
+			<Tab history={history} />
 			<div id="info">
 				<div id="edit-info-header">
 					<p>내 정보 수정</p>
