@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from ingredient.models import Ingredient
 from food_category.models import FoodCategory
 User = get_user_model()
@@ -23,6 +24,14 @@ class Recipe(models.Model):
     def __str__(self):
         return f'[{self.id}] {self.food_name} by {self.author}'
 
+    def save(self, *args, **kwargs):
+        cache.delete('recipes')
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        cache.delete('recipes')
+        super().save(*args, **kwargs)
+
 
 class Image(models.Model):
     """Image model for Recipe"""
@@ -33,6 +42,14 @@ class Image(models.Model):
 
     def __str__(self):
         return f'[{self.id}] of {self.recipe}'
+
+    def save(self, *args, **kwargs):
+        cache.delete('recipes')
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        cache.delete('recipes')
+        super().save(*args, **kwargs)
 
 
 class RecipeIngredient(models.Model):
@@ -46,6 +63,14 @@ class RecipeIngredient(models.Model):
 
     def __str__(self):
         return f'[{self.id}] of {self.recipe}'
+
+    def save(self, *args, **kwargs):
+        cache.delete('recipes')
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        cache.delete('recipes')
+        super().save(*args, **kwargs)
 
 
 class RecipeLike(models.Model):
