@@ -33,7 +33,7 @@ export interface EditUserInputDTO {
 	email: string;
 	region?: RegionEntity;
 	regionRange?: string;
-	profileImage?: File|null;
+	profileImage?: File | null;
 }
 
 export interface ChangePasswordInputDTO {

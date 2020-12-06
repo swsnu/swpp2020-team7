@@ -35,16 +35,32 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 				<div id="myinfo-user-info">
 					<div id="myinfo-profile">
 						{!user?.profileImage && <AccountCircleIcon id="profile-picture" />}
-						{user?.profileImage && <img id="profile-picture" src = {URL.createObjectURL(user?.profileImage) as string}/>}
+						{user?.profileImage && (
+							<img
+								id="profile-picture"
+								src={URL.createObjectURL(user?.profileImage) as string}
+								alt="/api/images"
+							/>
+						)}
 						<div id="myinfo-username">{user!.username}</div>
 					</div>
 					<div id="myinfo-info-list">
 						<div id="myinfo-info">
-							<p className="myinfo-content"><div className="info-head">이름</div> <div className="info-tail">{user!.name}</div></p>
-							<p className="myinfo-content"><div className="info-head">생년월일</div> <div className="info-tail">{user!.dateOfBirth}</div></p>
-							<p className="myinfo-content"><div className="info-head">이메일</div> <div className="info-tail">{user!.email}</div></p>
-							<p className="myinfo-content"><div className="info-head">지역 </div>
-							{/* <div className="info-tail">{user!.region} {user!.regionRange} </div> */}
+							<p className="myinfo-content">
+								<div className="info-head">이름</div>{' '}
+								<div className="info-tail">{user!.name}</div>
+							</p>
+							<p className="myinfo-content">
+								<div className="info-head">생년월일</div>{' '}
+								<div className="info-tail">{user!.dateOfBirth}</div>
+							</p>
+							<p className="myinfo-content">
+								<div className="info-head">이메일</div>{' '}
+								<div className="info-tail">{user!.email}</div>
+							</p>
+							<p className="myinfo-content">
+								<div className="info-head">지역 </div>
+								{/* <div className="info-tail">{user!.region} {user!.regionRange} </div> */}
 							</p>
 							<button
 								type="button"

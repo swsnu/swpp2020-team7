@@ -27,7 +27,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 		/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$/i,
 	);
 
-	const [profileImage, setProfileImage] = useState<File|null>(null);
+	const [profileImage, setProfileImage] = useState<File | null>(null);
 	const dispatch = useDispatch();
 
 	const onClickEdit = () => {
@@ -72,35 +72,29 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 				<div id="myinfo-user-info">
 					<div id="myinfo-profile">
 						<Box id="add-image-icon-box">
-						<label
-							aria-label="profile-image-label"
-							htmlFor="profile-image"
-						>
-							<AddCircleIcon
-								id="add-image-button"
-								type="button"
-							/>
-							<Input
-								type="file"
-								id="profile-image"
-								onChange={(e: ChangeEvent<HTMLInputElement>) =>
-									onClickAddImage(e)
-								}
-							/>
-						</label>
-						<div id="add-image-icon">
-							{!profileImage && <AccountCircleIcon id="profile-picture" />}
-							{profileImage && 
+							<label aria-label="profile-image-label" htmlFor="profile-image">
+								<AddCircleIcon id="add-image-button" type="button" />
+								<Input
+									type="file"
+									id="profile-image"
+									onChange={(e: ChangeEvent<HTMLInputElement>) =>
+										onClickAddImage(e)
+									}
+								/>
+							</label>
+							<div id="add-image-icon">
+								{!profileImage && <AccountCircleIcon id="profile-picture" />}
+								{profileImage && (
 									<img
 										id="edit-profile-picture"
 										width="110px"
 										height="110px"
 										src={URL.createObjectURL(profileImage) as string}
-										alt="/api/images"> 
-									</img>
-							}
-						</div>
-					</Box>
+										alt="/api/images"
+									/>
+								)}
+							</div>
+						</Box>
 						<div id="myinfo-profile-username">{user!.username}</div>
 					</div>
 					<div id="edit-info-list">
