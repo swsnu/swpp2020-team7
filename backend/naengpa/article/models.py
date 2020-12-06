@@ -28,11 +28,11 @@ class Article(models.Model):
         return f'[{self.id}] {self.title} by {self.author}'
 
     def save(self, *args, **kwargs):
-        cache.delete('users')
+        cache.delete('articles')
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete('users')
+        cache.delete('articles')
         super().save(*args, **kwargs)
 
 
@@ -49,9 +49,9 @@ class Image(models.Model):
         return f'[{self.id}] of {self.article}'
 
     def save(self, *args, **kwargs):
-        cache.delete('users')
+        cache.delete('articles')
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete('users')
+        cache.delete('articles')
         super().save(*args, **kwargs)

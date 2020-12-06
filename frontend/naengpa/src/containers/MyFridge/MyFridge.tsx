@@ -18,7 +18,7 @@ const MyFridge: React.FC<MyFridgeProps> = ({ history }) => {
 		<div id="my-fridge-page">
 			<Grid id="my-fridge" container spacing={5}>
 				<Grid id="fridge-left-part" item xs={12} sm={3}>
-					<TodayIngredient history={history} />
+					<TodayIngredient />
 					<AddIngredient />
 				</Grid>
 				<Grid id="frige-middle-part" item xs={12} sm={4}>

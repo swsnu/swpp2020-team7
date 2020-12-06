@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { History } from 'history';
 import { useDispatch } from 'react-redux';
 import { Card, CardHeader, Avatar, IconButton, CardMedia, CardContent } from '@material-ui/core';
@@ -7,8 +7,8 @@ import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import './Recipe.scss';
-import { RecipeEntity, RecipeImage } from '../../model/recipe';
-import { getRecipe, toggleRecipe, getRecipeList } from '../../store/actions/index';
+import { RecipeEntity } from '../../model/recipe';
+import { getRecipe, toggleRecipe } from '../../store/actions/index';
 
 interface RecipeProps {
 	recipe: RecipeEntity;

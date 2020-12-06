@@ -18,6 +18,7 @@ const recipeList: RecipeEntity[] = [
 			},
 		],
 		recipeLike: 1,
+		userLike: 1,
 		createdAt: '2000.00.00',
 		foodCategory: '밥류',
 		ingredients: [{ ingredient: '돼지고기' }, { ingredient: '고추장' }],
@@ -35,7 +36,8 @@ const recipeList: RecipeEntity[] = [
 				file_path: 'path',
 			},
 		],
-		recipeLike: 1,
+		recipeLike: 0,
+		userLike: 0,
 		createdAt: '2000.00.00',
 		foodCategory: '밥류',
 		ingredients: [{ ingredient: '돼지고기' }, { ingredient: '고추장' }],
@@ -98,6 +100,42 @@ describe('Recipe Reducer', () => {
 		});
 	});
 
+	it('should check if it can toggle recipe correctly', () => {
+		const newState = recipeReducer(
+			{ ...RecipeState, recipeList },
+			{
+				type: actionTypes.TOGGLE_RECIPE,
+				target_id: 2,
+				recipeLikeInfo: {
+					recipeLike: 0,
+					userLike: 0,
+				},
+			},
+		);
+		expect(newState).toEqual({
+			...RecipeState,
+			recipeList: [{ ...recipeList[0], userLike: 0 }, recipeList[1]],
+		});
+	});
+
+	it('should check if it can toggle recipe case 2 correctly', () => {
+		const newState = recipeReducer(
+			{ ...RecipeState, recipeList },
+			{
+				type: actionTypes.TOGGLE_RECIPE,
+				target_id: 3,
+				recipeLikeInfo: {
+					recipeLike: 1,
+					userLike: 1,
+				},
+			},
+		);
+		expect(newState).toEqual({
+			...RecipeState,
+			recipeList: [recipeList[0], { ...recipeList[1], userLike: 1, recipeLike: 1 }],
+		});
+	});
+
 	it('should check if it can extract ml feature from recipe', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.EXTRACT_ML_FEATURE_FROM_RECIPE,
@@ -124,13 +162,16 @@ describe('Recipe Reducer', () => {
 	});
 
 	it('should check if it can edit specific recipe', () => {
-		const newState = recipeReducer(RecipeState, {
-			type: actionTypes.EDIT_RECIPE,
-			recipe: recipeList[0],
-		});
+		const newState = recipeReducer(
+			{ ...RecipeState, recipeList },
+			{
+				type: actionTypes.EDIT_RECIPE,
+				recipe: recipeList[0],
+			},
+		);
 		expect(newState).toEqual({
 			...RecipeState,
-			//  recipeList: [...initialState.recipeList,  recipeList[0]]
+			recipeList,
 		});
 	});
 });

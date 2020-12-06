@@ -103,6 +103,20 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		);
 	};
 
+	const onClickConfirmModal = () => {
+		setShowIngredientModal(false);
+		setIngredients(modifiedIngredients);
+		setNewIngredient('');
+		setNewIngredientQuantity('');
+	};
+
+	const onClickCloseModal = () => {
+		setShowIngredientModal(false);
+		setModifiedIngredients(ingredients);
+		setNewIngredient('');
+		setNewIngredientQuantity('');
+	};
+
 	// need to be directed to recipe detail page, current => recipelist
 	const onClickRegisterRecipe = () => {
 		if (
@@ -398,15 +412,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							추가할 수 없습니다!
 						</div>
 					</div>
-					<CancelIcon
-						id="close-modal-button"
-						onClick={() => {
-							setShowIngredientModal(false);
-							setModifiedIngredients(ingredients);
-							setNewIngredient('');
-							setNewIngredientQuantity('');
-						}}
-					/>
+					<CancelIcon id="close-modal-button" onClick={onClickCloseModal} />
 				</div>
 				<Divider />
 				<div id="ingredient-list">
@@ -450,15 +456,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				</div>
 
 				<div id="confirm-modal-button-box">
-					<Button
-						id="confirm-modal-button"
-						onClick={() => {
-							setShowIngredientModal(false);
-							setIngredients(modifiedIngredients);
-							setNewIngredient('');
-							setNewIngredientQuantity('');
-						}}
-					>
+					<Button id="confirm-modal-button" onClick={onClickConfirmModal}>
 						수정
 					</Button>
 				</div>

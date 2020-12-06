@@ -34,7 +34,6 @@ export const signup_ = (user: UserEntity) => ({ type: actionTypes.SIGNUP, user }
 
 export const signup = (user: UserSignupInputDTO) => {
 	return async (dispatch: any) => {
-		console.log(JSON.stringify(user));
 		const response = await axios.post('/api/signup/', user);
 		const currentUser: UserEntity = response.data;
 		dispatch(push('/regional-setting'));
@@ -174,10 +173,8 @@ export const createChatRoom = (id: string) => {
 	return async (dispatch: any) => {
 		try {
 			const response = await axios.post(`/api/chatrooms/`, { friend_id: id });
-			console.log(response);
 			if (response.data) {
 				await dispatch(createChatRoom_(response.data));
-				console.log(response.data);
 				await dispatch(push(`/chatrooms/${response.data.id}`));
 			}
 		} catch (e) {

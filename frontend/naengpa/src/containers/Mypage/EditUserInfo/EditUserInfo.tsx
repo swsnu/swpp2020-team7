@@ -21,7 +21,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 	const [dateOfBirth, setDateOfBirth] = useState(user!.dateOfBirth);
 	const [email, setEmail] = useState(user!.email);
 	const [password, setPassword] = useState('');
-	const namePat = new RegExp('^[ㄱ-ㅎ|가-힣|a-z|A-Z|*]+$');
+	const namePat = new RegExp('^[ㄱ-ㅎ가-힣a-zA-Z]+$');
 	const birthPat = new RegExp(/^[0-9]{6}$/);
 	const emailPat = new RegExp(
 		/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$/i,

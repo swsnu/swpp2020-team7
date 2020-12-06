@@ -1,19 +1,43 @@
 import React from 'react';
-import { act } from '@testing-library/react';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import { Collapse } from '@material-ui/core';
 import { history } from '../../../store/store';
 import RecipeDetail from './RecipeDetail';
-import '@testing-library/jest-dom';
-import * as recipeActionCreators from '../../../store/actions/recipe';
-import { InitialState as RecipeState } from '../../../store/reducers/recipe';
+import { ArticleEntity } from '../../../model/article';
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
+const mockArticle: ArticleEntity = {
+	id: 2,
+	authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
+	author: 'test',
+	region: '서울시 관악구 대학동',
+	title: 'for test',
+	content: 'this is test',
+	item: {
+		id: 14,
+		name: '딸기',
+		category: '과일',
+	},
+	price: 1000,
+	views: 77,
+	options: {
+		isForSale: true,
+		isForExchange: true,
+		isForShare: true,
+	},
+	createdAt: '2000.00.00',
+	images: [
+		{
+			id: 2,
+			path: 'path',
+		},
+	],
+};
 const stubInitialState = {
 	recipe: {
 		recipeList: [],
@@ -38,6 +62,38 @@ const stubInitialState = {
 		},
 		createdRecipe: null,
 	},
+	article: {
+		articleList: [
+			mockArticle,
+			{
+				id: 3,
+				authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
+				author: 'test',
+				region: '서울시 관악구 청룡동',
+				title: 'for test 2',
+				content: 'this is test 2',
+				item: {
+					id: 14,
+					name: '사과',
+					category: '과일',
+				},
+				options: {
+					isForSale: true,
+					isForExchange: false,
+					isForShare: false,
+				},
+				price: 1000,
+				views: 77,
+				createdAt: '2000.00.00',
+				images: [
+					{
+						id: 2,
+						path: 'path',
+					},
+				],
+			},
+		],
+	},
 	user: {
 		user: {
 			id: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
@@ -47,8 +103,17 @@ const stubInitialState = {
 			dateOfBirth: '20201112',
 		},
 	},
+	fridge: {
+		ingredientList: [
+			{
+				id: 14,
+				name: '사과',
+				category: '과일',
+				isTodayIngredient: false,
+			},
+		],
+	},
 };
-const image = 'sample_img';
 
 describe('RecipeDetail', () => {
 	let recipeDetail: any;
@@ -97,11 +162,11 @@ describe('RecipeDetail', () => {
 		expect(spyHistoryPush).toBeCalledWith('/recipes/:1/edit');
 	});
 
-	it('should check if pagination works', async () => {
-		const component = mount(recipeDetail);
-		const wrapper = component.find('#recipe-images-page');
-		wrapper.find('button').at(1).simulate('click');
-	});
+	// it('should check if pagination works', async () => {
+	// 	const component = mount(recipeDetail);
+	// 	const wrapper = component.find('#recipe-images-page');
+	// 	wrapper.find('button').at(1).simulate('click');
+	// });
 
 	it('Collapse should pop up and out correctly', () => {
 		const component = mount(recipeDetail);

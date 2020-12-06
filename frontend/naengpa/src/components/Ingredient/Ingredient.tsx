@@ -73,8 +73,9 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 
 	return (
 		<div id="ingredient">
-			<div
+			<button
 				id="ingredient-image-box"
+				type="button"
 				onMouseOver={onMouseOverIngredient}
 				onMouseLeave={onMouseLeaveIngredient}
 				onFocus={onFocusIngredient}
@@ -88,12 +89,12 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 							onClick={() => onClickToggleTodayIngredient()}
 						/>
 					) : (
-							<StarIcon
-								id="no-ingredient-button"
-								type="button"
-								onClick={() => onClickToggleTodayIngredient()}
-							/>
-						))}
+						<StarIcon
+							id="no-ingredient-button"
+							type="button"
+							onClick={() => onClickToggleTodayIngredient()}
+						/>
+					))}
 				{deleteIngredient && (
 					<CancelIcon
 						id="delete-ingredient-button"
@@ -105,7 +106,7 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 					<img id="ingredient-image" src={imageUrl} alt="/icons/meat.png" />
 					<div id="ingredient-tag">{ingredient.name}</div>
 				</div>
-			</div>
+			</button>
 		</div>
 	);
 };

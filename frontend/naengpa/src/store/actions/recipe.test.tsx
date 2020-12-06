@@ -26,12 +26,20 @@ const stubInitialState = {
 					},
 				],
 				recipeLike: 1,
+				userLike: 1,
 				createdAt: '2000.00.00',
 				foodCategory: '밥류',
-				ingredients: ['돼지고기', '고추장'],
+				ingredients: [
+					{
+						ingredient: '돼지고기',
+					},
+					{
+						ingredient: '고추장',
+					},
+				],
 			},
 			{
-				id: 2,
+				id: 3,
 				authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 				author: 'test',
 				foodName: '딸기',
@@ -45,9 +53,17 @@ const stubInitialState = {
 					},
 				],
 				recipeLike: 1,
+				userLike: 0,
 				createdAt: '2000.00.00',
 				foodCategory: '밥류',
-				ingredients: ['돼지고기', '고추장'],
+				ingredients: [
+					{
+						ingredient: '돼지고기',
+					},
+					{
+						ingredient: '고추장',
+					},
+				],
 			},
 		],
 	},
@@ -102,8 +118,9 @@ describe('ActionCreators', () => {
 			foodName: 'foodName',
 			cookTime: '100',
 			recipeContent: 'recipeContent',
-			foodImagePaths: [(image as unknwon) as File],
+			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 1,
+			userLike: 0,
 		};
 
 		await mockStore.dispatch<any>(actionCreators.createRecipe(mockData));
@@ -128,8 +145,9 @@ describe('ActionCreators', () => {
 			foodName: 'foodName',
 			cookTime: '100',
 			recipeContent: 'recipeContent',
-			foodImagePaths: [(image as unknown) as File],
+			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 1,
+			userLike: 0,
 		};
 
 		await mockStore.dispatch<any>(actionCreators.extractMLFeatureFromRecipe(mockData));
@@ -169,5 +187,27 @@ describe('ActionCreators', () => {
 		});
 		mockStore.dispatch<any>(actionCreators.editRecipe(stubInitialState.recipe.recipeList[0]));
 		expect(spy).toBeCalled();
+	});
+
+	it('should return toggle Recipe Like action correctly', async () => {
+		const spy = jest.spyOn(axios, 'put').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: null,
+				};
+				resolve(result);
+			});
+		});
+		await mockStore.dispatch<any>(actionCreators.toggleRecipe(2));
+		expect(spy).toBeCalledTimes(1);
+
+		const actions = mockStore.getActions();
+		const expectedPayload = {
+			type: actionTypes.TOGGLE_RECIPE,
+			target_id: 2,
+			recipeLikeInfo: null,
+		};
+		expect(actions[0]).toEqual(expectedPayload);
 	});
 });

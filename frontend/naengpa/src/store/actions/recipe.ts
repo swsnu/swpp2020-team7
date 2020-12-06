@@ -84,7 +84,7 @@ export const createRecipe = (recipe: RecipeEntity) => {
 		try {
 			const bodyFormData = new FormData();
 			bodyFormData.append('recipe', JSON.stringify(recipe));
-			recipe.foodImageFiles.forEach((image: any) => bodyFormData.append('image', image));
+			recipe.foodImageFiles!.forEach((image: any) => bodyFormData.append('image', image));
 			const response = await axios.post('/api/recipes/', bodyFormData);
 
 			dispatch(createRecipe_(response.data));
@@ -123,7 +123,7 @@ export const deleteRecipe_ = (target_id: number) => ({
 export const deleteRecipe = (id: number) => {
 	return async (dispatch: any) => {
 		try {
-			await axios.delete(`/api/recipes/${id}`);
+			await axios.delete(`/api/recipes/${id}/`);
 			dispatch(deleteRecipe_(id));
 		} catch {
 			console.log('레시피를 삭제하지 못했습니다! 다시 시도해주세요!');
@@ -140,7 +140,7 @@ export const editRecipe_ = (recipe: RecipeEntity) => ({
 export const editRecipe = (recipe: RecipeEntity) => {
 	return async (dispatch: any) => {
 		try {
-			const response = await axios.put(`/api/recipes/${recipe.id}`, recipe);
+			const response = await axios.put(`/api/recipes/${recipe.id}/`, recipe);
 			dispatch(editRecipe_(response.data));
 		} catch {
 			console.log('레시피를 수정하지 못했습니다. 다시 시도해주세요!');
@@ -158,7 +158,7 @@ export const toggleRecipe_ = (target_id: number, recipeLikeInfo: number) => ({
 export function toggleRecipe(id: number) {
 	return async (dispatch: any) => {
 		try {
-			const response: any = await axios.get(`/api/recipes/${id}/like`);
+			const response: any = await axios.put(`/api/recipes/${id}/like/`);
 			dispatch(toggleRecipe_(id, response.data));
 		} catch {
 			console.log('레시피 좋아요를 누르지 못했습니다! 다시 시도해주세요!');

@@ -46,6 +46,9 @@ const stubInitialState = {
 			email: 'test@snu.ac.kr',
 			name: '테스트',
 			dateOfBirth: '20201112',
+			region: {
+				name: '관악구 대학동',
+			},
 		},
 	},
 	article: {
