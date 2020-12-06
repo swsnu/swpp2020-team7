@@ -7,9 +7,8 @@ import { Box, IconButton, Grid } from '@material-ui/core';
 import Ingredient from '../../components/Ingredient/Ingredient';
 import { AppState } from '../../store/store';
 import { getFridge } from '../../store/actions/index';
-import './Fridge.scss';
-
 import { IngredientEntity } from '../../model/ingredient';
+import './Fridge.scss';
 
 interface FridgeProps {
 	history: History;
@@ -37,11 +36,8 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 	useEffect(() => {
 		// TODO: argument should be user id!
 		dispatch(getFridge(user!.id));
-		const func = () => {
-			setMaxPageIndex(Math.ceil(ingredientList.length / 9.0));
-			setCurrentList(ingredientList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-		};
-		func();
+		setMaxPageIndex(Math.ceil(ingredientList.length / 9.0));
+		setCurrentList(ingredientList.slice((page - 1) * 9, (page - 1) * 9 + 9));
 	}, [dispatch, user, ingredientList.length]);
 
 	return (
