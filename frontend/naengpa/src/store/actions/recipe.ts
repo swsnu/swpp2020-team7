@@ -15,7 +15,7 @@ export const getRecipeList_ = (recipeList:RecipeEntity[], recipeCount:number) =>
 });
 
 /* GET RECIPE LIST */
-export const getRecipeList = (query?: string, sortBy?: string, category?:string, filterBy?:boolean, page: number = 1) => {
+export const getRecipeList = (query?: string, sortBy?: string, category?:string, filterBy?:boolean, page: number = 0) => {
 	return async (dispatch: any) => {
 		try {
 			const response = await axios.get('/api/recipes/', {

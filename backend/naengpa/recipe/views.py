@@ -28,13 +28,12 @@ def recipe_list(request):
         sort_condition = request.GET.get('sort_by', "-created_at")
         food_category = request.GET.get('category', "")
         sort_by_ingredient = request.GET.get('filter', False)
-        page = request.GET.get('page', 1)
-        str_idx = int(int(page)-1)*9
-        end_idx = int(int(page)-1)*9+9
+        str_idx = int(request.GET.get('page', 0))
+        end_idx = int(str_idx) + 9
 
         user = request.user
-        print(query, ": query", sort_condition, ": condition ", food_category,
-              ": food_category", sort_by_ingredient, ": sort by ingredient ")
+        print("search-query:", query, " -category:", food_category, " sort by: ", sort_condition,
+              " sort by ingredient: ", sort_by_ingredient)
 
         # User Clicks the Filter Tab(most recent, most popular and most recommended button)
         if not query:
@@ -47,23 +46,25 @@ def recipe_list(request):
                           for recipe in Recipe.objects.select_related('author', 'author__fridge')]
                 sorted_list = [x[0] for x in result.sort(
                     key=lambda x: -x[1])] if not len(result) else []
+                print(sorted_list, " [sorted by ingredient]")
             else:
-                # Sort by mosot recent, most popular button
+                # Sort by most recent, most popular button
                 recipe_collection = cache.get(
                     'recipes_' + sort_condition + "_" + food_category)
                 if not recipe_collection:
-                    sorted_list = Recipe.objects.all().order_by(sort_condition)
+                    sorted_list = Recipe.objects.all().order_by(sort_condition, '-created_at')
                 else:
                     return JsonResponse(recipe_collection[str_idx: end_idx], safe=False)
 
         # User Search the Recipe List with query and food category
         else:
             # Sort By Query
-            filtered_list = Recipe.objecsts.select_related('ingredients', 'ingredients__ingredient').filter(Q(recipe_content__icontains=query) | Q(
+            filtered_list = Recipe.objects.select_related('author').filter(Q(recipe_content__icontains=query) | Q(
                 food_name__icontains=query) | Q(food_category__icontains=query) | Q(ingredients__ingredient__icontains=query))
             # Sort By Food Category
             sorted_list = filtered_list.order_by(sort_condition).filter(
                 food_category=food_category) if food_category != '전체' else sorted_list
+            print("[Sorted_list by user Ingredient] ", sorted_list)
 
         recipe_collection = [{
             "id": recipe.id,
@@ -81,9 +82,9 @@ def recipe_list(request):
         } for recipe in sorted_list]
 
         cache.set(recipe_collection, 'recipes_' +
-                  sort_condition + "_" + food_category + '_' + page)
+                  sort_condition + "_" + food_category + '_')
 
-        return JsonResponse({"recipeList": recipe_collection[str_idx: end_idx], "count": len(recipe_collection)}, safe=False)
+        return JsonResponse({"recipeList": recipe_collection[str_idx: end_idx], "recipeCount": len(recipe_collection)}, safe=False)
 
     else:
         ''' POST /api/recipes/ post new recipe '''
@@ -163,7 +164,7 @@ def today_recipe_list(request):
         } for recipe in list(recipe_list)[:4]]
         cache.set(today_recipe, 'today_recipe_'+str(today))
 
-    return JsonResponse(today_recipe, safe=False)
+    return JsonResponse({"recipeList": today_recipe, "recipeCount": 4}, safe=False)
 
 
 @api_view(['GET', 'DELETE'])
@@ -171,7 +172,7 @@ def today_recipe_list(request):
 def recipe_info(request, id):
     """get recipe of given id"""
     user_id = request.user.id
-    recipe_reponse = cache.get('recipe_' + id + "_" + user_id)
+    recipe_reponse = cache.get('recipe_' + str(id) + "_" + user_id)
 
     if not recipe_response:
         recipe = Recipe.objects.get(id=id)
@@ -190,7 +191,7 @@ def recipe_info(request, id):
             "foodCategory": recipe.food_category,
             "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
         }
-        cachet.set(recipe_response, 'recipe_' + id + "_" + user_id)
+        cachet.set(recipe_response, 'recipe_' + str(id) + "_" + user_id)
     if request.method == 'GET':
         return JsonResponse(data=response_response, status=201)
     if request.method == 'DELETE':

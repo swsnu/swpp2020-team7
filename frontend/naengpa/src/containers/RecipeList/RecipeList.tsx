@@ -34,9 +34,11 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const [query, setQuery] = useState('');
 	const dispatch = useDispatch();
 
+	const getListIndex = (page: number) => ((page)-1)*9;
+
 	const onLoadRecipeList = async (page: number) => {
 		setLoading(true);
-		await dispatch(getRecipeList(query, sortBy, searchCategory, filterBy, page));
+		await dispatch(getRecipeList(query, sortBy, searchCategory, filterBy, getListIndex(page)));
 		setMaxPageIndex(Math.ceil(recipeCount / 9.0));
 		setPage(page);
 		setCurrentList(recipeList);	
@@ -93,9 +95,11 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	})
 
 	useEffect(() => {
-		const func = async () => { await dispatch(getFoodCategoryList());}
+		const func = async () => { 
+			await dispatch(getFoodCategoryList());
+			await onLoadRecipeList(1);
+		}
 		func()
-		onLoadRecipeList(1);
 	}, []);
 
 	return (
