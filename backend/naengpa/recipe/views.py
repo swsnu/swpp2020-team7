@@ -148,6 +148,8 @@ def today_recipe_list(request):
             created_at__gte=yesterday).order_by('like_users')
         if recipe_list == [] and Recipe.objects.all():
             recipe_list = Recipe.objects.all().order_by('like_users', '-created_at')
+
+        user_like = recipe.likes.filter(user_id=user_id).count()
         today_recipe = [{
             "id": recipe.id,
             "authorId": recipe.author.id,
@@ -191,9 +193,9 @@ def recipe_info(request, id):
             "foodCategory": recipe.food_category,
             "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
         }
-        cachet.set(recipe_response, 'recipe_' + str(id) + "_" + user_id)
+        cache.set(recipe_response, 'recipe_' + str(id) + "_" + user_id)
     if request.method == 'GET':
-        return JsonResponse(data=response_response, status=201)
+        return JsonResponse(data=recipe_response, status=201)
     if request.method == 'DELETE':
         Recipe.objects.filter(id=id).delete()
         return HttpResponse(status=200)
