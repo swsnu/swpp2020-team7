@@ -23,7 +23,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 
 	const chatRoomCollection = chatRoomList.map((chatRoom: any) => {
 		return (
-			<Button id="chatroom" onClick={() => dispatch(getChatRoom(chatRoom))}>
+			<Button key={chatRoom.id} id="chatroom" onClick={() => dispatch(getChatRoom(chatRoom))}>
 				<Divider variant="middle" />
 				<div id="chat-member">{chatRoom.member}</div>
 				<div id="chat-message">{chatRoom.lastChat}</div>
@@ -35,7 +35,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tab history={history} />
+			<Tab username={user!.username} history={history} />
 			<div id="info">
 				<Typography id="chatroom-header" gutterBottom>
 					쪽지함

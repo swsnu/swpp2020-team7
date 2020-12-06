@@ -10,10 +10,10 @@ const middlewares = [thunk];
 const store = configureStore(middlewares);
 
 const mockChatRoom = {
-	id: "1",
-	lastChat: "hi",
-	member: "me",
-	updatedAt: "00",
+	id: '1',
+	lastChat: 'hi',
+	member: 'me',
+	updatedAt: '00',
 	chatCount: 1,
 };
 const stubInitialState = {
@@ -25,20 +25,20 @@ const stubInitialState = {
 			email: 'test@snu.ac.kr',
 			dateOfBirth: '20201112',
 			region: {
-				name: "관악구 대학동",
+				name: '관악구 대학동',
 			},
 		},
 		chatRoom: mockChatRoom,
 		chatRoomList: [
 			mockChatRoom,
 			{
-				id: "2",
-				lastChat: "hello",
-				member: "you",
-				updatedAt: "000000",
+				id: '2',
+				lastChat: 'hello',
+				member: 'you',
+				updatedAt: '000000',
 				chatCount: 2,
-			}
-		]
+			},
+		],
 	},
 };
 const mockStore = store(stubInitialState);
