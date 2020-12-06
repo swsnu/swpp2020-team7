@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { History } from 'history';
 import { useDispatch } from 'react-redux';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 
-import { login } from '../../../store/actions/index';
+import { getArticleList, getIngredientList, login } from '../../../store/actions/index';
 import './Login.scss';
 
 interface LoginProps {
@@ -14,6 +14,11 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 	const [username, setUserName] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(getIngredientList());
+		dispatch(getArticleList());
+	});
 
 	const onClickLogin = () => {
 		if (username === '' || password === '') {
