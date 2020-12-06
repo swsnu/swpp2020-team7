@@ -1,13 +1,12 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import '@testing-library/jest-dom';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
-import waitForComponentToPaint from '../../../utils/waitForComponentToPaint';
+import waitForComponentToPaint from '../../../test-utils/waitForComponentToPaint';
 import ExtractMLFeature from './ExtractMLFeature';
-import { history } from '../../store/store';
+import { createMemoryHistory } from 'history';
 import * as recipeActionCreators from '../../store/actions/recipe';
 import * as foodCategoryActionCreators from '../../store/actions/foodCategory';
 
@@ -77,12 +76,16 @@ describe('ExtractMLFeature', () => {
 	let extractMLFeature: any;
 	let extractMLFeature2: any;
 	let spyHistoryPush: any;
+	let spyHistoryGoBack: any;
 	let spyCreateRecipe: any;
 	let spyGetFoodCategory: any;
 	let spyUseState: any;
 	let spySetState: any;
+	let spyExtractMLFeatureFromRecipe: any;
 
 	beforeEach(() => {
+		const history = createMemoryHistory({ initialEntries: ['/'] });
+
 		const mockStore = store(stubInitialState);
 		const mockStore2 = store(stubInitialState2);
 
@@ -92,21 +95,17 @@ describe('ExtractMLFeature', () => {
 			useState: () => jest.fn(),
 		}));
 
-		act(() => {
-			extractMLFeature = (
-				<Provider store={mockStore}>
-					<ExtractMLFeature history={history} />;
-				</Provider>
-			);
-		});
+		extractMLFeature = (
+			<Provider store={mockStore}>
+				<ExtractMLFeature history={history} />;
+			</Provider>
+		);
 
-		act(() => {
-			extractMLFeature2 = (
-				<Provider store={mockStore2}>
-					<ExtractMLFeature history={history} />;
-				</Provider>
-			);
-		});
+		extractMLFeature2 = (
+			<Provider store={mockStore2}>
+				<ExtractMLFeature history={history} />;
+			</Provider>
+		);
 
 		spyGetFoodCategory = jest
 			.spyOn(foodCategoryActionCreators, 'getFoodCategoryList')
@@ -114,7 +113,11 @@ describe('ExtractMLFeature', () => {
 		spyCreateRecipe = jest
 			.spyOn(recipeActionCreators, 'createRecipe')
 			.mockImplementation(() => jest.fn());
+		spyExtractMLFeatureFromRecipe = jest
+			.spyOn(recipeActionCreators, 'extractMLFeatureFromRecipe')
+			.mockImplementation(() => jest.fn());
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
+		spyHistoryGoBack = jest.spyOn(history, 'goBack').mockImplementation(jest.fn());
 		spySetState = jest.fn();
 		spyUseState = jest.spyOn(React, 'useState');
 		spyUseState.mockImplementation((init: any) => [init, spySetState]);
@@ -136,28 +139,33 @@ describe('ExtractMLFeature', () => {
 		const component = mount(extractMLFeature);
 		await waitForComponentToPaint(component);
 		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
-		confirmAlertButton.simulate('click');
-		expect(spyGetFoodCategory).toBeCalledTimes(1);
 
-		const cookTime = component.find('input#cook-time').find('input');
-		const foodImage = component.find('input#food-image').find('input');
-		const recipeContent = component.find('#recipe-content').find('textarea');
-		const extractMLFeatureButton = component
-			.find('#extract-ml-feature-button')
-			.find('button')
-			.at(0);
-		const registerRecipeButton = component.find('#register-recipe-button').find('button').at(0);
+		act(() => {
+			confirmAlertButton.simulate('click');
+			expect(spyGetFoodCategory).toBeCalledTimes(1);
 
-		cookTime.simulate('change', { target: { value: '100' } });
-		foodImage.simulate('change', { target: { files: [(image as unknown) as File] } });
-		recipeContent.simulate('change', { target: { value: 'testContent' } });
 
-		expect(cookTime.length).toBe(1);
-		expect(foodImage.length).toBe(1);
-		expect(recipeContent.length).toBe(1);
-		extractMLFeatureButton.simulate('click');
-		// expect(spyHistoryPush).toBeCalledTimes(1);
-		registerRecipeButton.simulate('click');
+			const cookTime = component.find('input#cook-time').find('input');
+			const foodImage = component.find('input#food-image').find('input');
+			const recipeContent = component.find('#recipe-content').find('textarea');
+			const extractMLFeatureButton = component
+				.find('#extract-ml-feature-button')
+				.find('button')
+				.at(0);
+			const registerRecipeButton = component.find('#register-recipe-button').find('button').at(0);
+
+			cookTime.simulate('change', { target: { value: '100' } });
+			foodImage.simulate('change', { target: { files: [(image as unknown) as File] } });
+			recipeContent.simulate('change', { target: { value: 'testContent' } });
+
+			expect(cookTime.length).toBe(1);
+			expect(foodImage.length).toBe(1);
+			expect(recipeContent.length).toBe(1);
+
+			extractMLFeatureButton.simulate('click');
+			// expect(spyHistoryPush).toBeCalledTimes(1);
+			registerRecipeButton.simulate('click');
+		});
 	});
 
 	it('should close Alert modal when the close button is clicked', () => {
@@ -191,21 +199,28 @@ describe('ExtractMLFeature', () => {
 		backToCreateRecipeButton.simulate('click');
 	});
 
-	it('should delete the recipe image', () => {
+	it('should delete the recipe image', async () => {
 		const component = mount(extractMLFeature);
-		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
-		confirmAlertButton.simulate('click');
-		const foodImage = component.find('input#food-image').find('input');
-		const addFoodImageButton = component.find('#add-image-button').at(0);
-		addFoodImageButton.simulate('click');
-		foodImage.simulate('change', { target: { files: [image] } });
-		const deleteFoodImageButton = component.find('#delete-image-button').at(0);
-		deleteFoodImageButton.simulate('click');
-		addFoodImageButton.simulate('click');
-		foodImage.simulate('change', { target: { files: [image] } });
-		const extractMLFeatureButton = component.find('#extract-ml-feature-button').at(0);
-		extractMLFeatureButton.simulate('click');
-		deleteFoodImageButton.simulate('click');
+		await waitForComponentToPaint(component);
+
+		act(async () => {
+			const confirmAlertButton = component.find('#confirm-alert-button').last();
+			confirmAlertButton.simulate('click');
+			const foodImage = component.find('input#food-image').find('input');
+			const addFoodImageButton = component.find('#add-image-button').at(0);
+			addFoodImageButton.simulate('click');
+
+			foodImage.simulate('change', { target: { files: [image] } });
+			await waitForComponentToPaint(component);
+
+			const deleteFoodImageButton = component.find('#delete-image-button').at(0);
+			deleteFoodImageButton.simulate('click');
+			addFoodImageButton.simulate('click');
+			foodImage.simulate('change', { target: { files: [image] } });
+			const extractMLFeatureButton = component.find('#extract-ml-feature-button').at(0);
+			extractMLFeatureButton.simulate('click');
+			deleteFoodImageButton.simulate('click');
+		});
 	});
 
 	it('should work well with the food Category Modal', () => {
@@ -266,7 +281,7 @@ describe('ExtractMLFeature', () => {
 		closeModalButton.simulate('click');
 	});
 
-	it('should work well with add ingredient and ingredient quantity', () => {
+	it('should work well with add ingredient and ingredient quantity', async () => {
 		const component = mount(extractMLFeature2);
 		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
 		confirmAlertButton.simulate('click');
