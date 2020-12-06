@@ -28,6 +28,7 @@ export {
 /* Recipe actions */
 export {
 	getRecipeList,
+	getTodayRecipeList,
 	getRecipe,
 	createRecipe,
 	extractMLFeatureFromRecipe,
