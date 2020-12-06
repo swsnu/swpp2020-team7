@@ -20,7 +20,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tab history={history} />
+			<Tab username={user!.username} history={history} />
 			<div id="info">
 				<div id="myinfo-header">
 					<p>비밀번호 변경</p>

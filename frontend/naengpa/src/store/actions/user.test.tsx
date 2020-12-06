@@ -348,53 +348,6 @@ describe('ActionCreators', () => {
 		expect(actions.length).toEqual(0);
 	});
 
-	it('should return getChatRoom action correctly', async () => {
-		const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
-			return new Promise((resolve, reject) => {
-				const result = {
-					status: 200,
-					data: { id: '1' },
-				};
-				resolve(result);
-			});
-		});
-
-		const mockChatRoom = {
-			id: '1',
-			lastChat: 'hi',
-			member: 'me',
-			updatedAt: '00',
-			chatCount: 1,
-		};
-		await mockStore.dispatch<any>(actionCreators.getChatRoom(mockChatRoom));
-		expect(spy).toBeCalledTimes(1);
-
-		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.GET_CHATROOM, chatRoom: { id: '1' } };
-		expect(actions[0]).toEqual(expectedPayload);
-	});
-
-	it('should resolve getChatRoom error correctly', async () => {
-		const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
-			return new Promise((resolve, reject) => {
-				reject();
-			});
-		});
-
-		const mockChatRoom = {
-			id: '1',
-			lastChat: 'hi',
-			member: 'me',
-			updatedAt: '00',
-			chatCount: 1,
-		};
-		await mockStore.dispatch<any>(actionCreators.getChatRoom(mockChatRoom));
-		expect(spy).toBeCalledTimes(1);
-
-		const actions = mockStore.getActions();
-		expect(actions.length).toEqual(0);
-	});
-
 	it('should return createChatRoom action correctly', async () => {
 		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
 			return new Promise((resolve, reject) => {

@@ -72,7 +72,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tab history={history} />
+			<Tab username={user!.username} history={history} />
 			<div id="info">
 				<Typography id="chatroom-header" gutterBottom variant="h3">
 					<Button

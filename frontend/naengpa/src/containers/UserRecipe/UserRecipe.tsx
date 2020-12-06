@@ -51,7 +51,7 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tab history={history} />
+			<Tab username={user!.username} history={history} />
 			<div id="info">
 				<div id="user-recipes">{recipe}</div>
 				<Pagination

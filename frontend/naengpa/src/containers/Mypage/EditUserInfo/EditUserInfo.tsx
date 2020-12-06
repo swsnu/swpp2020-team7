@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { Input } from '@material-ui/core';
 import { AppState } from '../../../store/store';
 import { editUser } from '../../../store/actions/index';
 import '../UserInfo/UserInfo.scss';
@@ -60,7 +58,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 
 	return (
 		<div id="mypage">
-			<Tab history={history} />
+			<Tab username={user!.username} history={history} />
 			<div id="info">
 				<div id="edit-info-header">
 					<p>내 정보 수정</p>

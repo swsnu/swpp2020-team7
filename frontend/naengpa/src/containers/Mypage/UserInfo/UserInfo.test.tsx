@@ -78,11 +78,4 @@ describe('UserInfo', () => {
 		ingredientContentsWrapper.simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/@:username/password');
 	});
-
-	it('UserInfo renders without crashing', async () => {
-		const component = mount(userInfo);
-		await waitForComponentToPaint(component);
-
-		expect(component.find('UserInfo').length).toBe(1);
-	});
 });
