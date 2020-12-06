@@ -12,7 +12,6 @@ class Command(BaseCommand):
         ingredient_data = {}
         with open(input_fname, "r") as f:
             for line in f:
-                print(line.strip().split('–'))
                 category, ingredient_str = line.strip().split('–')
                 ingredient_list = [item.strip()
                                    for item in ingredient_str.split(',')]
