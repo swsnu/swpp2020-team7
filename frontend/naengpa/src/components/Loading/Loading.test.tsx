@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import waitForComponentToPaint from '../../../utils/waitForComponentToPaint';
+import waitForComponentToPaint from '../../../test-utils/waitForComponentToPaint';
 import Loading from './Loading';
 
 describe('Loading', () => {
