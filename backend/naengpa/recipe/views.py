@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.cache import cache
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.db import transaction
 from rest_framework.decorators import api_view
 from utils.aws_utils import upload_images
@@ -14,6 +15,7 @@ from user.models import FridgeIngredient
 from django.utils import timezone
 
 
+@ensure_csrf_cookie
 @api_view(['GET', 'POST'])
 @login_required
 @transaction.atomic
@@ -138,6 +140,7 @@ def recipe_list(request):
         }, status=201)
 
 
+@ensure_csrf_cookie
 @api_view(['GET', 'POST'])
 @login_required
 @transaction.atomic
@@ -172,6 +175,7 @@ def today_recipe_list(request):
     return JsonResponse({"recipeList": today_recipe, "recipeCount": 4}, safe=False)
 
 
+@ensure_csrf_cookie
 @api_view(['GET', 'DELETE'])
 @login_required
 def recipe_info(request, id):
@@ -203,6 +207,7 @@ def recipe_info(request, id):
         return HttpResponse(status=200)
 
 
+@ensure_csrf_cookie
 @api_view(['PUT'])
 @login_required
 def recipe_like(request, id):

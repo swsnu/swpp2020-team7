@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFou
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
 from django.db import transaction
 from rest_framework.decorators import api_view
@@ -34,6 +35,7 @@ def get_region_list():
     return [get_region(region) for region in Region.objects.all()]
 
 
+@ensure_csrf_cookie
 @api_view(['GET'])
 def get_region_info(request):
     """ get region list information for searching Region """
@@ -46,6 +48,7 @@ def get_region_info(request):
     return JsonResponse(region_list, safe=False)
 
 
+@ensure_csrf_cookie
 @api_view(['POST'])
 @transaction.atomic
 def signup(request):
@@ -89,6 +92,7 @@ def signup(request):
         }, status=201)
 
 
+@ensure_csrf_cookie
 @api_view(['POST'])
 def signin(request):
     """signin"""
@@ -118,6 +122,7 @@ def signin(request):
     return HttpResponseNotAllowed(['POST'])
 
 
+@ensure_csrf_cookie
 @api_view(['GET'])
 @login_required
 def signout(request):
@@ -127,6 +132,7 @@ def signout(request):
         return HttpResponse(status=204)
 
 
+@ensure_csrf_cookie
 @api_view(['GET', 'PUT'])
 @login_required
 def user(request, id):
@@ -177,6 +183,8 @@ def user(request, id):
             'regionRange': user.region_range,
         }, status=201)
 
+
+@ensure_csrf_cookie
 @api_view(['PUT'])
 @login_required
 def change_password(request, id):
@@ -208,6 +216,7 @@ def change_password(request, id):
     return HttpResponseNotAllowed(['PUT'])
 
 
+@ensure_csrf_cookie
 @api_view(['GET'])
 @login_required
 def user_list(request):
@@ -229,6 +238,7 @@ def user_list(request):
         return JsonResponse(user_collection, safe=False)
 
 
+@ensure_csrf_cookie
 @api_view(['GET', 'POST'])
 @login_required
 def user_fridge(request, id):
@@ -263,6 +273,7 @@ def user_fridge(request, id):
         return JsonResponse(ingredient_list, status=201, safe=False)
 
 
+@ensure_csrf_cookie
 @api_view(['PUT', 'DELETE'])
 @login_required
 def user_ingredient(request, user_id, id):

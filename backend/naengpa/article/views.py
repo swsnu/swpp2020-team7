@@ -3,6 +3,7 @@ import json
 from operator import itemgetter
 from django.http import JsonResponse, HttpResponseBadRequest,  HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
 from django.db import transaction
 from django.db.models import F, Q, Value, CharField
@@ -17,6 +18,7 @@ class InvalidOptionsGivenError(Exception):
     pass
 
 
+@ensure_csrf_cookie
 @transaction.atomic
 def article_list_get(request):
     ''' GET /api/articles/ get article list '''
@@ -89,6 +91,7 @@ def article_list_get(request):
     return JsonResponse(article_collection, safe=False)
 
 
+@ensure_csrf_cookie
 @transaction.atomic
 def article_list_post(request):
     """ POST /api/articles/ post new article """
@@ -158,6 +161,7 @@ def article_list(request):
         return article_list_post(request)
 
 
+@ensure_csrf_cookie
 @api_view(['GET', 'DELETE'])
 @login_required
 @transaction.atomic
