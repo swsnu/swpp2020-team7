@@ -36,7 +36,6 @@ def get_region_list():
 
 @ensure_csrf_cookie
 @api_view(['GET'])
-@login_required_401
 def get_region_info(request):
     """ get region list information for searching Region """
     try:
