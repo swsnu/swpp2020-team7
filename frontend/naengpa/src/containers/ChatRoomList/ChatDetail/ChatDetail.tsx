@@ -33,15 +33,15 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const chatMessage = chatRoom!.messages!.map((message, idx) => {
 		if (message.author === user!.username) {
 			return (
-				<Typography key={`${message.createdAt}-${idx}`} id="user-message" gutterBottom>
+				<Typography key={`${message.createdAt}-${message.author}`} id="user-message" gutterBottom>
 					<div
-						key={`@${message.content}-${message.createdAt}-${idx}%`}
+						key={`@${message.content}-${message.author}%`}
 						id="message-created-time"
 					>
-						{message.createdAt}
+						{message.createdAt}s
 					</div>
 					<div
-						key={`#${message.content}-${message.createdAt}-${idx}*`}
+						key={`#${message.content}-${message.author}`}
 						id="message-content"
 					>
 						{message.content}
