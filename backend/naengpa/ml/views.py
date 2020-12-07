@@ -26,17 +26,20 @@ def extract_foodcategory(request, food_images):
 
     # Food Dish/Groups Detection
     url = 'https://api.logmeal.es/v2/recognition/dish'
-    resp = requests.post(url,
-                         files={'image': img},
-                         headers=headers)
-    # print(resp.json()['foodFamily'])  # display groups only
-    response = resp.text.split('"')
-    print(response[7])
-    food_category_result = {'meat': '고기류',
-                            'dessert': '디저트류', 'dairy': '유제품류', 'seafood': '해물류', 'rice': '밥류', 'fruit': '과일류', 'noodles/pasta': '면류', 'vegetables': '채소류', 'fish': '생선류', 'bread': '빵류', 'fried': '튀김류', 'egg': '계란/알류', 'soup': '수프/국/찌개류', '': '기타'}
-    if response[7] in food_category_result.keys():
-        return food_category_result[response[7]]
-    else:
+    try:
+        resp = requests.post(url,
+                             files={'image': img},
+                             headers=headers)
+        # print(resp.json()['foodFamily'])  # display groups only
+        response = resp.text.split('"')
+        print(response[7])
+        food_category_result = {'meat': '고기류',
+                                'dessert': '디저트류', 'dairy': '유제품류', 'seafood': '해물류', 'rice': '밥류', 'fruit': '과일류', 'noodles/pasta': '면류', 'vegetables': '채소류', 'fish': '생선류', 'bread': '빵류', 'fried': '튀김류', 'egg': '계란/알류', 'soup': '수프/국/찌개류', '': '기타'}
+        if response[7] in food_category_result.keys():
+            return food_category_result[response[7]]
+        else:
+            return "기타"
+    except IndexError:
         return "기타"
 
 
@@ -65,8 +68,7 @@ def extract_ingredients(request, recipe_info):
     return context
 
 
-@api_view(['POST'])
-@login_required
+# @api_view(['POST'])
 def extract_ml_feature(request):
     """/api/extract/ extract ml features"""
     if request.method == 'POST':

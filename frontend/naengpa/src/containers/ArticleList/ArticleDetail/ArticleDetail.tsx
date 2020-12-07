@@ -36,7 +36,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 	const onClickPage = (e: React.ChangeEvent<unknown>, value: number): void => {
 		e.preventDefault();
 		setPage(value);
-		setCurrentList(images.slice((value - 1) * 4, (value - 1) * 4 + 4));
+		setCurrentList(images?.slice((value - 1) * 4, (value - 1) * 4 + 4));
 	};
 
 	const onClickChatIcon = async () => {
@@ -53,7 +53,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 		history.push('/articles');
 	};
 
-	const image = currentList.map((value: any, idx: number) => {
+	const image = currentList?.map((value: any, idx: number) => {
 		return (
 			<img
 				key={`#${value}`}
@@ -67,11 +67,11 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 
 	useEffect(() => {
 		const func = () => {
-			setMaxPageIndex(Math.ceil(images.length / 4.0));
-			setCurrentList(images.slice((page - 1) * 4, (page - 1) * 4 + 4));
+			setMaxPageIndex(Math.ceil(images?.length / 4.0));
+			setCurrentList(images?.slice((page - 1) * 4, (page - 1) * 4 + 4));
 		};
 		func();
-	}, [dispatch, images.length]);
+	}, [dispatch, images?.length]);
 
 	return (
 		<div id="article-detail">
@@ -101,7 +101,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 					</Grid>
 					<Grid item xs>
 						<Typography gutterBottom variant="h6" align="left">
-							{article.item.category}/{article.item.name}
+							{article.item?.category}/{article.item?.name}
 						</Typography>
 					</Grid>
 					<Grid item>
@@ -135,17 +135,17 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 						</Grid>
 						<Grid item>
 							<div id="article-options">
-								{article.options.isForSale && (
+								{article.options?.isForSale && (
 									<Button type="button" id="article-options-sale">
 										거래
 									</Button>
 								)}
-								{article.options.isForExchange && (
+								{article.options?.isForExchange && (
 									<Button type="button" id="article-options-exchange">
 										교환
 									</Button>
 								)}
-								{article.options.isForShare && (
+								{article.options?.isForShare && (
 									<Button type="button" id="article-options-share">
 										나눔
 									</Button>

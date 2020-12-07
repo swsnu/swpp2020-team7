@@ -1,20 +1,38 @@
 #mypage {
     background-size: cover;
     background-color: #f7f7f7;
-    min-height: 870px;
-    width: 100%;
-    padding-top: 30px;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    justify-content: center;
+
+
+    #info {
+        background-color: #ffffff;
+        margin-top: 4em;
+        min-width: 500px;
+        min-height: 400px;
+        width: 40%;
+        padding: 5%;
+        padding-top: 2%;
+    }
+
+    #myinfo-header {
+        display: flex;
+        flex-direction: row;
+        font-weight: bold;
+    }
+
+    button {
+        width: 60%;
+        padding: 6%;
+        right: 0;
+    }
 
     #button-list {
-        width: 375px;
-        min-width: 375px;
-        height: 240px;
-        min-width: 240px;
-        margin: 100px 104px 0px 275px;
-        background-color: #ffffff;
+        margin: 4em;
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
     }
 
     #mypage-check {
@@ -23,49 +41,16 @@
         align-items: flex-start;
     }
 
-    // #myinfo-tab {
-    //     border: none;
-    //     outline: none;
-    //     min-width: 375px;
-    //     width: 100%;
-    //     height: 60px;
-    //     font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
-    //     font-size: 20px;
-    //     color: black;
-    //     font-variant-position: left;
-    //     background-color: #e3e3e3;
-    //     text-align: left;
-    //     text-indent: 3em;
-    // }
-
-    //#myrecipe-tab, #notification-tab, #chatting-tab 
-    #mypage-tab {
+    #myinfo-tab, #mypage-tab, #myrecipe-tab, #notification-tab, #chatting-tab {
         border: none;
         outline: none;
-        min-width: 375px;
+        min-width: 310px;
         width: 100%;
-        height: 60px;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
         font-size: 20px;
-        color: black;
         font-variant-position: left;
         background-color: #ffffff;
         text-align: left;
-        text-indent: 3em;
+        text-indent: 2.5em;
     }
-
-    #mypage-tab:focus{
-        border: none;
-        outline: none;
-        min-width: 375px;
-        width: 100%;
-        height: 60px;
-        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
-        font-size: 20px;
-        color: black;
-        font-variant-position: left;
-        background-color: #e3e3e3;
-        text-align: left;
-        text-indent: 3em;
-      }
 }

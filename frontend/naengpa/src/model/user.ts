@@ -7,6 +7,7 @@ export interface UserEntity {
 	email: string;
 	region: RegionEntity;
 	regionRange?: number;
+	profileImage?: File;
 }
 
 export interface UserLoginInputDTO {
@@ -32,6 +33,7 @@ export interface EditUserInputDTO {
 	email: string;
 	region?: RegionEntity;
 	regionRange?: string;
+	profileImage?: File | null;
 }
 
 export interface ChangePasswordInputDTO {

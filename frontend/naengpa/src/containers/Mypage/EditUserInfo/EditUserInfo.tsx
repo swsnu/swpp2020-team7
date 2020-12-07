@@ -26,17 +26,13 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 	const emailPat = new RegExp(
 		/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$/i,
 	);
-	// 스테이트로 기본 사진 넣고 파일 업로드 하는거로 파일 업로드 해서 온체인지로 스테이트를 담음
-	// 소스 유알엘이 프로필의 유알엘 담음
-	const [profileImage, setProfileImage] = useState<File[]>();
-	const addPhoto: any = useRef(null);
-	const photoInput: any = useRef(null);
-	const preview_image: any = null;
+
+	const [profileImage, setProfileImage] = useState<File | null>(null);
 	const dispatch = useDispatch();
 
 	const onClickEdit = () => {
 		if (name === '' || dateOfBirth === '' || email === '') {
-			alert('빈칸을 채워주세요!');
+			alert('빠짐없이 정보를 입력해주세요!');
 		} else if (!namePat.test(name)) {
 			alert('잘못된 이름 형식입니다.');
 		} else if (!birthPat.test(dateOfBirth)) {
@@ -51,108 +47,59 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 					password,
 					dateOfBirth,
 					email,
+					profileImage,
 				}),
 			);
 		}
 	};
 
-	const onChangeImage = useCallback(() => {
-		const file = photoInput.current.files;
-		if (file) {
-			const reader = new FileReader();
-			reader.readAsDataURL(file);
-
-			reader.onload = () => {
-				addPhoto.current.style.backgroundImage = `url(${reader.result})`;
-			};
-
-			// preview_image = <img className="profile_preview" src={`url(${reader.result})`} />;
-		}
-	}, []);
-
-	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const target = e.target as HTMLInputElement;
 		const image: File = (target.files as FileList)[0];
-		setProfileImage([image]);
+		setProfileImage(image);
 	};
-
-	const profileBox: any = (item: any) => {
-		return (
-			<div key={`#${item}`} id="delete-image-icon-box">
-				<img
-					key={`#${item}`}
-					id="delete-image-icon"
-					src={URL.createObjectURL(item) as string}
-					height="150px"
-					width="150px"
-					alt="/api/images" // TODO: check alt path
-				/>
-			</div>
-		);
-	};
-	/*
-	const onClickAddImage = useCallback(() => {
-		photoInput.current.click();
-	}, []);
-	*/
-
-	/*
-	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const target = e.target as HTMLInputElement;
-		const image: File = (target.files as FileList)[0];
-		setFoodImages([...foodImages, image]);
-	};
-	*/
 
 	return (
 		<div id="mypage">
 			<Tab history={history} />
 			<div id="info">
-				<div id="edit-info-header">
+				<div id="myinfo-header">
 					<p>내 정보 수정</p>
-					<button type="button" id="edit-user-info" onClick={onClickEdit}>
+					<button type="button" id="edit-info-button" onClick={onClickEdit}>
 						저장하기
 					</button>
 				</div>
 				<div id="myinfo-user-info">
 					<div id="myinfo-profile">
-						<Box>
-							<AddCircleIcon id="add-image-button" type="button" />
-							<Input
-								type="file"
-								id="food-image"
-								onChange={(e: ChangeEvent<HTMLInputElement>) => onClickAddImage(e)}
-							/>
-							{profileBox}
+						<Box id="add-image-icon-box">
+							<label aria-label="profile-image-label" htmlFor="profile-image">
+								<AddCircleIcon id="add-image-button" type="button" />
+								<Input
+									type="file"
+									id="profile-image"
+									onChange={(e: ChangeEvent<HTMLInputElement>) =>
+										onClickAddImage(e)
+									}
+								/>
+							</label>
+							<div id="add-image-icon">
+								{!profileImage && <AccountCircleIcon id="profile-picture" />}
+								{profileImage && (
+									<img
+										id="edit-profile-picture"
+										width="110px"
+										height="110px"
+										src={URL.createObjectURL(profileImage) as string}
+										alt="/api/images"
+									/>
+								)}
+							</div>
 						</Box>
-						{/*
-						<AddCircleIcon
-							id="add-image-button"
-							ref={addPhoto}
-							onClick={() => onClickAddImage()}
-						/>
-						<Input
-							type="file"
-							id="photoInput"
-							ref={photoInput}
-							onChange={() => onChangeImage()}
-						/>
-						*/}
-						{/*
-						<AccountCircleIcon id="profile-picture" />
-						{preview_image}						
-						*/}
-						<div id="myinfo-username">{user!.username}</div>
+						<div id="myinfo-profile-username">{user!.username}</div>
 					</div>
-					{/*  onChange로 file set 해가며 바꿔보기
-				<div>
-					<AddCircleIcon id="add-image-button" type="button" />
-					<Input type="file" id="food-image" required />
-				</div>
-				*/}
 					<div id="edit-info-list">
 						<div id="name-part">
-							<label>이름 </label>
+							<div className="info-head">이름 </div>
 							<input
 								id="edit-name"
 								type="text"
@@ -161,7 +108,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 							/>
 						</div>
 						<div id="date-of-birth-part">
-							<label>생년월일 </label>
+							<div className="info-head">생년월일 </div>
 							<input
 								id="edit-date-of-birth"
 								type="text"
@@ -170,7 +117,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 							/>
 						</div>
 						<div id="email-part">
-							<label>이메일 </label>
+							<div className="info-head">이메일 </div>
 							<input
 								id="edit-email"
 								type="text"
@@ -179,10 +126,10 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 							/>
 						</div>
 						<div id="region-part">
-							<label>지역 </label>
+							<div className="info-head">지역 </div>
 						</div>
 						<div id="password-part">
-							<label>비밀번호 </label>
+							<div className="info-head">비밀번호 </div>
 							<input
 								id="password-confirm"
 								type="text"

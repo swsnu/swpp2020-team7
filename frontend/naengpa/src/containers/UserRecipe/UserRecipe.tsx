@@ -17,9 +17,9 @@ interface UserRecipeProps {
 }
 
 const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
-	const recipe_list = useSelector((state: AppState) => state.recipe.recipeList);
+	const recipeList = useSelector((state: AppState) => state.recipe.recipeList);
 	const user = useSelector((state: AppState) => state.user.user);
-	const userRecipeList = recipe_list.filter((item: any) => item.authorId === user?.id);
+	const userRecipeList = recipeList?.filter((item: any) => item.authorId === user?.id);
 	const [currentList, setCurrentList] = useState<RecipeEntity[]>([]);
 
 	const [page, setPage] = useState(1);
@@ -30,10 +30,10 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 	const onChangePage = (e: React.ChangeEvent<unknown>, value: number): void => {
 		e.preventDefault();
 		setPage(value);
-		setCurrentList(recipe_list.slice((value - 1) * 3, (value - 1) * 3 + 3));
+		setCurrentList(recipeList?.slice((value - 1) * 3, (value - 1) * 3 + 3));
 	};
 
-	const recipe = currentList.map((item: any) => {
+	const recipe = currentList?.map((item: any) => {
 		return (
 			<Recipe key={item.id} recipe={item} attribute="recipe-list-child" history={history} />
 		);
@@ -42,12 +42,12 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 	useEffect(() => {
 		const func = () => {
 			dispatch(getRecipeList(''));
-			setMaxPageIndex(Math.ceil(recipe_list.length / 3.0));
-			setCurrentList(userRecipeList.slice((page - 1) * 3, (page - 1) * 3 + 3));
+			setMaxPageIndex(Math.ceil(recipeList?.length / 3.0));
+			setCurrentList(userRecipeList?.slice((page - 1) * 3, (page - 1) * 3 + 3));
 			// setLoading(false);
 		};
 		func();
-	}, [dispatch, userRecipeList.length]);
+	}, [dispatch, userRecipeList?.length]);
 
 	return (
 		<div id="mypage">
