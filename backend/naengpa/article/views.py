@@ -193,7 +193,7 @@ def article_info(request, aid):
             },
             "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
             "createdAt": article.created_at,
-        }, status=201)
+        }, status=200)
 
     elif request.method == 'DELETE':
         ''' DELETE /api/articles/:aid/ delete article of given id '''
@@ -227,4 +227,4 @@ def article_info(request, aid):
         }
         article.delete()
 
-        return JsonResponse(data=deleted_article, status=201)
+        return JsonResponse(data=deleted_article, status=200)

@@ -1,48 +1,82 @@
-# # Create your tests here.
-# """test for article"""
-# from django.test import TestCase, Client
-# import json
-# from .models import Recipe, Image
+# Create your tests here.
+"""test for article"""
+import json
+from django.contrib.auth import get_user_model
+from django.test import TestCase, Client
+from user.models import Region
+from ingredient.models import Ingredient, IngredientCategory
+from .models import Article, Image
+
+User = get_user_model()
 
 
-# class ArticleTestCase(TestCase):
-#     def test_user_authentication(self):
-#         client = Client(enforce_csrf_checks=True)
-#         response = client.get(
-#             '/api/articles/', content_type='application/json')
+class ArticleTestCase(TestCase):
+    def setUp(self):
+        # create a user
+        test_region = Region.objects.create(
+            si_name='서울시', gu_name='관악구', dong_name='대학동')
+        test_user = User.objects.create_user(
+            username='test',
+            password='test',
+            email='test',
+            name='테스트',
+            date_of_birth='000000',
+            region=test_region,
+            region_range=1,
+        )
+        test_user.save()
 
-#         # check csrf token
-#         self.assertEqual(response.status_code, 401)
-#         csrftoken = response.cookies['csrftoken'].value
-#         response = client.post('/api/articles/',  "article: {'title': 'test', 'content': 'test', 'item': 'test', 'price': 'test'}, image: []",
-#                                content_type='multipart/form-data', HTTP_X_CSRFTOKEN=csrftoken)
+        test_category = IngredientCategory.objects.create(name="과일류")
+        test_ingredient = Ingredient.objects.create(
+            category=test_category,
+            name="딸기")
+        test_article = Article.objects.create(
+            author=test_user,
+            title='테스트',
+            content='테스트',
+            item=test_ingredient,
+        )
 
-#         # user shouldn't be authenticated
-#         self.assertEqual(response.status_code, 400)
+    def test_article_list(self):
+        # user is not defined
+        response = self.client.get('/api/articles/', follow=True)
+        self.assertEqual(response.status_code, 401)
 
-#     def test_article(self):
-#         client = Client()
-#         response = client.get(
-#             '/api/articles/', content_type='application/json')
-#         response = client.post('/api/signup/', json.dumps({'username': 'nimo', 'name': "nimo", 'password': "nimo", 'dateOfBirth': "19950506", "email": "dori@dori.com"}),
-#                                content_type='application/json')
-#         self.assertEqual(response.status_code, 201)
+        # with authorization
+        self.client.login(username='test', password='test')
 
-#         # method put not allowed
-#         response = client.put('/api/recipes/', json.dumps({'foodName': 'apple', 'cookTime': 0, 'recipeContent': "사과", 'foodImages': [], }),
-#                               content_type='application/json')
-#         self.assertEqual(response.status_code, 405)
+        # get article list
+        response = self.client.get('/api/articles/')
+        self.assertEqual(response.status_code, 200)
 
-#         # method post
-#         response = client.post('/api/recipes/', "recipe: {'foodName': 'apple', 'cookTime': 0, 'recipeContent': '사과'}, image: []",
-#                                content_type='multipart/form-data')
-#         self.assertEqual(response.status_code, 400)
+        mock_article = json.dumps({'title': 'test', 'content': 'test', 'item': '딸기', 'price': 0, 'options': {
+            'isForSale': True, 'isForExchange': False, 'isForShare': False}})
+        # post article
+        response = self.client.post('/api/articles/', {
+            'article': mock_article,
+            'image': ''})
+        self.assertEqual(response.status_code, 201)
 
-#         # method get
-#         response = client.get('/api/articles/')
-#         self.assertEqual(response.status_code, 200)
+        # bad request method
+        response = self.client.put('/api/articles/')
+        self.assertEqual(response.status_code, 405)
 
-#     def test_recipe_detail(self):
-#         client = Client()
-#         response = client.get('/api/recipes/0/')
-#         self.assertEqual(response.status_code, 405)
+    def test_article(self):
+        # user is not defined
+        response = self.client.get('/api/articles/1/', follow=True)
+        self.assertEqual(response.status_code, 401)
+
+        # with authorization
+        self.client.login(username='test', password='test')
+
+        # get article
+        response = self.client.get('/api/articles/1/')
+        self.assertEqual(response.status_code, 200)
+
+        # delete article
+        response = self.client.delete('/api/articles/1/')
+        self.assertEqual(response.status_code, 200)
+
+        # bad request method
+        response = self.client.post('/api/articles/1/')
+        self.assertEqual(response.status_code, 405)

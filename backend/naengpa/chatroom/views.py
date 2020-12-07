@@ -52,7 +52,7 @@ def get_chatroom_list(request):
 def make_chatroom(request):
     user = request.user
     try:
-        friend_id = json.loads(request.body.decode())['friend_id']
+        friend_id = request.data['friend_id']
         friend = User.objects.get(id=friend_id)
         chatroom = ChatRoom.objects.get(
             Q(chat_members=user) & Q(chat_members=friend))
@@ -66,7 +66,6 @@ def make_chatroom(request):
     except ChatRoom.DoesNotExist:
         chatroom = ChatRoom.objects.create()
         chatroom.chat_members.add(user, friend)
-        pass
     except ChatMember.DoesNotExist:
         return HttpResponseBadRequest()
 
@@ -85,7 +84,7 @@ def make_chatroom(request):
         "updatedAt":  get_time_format(chatroom.updated_at),
         "chatCount": 0,
 
-    }, safe=False)
+    }, safe=False, status=201)
 
 
 @ensure_csrf_cookie
@@ -96,7 +95,7 @@ def chatroom_list(request):
     """ GET POST 'chatrooms/' get chatroom list of given user """
     if request.method == 'GET':
         return get_chatroom_list(request)
-    else:
+    if request.method == 'POST':
         return make_chatroom(request)
 
 
@@ -173,11 +172,11 @@ def delete_chatroom(request, id):
     except ChatRoom.DoesNotExist:
         return HttpResponseBadRequest()
 
-    return JsonResponse([], status=201)
+    return HttpResponse(status=204)
 
 
 @ensure_csrf_cookie
-@api_view(['GET', 'PUT', 'POST'])
+@api_view(['GET', 'PUT', 'DELETE'])
 @login_required_401
 @transaction.atomic
 def chatroom(request, id):
@@ -186,5 +185,5 @@ def chatroom(request, id):
         return get_chatroom(request, id)
     elif request.method == 'PUT':
         return send_message(request, id)
-    else:
+    elif request.method == 'DELETE':
         return delete_chatroom(request, id)

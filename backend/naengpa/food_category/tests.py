@@ -1,40 +1,41 @@
 """tests for foodCategory"""
-# from django.test import TestCase
-from django.test import TestCase, Client
 import json
+from django.contrib.auth import get_user_model
+from django.test import TestCase, Client
+from user.models import Region
 from .models import FoodCategory
 
-# Create your tests here.
+User = get_user_model()
 
 
 class FoodCategoryTestCase(TestCase):
-    def test_food_category_list(self):
-        client = Client()
+    def setUp(self):
+        # create a user
+        test_region = Region.objects.create(
+            si_name='서울시', gu_name='관악구', dong_name='대학동')
+        test_user = User.objects.create_user(
+            username='test',
+            password='test',
+            email='test',
+            name='테스트',
+            date_of_birth='000000',
+            region=test_region,
+            region_range=1,
+        )
+        test_user.save()
 
+    def test_food_category_list(self):
         # user is not defined
-        response = client.get('/api/foodcategory/', follow=True)
-        print(response.redirect_chain)
+        response = self.client.get('/api/foodcategory/', follow=True)
         self.assertEqual(response.status_code, 401)
 
-        # signup test user
-        mock_signup_user = {
-            'name': 'nimo',
-            'username': "nimo",
-            'password': "nimo",
-            'dateOfBirth': "19950506",
-            'email': "dori@dori.com",
-            'region': {
-                'name': '관악구 대학동',
-            },
-            'regionRange': 2,
-        }
-        response = client.post('api/signup/',
-                               json.dumps(mock_signup_user), content_type='application/json')
+        # with authorization
+        login = self.client.login(username='test', password='test')
 
         # get ingredient list
-        response = client.get('api/foodcategory/')
+        response = self.client.get('/api/foodcategory/')
         self.assertEqual(response.status_code, 200)
 
-        # wrong request method
-        response = client.put('api/foodcategory/')
+        # bad request method
+        response = self.client.put('/api/foodcategory/')
         self.assertEqual(response.status_code, 405)
