@@ -106,7 +106,7 @@ export const editUser = (user: EditUserInputDTO) => {
 			const response = await axios.put(`/api/users/${user.id}/`, user);
 			const currentUser: UserEntity = response.data;
 			dispatch(editUser_(currentUser));
-			dispatch(push('/@:username/info'));
+			dispatch(push(`/@${currentUser.username}/info`));
 		} catch (e) {
 			alert('비밀번호가 일치하지 않습니다.');
 		}
@@ -122,7 +122,7 @@ export const changePassword = (user: ChangePasswordInputDTO) => {
 			response = await axios.put(`/api/users/${user.id}/changePassword/`, user);
 			const currentUser: UserEntity = response.data;
 			dispatch(changePassword_(currentUser));
-			dispatch(push('/@:username/info'));
+			dispatch(push(`/@${currentUser.username}/info`));
 		} catch (e) {
 			alert('비밀번호가 일치하지 않습니다.');
 		}

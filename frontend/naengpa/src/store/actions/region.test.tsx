@@ -34,9 +34,17 @@ const mockRegionList = [
 ];
 
 describe('ActionCreators', () => {
+	let jsdomAlert: any;
+	beforeEach(() => {
+		jsdomAlert = window.alert; // remember the jsdom alert
+		window.alert = () => {
+			return undefined;
+		}; // for handling window.alert not implemented issue
+	});
 	afterEach(() => {
 		jest.clearAllMocks();
 		mockStore.clearActions();
+		window.alert = jsdomAlert; // restore the jsdom alert
 	});
 
 	it('should return getRegionList action correctly', async () => {

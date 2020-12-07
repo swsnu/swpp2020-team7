@@ -2,88 +2,89 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import { createMemoryHistory } from 'history';
 import thunk from 'redux-thunk';
 import waitForComponentToPaint from '../../../test-utils/waitForComponentToPaint';
 import * as recipeActionCreators from '../../store/actions/recipe';
 import TodayRecipe from './TodayRecipe';
 
+jest.mock('../Recipe/Recipe', () => jest.fn((props) => <div {...props} className="spyRecipe" />));
+
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
-const getRecipeListMocked = () => {
-	const todayRecipeList = {
-		recipeList: [
-			{
-				id: 1,
-				authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
-				author: 'test',
-				foodName: '딸기',
-				cookTime: '60',
-				recipeContent: '레시피',
-				foodImagePaths: [
-					{
-						id: 2,
-						recipe_id: 1,
-						file_path: 'path',
-					},
-				],
-				recipeLike: 1,
-				createdAt: '2000.00.00',
-				foodCategory: '밥류',
-				ingredients: ['돼지고기', '고추장'],
-			},
+const mockTodayRecipeList = [
+	{
+		id: 1,
+		authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
+		author: 'test',
+		foodName: '딸기',
+		cookTime: '60',
+		recipeContent: '레시피',
+		foodImagePaths: [
 			{
 				id: 2,
-				authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
-				author: 'test',
-				foodName: '딸기',
-				cookTime: '60',
-				recipeContent: '레시피',
-				foodImagePaths: [
-					{
-						id: 2,
-						recipe_id: 2,
-						file_path: 'path',
-					},
-				],
-				recipeLike: 1,
-				createdAt: '2000.00.00',
-				foodCategory: '밥류',
-				ingredients: ['돼지고기', '고추장'],
+				recipe_id: 1,
+				file_path: 'path',
 			},
 		],
-		recipeCount: 4,
-	};
-	return todayRecipeList;
-};
+		recipeLike: 1,
+		createdAt: '2000.00.00',
+		foodCategory: '밥류',
+		ingredients: ['돼지고기', '고추장'],
+	},
+	{
+		id: 2,
+		authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
+		author: 'test',
+		foodName: '딸기',
+		cookTime: '60',
+		recipeContent: '레시피',
+		foodImagePaths: [
+			{
+				id: 2,
+				recipe_id: 2,
+				file_path: 'path',
+			},
+		],
+		recipeLike: 1,
+		createdAt: '2000.00.00',
+		foodCategory: '밥류',
+		ingredients: ['돼지고기', '고추장'],
+	},
+];
 
 const stubInitialState = {
 	recipe: {
-		recipeList: getRecipeListMocked(),
+		todayRecipeList: mockTodayRecipeList,
+		recipeCount: 2,
 	},
 };
 
 describe('TodayRecipe', () => {
 	let recipes: any;
-	let spyGetRecipes: any;
+	let recipesEmpty: any;
+	let spyGetTodayRecipeList: any;
 
 	beforeEach(() => {
 		const mockStore = store(stubInitialState);
-
-		jest.mock('react-redux', () => ({
-			useSelector: jest.fn((fn) => fn(mockStore.getState())),
-			useDispatch: () => jest.fn(),
-			connect: () => jest.fn(),
-		}));
+		const mockEmptyStore = store({ recipe: { todayRecipeList: [] } });
+		const history = createMemoryHistory({ initialEntries: ['/'] });
 
 		recipes = (
 			<Provider store={mockStore}>
-				<TodayRecipe />
+				<TodayRecipe history={history} />
 			</Provider>
 		);
 
-		spyGetRecipes = jest
-			.spyOn(recipeActionCreators, 'getRecipeList')
+		recipesEmpty = (
+			<Provider store={mockEmptyStore}>
+				<TodayRecipe history={history} />
+			</Provider>
+		);
+
+		spyGetTodayRecipeList = jest
+			.spyOn(recipeActionCreators, 'getTodayRecipeList')
 			.mockImplementation(() => jest.fn());
 	});
 	afterEach(() => {
@@ -98,6 +99,14 @@ describe('TodayRecipe', () => {
 		await waitForComponentToPaint(component);
 
 		expect(component.find('#today-recipe').length).toBe(1);
-		// expect(spyGetRecipes).toBeCalledTimes(1);
+		expect(spyGetTodayRecipeList).toBeCalled();
+		expect(component.find('.spyRecipe').length).toBe(2);
+	});
+
+	it('TodayRecipe renders without crashing for empty recipes', async () => {
+		const component = mount(recipesEmpty);
+		await waitForComponentToPaint(component);
+
+		expect(component.find('.spyRecipe').length).toBe(0);
 	});
 });

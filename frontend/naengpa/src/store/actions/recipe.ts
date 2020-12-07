@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import * as actionTypes from './actionTypes';
-import { BaseRecipeEntity, RecipeEntity } from '../../model/recipe';
+import { BaseRecipeEntity, RecipeEntity, RecipeLike } from '../../model/recipe';
 
 /* CSRF TOKEN */
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -42,14 +42,14 @@ export const getRecipeList = (
 
 export const getTodayRecipeList_ = (todayRecipeList: RecipeEntity[]) => ({
 	type: actionTypes.GET_TODAY_RECIPE_LIST,
-	todayRecipeList,
+	payload: todayRecipeList,
 });
 
 export const getTodayRecipeList = () => {
 	return async (dispatch: any) => {
 		try {
 			const response = await axios.get(`/api/recipes/today/`);
-			dispatch(getRecipe_(response.data));
+			dispatch(getTodayRecipeList_(response.data));
 		} catch {
 			console.log('오늘의 레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!');
 		}
@@ -148,7 +148,7 @@ export const editRecipe = (recipe: RecipeEntity) => {
 	};
 };
 
-export const toggleRecipe_ = (target_id: number, recipeLikeInfo: number) => ({
+export const toggleRecipe_ = (target_id: number, recipeLikeInfo: RecipeLike) => ({
 	type: actionTypes.TOGGLE_RECIPE,
 	target_id,
 	recipeLikeInfo,

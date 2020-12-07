@@ -61,14 +61,12 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	const onClickDeleteIngredient = () => {
 		const target_id: number = ingredient.id;
 		dispatch(deleteIngredientFromFridge(user!.id, target_id));
-		history.push('/fridge');
 	};
 
 	const onClickToggleTodayIngredient = () => {
 		const target_id: number = ingredient.id;
 		setIsTodayIngredient(!isTodayIngredient);
 		dispatch(toggleTodayIngredient(user!.id, target_id));
-		history.push('/fridge');
 	};
 
 	return (

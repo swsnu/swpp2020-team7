@@ -215,6 +215,59 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalled();
 	});
 
+	it('should return correct actionType for changePassword', async () => {
+		const mockUser = {
+			id: 'test',
+			name: 'test',
+			password: 'test',
+			dateOfBirth: '980515',
+			email: 'test@email.com',
+		};
+		const spy = jest.spyOn(axios, 'put').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: mockUser,
+				};
+				resolve(result);
+			});
+		});
+
+		await mockStore.dispatch<any>(
+			actionCreators.changePassword({
+				id: mockUser.id,
+				currentPassword: 'hi',
+				newPassword: mockUser.password,
+			}),
+		);
+		expect(spy).toBeCalled();
+
+		const actions = mockStore.getActions();
+		const expectedPayload = { type: actionTypes.CHANGE_PASSWORD, user: mockUser };
+		expect(actions[0]).toEqual(expectedPayload);
+	});
+
+	it('should return changePassword action incorrectly', async () => {
+		const spy = jest.spyOn(axios, 'put').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				reject();
+			});
+		});
+		await mockStore.dispatch<any>(
+			actionCreators.changePassword({
+				id: 'a-a-a',
+				currentPassword: 'hi',
+				newPassword: 'test',
+			}),
+		);
+		expect(spy).toBeCalled();
+		expect(spyAlert).toBeCalledTimes(1);
+		expect(spyAlert).toBeCalledWith('비밀번호가 일치하지 않습니다.');
+
+		const actions = mockStore.getActions();
+		expect(actions.length).toBe(0);
+	});
+
 	it('should return saveUserInfo action correctly', async () => {
 		const mockSignupUser = {
 			name: 'test',

@@ -3,7 +3,6 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import waitForComponentToPaint from '../../../../test-utils/waitForComponentToPaint';
 import UserInfo from './UserInfo';
 import * as actionCreators from '../../../store/actions/user';
 import { history } from '../../../store/store';

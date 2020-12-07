@@ -63,11 +63,16 @@ const stubInitialState = {
 
 describe('AddIngredient', () => {
 	let addIngredient: any;
+	let addIngredientEmpty: any;
 	let spyAddIngredient: any;
 	let spyGetIngredientList: any;
 
 	beforeEach(() => {
 		const mockStore = store(stubInitialState);
+		const mockEmptyStore = store({
+			user: stubInitialState.user,
+			ingredient: { ingredientList: [] },
+		});
 
 		jest.mock('react-redux', () => ({
 			useSelector: jest.fn((fn) => fn(mockStore.getState())),
@@ -77,6 +82,12 @@ describe('AddIngredient', () => {
 
 		addIngredient = (
 			<Provider store={mockStore}>
+				<AddIngredient />
+			</Provider>
+		);
+
+		addIngredientEmpty = (
+			<Provider store={mockEmptyStore}>
 				<AddIngredient />
 			</Provider>
 		);
@@ -97,6 +108,14 @@ describe('AddIngredient', () => {
 
 	it('AddIngredient renders without crashing', async () => {
 		const component = mount(addIngredient);
+		await waitForComponentToPaint(component);
+
+		expect(component.find('AddIngredient').length).toBe(1);
+		expect(spyGetIngredientList).toBeCalledTimes(1);
+	});
+
+	it('AddIngredient renders without crashing for empty input', async () => {
+		const component = mount(addIngredientEmpty);
 		await waitForComponentToPaint(component);
 
 		expect(component.find('AddIngredient').length).toBe(1);
