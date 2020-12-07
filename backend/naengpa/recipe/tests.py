@@ -3,7 +3,7 @@ import json
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 from user.models import Region
-from .models import Recipe
+from .models import Recipe, Image, RecipeIngredient, RecipeLike
 
 User = get_user_model()
 
@@ -24,49 +24,55 @@ class RecipeTestCase(TestCase):
         )
         test_user.save()
 
-    def test_user_authentication(self):
-        client = Client(enforce_csrf_checks=True)
-        response = client.get('/api/recipes/', content_type='application/json')
+        test_recipe = Recipe.objects.create(
+            author=test_user,
+            food_name="음식",
+            food_category="한식",
+            cook_time="1",
+            recipe_content="테스트"
+        )
 
+    def test_recipe_list(self):
         # user is not defined
+        response = self.client.get(
+            '/api/recipes/', content_type='application/json')
         self.assertEqual(response.status_code, 401)
-        csrftoken = response.cookies['csrftoken'].value
 
-        response = client.post('/api/recipes/',  "recipe: {'foodName': 'apple', 'cookTime': 0, 'recipeContent': '사과'}, image: []",
-                               content_type='multipart/form-data', HTTP_X_CSRFTOKEN=csrftoken)
-        # user is not defined TODO: check
-        self.assertEqual(response.status_code, 400)
+        # with authorization
+        self.client.login(username='test', password='test')
 
-    def test_recipe(self):
-        client = Client()
-        response = client.get('/api/recipes/', content_type='application/json')
-        response = client.post('/api/signup/', json.dumps({'username': 'nimo', 'name': "nimo", 'password': "nimo", 'dateOfBirth': "19950506", "email": "dori@dori.com"}),
-                               content_type='application/json')
-        self.assertEqual(response.status_code, 201)
-        response = client.put('/api/recipes/', json.dumps({'foodName': 'apple', 'cookTime': 0, 'recipeContent': "사과", 'foodImageFiles': [], }),
-                              content_type='application/json')
-        # method put not allowed
-        self.assertEqual(response.status_code, 405)
-        response = client.post('/api/recipes/', "recipe: {'foodName': 'apple', 'cookTime': 0, 'recipeContent': '사과'}, image: []",
-                               content_type='multipart/form-data')
-        # method post TODO:
-        self.assertEqual(response.status_code, 400)
-
-        response = client.get('/api/recipes/')
         # method get
+        response = self.client.get('/api/recipes/')
         self.assertEqual(response.status_code, 200)
 
-    def test_recipe_detail(self):
-        client = Client()
-        response = client.post('/api/signup/', json.dumps({'username': 'nimo', 'name': "nimo", 'password': "nimo", 'dateOfBirth': "19950506", "email": "dori@dori.com"}),
-                               content_type='application/json')
+        # method post
+        recipe_str = json.dumps({'foodName': 'apple', 'cookTime': 0,
+                                 'recipeContent': '사과', 'foodCategory': '한식', 'ingredients': []})
+        response = self.client.post('/api/recipes/', {
+            'recipe': recipe_str,
+            'image': '',
+        })
         self.assertEqual(response.status_code, 201)
-        response = client.post('/api/recipes/', "recipe: {'foodName': 'apple', 'cookTime': 0, 'recipeContent': '사과'}, image: []",
-                               content_type='multipart/form-data')
-        self.assertEqual(response.status_code, 400)
-        #response = client.get('/api/recipes/0/')
-        #self.assertEqual(response.status_code, 201)
-        #response = client.delete('/api/recipes/0/')
-        #self.assertEqual(response.status_code, 200)
-        response = client.post('/api/recipes/0/')
+
+        # bad request method
+        response = self.client.put('/api/recipes/', json.dumps({'foodName': 'apple', 'cookTime': 0, 'recipeContent': "사과", 'foodImageFiles': [], }),
+                                   content_type='application/json')
+        self.assertEqual(response.status_code, 405)
+
+    def test_recipe_detail(self):
+        response = self.client.get('/api/recipes/1/')
+        self.assertEqual(response.status_code, 401)
+
+        # with authorization
+        self.client.login(username='test', password='test')
+
+        response = self.client.get('/api/recipes/1/')
+        self.assertEqual(response.status_code, 200)
+
+        # delete recipe
+        response = self.client.delete('/api/recipes/1/')
+        self.assertEqual(response.status_code, 204)
+
+        # bad request method
+        response = self.client.post('/api/recipes/1/')
         self.assertEqual(response.status_code, 405)

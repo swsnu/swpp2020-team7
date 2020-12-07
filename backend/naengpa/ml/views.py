@@ -16,7 +16,8 @@ from utils.auth import login_required_401
 #         return f.getvalue()
 
 def extract_foodcategory(request, food_images):
-    print(food_images)
+    if not food_images:
+        return "기타"
     # Parameters
     img = food_images[0]
     user_token = LOGMEAL_TOKEN
@@ -60,12 +61,10 @@ def extract_ingredients(request, recipe_info):
                     1 if item.name in ingredient_dict.keys() else 1
         except Ingredient.DoesNotExist:
             pass
-    print(ingredient_dict)
 
     context = [
         {"ingredient": ingredient, "quantity": ""} for ingredient in ingredient_dict.keys()
     ]
-    print(context, "context")
     return context
 
 

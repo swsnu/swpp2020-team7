@@ -1,4 +1,3 @@
-# Create your tests here.
 """test for article"""
 import json
 from django.contrib.auth import get_user_model
@@ -11,6 +10,8 @@ User = get_user_model()
 
 
 class ArticleTestCase(TestCase):
+    """ testcase for articles api """
+
     def setUp(self):
         # create a user
         test_region = Region.objects.create(
@@ -49,9 +50,9 @@ class ArticleTestCase(TestCase):
         response = self.client.get('/api/articles/')
         self.assertEqual(response.status_code, 200)
 
+        # post article
         mock_article = json.dumps({'title': 'test', 'content': 'test', 'item': '딸기', 'price': 0, 'options': {
             'isForSale': True, 'isForExchange': False, 'isForShare': False}})
-        # post article
         response = self.client.post('/api/articles/', {
             'article': mock_article,
             'image': ''})
