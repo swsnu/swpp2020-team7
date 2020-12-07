@@ -102,9 +102,8 @@ export const editUser_ = (user: UserEntity) => ({ type: actionTypes.EDIT_USER, u
 
 export const editUser = (user: EditUserInputDTO) => {
 	return async (dispatch: any) => {
-		let response;
 		try {
-			response = await axios.put(`/api/users/${user.id}/`, user);
+			const response = await axios.put(`/api/users/${user.id}/`, user);
 			const currentUser: UserEntity = response.data;
 			dispatch(editUser_(currentUser));
 			dispatch(push('/@:username/info'));

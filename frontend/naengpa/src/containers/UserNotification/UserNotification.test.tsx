@@ -14,10 +14,21 @@ describe('UserNotification', () => {
 	let spyHistoryPush: any;
 
 	beforeEach(() => {
-		const mockStore = store([]);
+		const mockStore = {
+			user: {
+				user: {
+					id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
+					username: 'test',
+					email: 'test@snu.ac.kr',
+					name: '테스트',
+					dateOfBirth: '20201112',
+					naengpaScore: 100,
+				},
+			},
+		};
 
 		userNotification = (
-			<Provider store={mockStore}>
+			<Provider store={store(mockStore)}>
 				<UserNotification history={history} />
 			</Provider>
 		);

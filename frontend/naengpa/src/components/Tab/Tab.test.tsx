@@ -13,9 +13,20 @@ describe('Tab', () => {
 	const username = 'test';
 	let tab: any;
 	let spyHistoryPush: any;
-
+	const initialState = {
+		user: {
+			user: {
+				id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
+				username: 'test',
+				email: 'test@snu.ac.kr',
+				name: '테스트',
+				dateOfBirth: '20201112',
+				naengpaScore: 100,
+			},
+		},
+	};
 	beforeEach(() => {
-		const mockStore = store([]);
+		const mockStore = store(initialState);
 
 		tab = (
 			<Provider store={mockStore}>

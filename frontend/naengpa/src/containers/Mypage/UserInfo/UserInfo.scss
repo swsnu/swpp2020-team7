@@ -1,88 +1,88 @@
 #mypage {
-    background-size: cover;
-    background-color: #f7f7f7;
-    min-height: 870px;
-    width: 100%;
-    padding-top: 30px;
-    font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    color: #5f5f5f;
-    
-    #info {
-        width: 837px;
-        min-width: 837px;
-        height: 516px;
-        min-height: 516px;
-        margin: 100px 275px 0px 0px;
-        background-color: #ffffff;
-    }
+    font-size: 130%;
 
     #myinfo-header {
         display: flex;
         flex-direction: row;
-        margin-left: 50px;
-        margin-top: 10px;
         font-weight: bold;
-    }
+   }
 
     #edit-info-button {
-        width: 90px;
-        height: 20px;
-        margin-top: 20px;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
         font-weight: bold;
-        font-size: 20px;
+        font-size: 100%;
         border: none;
         outline: none;
+        text-align: right !important;
+        width: 80% !important;
+        padding {
+            top: 0 !important;
+            bottom: 0 !important;
+        }
         background-color: white;
         color: #ff8a3d;
-        margin-left: 600px;
     }
 
     #myinfo-user-info {
         display: flex;
         flex-direction: row;
-        align-content: center;
+        align-content: left;
     }
 
     #myinfo-profile {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 20px;
-        margin-left: 50px;
+        margin-left: -10%;
     }
 
     #profile-picture {
+        left: 0;
         min-width: 175px;
-        width: 175px;
         min-height: 175px;
-        height: 175px;
+        width: 40%;
+        height: 40%;
         color: #bdbdbd;
     }
 
     #myinfo-username {
-        font-size: 25px;
+        font-size: 100%;
     }
 
     #myinfo-info-list {
-        margin-top: 20px;
-        margin-left: 50px;
+       width: 70%;
     }
 
     #myinfo-info{
-        margin-left: 7px;
+        display: flex;
+        flex-direction: column;
+        
+        .myinfo-content {
+            display: flex;
+            flex-direction: row;
+        }
+        .info-head {
+            align-content : left;
+            width: 30%;
+        }
+        .info-tail {
+            align-content: left !important;
+            width: 60%;
+            font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+            color: #5f5f5f;
+        }
     }
 
     #change-password-button {
-        width: 128px;
-        height: 25px;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
-        //font-weight: bold;
-        font-size: 20px;
+        font-size: 100%;
+        font-weight: bold;
         border: none;
         outline: none;  
         background-color: white;
         color: #3567f0;
+        width: 100% !important; 
+        padding: 0 !important;
+        text-align: left !important;
     }
 }

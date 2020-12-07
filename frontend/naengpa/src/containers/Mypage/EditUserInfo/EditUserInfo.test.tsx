@@ -15,6 +15,7 @@ const mockUser = {
 	id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
 	username: 'test',
 	password: 'test',
+	profileImage: null,
 	email: 'test@snu.ac.kr',
 	name: '테스트',
 	dateOfBirth: '201112',
@@ -75,7 +76,7 @@ describe('EditUserInfo', () => {
 		inputList
 			.find('#password-confirm')
 			.simulate('change', { target: { value: mockUser.password } }); // password-confirm
-		const storeButton = component.find('button#edit-user-info');
+		const storeButton = component.find('button#edit-info-button');
 		storeButton.simulate('click');
 
 		expect(spyAlert).toBeCalledTimes(0);
@@ -84,6 +85,7 @@ describe('EditUserInfo', () => {
 			id: mockUser.id,
 			name: mockUser.name,
 			password: mockUser.password,
+			profileImage: null,
 			dateOfBirth: mockUser.dateOfBirth,
 			email: mockUser.email,
 		});
@@ -103,11 +105,11 @@ describe('EditUserInfo', () => {
 		inputList
 			.find('#password-confirm')
 			.simulate('change', { target: { value: mockUser.password } }); // password-confirm
-		const storeButton = component.find('button#edit-user-info');
+		const storeButton = component.find('button#edit-info-button');
 		storeButton.simulate('click');
 		expect(spyEditUserAction).toBeCalledTimes(0);
 		expect(spyAlert).toBeCalledTimes(1);
-		expect(spyAlert).lastCalledWith('빈칸을 채워주세요!');
+		expect(spyAlert).lastCalledWith('빠짐없이 정보를 입력해주세요!');
 
 		nameInput.simulate('change', { target: { value: '^$%wrong name' } });
 		storeButton.simulate('click');

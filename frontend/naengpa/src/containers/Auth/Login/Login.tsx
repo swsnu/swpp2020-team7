@@ -18,7 +18,7 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 	useEffect(() => {
 		dispatch(getIngredientList());
 		dispatch(getArticleList());
-	});
+	}, [dispatch]);
 
 	const onClickLogin = () => {
 		if (username === '' || password === '') {

@@ -45,36 +45,36 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		setLoading(false);
 	};
 
-	const onClickSearch = async (e: React.KeyboardEvent) => {
+	const onClickSearch = (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter') {
-			await onLoadRecipeList(1);
+			onLoadRecipeList(1);
 		}
 	};
 
-	const onClickRecentFilter = async (e: MouseEvent<HTMLButtonElement>) => {
+	const onClickRecentFilter = (e: MouseEvent<HTMLButtonElement>) => {
 		setSortBy('-created_at');
 		setFilterBy(false);
 		e.preventDefault();
-		await onLoadRecipeList(1);
+		onLoadRecipeList(1);
 	};
 
-	const onClickPopularFilter = async (e: MouseEvent<HTMLButtonElement>) => {
+	const onClickPopularFilter = (e: MouseEvent<HTMLButtonElement>) => {
 		setSortBy('like_users');
 		setFilterBy(false);
 		e.preventDefault();
-		await onLoadRecipeList(1);
+		onLoadRecipeList(1);
 	};
 
-	const onClickRecommendedFilter = async (e: MouseEvent<HTMLButtonElement>) => {
+	const onClickRecommendedFilter = (e: MouseEvent<HTMLButtonElement>) => {
 		setSortBy('-created_at');
 		setFilterBy(true);
 		e.preventDefault();
-		await onLoadRecipeList(1);
+		onLoadRecipeList(1);
 	};
 
-	const onChangePage = async (e: React.ChangeEvent<unknown>, value: number) => {
+	const onChangePage = (e: React.ChangeEvent<unknown>, value: number) => {
 		e.preventDefault();
-		await onLoadRecipeList(value);
+		onLoadRecipeList(value);
 	};
 
 	const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -88,9 +88,9 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		);
 	});
 
-	const selectOption = foodCategoryList?.map((item: any) => {
+	const selectOption = foodCategoryList?.map((item: any, idx) => {
 		return (
-			<MenuItem value={item.name} onClick={(e) => setSearchCategory(item.name)}>
+			<MenuItem value={`#${item.name}-${idx}`} onClick={(e) => setSearchCategory(item.name)}>
 				{item.name}
 			</MenuItem>
 		);

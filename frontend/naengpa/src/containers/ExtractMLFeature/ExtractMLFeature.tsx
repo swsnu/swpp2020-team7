@@ -251,7 +251,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const foodCategoryButtonSet = foodCategoryList?.map((item, idx) => {
 		return (
 			<Button
-				key={item.name}
+				key={`${item.name}-${idx}`}
 				id="food-category-button"
 				className={`food-category-${item.name === modifiedCategory}`}
 				onClick={() => {
@@ -421,7 +421,12 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					{/* New Ingredient */}
 					<div id="ingredient-element">
 						<FormControlLabel
-							control={<Checkbox checkedIcon={<CheckBoxIcon id="checkbox" />} />}
+							control={
+								<Checkbox
+									checked={false}
+									checkedIcon={<CheckBoxIcon id="checkbox" />}
+								/>
+							}
 							label=""
 						/>
 						<Input
@@ -566,6 +571,11 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 									>
 										{/* RECIPE INGREDIENT 추출 재료들 */}
 										<div id="ingredient-name">필수재료</div>
+										{!`${ingredientSetForRecipe}` && (
+											<div>
+												선택된/추천된 재료가 없습니다! 직접 입력해 주세요.
+											</div>
+										)}
 										<div id="ingredient-list">{ingredientSetForRecipe}</div>
 									</TableCell>
 								</TableRow>
