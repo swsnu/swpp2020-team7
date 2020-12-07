@@ -119,7 +119,7 @@ def article_list_post(request):
         return HttpResponseBadRequest()
 
     images_path = upload_images(
-        images, "article", article.id, author_id)
+        images, "article", article.id)
     for path in images_path:
         Image.objects.create(author_id=author_id,
                              file_path=path, article_id=article.id)

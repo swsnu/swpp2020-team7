@@ -118,7 +118,7 @@ def recipe_list(request):
             return HttpResponseBadRequest()
 
         images_path = upload_images(
-            food_images, "recipe", recipe.id, user_id)
+            food_images, "recipe", recipe.id)
         for path in images_path:
             Image.objects.create(file_path=path, recipe_id=recipe.id)
 
