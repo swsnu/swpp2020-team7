@@ -49,6 +49,11 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 			);
 		}
 	};
+	const onKeyPress = (e: React.KeyboardEvent) => {
+		if (e.key === 'Enter') {
+			onClickSignup();
+		}
+	};
 
 	return (
 		<div id="signup">
@@ -115,6 +120,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							type="text"
 							placeholder="E-MAIL"
 							onChange={(e) => setEmail(e.target.value)}
+							onKeyPress={onKeyPress}
 							pattern="^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$"
 						/>
 						{email !== '' && !emailPat.test(email) && (

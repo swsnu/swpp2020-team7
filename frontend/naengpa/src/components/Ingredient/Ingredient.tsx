@@ -39,8 +39,7 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 		양념류: 'spices.png',
 	};
 
-	// TODO: noodles.png spices.png tofu.png 추가해야함.
-	const imageUrl: string = 'foodCategory/'.concat(foodCategory[category as string]);
+	const imageUrl = `foodCategory/${foodCategory[category as string]}`;
 
 	/* MOUSEOVER EVENT */
 	const onMouseOverIngredient = () => {
@@ -61,14 +60,12 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	const onClickDeleteIngredient = () => {
 		const target_id: number = ingredient.id;
 		dispatch(deleteIngredientFromFridge(user!.id, target_id));
-		history.push('/fridge');
 	};
 
 	const onClickToggleTodayIngredient = () => {
 		const target_id: number = ingredient.id;
 		setIsTodayIngredient(!isTodayIngredient);
 		dispatch(toggleTodayIngredient(user!.id, target_id));
-		history.push('/fridge');
 	};
 
 	return (
@@ -103,7 +100,7 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 					/>
 				)}
 				<div id="ingredient-inbox">
-					<img id="ingredient-image" src={imageUrl} alt="/icons/meat.png" />
+					<img id="ingredient-image" src={imageUrl} alt="foodCategory/meat.png" />
 					<div id="ingredient-tag">{ingredient.name}</div>
 				</div>
 			</button>

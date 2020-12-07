@@ -3,9 +3,11 @@ from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from django.core.cache import cache
+from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import FoodCategory
 
 
+@ensure_csrf_cookie
 @api_view(['GET'])
 @login_required
 def food_category_list(request):

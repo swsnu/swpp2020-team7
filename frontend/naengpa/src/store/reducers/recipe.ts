@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { RecipeAction } from '../actions/recipe';
-import { RecipeEntity, RecipeLike } from '../../model/recipe';
+import { RecipeEntity } from '../../model/recipe';
 
 export type InitialState = {
 	recipeList: RecipeEntity[];
@@ -26,7 +26,7 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 			return { ...state, recipeList: action.recipeList, recipeCount: action.recipeCount };
 
 		case actionTypes.GET_TODAY_RECIPE_LIST:
-			return { ...state, todayRecipeList: action.todayRecipeList };
+			return { ...state, todayRecipeList: action.payload };
 
 		/* GET RECIPE */
 		case actionTypes.GET_RECIPE:
@@ -53,10 +53,9 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 
 		/* DELETE RECIPE */
 		case actionTypes.DELETE_RECIPE: {
-			recipeList = state.recipeList?.filter((recipe) => {
+			recipeList = state.recipeList.filter((recipe) => {
 				return (recipe.id as number) !== action.target_id;
 			});
-			recipeList = recipeList === undefined ? [] : recipeList;
 
 			return {
 				...state,
@@ -73,8 +72,8 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 
 		case actionTypes.TOGGLE_RECIPE: {
 			recipeList = [];
-			if (state.recipeList !== []) {
-				recipeList = state.recipeList?.map((recipe) => {
+			if (state.recipeList.length) {
+				recipeList = state.recipeList.map((recipe) => {
 					if ((recipe.id as number) === action.target_id) {
 						recipe.recipeLike =
 							recipe.userLike === 1 ? recipe.recipeLike - 1 : recipe.recipeLike + 1;

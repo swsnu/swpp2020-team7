@@ -114,8 +114,8 @@ describe('RecipeList', () => {
 		const component = mount(getRecipeList);
 		// await waitForComponentToPaint(component);
 		// act(() => {
-			// expect(component.find('#recipe-list').length).toBe(1);
-			// expect(spyGetRecipeList).toBeCalledTimes(1);
+		// expect(component.find('#recipe-list').length).toBe(1);
+		// expect(spyGetRecipeList).toBeCalledTimes(1);
 		// });
 	});
 

@@ -205,7 +205,7 @@ describe('ExtractMLFeature', () => {
 		const component = mount(extractMLFeature);
 		await waitForComponentToPaint(component);
 
-		act(async () => {
+		await act(async () => {
 			const confirmAlertButton = component.find('#confirm-alert-button').last();
 			confirmAlertButton.simulate('click');
 			const foodImage = component.find('input#food-image').find('input');

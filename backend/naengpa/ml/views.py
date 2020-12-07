@@ -4,6 +4,7 @@ import requests
 from konlpy.tag import Kkma
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import ensure_csrf_cookie
 from naengpa.settings.env import LOGMEAL_TOKEN
 from rest_framework.decorators import api_view
 from ingredient.models import Ingredient
@@ -68,7 +69,8 @@ def extract_ingredients(request, recipe_info):
     return context
 
 
-# @api_view(['POST'])
+@ensure_csrf_cookie
+@api_view(['POST'])
 def extract_ml_feature(request):
     """/api/extract/ extract ml features"""
     if request.method == 'POST':

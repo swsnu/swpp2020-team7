@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from django.contrib.auth.decorators import login_required
 from chatroom.models import ChatRoom, ChatMember, Message
 from django.contrib.auth import get_user_model
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils import timezone
 from django.db.models import Q
 import json
@@ -16,6 +17,7 @@ def get_time_format(time_str):
         else time_str.strftime("%H:%M")
 
 
+@ensure_csrf_cookie
 def get_chatroom_list(request):
     try:
         user = request.user
@@ -47,6 +49,7 @@ def get_chatroom_list(request):
     return JsonResponse(chatroom_collection, safe=False)
 
 
+@ensure_csrf_cookie
 def make_chatroom(request):
     user = request.user
     try:
@@ -86,6 +89,7 @@ def make_chatroom(request):
     }, safe=False)
 
 
+@ensure_csrf_cookie
 @api_view(['GET', 'POST'])
 @login_required
 def chatroom_list(request):
@@ -124,6 +128,7 @@ def get_chatroom(request, id):
     return JsonResponse(chatroom_collection, safe=False)
 
 
+@ensure_csrf_cookie
 def send_message(request, id):
     """ send message to given chatroom """
     try:
@@ -160,6 +165,7 @@ def send_message(request, id):
     }, safe=False)
 
 
+@ensure_csrf_cookie
 def delete_chatroom(request, id):
     """ delete ChatRoom """
     try:
@@ -172,6 +178,7 @@ def delete_chatroom(request, id):
     return JsonResponse([], status=201)
 
 
+@ensure_csrf_cookie
 @api_view(['GET', 'PUT', 'POST'])
 @login_required
 def chatroom(request, id):
