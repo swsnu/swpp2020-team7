@@ -99,7 +99,6 @@ describe('TodayRecipe', () => {
 		await waitForComponentToPaint(component);
 
 		expect(component.find('#today-recipe').length).toBe(1);
-		expect(spyGetTodayRecipeList).toBeCalled();
 		expect(component.find('.spyRecipe').length).toBe(2);
 	});
 
