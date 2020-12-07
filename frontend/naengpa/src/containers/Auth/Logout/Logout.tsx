@@ -10,8 +10,8 @@ interface LogoutProps {
 const Logout: React.FC<LogoutProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	useEffect(() => {
-		dispatch(logout());
 		history.push('/login');
+		dispatch(logout());
 	}, [dispatch, history]);
 	return <></>;
 };
