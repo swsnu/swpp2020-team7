@@ -3,11 +3,11 @@ from collections import OrderedDict
 import requests
 from konlpy.tag import Kkma
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 from naengpa.settings.env import LOGMEAL_TOKEN
 from rest_framework.decorators import api_view
 from ingredient.models import Ingredient
+from utils.auth import login_required_401
 
 
 # def convertToJpeg(im):
@@ -16,7 +16,8 @@ from ingredient.models import Ingredient
 #         return f.getvalue()
 
 def extract_foodcategory(request, food_images):
-    print(food_images)
+    if not food_images:
+        return "기타"
     # Parameters
     img = food_images[0]
     user_token = LOGMEAL_TOKEN
@@ -60,17 +61,16 @@ def extract_ingredients(request, recipe_info):
                     1 if item.name in ingredient_dict.keys() else 1
         except Ingredient.DoesNotExist:
             pass
-    print(ingredient_dict)
 
     context = [
         {"ingredient": ingredient, "quantity": ""} for ingredient in ingredient_dict.keys()
     ]
-    print(context, "context")
     return context
 
 
 @ensure_csrf_cookie
 @api_view(['POST'])
+@login_required_401
 def extract_ml_feature(request):
     """/api/extract/ extract ml features"""
     if request.method == 'POST':

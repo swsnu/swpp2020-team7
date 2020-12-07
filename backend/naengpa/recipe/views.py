@@ -2,13 +2,13 @@
 import json
 from operator import itemgetter
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
-from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.cache import cache
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.db import transaction
 from rest_framework.decorators import api_view
 from utils.aws_utils import upload_images
+from utils.auth import login_required_401
 from food_category.models import FoodCategory
 from .models import Recipe, Image, RecipeIngredient, RecipeLike
 from user.models import FridgeIngredient
@@ -17,7 +17,7 @@ from django.utils import timezone
 
 @ensure_csrf_cookie
 @api_view(['GET', 'POST'])
-@login_required
+@login_required_401
 @transaction.atomic
 def recipe_list(request):
     """get recipe list"""
@@ -48,7 +48,6 @@ def recipe_list(request):
                           for recipe in Recipe.objects.select_related('author', 'author__fridge')]
                 sorted_list = [x[0] for x in result.sort(
                     key=lambda x: -x[1])] if not len(result) else []
-                print(sorted_list, " [sorted by ingredient]")
             else:
                 # Sort by most recent, most popular button
                 recipe_collection = cache.get(
@@ -66,7 +65,6 @@ def recipe_list(request):
             # Sort By Food Category
             sorted_list = filtered_list.order_by(sort_condition).filter(
                 food_category=food_category) if food_category != '전체' else sorted_list
-            print("[Sorted_list by user Ingredient] ", sorted_list)
 
         recipe_collection = [{
             "id": recipe.id,
@@ -96,7 +94,6 @@ def recipe_list(request):
             food_name, cook_time, recipe_content, food_category_str, ingredients = itemgetter(
                 'foodName', 'cookTime', 'recipeContent', 'foodCategory', 'ingredients')(req_data)
             food_images = request.FILES.getlist('image')
-
             recipe = Recipe.objects.create(
                 author_id=user_id,
                 food_name=food_name,
@@ -142,7 +139,7 @@ def recipe_list(request):
 
 @ensure_csrf_cookie
 @api_view(['GET', 'POST'])
-@login_required
+@login_required_401
 @transaction.atomic
 def today_recipe_list(request):
     """ get Today recipe list """
@@ -177,11 +174,11 @@ def today_recipe_list(request):
 
 @ensure_csrf_cookie
 @api_view(['GET', 'DELETE'])
-@login_required
+@login_required_401
 def recipe_info(request, id):
     """get recipe of given id"""
     user_id = request.user.id
-    recipe_reponse = cache.get('recipe_' + str(id) + "_" + str(user_id))
+    recipe_response = cache.get('recipe_' + str(id) + "_" + str(user_id))
 
     if not recipe_response:
         recipe = Recipe.objects.get(id=id)
@@ -201,15 +198,16 @@ def recipe_info(request, id):
         }
         cache.set(recipe_response, 'recipe_' + str(id) + "_" + str(user_id))
     if request.method == 'GET':
-        return JsonResponse(data=recipe_response, status=201)
+        return JsonResponse(data=recipe_response, status=200)
     if request.method == 'DELETE':
         Recipe.objects.filter(id=id).delete()
-        return HttpResponse(status=200)
+        return HttpResponse(status=204)
 
 
 @ensure_csrf_cookie
 @api_view(['PUT'])
-@login_required
+@login_required_401
+@transaction.atomic
 def recipe_like(request, id):
     """like recipe of given id"""
     recipe = Recipe.objects.get(id=id)

@@ -103,7 +103,6 @@ describe('Ingredient', () => {
 			stubInitialState.user.user.id,
 			mockIngredient.id,
 		);
-		expect(spyHistoryPush).toBeCalledWith('/fridge');
 	});
 
 	it('mouse-over and mouse-leave works correctly for image box', () => {
