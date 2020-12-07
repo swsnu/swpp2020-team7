@@ -40,7 +40,7 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	};
 
 	// TODO: noodles.png spices.png tofu.png 추가해야함.
-	const imageUrl: string = 'foodCategory/'.concat(foodCategory[category]);
+	const imageUrl: string = 'foodCategory/'.concat(foodCategory[category as string]);
 
 	/* MOUSEOVER EVENT */
 	const onMouseOverIngredient = () => {

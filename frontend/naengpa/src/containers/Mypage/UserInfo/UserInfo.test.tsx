@@ -69,13 +69,13 @@ describe('UserInfo', () => {
 		const component = mount(userInfo);
 		const ingredientContentsWrapper = component.find('button#edit-info-button').at(0);
 		ingredientContentsWrapper.simulate('click');
-		expect(spyHistoryPush).toBeCalledWith('/@:username/edit');
+		expect(spyHistoryPush).toBeCalledWith('/@test/edit');
 	});
 
 	it('change password button should be clicked correctly', () => {
 		const component = mount(userInfo);
 		const ingredientContentsWrapper = component.find('button#change-password-button').at(0);
 		ingredientContentsWrapper.simulate('click');
-		expect(spyHistoryPush).toBeCalledWith('/@:username/password');
+		expect(spyHistoryPush).toBeCalledWith('/@test/password');
 	});
 });

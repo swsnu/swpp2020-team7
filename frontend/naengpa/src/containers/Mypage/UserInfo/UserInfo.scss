@@ -54,6 +54,9 @@
     }
 
     #myinfo-info{
+        display: flex;
+        flex-direction: column;
+        
         .myinfo-content {
             display: flex;
             flex-direction: row;

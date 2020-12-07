@@ -95,7 +95,7 @@ describe('ExtractMLFeature', () => {
 			useState: () => jest.fn(),
 		}));
 
-		extractMLFeature = (
+		 extractMLFeature = (
 			<Provider store={mockStore}>
 				<ExtractMLFeature history={history} />;
 			</Provider>

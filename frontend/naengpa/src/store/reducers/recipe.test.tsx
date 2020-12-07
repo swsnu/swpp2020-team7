@@ -48,12 +48,16 @@ type InitialState = {
 	recipeList: RecipeEntity[];
 	recipe: RecipeEntity | null;
 	createdRecipe: RecipeEntity | null;
+	recipeCount: 2;
+	todayRecipeList: RecipeEntity[];
 };
 
 const RecipeState: InitialState = {
 	recipeList: [],
 	recipe: null,
 	createdRecipe: null,
+	recipeCount: 2,
+	todayRecipeList: [],
 };
 
 describe('Recipe Reducer', () => {
@@ -62,7 +66,7 @@ describe('Recipe Reducer', () => {
 			type: actionTypes.GET_RECIPE_LIST,
 			recipeList: [],
 		});
-		expect(newState).toEqual(RecipeState);
+		expect(newState).toEqual({ ...RecipeState, recipeCount: undefined });
 	});
 
 	it('should check if it can get recipe list correctly', () => {
@@ -73,6 +77,7 @@ describe('Recipe Reducer', () => {
 		expect(newState).toEqual({
 			...RecipeState,
 			recipeList,
+			recipeCount: undefined,
 		});
 	});
 
@@ -83,6 +88,7 @@ describe('Recipe Reducer', () => {
 		});
 		expect(newState).toEqual({
 			...RecipeState,
+			recipeCount: 2,
 			recipe: recipeList[0],
 		});
 	});
@@ -94,6 +100,7 @@ describe('Recipe Reducer', () => {
 		});
 		expect(newState).toEqual({
 			...RecipeState,
+			recipeCount: 3,
 			recipeList: [...RecipeState.recipeList, recipeList[0]],
 			recipe: recipeList[0],
 			createdRecipe: null,
@@ -143,6 +150,7 @@ describe('Recipe Reducer', () => {
 		});
 		expect(newState).toEqual({
 			...RecipeState,
+			recipeCount: 2,
 			createdRecipe: recipeList[0],
 		});
 	});
@@ -157,6 +165,7 @@ describe('Recipe Reducer', () => {
 		);
 		expect(newState).toEqual({
 			...RecipeState,
+			recipeCount: 1,
 			recipeList: [recipeList[0]],
 		});
 	});
@@ -171,6 +180,7 @@ describe('Recipe Reducer', () => {
 		);
 		expect(newState).toEqual({
 			...RecipeState,
+			recipeCount: 2,
 			recipeList,
 		});
 	});
