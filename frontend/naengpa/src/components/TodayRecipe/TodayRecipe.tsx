@@ -17,13 +17,14 @@ const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
 
 	useEffect(() => {
 		if (!recipeList) {
-			dispatch(getTodayRecipeList());
+			const func = async () => await dispatch(getTodayRecipeList());
+			func();
 		}
 	});
 
 	useEffect(() => {
-		const recipe = recipeList
-			? recipeList.map((item: any) => (
+		const recipe = recipeList?.length 
+			? recipeList?.map((item: any) => (
 					<Recipe
 						key={item.id}
 						recipe={item}
@@ -32,13 +33,13 @@ const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
 					/>
 			  ))
 			: [];
-		setRecipe(recipe);
+		if(recipe) setRecipe(recipe);
 	}, [recipeList]);
 
 	return (
 		<div id="today-recipe">
 			<div id="today-recipe-header">#오늘의 레시피</div>
-			<div id="today-recipe-list">{recipe.length && recipe.slice(0, 4)}</div>
+			<div id="today-recipe-list">{recipe}</div>
 		</div>
 	);
 };
