@@ -2,13 +2,13 @@
 import json
 from operator import itemgetter
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
-from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.cache import cache
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.db import transaction
 from rest_framework.decorators import api_view
 from utils.aws_utils import upload_images
+from utils.auth import login_required_401
 from food_category.models import FoodCategory
 from .models import Recipe, Image, RecipeIngredient, RecipeLike
 from user.models import FridgeIngredient
@@ -17,7 +17,7 @@ from django.utils import timezone
 
 @ensure_csrf_cookie
 @api_view(['GET', 'POST'])
-@login_required
+@login_required_401
 @transaction.atomic
 def recipe_list(request):
     """get recipe list"""
@@ -142,7 +142,7 @@ def recipe_list(request):
 
 @ensure_csrf_cookie
 @api_view(['GET', 'POST'])
-@login_required
+@login_required_401
 @transaction.atomic
 def today_recipe_list(request):
     """ get Today recipe list """
@@ -177,7 +177,7 @@ def today_recipe_list(request):
 
 @ensure_csrf_cookie
 @api_view(['GET', 'DELETE'])
-@login_required
+@login_required_401
 def recipe_info(request, id):
     """get recipe of given id"""
     user_id = request.user.id
@@ -209,7 +209,8 @@ def recipe_info(request, id):
 
 @ensure_csrf_cookie
 @api_view(['PUT'])
-@login_required
+@login_required_401
+@transaction.atomic
 def recipe_like(request, id):
     """like recipe of given id"""
     recipe = Recipe.objects.get(id=id)

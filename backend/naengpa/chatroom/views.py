@@ -1,13 +1,14 @@
 """admin for chatroom"""
+import json
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse, HttpResponseBadRequest, HttpResponseNotFound
 from rest_framework.decorators import api_view
-from django.contrib.auth.decorators import login_required
 from chatroom.models import ChatRoom, ChatMember, Message
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils import timezone
+from django.db import transaction
 from django.db.models import Q
-import json
+from utils.auth import login_required_401
 
 User = get_user_model()
 
@@ -17,7 +18,6 @@ def get_time_format(time_str):
         else time_str.strftime("%H:%M")
 
 
-@ensure_csrf_cookie
 def get_chatroom_list(request):
     try:
         user = request.user
@@ -49,7 +49,6 @@ def get_chatroom_list(request):
     return JsonResponse(chatroom_collection, safe=False)
 
 
-@ensure_csrf_cookie
 def make_chatroom(request):
     user = request.user
     try:
@@ -91,7 +90,8 @@ def make_chatroom(request):
 
 @ensure_csrf_cookie
 @api_view(['GET', 'POST'])
-@login_required
+@login_required_401
+@transaction.atomic
 def chatroom_list(request):
     """ GET POST 'chatrooms/' get chatroom list of given user """
     if request.method == 'GET':
@@ -128,7 +128,6 @@ def get_chatroom(request, id):
     return JsonResponse(chatroom_collection, safe=False)
 
 
-@ensure_csrf_cookie
 def send_message(request, id):
     """ send message to given chatroom """
     try:
@@ -165,7 +164,6 @@ def send_message(request, id):
     }, safe=False)
 
 
-@ensure_csrf_cookie
 def delete_chatroom(request, id):
     """ delete ChatRoom """
     try:
@@ -180,7 +178,8 @@ def delete_chatroom(request, id):
 
 @ensure_csrf_cookie
 @api_view(['GET', 'PUT', 'POST'])
-@login_required
+@login_required_401
+@transaction.atomic
 def chatroom(request, id):
     """ GET, PUT, POST 'chatrooms/:id' request to given chatroom """
     if request.method == 'GET':

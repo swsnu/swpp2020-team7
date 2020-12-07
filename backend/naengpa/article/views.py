@@ -2,7 +2,6 @@
 import json
 from operator import itemgetter
 from django.http import JsonResponse, HttpResponseBadRequest,  HttpResponseNotFound
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
 from django.db import transaction
@@ -11,6 +10,7 @@ from rest_framework.decorators import api_view
 
 from ingredient.models import Ingredient
 from utils.aws_utils import upload_images
+from utils.auth import login_required_401
 from .models import Article, Image
 
 
@@ -18,8 +18,6 @@ class InvalidOptionsGivenError(Exception):
     pass
 
 
-@ensure_csrf_cookie
-@transaction.atomic
 def article_list_get(request):
     ''' GET /api/articles/ get article list '''
     query = request.GET.get('q')
@@ -91,8 +89,6 @@ def article_list_get(request):
     return JsonResponse(article_collection, safe=False)
 
 
-@ensure_csrf_cookie
-@transaction.atomic
 def article_list_post(request):
     """ POST /api/articles/ post new article """
     try:
@@ -151,8 +147,9 @@ def article_list_post(request):
     }, status=201)
 
 
+@ensure_csrf_cookie
 @api_view(['GET', 'POST'])
-@login_required
+@login_required_401
 def article_list(request):
     """get article list or create an article"""
     if request.method == 'GET':
@@ -163,7 +160,7 @@ def article_list(request):
 
 @ensure_csrf_cookie
 @api_view(['GET', 'DELETE'])
-@login_required
+@login_required_401
 @transaction.atomic
 def article_info(request, aid):
     '''process article of given id'''

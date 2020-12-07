@@ -10,17 +10,31 @@ from .models import FoodCategory
 class FoodCategoryTestCase(TestCase):
     def test_food_category_list(self):
         client = Client()
-        response = client.get('/api/foodcategory/',
-                              content_type='application/json')
+
         # user is not defined
+        response = client.get('/api/foodcategory/', follow=True)
+        print(response.redirect_chain)
         self.assertEqual(response.status_code, 401)
-        response = client.post('/api/signup/', json.dumps({'username': 'nimo', 'name': "nimo", 'password': "nimo", 'dateOfBirth': "19950506", "email": "dori@dori.com"}),
-                               content_type='application/json')
-        response = client.get('/api/foodcategory/',
-                              content_type='application/json')
-        # get ingredient list done
+
+        # signup test user
+        mock_signup_user = {
+            'name': 'nimo',
+            'username': "nimo",
+            'password': "nimo",
+            'dateOfBirth': "19950506",
+            'email': "dori@dori.com",
+            'region': {
+                'name': '관악구 대학동',
+            },
+            'regionRange': 2,
+        }
+        response = client.post('api/signup/',
+                               json.dumps(mock_signup_user), content_type='application/json')
+
+        # get ingredient list
+        response = client.get('api/foodcategory/')
         self.assertEqual(response.status_code, 200)
-        response = client.put('/api/foodcategory/',
-                              content_type='application/json')
-        # bad requeset
+
+        # wrong request method
+        response = client.put('api/foodcategory/')
         self.assertEqual(response.status_code, 405)
