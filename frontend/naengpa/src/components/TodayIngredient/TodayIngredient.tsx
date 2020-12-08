@@ -40,7 +40,9 @@ const TodayIngredient: React.FC = () => {
 	return (
 		<div id="today-ingredient">
 			<Grid container id="today-ingredient-container" direction="column" alignItems="center">
-				<Grid item id="today-ingredient-header">-오늘의 재료-</Grid>
+				<Grid item id="today-ingredient-header">
+					-오늘의 재료-
+				</Grid>
 				<Grid item xs>
 					<Box id="today-ingredient-contents">{todays_ingredient_contents}</Box>
 				</Grid>

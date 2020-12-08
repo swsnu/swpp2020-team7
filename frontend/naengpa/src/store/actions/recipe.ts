@@ -31,7 +31,7 @@ export const getRecipeList = (
 				},
 			});
 			const { recipeList, recipeCount } = response.data;
-			console.log(recipeList, "get으로 받은 리스");
+			console.log(recipeList, 'get으로 받은 리스');
 			dispatch(getRecipeList_(recipeList, recipeCount));
 		} catch {
 			console.log('레시피 리스트 정보를 가져오지 못했습니다! 다시 시도해주세요!');

@@ -15,7 +15,6 @@ interface ChatRoomListProps {
 const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const chatRoomList = useSelector((state: AppState) => state.user.chatRoomList);
-	const user = useSelector((state: AppState) => state.user.user);
 
 	useEffect(() => {
 		dispatch(getChatRoomList());
