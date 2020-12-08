@@ -20,6 +20,8 @@ const RecipeState: InitialState = {
 
 function recipeReducer(state: InitialState = RecipeState, action: RecipeAction): InitialState {
 	let recipeList: RecipeEntity[] = [];
+	let recipe:RecipeEntity|null = null;
+
 	switch (action.type) {
 		/* GET RECIPE LIST */
 		case actionTypes.GET_RECIPE_LIST:
@@ -75,11 +77,10 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 			if (state.recipeList.length) {
 				recipeList = state.recipeList.map((recipe) => {
 					if ((recipe.id as number) === action.target_id) {
-						recipe.recipeLike =
-							recipe.userLike === 1 ? recipe.recipeLike - 1 : recipe.recipeLike + 1;
-						recipe.userLike = recipe.userLike === 1 ? 0 : 1;
-						return recipe;
-					}
+						recipe.userLike = action.info.userLike
+						recipe.recipeLike = action.info.recipeLike
+						return recipe
+					} 
 					return recipe;
 				});
 			}
