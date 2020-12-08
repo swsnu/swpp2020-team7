@@ -5,8 +5,8 @@ div#ingredient {
   height: auto;
   margin-left: 3%;
   img#ingredient-image {
-    width: 80%;
-    height: 80%;
+    width: 90%;
+    height: 90%;
     align-self: bottom;
   }
   padding-bottom: 28%;
@@ -63,10 +63,14 @@ div#ingredient {
 #ingredient-inbox {
   display: flex;
   flex-direction: column;
+  background: none;
+  align-items: center;
+  border: none;
 }
 #ingredient-tag {
   background-color: #FFEFD5;
   font-family: 'Jua', sans-serif;
   padding: 2%;
+  font-size: medium;
   border-radius: 35px;
 }
