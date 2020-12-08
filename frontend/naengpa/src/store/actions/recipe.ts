@@ -3,10 +3,6 @@ import { Dispatch } from 'redux';
 import * as actionTypes from './actionTypes';
 import { BaseRecipeEntity, RecipeEntity, RecipeLike } from '../../model/recipe';
 
-/* CSRF TOKEN */
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-
 export const getRecipeList_ = (recipeList: RecipeEntity[], recipeCount: number) => ({
 	type: actionTypes.GET_RECIPE_LIST,
 	recipeList,
