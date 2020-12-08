@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from "react-helmet";
+import Helmet from 'react-helmet';
 import { useSelector } from 'react-redux';
 import './App.scss';
 import { Route, Redirect, Switch } from 'react-router-dom';
@@ -43,27 +43,52 @@ interface AppProps {
 const helmet = (
 	<Helmet>
 		{/* <!-- HTML Meta Tags --> */}
-		<title>냉장고 파먹기 - 냉장고 속 재료를 기반으로 나만의 레시피를 추천받자! 주변 이웃과 재료 거래는 덤!</title>
-		<meta name="description" content="지금 냉파와 함께 냉장고 속 재료를 파먹어보세요. 만들 수 있는 레시피를 추천받고, 부족한 재료는 이웃과 함께 나눌 수 있어요." />
+		<title>
+			냉장고 파먹기 - 냉장고 속 재료를 기반으로 나만의 레시피를 추천받자! 주변 이웃과 재료
+			거래는 덤!
+		</title>
+		<meta
+			name="description"
+			content="지금 냉파와 함께 냉장고 속 재료를 파먹어보세요. 만들 수 있는 레시피를 추천받고, 부족한 재료는 이웃과 함께 나눌 수 있어요."
+		/>
 
 		{/* <!-- Google / Search Engine Tags --> */}
-		<meta itemProp="name" content="냉장고 파먹기 - 냉장고 속 재료를 기반으로 나만의 레시피를 추천받자! 주변 이웃과 재료 거래는 덤!" />
-		<meta itemProp="description" content="지금 냉파와 함께 냉장고 속 재료를 파먹어보세요. 만들 수 있는 레시피를 추천받고, 부족한 재료는 이웃과 함께 나눌 수 있어요." />
+		<meta
+			itemProp="name"
+			content="냉장고 파먹기 - 냉장고 속 재료를 기반으로 나만의 레시피를 추천받자! 주변 이웃과 재료 거래는 덤!"
+		/>
+		<meta
+			itemProp="description"
+			content="지금 냉파와 함께 냉장고 속 재료를 파먹어보세요. 만들 수 있는 레시피를 추천받고, 부족한 재료는 이웃과 함께 나눌 수 있어요."
+		/>
 		<meta itemProp="image" content="https://i.ibb.co/DCskfh8/2020-12-08-3-29-10.png" />
 
 		{/* <!-- Facebook Meta Tags --> */}
 		<meta property="og:url" content="https://naengpa.shop" />
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="냉장고 파먹기 - 냉장고 속 재료를 기반으로 나만의 레시피를 추천받자! 주변 이웃과 재료 거래는 덤!" /> 
-		<meta property="og:description" content="지금 냉파와 함께 냉장고 속 재료를 파먹어보세요. 만들 수 있는 레시피를 추천받고, 부족한 재료는 이웃과 함께 나눌 수 있어요." />
+		<meta
+			property="og:title"
+			content="냉장고 파먹기 - 냉장고 속 재료를 기반으로 나만의 레시피를 추천받자! 주변 이웃과 재료 거래는 덤!"
+		/>
+		<meta
+			property="og:description"
+			content="지금 냉파와 함께 냉장고 속 재료를 파먹어보세요. 만들 수 있는 레시피를 추천받고, 부족한 재료는 이웃과 함께 나눌 수 있어요."
+		/>
 		<meta property="og:image" content="https://i.ibb.co/DCskfh8/2020-12-08-3-29-10.png" />
 
 		{/* <!-- Twitter Meta Tags --> */}
 		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content="냉장고 파먹기 - 냉장고 속 재료를 기반으로 나만의 레시피를 추천받자! 주변 이웃과 재료 거래는 덤!" />
-		<meta name="twitter:description" content="지금 냉파와 함께 냉장고 속 재료를 파먹어보세요. 만들 수 있는 레시피를 추천받고, 부족한 재료는 이웃과 함께 나눌 수 있어요." />
+		<meta
+			name="twitter:title"
+			content="냉장고 파먹기 - 냉장고 속 재료를 기반으로 나만의 레시피를 추천받자! 주변 이웃과 재료 거래는 덤!"
+		/>
+		<meta
+			name="twitter:description"
+			content="지금 냉파와 함께 냉장고 속 재료를 파먹어보세요. 만들 수 있는 레시피를 추천받고, 부족한 재료는 이웃과 함께 나눌 수 있어요."
+		/>
 		<meta name="twitter:image" content="https://i.ibb.co/DCskfh8/2020-12-08-3-29-10.png" />
-	</Helmet>);
+	</Helmet>
+);
 
 const App: React.FC<AppProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user.user);
