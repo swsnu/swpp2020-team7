@@ -38,23 +38,25 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 				<div id="naengpa-logo-name">냉파</div>
 			</button>
 			<div id="input-list">
-				<div>
-					<input
-						id="username"
-						type="text"
-						placeholder="USERNAME"
-						onChange={(e) => setUserName(e.target.value)}
-					/>
-				</div>
-				<div>
-					<input
-						id="password"
-						type="password"
-						placeholder="PASSWORD"
-						onChange={(e) => setPassword(e.target.value)}
-						onKeyPress={onKeyPress}
-					/>
-				</div>
+				<form>
+					<div>
+						<input	
+							id="username"
+							type="text"
+							placeholder="USERNAME"
+							onChange={(e) => setUserName(e.target.value)}
+						/>
+					</div>
+					<div>
+						<input
+							id="password"
+							type="password"
+							placeholder="PASSWORD"
+							onChange={(e) => setPassword(e.target.value)}
+							onKeyPress={onKeyPress}
+						/>
+					</div>
+				</form>
 			</div>
 			<div id="button-list">
 				<button id="signup-button" type="button" onClick={() => history.push('/signup')}>
