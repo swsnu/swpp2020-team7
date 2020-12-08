@@ -162,7 +162,7 @@ describe('ExtractMLFeature', () => {
 
 			expect(cookTime.length).toBe(1);
 			expect(foodImage.length).toBe(1);
-			expect(contenth).toBe(1);
+			expect(content).toBe(1);
 
 			extractMLFeatureButton.simulate('click');
 			// expect(spyHistoryPush).toBeCalledTimes(1);

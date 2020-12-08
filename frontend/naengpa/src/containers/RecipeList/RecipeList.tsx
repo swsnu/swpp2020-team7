@@ -31,22 +31,21 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		);
 	});
 
-	const [maxPageIndex, setMaxPageIndex] = useState(recipes.recipeCount/2.0);
+	const [maxPageIndex, setMaxPageIndex] = useState(recipes.recipeCount / 2.0);
 	const [searchCategory, setSearchCategory] = useState('전체');
 	const [sortBy, setSortBy] = useState('created_at');
 	const [loading, setLoading] = useState<boolean>(false);
 	const [query, setQuery] = useState('');
 	const dispatch = useDispatch();
 
-
 	const onClickSearch = async (e: React.KeyboardEvent) => {
-		if (e.key === 'Enter' && query != '') {
+		if (e.key === 'Enter' && query !== '') {
 			setLoading(true);
 			await dispatch(getRecipeList(query, sortBy, searchCategory, page));
 			await setMaxPageIndex(Math.ceil(recipes.recipeCount / 2.0));
 			await setPage(page);
 			await setCurrentList(recipes.recipeList);
-			setLoading(false);		
+			setLoading(false);
 		}
 	};
 
@@ -76,7 +75,6 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		history.push('/recipes/create');
 	};
 
-
 	const selectOption = foodCategoryList?.map((item: any, idx) => {
 		return (
 			<MenuItem
@@ -90,7 +88,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	});
 
 	useEffect(() => {
-		if(sortBy === 'likes') {
+		if (sortBy === 'likes') {
 			console.log(currentList);
 
 			const sortedList = currentList.sort((a, b) => {
@@ -98,8 +96,8 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 			});
 			setCurrentList(sortedList);
 			console.log(sortedList);
-		};
-		console.log("like 기준으로 sorting을 하");
+		}
+		console.log('like 기준으로 sorting을 하');
 	}, [recipes, currentList]);
 
 	return (
@@ -132,21 +130,27 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 					<button
 						id="most-recent-filter"
 						type="button"
-						onClick={(e) => {onClickFilterButton(e, 'created_at');}}
+						onClick={(e) => {
+							onClickFilterButton(e, 'created_at');
+						}}
 					>
 						최신
 					</button>
 					<button
 						id="most-popular-filter"
 						type="button"
-						onClick={(e) => {onClickFilterButton(e, 'likes');}}
+						onClick={(e) => {
+							onClickFilterButton(e, 'likes');
+						}}
 					>
 						인기
 					</button>
 					<button
 						id="most-recommended-filter"
 						type="button"
-						onClick={(e) => {onClickFilterButton(e, 'ingredient');}}
+						onClick={(e) => {
+							onClickFilterButton(e, 'ingredient');
+						}}
 					>
 						추천
 					</button>

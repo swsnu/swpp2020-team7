@@ -17,13 +17,13 @@ const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
 
 	useEffect(() => {
 		if (!recipeList) {
-			const func = async () => await dispatch(getTodayRecipeList());
+			const func = async () => dispatch(getTodayRecipeList());
 			func();
 		}
 	});
 
 	useEffect(() => {
-		const recipe = recipeList?.length 
+		const recipe = recipeList?.length
 			? recipeList?.map((item: any) => (
 					<Recipe
 						key={item.id}
@@ -33,7 +33,7 @@ const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
 					/>
 			  ))
 			: [];
-		if(recipe) setRecipe(recipe);
+		if (recipe) setRecipe(recipe);
 	}, [recipeList]);
 
 	return (

@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import { useDispatch }  from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { History } from 'history';
 import { Grid } from '@material-ui/core';
 import TodayIngredient from '../../components/TodayIngredient/TodayIngredient';
@@ -20,7 +20,7 @@ const MyFridge: React.FC<MyFridgeProps> = ({ history }) => {
 
 	useEffect(() => {
 		dispatch(getFoodCategoryList());
-		dispatch(getRecipeList("", "created_at", "전체", 1));	
+		dispatch(getRecipeList('', 'created_at', '전체', 1));
 	}, []);
 
 	return (

@@ -119,7 +119,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	// need to be directed to recipe detail page, current => recipelist
 	const onClickRegisterRecipe = () => {
-		const func = async () => { 
+		const func = async () => {
 			if (
 				foodImageFiles === [] ||
 				cookTime === '' ||
@@ -150,7 +150,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				history.push('/recipes');
 			}
 			func();
-		}
+		};
 	};
 
 	const onClickExtractMLFeatureAgain = async () => {
