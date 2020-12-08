@@ -41,7 +41,7 @@ class ArticleTestCase(TestCase):
     def test_article_list(self):
         # user is not defined
         response = self.client.get('/api/articles/', follow=True)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 200)
 
         # with authorization
         self.client.login(username='test', password='test')
