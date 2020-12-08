@@ -47,7 +47,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const [foodName, setFoodName] = useState('');
 	const [content, setContent] = useState('');
 	const [foodImageFiles, setFoodImageFiles] = useState<File[]>([]);
-	const [cookTime, setCookTime] = useState('');
+	const [cookTime, setCookTime] = useState(0);
 	const [foodCategory, setFoodCategory] = useState('');
 	const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
 	const [newIngredient, setNewIngredient] = useState('');
@@ -71,7 +71,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		dispatch(getFoodCategoryList());
 		setFoodName(createdRecipe?.foodName as string);
 		setContent(createdRecipe?.content as string);
-		setCookTime(createdRecipe?.cookTime as string);
+		setCookTime(createdRecipe?.cookTime as number);
 		setFoodImageFiles(createdRecipe?.foodImageFiles as File[]);
 		setFoodCategory(createdRecipe?.foodCategory as string);
 		setModifiedCategory(createdRecipe?.foodCategory as string);
@@ -122,7 +122,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		const func = async () => {
 			if (
 				foodImageFiles === [] ||
-				cookTime === '' ||
+				cookTime === 0 ||
 				content === '' ||
 				ingredients === [] ||
 				foodCategory === ''
@@ -154,7 +154,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	};
 
 	const onClickExtractMLFeatureAgain = async () => {
-		if (foodImageFiles === [] || foodName === '' || cookTime === '' || content === '') {
+		if (foodImageFiles === [] || foodName === '' || cookTime === 0 || content === '') {
 			setAlert(true);
 			setAlertContent(
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',

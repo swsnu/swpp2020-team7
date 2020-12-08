@@ -34,7 +34,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const [foodName, setFoodName] = useState('');
 	const [content, setContent] = useState('');
 	const [foodImageFiles, setFoodImageFiles] = useState<File[]>([]);
-	const [cookTime, setCookTime] = useState('');
+	const [cookTime, setCookTime] = useState(0);
 
 	// alert state is true if alert is necessary, otherwise false.
 	const [alert, setAlert] = useState(true);
@@ -66,7 +66,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const onClickExtractMLFeature = () => {
 		const extractMLFeatureClosure = async () => {
 			// if one of the input field is empty, then the alert modal shows itself
-			if (foodImageFiles === [] || foodName === '' || cookTime === '' || content === '') {
+			if (foodImageFiles === [] || foodName === '' || cookTime === 0 || content === '') {
 				setAlert(true);
 				setAlertContent(
 					'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
