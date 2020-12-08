@@ -11,76 +11,19 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Recipe from '../../components/Recipe/Recipe';
 import { AppState } from '../../store/store';
-import { getRecipeList, getFoodCategoryList } from '../../store/actions/index';
+import { getRecipeList } from '../../store/actions/index';
 
 import './RecipeList.scss';
-import { RecipeEntity } from '../../model/recipe';
 
 interface RecipeListProps {
 	history: History;
 }
 
 const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
-	const recipeList = useSelector((state: AppState) => state.recipe.recipeList);
-	const recipeCount = useSelector((state: AppState) => state.recipe.recipeCount);
+	const recipes = useSelector((state: AppState) => state.recipe);
+	const [currentList, setCurrentList] = useState(recipes.recipeList);
 	const foodCategoryList = useSelector((state: AppState) => state.foodCategory.foodCategoryList);
 	const [page, setPage] = useState(1);
-	const [currentList, setCurrentList] = useState<RecipeEntity[] | null>(null);
-	const [maxPageIndex, setMaxPageIndex] = useState(1);
-	const [sortBy, setSortBy] = useState('-created_at');
-	const [filterBy, setFilterBy] = useState(true);
-	const [searchCategory, setSearchCategory] = useState('전체');
-	const [loading, setLoading] = useState<boolean>(true);
-	const [query, setQuery] = useState('');
-	const dispatch = useDispatch();
-
-	const getListIndex = (page: number) => (page - 1) * 9;
-
-	const onLoadRecipeList = async (page: number) => {
-		setLoading(true);
-		await dispatch(getRecipeList(query, sortBy, searchCategory, filterBy, getListIndex(page)));
-		setMaxPageIndex(Math.ceil(recipeCount / 9.0));
-		setPage(page);
-		setCurrentList(recipeList);
-		setLoading(false);
-	};
-
-	const onClickSearch = (e: React.KeyboardEvent) => {
-		if (e.key === 'Enter') {
-			onLoadRecipeList(1);
-		}
-	};
-
-	const onClickRecentFilter = (e: MouseEvent<HTMLButtonElement>) => {
-		setSortBy('-created_at');
-		setFilterBy(false);
-		e.preventDefault();
-		onLoadRecipeList(1);
-	};
-
-	const onClickPopularFilter = (e: MouseEvent<HTMLButtonElement>) => {
-		setSortBy('like_users');
-		setFilterBy(false);
-		e.preventDefault();
-		onLoadRecipeList(1);
-	};
-
-	const onClickRecommendedFilter = (e: MouseEvent<HTMLButtonElement>) => {
-		setSortBy('-created_at');
-		setFilterBy(true);
-		e.preventDefault();
-		onLoadRecipeList(1);
-	};
-
-	const onChangePage = (e: React.ChangeEvent<unknown>, value: number) => {
-		e.preventDefault();
-		onLoadRecipeList(value);
-	};
-
-	const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {
-		e.preventDefault();
-		history.push('/recipes/create');
-	};
 
 	const recipe = currentList?.map((item: any) => {
 		return (
@@ -88,11 +31,55 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		);
 	});
 
+	const [maxPageIndex, setMaxPageIndex] = useState(recipes.recipeCount / 2.0);
+	const [searchCategory, setSearchCategory] = useState('전체');
+	const [sortBy, setSortBy] = useState('created_at');
+	const [loading, setLoading] = useState<boolean>(false);
+	const [query, setQuery] = useState('');
+	const dispatch = useDispatch();
+
+	const onClickSearch = async (e: React.KeyboardEvent) => {
+		if (e.key === 'Enter' && query !== '') {
+			setLoading(true);
+			await dispatch(getRecipeList(query, sortBy, searchCategory, page));
+			await setMaxPageIndex(Math.ceil(recipes.recipeCount / 2.0));
+			await setPage(page);
+			await setCurrentList(recipes.recipeList);
+			setLoading(false);
+		}
+	};
+
+	const onClickFilterButton = async (e: MouseEvent<HTMLButtonElement>, sortBy: string) => {
+		e.preventDefault();
+		setLoading(true);
+		setSortBy(sortBy);
+		await dispatch(getRecipeList(query, sortBy, searchCategory, page));
+		await setMaxPageIndex(Math.ceil(recipes.recipeCount / 2.0));
+		await setPage(page);
+		await setCurrentList(recipes.recipeList);
+		setLoading(false);
+	};
+
+	const onChangePage = async (e: React.ChangeEvent<unknown>, value: number) => {
+		e.preventDefault();
+		await setPage(value);
+		setLoading(true);
+		await dispatch(getRecipeList(query, sortBy, searchCategory, value));
+		await setMaxPageIndex(Math.ceil(recipes.recipeCount / 2.0));
+		await setCurrentList(recipes.recipeList);
+		setLoading(false);
+	};
+
+	const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {
+		e.preventDefault();
+		history.push('/recipes/create');
+	};
+
 	const selectOption = foodCategoryList?.map((item: any, idx) => {
 		return (
 			<MenuItem
-				key={item.id}
-				value={`#${item.name}-${idx}`}
+				key={`#${item.name}-${idx}`}
+				value={item.name}
 				onClick={(e) => setSearchCategory(item.name)}
 			>
 				{item.name}
@@ -101,12 +88,17 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	});
 
 	useEffect(() => {
-		const func = async () => {
-			await dispatch(getFoodCategoryList());
-			await onLoadRecipeList(1);
-		};
-		func();
-	}, []);
+		if (sortBy === 'likes') {
+			console.log(currentList);
+
+			const sortedList = currentList.sort((a, b) => {
+				return b.recipeLike - a.recipeLike;
+			});
+			setCurrentList(sortedList);
+			console.log(sortedList);
+		}
+		console.log('like 기준으로 sorting을 하');
+	}, [recipes, currentList]);
 
 	return (
 		<div id="recipe-list">
@@ -138,21 +130,27 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 					<button
 						id="most-recent-filter"
 						type="button"
-						onClick={(e) => onClickRecentFilter(e)}
+						onClick={(e) => {
+							onClickFilterButton(e, 'created_at');
+						}}
 					>
 						최신
 					</button>
 					<button
 						id="most-popular-filter"
 						type="button"
-						onClick={(e) => onClickPopularFilter(e)}
+						onClick={(e) => {
+							onClickFilterButton(e, 'likes');
+						}}
 					>
 						인기
 					</button>
 					<button
 						id="most-recommended-filter"
 						type="button"
-						onClick={(e) => onClickRecommendedFilter(e)}
+						onClick={(e) => {
+							onClickFilterButton(e, 'ingredient');
+						}}
 					>
 						추천
 					</button>
@@ -182,4 +180,4 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	);
 };
 
-export default React.memo(RecipeList);
+export default RecipeList;

@@ -46,7 +46,7 @@ def extract_foodcategory(request, food_images):
 
 
 def extract_ingredients(request, recipe_info):
-    recipe_content = recipe_info['recipeContent']
+    recipe_content = recipe_info['content']
     kkma = Kkma()
     noun_list = kkma.nouns(recipe_content)
     print("추출된 명사 리스트: ", noun_list)

@@ -18,8 +18,7 @@ export const getRecipeList = (
 	query?: string,
 	sortBy?: string,
 	category?: string,
-	filterBy?: boolean,
-	page = 0,
+	page?: number,
 ) => {
 	return async (dispatch: any) => {
 		try {
@@ -28,11 +27,11 @@ export const getRecipeList = (
 					query,
 					sort_by: sortBy,
 					category,
-					filter: filterBy,
 					page,
 				},
 			});
 			const { recipeList, recipeCount } = response.data;
+			console.log(recipeList, "get으로 받은 리스");
 			dispatch(getRecipeList_(recipeList, recipeCount));
 		} catch {
 			console.log('레시피 리스트 정보를 가져오지 못했습니다! 다시 시도해주세요!');
@@ -148,10 +147,10 @@ export const editRecipe = (recipe: RecipeEntity) => {
 	};
 };
 
-export const toggleRecipe_ = (target_id: number, recipeLikeInfo: RecipeLike) => ({
+export const toggleRecipe_ = (target_id: number, info: RecipeLike) => ({
 	type: actionTypes.TOGGLE_RECIPE,
 	target_id,
-	recipeLikeInfo,
+	info,
 });
 
 /* TOGGLE RECIPE LIKE */
