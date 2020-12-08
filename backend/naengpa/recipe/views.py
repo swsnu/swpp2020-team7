@@ -15,6 +15,7 @@ from .models import Recipe, Image, RecipeIngredient, RecipeLike
 from user.models import FridgeIngredient
 from django.utils import timezone
 from django.core.paginator import Paginator
+import numpy as np
 
 
 @ensure_csrf_cookie
@@ -24,7 +25,7 @@ from django.core.paginator import Paginator
 def recipe_list(request):
     """get recipe list"""
     '''
-        #TODO: Cache "recipes" version option 
+        # TODO: Cache "recipes" version option
         1 : sorted by "time" => recent tab
         2 : sorted by "likes" => popular tab
         3 : sorted by "ingredients" => recommend tab
@@ -43,24 +44,37 @@ def recipe_list(request):
         print("[search-query]- ", query, " [category]- ",
               food_category, " [sort by]- ", sort_condition, "[page]-", page)
 
-        sorted_list = Recipe.objects.filter(
-            food_category=food_category) if food_category != '전체' else Recipe.objects.all()
+        # TODO: sort by ingredient
+        # if sort_condition == "ingredient":
+
         if query:
-            # Sort By Query
-            sortered_list = sorted_list.filter(Q(recipe_content__contains=query) | Q(
-                food_name__contains=query) | Q(food_category__contains=query) | Q(ingredients__ingredient__icontains=query)).distinct('recipe_id')
+            ''' QUERY condition '''
+            sorted_list = Recipe.objects.all().filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)
+                                                      | Q(food_category__contains=query) | Q(ingredients__ingredient__contains=query)).distinct('id')
+            print("[*] SORTED BY QUERY ", sorted_list)
 
-        if sort_condition == 'likes':
-            sorted_list = list(sorted_list)
-            sorted_list.sort(key=lambda x: -x.likes.count())
+            ''' FOOD CATEGORY condition '''
+            sorted_list = sorted_list.filter(
+                food_category=food_category) if food_category != '전체' else sorted_list
+            print("[1] SORED BY FOOD CATEGORY", sorted_list)
+
         else:
-            sorted_list = sorted_list.order_by('-created_at')
+            ''' FOOD CATEGORY condition '''
+            sorted_list = Recipe.objects.all().filter(
+                food_category=food_category) if food_category != '전체' else Recipe.objects.all()
+            print("[1] SORED BY FOOD CATEGORY", sorted_list)
 
-        print("[Sorted By]-", sort_condition)
-        print(sorted_list)
-
-        recipe_count = len(sorted_list)
-        paginator = Paginator(sorted_list, 2)
+            ''' CREATED_AT OR LIKES '''
+            if sort_condition == "created_at":
+                sorted_list = sorted_list.order_by('-created_at')
+                print("[2] SORED BY CREATED_AT", sorted_list)
+            else:
+                sorted_list = list(sorted_list)
+                sorted_list = sorted(
+                    sorted_list, key=lambda x: -x.likes.count())
+                print("[3] SORED BY LIKE USERS", sorted_list)
+                print(timezone.now())
+        paginator = Paginator(sorted_list, 9)
         sorted_list = paginator.get_page(page)
 
         recipe_collection = [{
@@ -78,7 +92,7 @@ def recipe_list(request):
             "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
         } for recipe in sorted_list]
 
-        return JsonResponse({"recipeList": recipe_collection, "recipeCount": recipe_count}, safe=False)
+        return JsonResponse({"recipeList": recipe_collection, "lastPageIndex": paginator.count}, safe=False)
 
     else:
         ''' POST /api/recipes/ post new recipe '''
@@ -138,35 +152,32 @@ def recipe_list(request):
 def today_recipe_list(request):
     """ get Today recipe list """
     today = timezone.now().strftime('%Y-%m-%d')
-    print(today, "[Today]")
+    print("[Today]", today)
     yesterday = timezone.now()-timezone.timedelta(days=1)
-    print(yesterday, "[Yesterday]")
-    # today_recipe = cache.get('today_recipes')
+    print("[Yesterday]", yesterday)
     user_id = request.user.id
-    if not today_recipe:
-        recipe_list = Recipe.objects.filter(
-            created_at__gte=yesterday).order_by('like_users')
-        print(recipe_list)
-        if recipe_list == [] and Recipe.objects.all():
-            recipe_list = Recipe.objects.all().order_by('like_users', '-created_at')
 
-        today_recipe = [{
-            "id": recipe.id,
-            "authorId": recipe.author.id,
-            "author": recipe.author.username,
-            "foodName": recipe.food_name,
-            "cookTime": recipe.cook_time,
-            "content": recipe.recipe_content,
-            "foodImagePaths": list(Image.objects.filter(recipe_id=recipe.id).values()),
-            "recipeLike": recipe.likes.count(),
-            "userLike": recipe.likes.filter(user_id=user_id).count(),
-            "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-            "foodCategory": recipe.food_category,
-            "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
-        } for recipe in list(recipe_list)[:4]]
-        # cache.set('today_recipes', today_recipe)
+    sorted_list = Recipe.objects.filter(created_at__gte=yesterday)
+    sorted_list = list(sorted_list)
+    sorted_list = sorted(
+        sorted_list, key=lambda x: -x.likes.count())
+    print("SORTED BY LIKE USERS", sorted_list)
+    print(sorted_list)
 
-    return JsonResponse({"recipeList": today_recipe, "recipeCount": 4}, safe=False)
+    today_recipe = [{
+        "id": recipe.id,
+        "authorId": recipe.author.id,
+        "author": recipe.author.username,
+        "foodName": recipe.food_name,
+        "cookTime": recipe.cook_time,
+        "content": recipe.recipe_content,
+        "recipeLike": recipe.likes.count(),
+        "userLike": recipe.likes.filter(user_id=user_id).count(),
+        "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
+        "foodCategory": recipe.food_category,
+    } for recipe in sorted_list[0:4]]
+
+    return JsonResponse({"recipeList": today_recipe, "lastPageIndex": 4}, safe=False)
 
 
 @ensure_csrf_cookie
