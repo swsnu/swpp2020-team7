@@ -44,9 +44,12 @@ const helmet = (
 	<Helmet>
 		{/* <!-- HTML Meta Tags --> */}
 		<title>
-			냉장고 파먹기 - 냉장고 속 재료를 기반으로 나만의 레시피를 추천받자! 주변 이웃과 재료
-			거래는 덤!
+			냉장고 파먹기 - 냉장고 속 재료를 기반으로 나만의 레시피를 추천받자! 주변 이웃과 재료 거래는 덤!
 		</title>
+		<meta
+			name="title"
+			content="냉장고 파먹기 - 냉장고 속 재료를 기반으로 나만의 레시피를 추천받자! 주변 이웃과 재료 거래는 덤!"
+		/>
 		<meta
 			name="description"
 			content="지금 냉파와 함께 냉장고 속 재료를 파먹어보세요. 만들 수 있는 레시피를 추천받고, 부족한 재료는 이웃과 함께 나눌 수 있어요."
@@ -54,7 +57,7 @@ const helmet = (
 
 		{/* <!-- Google / Search Engine Tags --> */}
 		<meta
-			itemProp="name"
+			name="name"
 			content="냉장고 파먹기 - 냉장고 속 재료를 기반으로 나만의 레시피를 추천받자! 주변 이웃과 재료 거래는 덤!"
 		/>
 		<meta
