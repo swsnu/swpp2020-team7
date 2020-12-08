@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
+import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 import { BaseRecipeEntity, RecipeEntity, RecipeLike } from '../../model/recipe';
 
@@ -27,7 +28,6 @@ export const getRecipeList = (
 				},
 			});
 			const { recipeList, recipeCount } = response.data;
-			console.log(recipeList, 'get으로 받은 리스');
 			dispatch(getRecipeList_(recipeList, recipeCount));
 		} catch {
 			console.log('레시피 리스트 정보를 가져오지 못했습니다! 다시 시도해주세요!');
@@ -81,8 +81,8 @@ export const createRecipe = (recipe: RecipeEntity) => {
 			bodyFormData.append('recipe', JSON.stringify(recipe));
 			recipe.foodImageFiles!.forEach((image: any) => bodyFormData.append('image', image));
 			const response = await axios.post('/api/recipes/', bodyFormData);
-
 			dispatch(createRecipe_(response.data));
+			window.localStorage.removeItem('extractedRecipeInfo');
 		} catch {
 			console.log('레시피를 생성하던 중 문제가 발생했습니다! 다시 시도해주세요!');
 		}
@@ -101,9 +101,11 @@ export const extractMLFeatureFromRecipe = (recipe: BaseRecipeEntity) => {
 			bodyFormData.append('recipe', JSON.stringify(recipe));
 			recipe.foodImageFiles!.forEach((image) => bodyFormData.append('image', image));
 			const response = await axios.post('/api/extract/', bodyFormData);
-
+			window.localStorage.setItem('extractedRecipeInfo', JSON.stringify({ ...response.data, ...recipe, foodImageFiles: [] }));
+			
 			dispatch(extractMLFeatureFromRecipe_({ ...response.data, ...recipe }));
 		} catch {
+			dispatch(push('/recipes/create/'));
 			console.log('ml 기반 재료와 요리 분류 추천 중 문제가 발생했습니다. 다시 시도해주세요!');
 		}
 	};

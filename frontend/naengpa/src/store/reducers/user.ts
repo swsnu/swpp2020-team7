@@ -1,6 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
 import { UserEntity, UserSignupInputDTO } from '../../model/user';
 import { ChatEntity } from '../../model/chat';
+import { UserAction } from '../actions/user';
 
 export type InitialState = {
 	user: UserEntity | null;
@@ -12,32 +13,16 @@ export type InitialState = {
 
 const UserState: InitialState = {
 	user: JSON.parse(window.localStorage.getItem('userInfo')!),
-	saved_user: null,
+	saved_user: JSON.parse(window.localStorage.getItem('savedUser')!),
 	userList: [],
 	chatRoomList: [],
 	chatRoom: null,
 };
 
-type Action =
-	| { type: 'SAVE_USER_INFO'; user: UserSignupInputDTO }
-	| { type: 'SIGNUP'; user: UserEntity }
-	| { type: 'LOGIN'; user: UserEntity }
-	| { type: 'LOGOUT' }
-	| { type: 'GET_USER_LIST'; userList: UserEntity[] }
-	| { type: 'GET_USER'; user: UserEntity }
-	| { type: 'EDIT_USER'; user: UserEntity }
-	| { type: 'CHANGE_PASSWORD'; user: UserEntity }
-	| { type: 'CREATE_CHATROOM'; chatRoom: ChatEntity }
-	| { type: 'GET_CHATROOM_LIST'; chatRoomList: ChatEntity[] }
-	| { type: 'GET_CHATROOM'; chatRoom: ChatEntity }
-	| { type: 'SEND_CHAT'; chatRoom: ChatEntity }
-	| { type: 'RECEIVE_CHAT'; chatRoomList: ChatEntity[] }
-	| { type: 'DELETE_CHATROOM'; id: string };
-
 let filteredChatRoomList = null;
 let filteredChatRoom = null;
 
-function userReducer(state: InitialState = UserState, action: Action): InitialState {
+function userReducer(state: InitialState = UserState, action: UserAction): InitialState {
 	let userList;
 	switch (action.type) {
 		/* SAVE USER INFO */

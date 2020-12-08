@@ -15,7 +15,7 @@ const RecipeState: InitialState = {
 	todayRecipeList: [],
 	recipe: null,
 	recipeCount: 0,
-	createdRecipe: null,
+	createdRecipe: JSON.parse(window.localStorage.getItem('extractedRecipeInfo')! as string),
 };
 
 function recipeReducer(state: InitialState = RecipeState, action: RecipeAction): InitialState {
