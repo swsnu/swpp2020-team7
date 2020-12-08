@@ -90,7 +90,11 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 
 	const selectOption = foodCategoryList?.map((item: any, idx) => {
 		return (
-			<MenuItem value={`#${item.name}-${idx}`} onClick={(e) => setSearchCategory(item.name)}>
+			<MenuItem
+				key={item.id}
+				value={`#${item.name}-${idx}`}
+				onClick={(e) => setSearchCategory(item.name)}
+			>
 				{item.name}
 			</MenuItem>
 		);

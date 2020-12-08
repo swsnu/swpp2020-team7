@@ -184,6 +184,17 @@ describe('User Reducer', () => {
 		});
 	});
 
+	it('should check if change password is done correctly', () => {
+		const newState = userReducer(userState, {
+			type: actionTypes.CHANGE_PASSWORD,
+			user: mockUser,
+		});
+		expect(newState).toEqual({
+			...userState,
+			user: mockUser,
+		});
+	});
+
 	it('should check if get chatroom is done correctly', () => {
 		const newState = userReducer(userState, {
 			type: actionTypes.GET_CHATROOM,

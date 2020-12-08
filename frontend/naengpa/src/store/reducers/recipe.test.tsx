@@ -1,9 +1,9 @@
-import recipeReducer from './recipe';
+import recipeReducer, { InitialState } from './recipe';
 import * as actionTypes from '../actions/actionTypes';
 import { RecipeEntity } from '../../model/recipe';
 
 const image = import('../../../public/icons/boy.png');
-const recipeList: RecipeEntity[] = [
+const mockRecipeList: RecipeEntity[] = [
 	{
 		id: 2,
 		authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
@@ -44,72 +44,74 @@ const recipeList: RecipeEntity[] = [
 	},
 ];
 
-type InitialState = {
-	recipeList: RecipeEntity[];
-	recipe: RecipeEntity | null;
-	createdRecipe: RecipeEntity | null;
-	recipeCount: 2;
-	todayRecipeList: RecipeEntity[];
-};
-
 const RecipeState: InitialState = {
 	recipeList: [],
 	recipe: null,
 	createdRecipe: null,
-	recipeCount: 2,
+	recipeCount: 0,
 	todayRecipeList: [],
 };
 
 describe('Recipe Reducer', () => {
 	it('should return default state', () => {
 		const newState = recipeReducer(RecipeState, {
-			type: actionTypes.GET_RECIPE_LIST,
-			recipeList: [],
+			type: 'none',
 		});
-		expect(newState).toEqual({ ...RecipeState, recipeCount: undefined });
+		expect(newState).toEqual(RecipeState);
 	});
 
 	it('should check if it can get recipe list correctly', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.GET_RECIPE_LIST,
-			recipeList,
+			recipeList: mockRecipeList,
+			recipeCount: 2,
 		});
 		expect(newState).toEqual({
 			...RecipeState,
-			recipeList,
-			recipeCount: undefined,
+			recipeList: mockRecipeList,
+			recipeCount: 2,
+		});
+	});
+
+	it('should check if it can get today recipe list correctly', () => {
+		const newState = recipeReducer(RecipeState, {
+			type: actionTypes.GET_TODAY_RECIPE_LIST,
+			payload: mockRecipeList,
+		});
+		expect(newState).toEqual({
+			...RecipeState,
+			todayRecipeList: mockRecipeList,
 		});
 	});
 
 	it('should check if it can get specific recipe', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.GET_RECIPE,
-			recipe: recipeList[0],
+			recipe: mockRecipeList[0],
 		});
 		expect(newState).toEqual({
 			...RecipeState,
-			recipeCount: 2,
-			recipe: recipeList[0],
+			recipe: mockRecipeList[0],
 		});
 	});
 
 	it('should check if it can create specific recipe', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.CREATE_RECIPE,
-			recipe: recipeList[0],
+			recipe: mockRecipeList[0],
 		});
 		expect(newState).toEqual({
 			...RecipeState,
-			recipeCount: 3,
-			recipeList: [...RecipeState.recipeList, recipeList[0]],
-			recipe: recipeList[0],
+			recipeCount: 1,
+			recipeList: [...RecipeState.recipeList, mockRecipeList[0]],
+			recipe: mockRecipeList[0],
 			createdRecipe: null,
 		});
 	});
 
 	it('should check if it can toggle recipe correctly', () => {
 		const newState = recipeReducer(
-			{ ...RecipeState, recipeList },
+			{ ...RecipeState, recipeList: mockRecipeList },
 			{
 				type: actionTypes.TOGGLE_RECIPE,
 				target_id: 2,
@@ -121,13 +123,27 @@ describe('Recipe Reducer', () => {
 		);
 		expect(newState).toEqual({
 			...RecipeState,
-			recipeList: [{ ...recipeList[0], userLike: 0 }, recipeList[1]],
+			recipeList: [{ ...mockRecipeList[0], userLike: 0 }, mockRecipeList[1]],
+		});
+	});
+
+	it('should check if it can toggle recipe with no recipeList correctly', () => {
+		const newState = recipeReducer(RecipeState, {
+			type: actionTypes.TOGGLE_RECIPE,
+			target_id: 2,
+			recipeLikeInfo: {
+				recipeLike: 0,
+				userLike: 0,
+			},
+		});
+		expect(newState).toEqual({
+			...RecipeState,
 		});
 	});
 
 	it('should check if it can toggle recipe case 2 correctly', () => {
 		const newState = recipeReducer(
-			{ ...RecipeState, recipeList },
+			{ ...RecipeState, recipeList: mockRecipeList, recipeCount: 2 },
 			{
 				type: actionTypes.TOGGLE_RECIPE,
 				target_id: 3,
@@ -139,25 +155,25 @@ describe('Recipe Reducer', () => {
 		);
 		expect(newState).toEqual({
 			...RecipeState,
-			recipeList: [recipeList[0], { ...recipeList[1], userLike: 1, recipeLike: 1 }],
+			recipeList: [mockRecipeList[0], { ...mockRecipeList[1], userLike: 1, recipeLike: 1 }],
+			recipeCount: 2,
 		});
 	});
 
 	it('should check if it can extract ml feature from recipe', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.EXTRACT_ML_FEATURE_FROM_RECIPE,
-			recipe: recipeList[0],
+			recipe: mockRecipeList[0],
 		});
 		expect(newState).toEqual({
 			...RecipeState,
-			recipeCount: 2,
-			createdRecipe: recipeList[0],
+			createdRecipe: mockRecipeList[0],
 		});
 	});
 
 	it('should check if it can delete specific recipe', () => {
 		const newState = recipeReducer(
-			{ ...RecipeState, recipeList },
+			{ ...RecipeState, recipeList: mockRecipeList, recipeCount: 2 },
 			{
 				type: actionTypes.DELETE_RECIPE,
 				target_id: 3,
@@ -166,22 +182,22 @@ describe('Recipe Reducer', () => {
 		expect(newState).toEqual({
 			...RecipeState,
 			recipeCount: 1,
-			recipeList: [recipeList[0]],
+			recipeList: [mockRecipeList[0]],
 		});
 	});
 
 	it('should check if it can edit specific recipe', () => {
 		const newState = recipeReducer(
-			{ ...RecipeState, recipeList },
+			{ ...RecipeState, recipeList: mockRecipeList, recipeCount: 2 },
 			{
 				type: actionTypes.EDIT_RECIPE,
-				recipe: recipeList[0],
+				recipe: mockRecipeList[0],
 			},
 		);
 		expect(newState).toEqual({
 			...RecipeState,
 			recipeCount: 2,
-			recipeList,
+			recipeList: mockRecipeList,
 		});
 	});
 });

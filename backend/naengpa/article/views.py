@@ -2,7 +2,7 @@
 import json
 from operator import itemgetter
 from django.http import JsonResponse, HttpResponseBadRequest,  HttpResponseNotFound
-from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
 from django.db import transaction
 from django.db.models import F, Q, Value, CharField
@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view
 
 from ingredient.models import Ingredient
 from utils.aws_utils import upload_images
+from utils.auth import login_required_401
 from .models import Article, Image
 
 
@@ -17,7 +18,6 @@ class InvalidOptionsGivenError(Exception):
     pass
 
 
-@transaction.atomic
 def article_list_get(request):
     ''' GET /api/articles/ get article list '''
     query = request.GET.get('q')
@@ -89,7 +89,6 @@ def article_list_get(request):
     return JsonResponse(article_collection, safe=False)
 
 
-@transaction.atomic
 def article_list_post(request):
     """ POST /api/articles/ post new article """
     try:
@@ -119,7 +118,7 @@ def article_list_post(request):
         return HttpResponseBadRequest()
 
     images_path = upload_images(
-        images, "article", article.id, author_id)
+        images, "article", article.id)
     for path in images_path:
         Image.objects.create(author_id=author_id,
                              file_path=path, article_id=article.id)
@@ -148,8 +147,9 @@ def article_list_post(request):
     }, status=201)
 
 
+@ensure_csrf_cookie
 @api_view(['GET', 'POST'])
-@login_required
+@login_required_401
 def article_list(request):
     """get article list or create an article"""
     if request.method == 'GET':
@@ -158,8 +158,9 @@ def article_list(request):
         return article_list_post(request)
 
 
+@ensure_csrf_cookie
 @api_view(['GET', 'DELETE'])
-@login_required
+@login_required_401
 @transaction.atomic
 def article_info(request, aid):
     '''process article of given id'''
@@ -192,7 +193,7 @@ def article_info(request, aid):
             },
             "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
             "createdAt": article.created_at,
-        }, status=201)
+        }, status=200)
 
     elif request.method == 'DELETE':
         ''' DELETE /api/articles/:aid/ delete article of given id '''
@@ -226,4 +227,4 @@ def article_info(request, aid):
         }
         article.delete()
 
-        return JsonResponse(data=deleted_article, status=201)
+        return JsonResponse(data=deleted_article, status=200)

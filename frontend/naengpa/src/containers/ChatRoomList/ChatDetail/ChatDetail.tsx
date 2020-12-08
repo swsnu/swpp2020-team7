@@ -33,26 +33,20 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const chatMessage = chatRoom!.messages!.map((message, idx) => {
 		if (message.author === user!.username) {
 			return (
-				<Typography key={`${message.createdAt}-${message.author}`} id="user-message" gutterBottom>
-					<div
-						key={`@${message.content}-${message.author}%`}
-						id="message-created-time"
-					>
-						{message.createdAt}s
-					</div>
-					<div
-						key={`#${message.content}-${message.author}`}
-						id="message-content"
-					>
-						{message.content}
-					</div>
+				<Typography
+					key={`${message.createdAt}-${message.author}`}
+					id="user-message"
+					gutterBottom
+				>
+					<span id="message-created-time">{message.createdAt}s</span>
+					<span id="message-content">{message.content}</span>
 				</Typography>
 			);
 		}
 		return (
 			<Typography id="member-message" gutterBottom>
-				<div id="message-content">{message.content}</div>
-				<div id="message-created-time">{message.createdAt}</div>
+				<span id="message-content">{message.content}</span>
+				<span id="message-created-time">{message.createdAt}</span>
 			</Typography>
 		);
 	});

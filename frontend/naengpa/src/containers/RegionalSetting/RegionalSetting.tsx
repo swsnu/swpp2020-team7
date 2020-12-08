@@ -188,6 +188,7 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 								renderInput={(params) => (
 									<TextField
 										required
+										autoFocus
 										placeholder="동을 입력해주세요(낙성대동)"
 										{...params}
 										margin="normal"

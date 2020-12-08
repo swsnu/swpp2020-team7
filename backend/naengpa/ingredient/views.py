@@ -1,13 +1,15 @@
 """views for ingredient"""
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.core.cache import cache
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.decorators import api_view
+from utils.auth import login_required_401
 from .models import IngredientCategory
 
 
+@ensure_csrf_cookie
 @api_view(['GET'])
-@login_required
+@login_required_401
 def ingredient_list(request):
     """/api/ingredients/ Get article list"""
     if request.method == 'GET':
