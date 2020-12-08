@@ -32,7 +32,7 @@ interface CreateRecipeProps {
 
 const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const [foodName, setFoodName] = useState('');
-	const [recipeContent, setRecipeContent] = useState('');
+	const [content, setContent] = useState('');
 	const [foodImageFiles, setFoodImageFiles] = useState<File[]>([]);
 	const [cookTime, setCookTime] = useState('');
 
@@ -70,7 +70,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				foodImageFiles === [] ||
 				foodName === '' ||
 				cookTime === '' ||
-				recipeContent === ''
+				content === ''
 			) {
 				setAlert(true);
 				setAlertContent(
@@ -80,7 +80,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				const newRecipe: BaseRecipeEntity = {
 					foodName,
 					cookTime,
-					recipeContent,
+					content,
 					foodImageFiles,
 				};
 
@@ -206,7 +206,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											required
 											disabled={alert}
 											type="number"
-											placeholder="60"
+											placeholder="시간"
 											id="cook-time"
 											onChange={(e) => setCookTime(e.target.value)}
 										/>
@@ -257,7 +257,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											rows={30}
 											type="text"
 											InputProps={{ classes }}
-											onChange={(e) => setRecipeContent(e.target.value)}
+											onChange={(e) => setContent(e.target.value)}
 										/>
 									</TableCell>
 								</TableRow>

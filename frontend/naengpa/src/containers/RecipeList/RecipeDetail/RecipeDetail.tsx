@@ -258,7 +258,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<div id="recipe-ingredient">{ingredientSetForRecipe}</div>
 				<div id="recipe-content">
 					<Typography gutterBottom variant="h6">
-						{recipe.recipeContent}
+						{recipe.content}
 					</Typography>
 				</div>
 			</div>
