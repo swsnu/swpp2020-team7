@@ -47,7 +47,7 @@ class RecipeTestCase(TestCase):
 
         # method post
         recipe_str = json.dumps({'foodName': 'apple', 'cookTime': 0,
-                                 'recipeContent': '사과', 'foodCategory': '한식', 'ingredients': []})
+                                 'content': '사과', 'foodCategory': '한식', 'ingredients': []})
         response = self.client.post('/api/recipes/', {
             'recipe': recipe_str,
             'image': '',
@@ -55,7 +55,7 @@ class RecipeTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
 
         # bad request method
-        response = self.client.put('/api/recipes/', json.dumps({'foodName': 'apple', 'cookTime': 0, 'recipeContent': "사과", 'foodImageFiles': [], }),
+        response = self.client.put('/api/recipes/', json.dumps({'foodName': 'apple', 'cookTime': 0, 'content': "사과", 'foodImageFiles': [], }),
                                    content_type='application/json')
         self.assertEqual(response.status_code, 405)
 

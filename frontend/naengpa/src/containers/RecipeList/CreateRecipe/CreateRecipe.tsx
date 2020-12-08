@@ -32,7 +32,7 @@ interface CreateRecipeProps {
 
 const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const [foodName, setFoodName] = useState('');
-	const [recipeContent, setRecipeContent] = useState('');
+	const [content, setContent] = useState('');
 	const [foodImageFiles, setFoodImageFiles] = useState<File[]>([]);
 	const [cookTime, setCookTime] = useState('');
 
@@ -66,12 +66,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const onClickExtractMLFeature = () => {
 		const extractMLFeatureClosure = async () => {
 			// if one of the input field is empty, then the alert modal shows itself
-			if (
-				foodImageFiles === [] ||
-				foodName === '' ||
-				cookTime === '' ||
-				recipeContent === ''
-			) {
+			if (foodImageFiles === [] || foodName === '' || cookTime === '' || content === '') {
 				setAlert(true);
 				setAlertContent(
 					'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
@@ -80,7 +75,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				const newRecipe: BaseRecipeEntity = {
 					foodName,
 					cookTime,
-					recipeContent,
+					content,
 					foodImageFiles,
 				};
 
@@ -206,7 +201,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											required
 											disabled={alert}
 											type="number"
-											placeholder="60"
+											placeholder="시간"
 											id="cook-time"
 											onChange={(e) => setCookTime(e.target.value)}
 										/>
@@ -257,7 +252,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											rows={30}
 											type="text"
 											InputProps={{ classes }}
-											onChange={(e) => setRecipeContent(e.target.value)}
+											onChange={(e) => setContent(e.target.value)}
 										/>
 									</TableCell>
 								</TableRow>

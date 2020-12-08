@@ -17,7 +17,7 @@ const stubInitialState = {
 				author: 'test',
 				foodName: '딸기',
 				cookTime: '60',
-				recipeContent: '레시피',
+				content: '레시피',
 				foodImagePaths: [
 					{
 						id: 2,
@@ -44,7 +44,7 @@ const stubInitialState = {
 				author: 'test',
 				foodName: '딸기',
 				cookTime: '60',
-				recipeContent: '레시피',
+				content: '레시피',
 				foodImagePaths: [
 					{
 						id: 2,
@@ -186,7 +186,7 @@ describe('ActionCreators', () => {
 		const mockData = {
 			foodName: 'foodName',
 			cookTime: '100',
-			recipeContent: 'recipeContent',
+			content: 'content',
 			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 1,
 			userLike: 0,
@@ -209,7 +209,7 @@ describe('ActionCreators', () => {
 		const mockData = {
 			foodName: 'foodName',
 			cookTime: '100',
-			recipeContent: 'recipeContent',
+			content: 'content',
 			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 1,
 			userLike: 0,
@@ -234,7 +234,7 @@ describe('ActionCreators', () => {
 		const mockData = {
 			foodName: 'foodName',
 			cookTime: '100',
-			recipeContent: 'recipeContent',
+			content: 'content',
 			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 1,
 			userLike: 0,
@@ -260,7 +260,7 @@ describe('ActionCreators', () => {
 		const mockData = {
 			foodName: 'foodName',
 			cookTime: '100',
-			recipeContent: 'recipeContent',
+			content: 'content',
 			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 1,
 			userLike: 0,

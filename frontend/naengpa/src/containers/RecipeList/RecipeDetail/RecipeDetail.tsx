@@ -43,7 +43,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const images = recipe.foodImagePaths as RecipeImage[];
 	const ingredients =
 		recipe.ingredients === undefined ? [] : (recipe.ingredients as RecipeIngredient[]);
-	const recipe_id = recipe.id as number;
+	const recipeId = recipe.id as number;
 	const [userLike, setUserLike] = useState(recipe.userLike);
 	const [recipeLike, setRecipeLike] = useState(recipe.recipeLike);
 	const dispatch = useDispatch();
@@ -56,11 +56,11 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 
 	const onClickEditRecipe = () => {
 		dispatch(editRecipe(recipe));
-		history.push(`/recipes/:${recipe_id}/edit`);
+		history.push(`/recipes/:${recipeId}/edit`);
 	};
 
 	const onClickDeleteRecipe = () => {
-		dispatch(deleteRecipe(recipe_id));
+		dispatch(deleteRecipe(recipeId));
 		history.push('/recipes');
 	};
 
@@ -258,7 +258,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<div id="recipe-ingredient">{ingredientSetForRecipe}</div>
 				<div id="recipe-content">
 					<Typography gutterBottom variant="h6">
-						{recipe.recipeContent}
+						{recipe.content}
 					</Typography>
 				</div>
 			</div>
