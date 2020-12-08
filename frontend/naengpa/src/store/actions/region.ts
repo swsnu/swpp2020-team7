@@ -10,9 +10,6 @@ export const getRegionList_ = (regions: RegionEntity[]) => ({
 export const getRegionList = () => {
 	return async (dispatch: any) => {
 		try {
-			/* 
-				'Region List' in Seoul should be come from backend
-			*/
 			const response = await axios.get('/api/regions/');
 			const regionList: RegionEntity[] = response.data;
 			dispatch(getRegionList_(regionList));

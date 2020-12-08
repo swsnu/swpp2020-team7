@@ -32,8 +32,9 @@ export const signup = (user: UserSignupInputDTO) => {
 	return async (dispatch: any) => {
 		const response = await axios.post('/api/signup/', user);
 		const currentUser: UserEntity = response.data;
-		dispatch(push('/regional-setting'));
+		localStorage.setItem('userInfo', JSON.stringify(currentUser));
 		dispatch(signup_(currentUser));
+		dispatch(push('/fridge'));
 	};
 };
 
