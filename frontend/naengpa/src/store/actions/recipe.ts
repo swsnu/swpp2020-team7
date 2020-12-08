@@ -4,10 +4,10 @@ import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 import { BaseRecipeEntity, RecipeEntity, RecipeLike } from '../../model/recipe';
 
-export const getRecipeList_ = (recipeList: RecipeEntity[], recipeCount: number) => ({
+export const getRecipeList_ = (recipeList: RecipeEntity[], lastPageIndex: number) => ({
 	type: actionTypes.GET_RECIPE_LIST,
 	recipeList,
-	recipeCount,
+	lastPageIndex,
 });
 
 /* GET RECIPE LIST */
@@ -27,8 +27,16 @@ export const getRecipeList = (
 					page,
 				},
 			});
-			const { recipeList, recipeCount } = response.data;
-			dispatch(getRecipeList_(recipeList, recipeCount));
+			const { recipeList, lastPageIndex } = response.data;
+			dispatch(getRecipeList_(recipeList, lastPageIndex));
+			window.localStorage.setItem(
+				'recipeList',
+				JSON.stringify(recipeList),
+			);	
+			window.localStorage.setItem(
+				'lastPageIndex',
+				JSON.stringify(lastPageIndex),
+			);		
 		} catch {
 			console.log('레시피 리스트 정보를 가져오지 못했습니다! 다시 시도해주세요!');
 		}
@@ -37,7 +45,7 @@ export const getRecipeList = (
 
 export const getTodayRecipeList_ = (todayRecipeList: RecipeEntity[]) => ({
 	type: actionTypes.GET_TODAY_RECIPE_LIST,
-	payload: todayRecipeList,
+	todayRecipeList,
 });
 
 export const getTodayRecipeList = () => {

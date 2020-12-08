@@ -22,8 +22,9 @@ const UserState: InitialState = {
 let filteredChatRoomList = null;
 let filteredChatRoom = null;
 
-function userReducer(state: InitialState = UserState, action: UserAction): InitialState {
+function userReducer(state: InitialState = UserState, action: UserAction): InitialState {	
 	let userList;
+
 	switch (action.type) {
 		/* SAVE USER INFO */
 		case actionTypes.SAVE_USER_INFO:
@@ -80,17 +81,6 @@ function userReducer(state: InitialState = UserState, action: UserAction): Initi
 		/* SEND CHAT */
 		case actionTypes.SEND_CHAT:
 			return { ...state, chatRoom: action.chatRoom };
-
-		/* RECEIVE CHAT */
-		case actionTypes.RECEIVE_CHAT:
-			filteredChatRoom = null;
-			if (state.chatRoom) {
-				filteredChatRoom = action.chatRoomList.find((chatroom) => {
-					return chatroom.id === state.chatRoom!.id;
-				});
-			}
-			if (!filteredChatRoom) filteredChatRoom = state.chatRoom;
-			return { ...state, chatRoomList: action.chatRoomList, chatRoom: filteredChatRoom };
 
 		/* DELETE CHATROOM */
 		case actionTypes.DELETE_CHATROOM:

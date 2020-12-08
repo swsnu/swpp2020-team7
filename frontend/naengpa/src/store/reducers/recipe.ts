@@ -6,29 +6,28 @@ export type InitialState = {
 	recipeList: RecipeEntity[];
 	todayRecipeList: RecipeEntity[];
 	recipe: RecipeEntity | null;
-	recipeCount: number;
+	lastPageIndex: number;
 	createdRecipe: RecipeEntity | null;
 };
 
 const RecipeState: InitialState = {
-	recipeList: [],
-	todayRecipeList: [],
+	recipeList: JSON.parse(window.localStorage.getItem('recipeList')! as string),
+	todayRecipeList: JSON.parse(window.localStorage.getItem('todayRecipeList')! as string),
 	recipe: null,
-	recipeCount: 0,
+	lastPageIndex: JSON.parse(window.localStorage.getItem('lastPageIndex')! as string),
 	createdRecipe: JSON.parse(window.localStorage.getItem('extractedRecipeInfo')! as string),
 };
 
 function recipeReducer(state: InitialState = RecipeState, action: RecipeAction): InitialState {
 	let recipeList: RecipeEntity[] = [];
-	const recipe: RecipeEntity | null = null;
 
 	switch (action.type) {
 		/* GET RECIPE LIST */
 		case actionTypes.GET_RECIPE_LIST:
-			return { ...state, recipeList: action.recipeList, recipeCount: action.recipeCount };
+			return { ...state, recipeList: action.recipeList, lastPageIndex: action.lastPageIndex };
 
 		case actionTypes.GET_TODAY_RECIPE_LIST:
-			return { ...state, todayRecipeList: action.payload };
+			return { ...state, todayRecipeList: action.todayRecipeList };
 
 		/* GET RECIPE */
 		case actionTypes.GET_RECIPE:
@@ -39,7 +38,7 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 			return {
 				...state,
 				recipeList: [...state.recipeList, action.recipe],
-				recipeCount: state.recipeCount + 1,
+				lastPageIndex: state.lastPageIndex + 1,
 				recipe: action.recipe,
 				createdRecipe: null,
 			};
@@ -62,7 +61,7 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 			return {
 				...state,
 				recipeList,
-				recipeCount: state.recipeCount - 1,
+				lastPageIndex: state.lastPageIndex - 1,
 			};
 		}
 

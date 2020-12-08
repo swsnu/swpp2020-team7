@@ -57,7 +57,7 @@ const mockTodayRecipeList = [
 const stubInitialState = {
 	recipe: {
 		todayRecipeList: mockTodayRecipeList,
-		recipeCount: 2,
+		lastPageIndex: 2,
 	},
 };
 

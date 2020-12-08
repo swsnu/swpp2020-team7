@@ -83,7 +83,7 @@ describe('ActionCreators', () => {
 					status: 200,
 					data: {
 						recipeList: [],
-						recipeCount: 0,
+						lastPageIndex: 0,
 					},
 				};
 				resolve(result);
@@ -96,7 +96,7 @@ describe('ActionCreators', () => {
 		const expectedPayload = {
 			type: actionTypes.GET_RECIPE_LIST,
 			recipeList: [],
-			recipeCount: 0,
+			lastPageIndex: 0,
 		};
 		expect(actions[0]).toEqual(expectedPayload);
 	});

@@ -57,6 +57,10 @@ export const login = (user: UserLoginInputDTO) => {
 	};
 };
 
+export const logout_ = () => ({
+	type: actionTypes.LOGOUT,	
+})
+
 /* LOGOUT */
 export function logout() {
 	return async (dispatch: any) => {
@@ -64,32 +68,34 @@ export function logout() {
 
 		if (response.status === 204) {
 			localStorage.removeItem('userInfo');
-			dispatch({
-				type: actionTypes.LOGOUT,
-			});
+			dispatch(logout_());
 		}
 	};
 }
+
+export const getUserList_ = (userList: UserEntity[]) => ({
+	type: actionTypes.GET_USER_LIST,
+	userList,
+}) 
 
 export function getUserList() {
 	return async (dispatch: any) => {
 		const response: any = await axios.get('/api/users/');
 
-		dispatch({
-			type: actionTypes.GET_USER_LIST,
-			userList: response.data,
-		});
+		dispatch(getUserList_(response.data));
 	};
 }
+
+export const getUser_ = (user: UserEntity) => ({
+	type: actionTypes.GET_USER,
+	user,	
+})
 
 export function getUser(user: UserEntity) {
 	return async (dispatch: any) => {
 		const response: any = await axios.get(`/api/users/${user.id}/`);
 
-		dispatch({
-			type: actionTypes.GET_USER,
-			user: response.data,
-		});
+		dispatch(getUser_(response.data));
 	};
 }
 
@@ -131,10 +137,11 @@ export const changePassword = (user: ChangePasswordInputDTO) => {
 };
 
 /* GET ChatRoom List */
-export const getChatRoomList_ = (chatRoomList: ChatEntity) => ({
+export const getChatRoomList_ = (chatRoomList: ChatEntity[]) => ({
 	type: actionTypes.GET_CHATROOM_LIST,
 	chatRoomList,
 });
+
 export const getChatRoomList = () => {
 	return async (dispatch: any) => {
 		try {
@@ -226,12 +233,13 @@ export type UserAction =
 	| ReturnType<typeof saveUserInfo_>
 	| ReturnType<typeof signup_>
 	| ReturnType<typeof login_>
-	| ReturnType<typeof logout>
+	| ReturnType<typeof logout_>
 	| ReturnType<typeof editUser_>
+	| ReturnType<typeof getUserList_>
+	| ReturnType<typeof getUser_>
 	| ReturnType<typeof changePassword_>
 	| ReturnType<typeof getChatRoomList_>
 	| ReturnType<typeof getChatRoom_>
 	| ReturnType<typeof createChatRoom_>
-	| ReturnType<typeof receiveChat>
 	| ReturnType<typeof sendChat_>
 	| ReturnType<typeof deleteChatRoom_>;
