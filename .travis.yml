@@ -20,6 +20,7 @@ jobs:
         - cd ../..
         - cd backend/naengpa
         - source ~/virtualenv/python3.7/bin/activate
+        - sudo apt install redis-server
         - sudo add-apt-repository -y ppa:ubuntugis/ppa && sudo apt update
         - sudo apt update && sudo apt -y install gdal-bin libgdal-dev
         - ogrinfo --version
@@ -62,6 +63,7 @@ jobs:
         - cd backend/naengpa
       install:
         - source ~/virtualenv/python3.7/bin/activate
+        - sudo apt install redis-servers
         - sudo add-apt-repository -y ppa:ubuntugis/ppa && sudo apt update
         - sudo apt update && sudo apt -y install gdal-bin
         - pip install -r requirements.txt
