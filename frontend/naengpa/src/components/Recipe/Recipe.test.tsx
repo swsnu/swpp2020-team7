@@ -30,7 +30,7 @@ const mockRecipe = {
 	author: 'test',
 	foodName: '딸기',
 	cookTime: '100',
-	recipeContent: '레시피',
+	content: '레시피',
 	foodImageFiles: [
 		{
 			id: 2,
@@ -49,7 +49,7 @@ const mockRecipe2 = {
 	author: 'test',
 	foodName: '딸기',
 	cookTime: '30',
-	recipeContent: '레시피',
+	content: '레시피',
 	foodImagePaths: [],
 	recipeLike: 0,
 	createdAt: '2000.00.00',

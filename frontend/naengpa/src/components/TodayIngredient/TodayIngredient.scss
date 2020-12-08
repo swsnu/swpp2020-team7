@@ -3,71 +3,46 @@
 
 div#today-ingredient {
     background: url('/icons/memo.png') center center / contain no-repeat;
-    display: flex;
-    flex-direction: column;
-    min-height: 200px;
-    padding: 25% 20%;
+    //display: flex;
+    //flex-direction: column;
+    min-height: 250px;
+    max-height: 250px;
+    padding: 23% 20%;
     padding-left: 30%;
     padding-bottom: 5%;
     
     #today-ingredient-header {
+      position: absolute;
       font-family: 'Jua', sans-serif;
-      font-size: 120%;
-      display: flex;
+      font-size: larger;
+      //display: flex;
       justify-content: center;
       text-align: left;
+      padding-bottom: 5%;
     }
 
     #today-ingredient-contents {
-      text-align: center;
-      font-size: 3vh;
+      //position: absolute;
+      margin-top: 20%;
+      margin-left: 15%;
       font-family: 'Nanum Pen Script', cursive;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      // justify-content: center;
+      // align-content: center;
       align-items: center;
 
       #today-ingredient-content-each {
-        height: 4vh;
-        align-items: center;
+        font-size: 20px;
+        height: 25px;
       }
     }
-    
-
+  
     #today-ingredient-delete {
-      font-size: 3vh;
+      font-size: 20px;
+      height: 25px;
       font-family: 'Nanum Pen Script', cursive;
     }
 
-    #add-today-ingredient {
-      margin-top: 10%;
-      margin-left: 13%;
-      color: yellowgreen;
-      position: absolute;
-    }
-
-    #add-today-ingredient-alert {
-      position: absolute;
-      max-width: 200px;
-      margin-left: 6%;
-      //margin-right: 5%;
-      margin-top: 3%;
-      //padding-right: 1%;
-      padding: 2%;
-      z-index: 1;
-      background-color: #ffffff;
-      border: solid 0.5px #707070; 
-      align-items: center;
-
-      #close-alert-button {
-        display: flex;
-        padding: 2%;
-        //margin-right: 5%;
-        top: 0;
-        right: 0;
-        position: absolute;
-        color: yellowgreen;
-      }
-      
-      #alert-contents {
-        text-align: left;
-      }
-    }
 }

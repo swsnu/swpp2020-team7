@@ -38,7 +38,7 @@ const stubInitialState = {
 		createdRecipe: {
 			foodName: '딸기',
 			cookTime: '60',
-			recipeContent: '레시피',
+			content: '레시피',
 			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 0,
 			foodCategory: '밥류',
@@ -60,7 +60,7 @@ const stubInitialState2 = {
 		createdRecipe: {
 			foodName: '딸기',
 			cookTime: '60',
-			recipeContent: '레시피',
+			content: '레시피',
 			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 0,
 			foodCategory: '밥류',
@@ -146,7 +146,7 @@ describe('ExtractMLFeature', () => {
 
 			const cookTime = component.find('input#cook-time').find('input');
 			const foodImage = component.find('input#food-image').find('input');
-			const recipeContent = component.find('#recipe-content').find('textarea');
+			const content = component.find('#recipe-content').find('textarea');
 			const extractMLFeatureButton = component
 				.find('#extract-ml-feature-button')
 				.find('button')
@@ -158,11 +158,11 @@ describe('ExtractMLFeature', () => {
 
 			cookTime.simulate('change', { target: { value: '100' } });
 			foodImage.simulate('change', { target: { files: [(image as unknown) as File] } });
-			recipeContent.simulate('change', { target: { value: 'testContent' } });
+			content.simulate('change', { target: { value: 'testContent' } });
 
 			expect(cookTime.length).toBe(1);
 			expect(foodImage.length).toBe(1);
-			expect(recipeContent.length).toBe(1);
+			expect(content.length).toBe(1);
 
 			extractMLFeatureButton.simulate('click');
 			// expect(spyHistoryPush).toBeCalledTimes(1);
@@ -289,7 +289,7 @@ describe('ExtractMLFeature', () => {
 		confirmAlertButton.simulate('click');
 		const ingredientField = component.find('#ingredient-field').at(0);
 		ingredientField.simulate('mouseOver');
-		const newIngredient = component.find('#ingredient-name').find('input');
+		const newIngredient = component.find('#new-ingredient-name').find('input');
 		expect(newIngredient.text()).toBe('');
 		newIngredient.simulate('change', { target: { value: '포도' } });
 		const ingredientQuantity = component.find('#ingredient-quantity').find('input');

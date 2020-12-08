@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from '@material-ui/core';
+import { Button, Box, Grid } from '@material-ui/core';
 import { toggleTodayIngredient, getFridge } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 import './TodayIngredient.scss';
@@ -39,8 +39,14 @@ const TodayIngredient: React.FC = () => {
 
 	return (
 		<div id="today-ingredient">
-			<div id="today-ingredient-header">-오늘의 재료-</div>
-			<div id="today-ingredient-contents">{todays_ingredient_contents}</div>
+			<Grid container id="today-ingredient-container" direction="column" alignItems="center">
+				<Grid item id="today-ingredient-header">
+					-오늘의 재료-
+				</Grid>
+				<Grid item xs>
+					<Box id="today-ingredient-contents">{todays_ingredient_contents}</Box>
+				</Grid>
+			</Grid>
 		</div>
 	);
 };

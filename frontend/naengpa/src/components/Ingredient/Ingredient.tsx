@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import CancelIcon from '@material-ui/icons/Cancel';
 import StarIcon from '@material-ui/icons/Star';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { deleteIngredientFromFridge, toggleTodayIngredient } from '../../store/actions/index';
 import './Ingredient.scss';
 import { AppState } from '../../store/store';
@@ -24,19 +23,20 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 	const dispatch = useDispatch();
 
 	const foodCategory: Dictionary<string> = {
-		과일: 'fruit.png',
-		채소: 'vegetable.png',
-		고기: 'meat.png',
+		과일류: 'fruit.png',
+		채소류: 'vegetable.png',
+		고기류: 'meat.png',
 		'수산물/건해산': 'seafood.png',
 		'우유/유제품': 'milk.png',
 		'계란/알류': 'egg.png',
 		가공육: 'ham.png',
 		'두부/콩류': 'tofu.png',
-		'라면/면류': 'noodles.png',
+		'면/만두/떡류': 'noodles.png',
 		'즉석식품/통조림': 'can.png',
 		'소스/잼류': 'sauces.png',
 		'김치/장류': 'kimchi.png',
 		양념류: 'spices.png',
+		곡류: 'rice.png',
 	};
 
 	const imageUrl = `foodCategory/${foodCategory[category as string]}`;
@@ -70,13 +70,11 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 
 	return (
 		<div id="ingredient">
-			<button
+			<div
 				id="ingredient-image-box"
-				type="button"
 				onMouseOver={onMouseOverIngredient}
 				onMouseLeave={onMouseLeaveIngredient}
 				onFocus={onFocusIngredient}
-				onClick={onClickToggleTodayIngredient}
 			>
 				{todayIngredient &&
 					(isTodayIngredient ? (
@@ -99,11 +97,11 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 						onClick={onClickDeleteIngredient}
 					/>
 				)}
-				<div id="ingredient-inbox">
+				<button id="ingredient-inbox" type="button" onClick={onClickToggleTodayIngredient}>
 					<img id="ingredient-image" src={imageUrl} alt="foodCategory/meat.png" />
 					<div id="ingredient-tag">{ingredient.name}</div>
-				</div>
-			</button>
+				</button>
+			</div>
 		</div>
 	);
 };

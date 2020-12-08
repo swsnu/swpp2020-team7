@@ -89,6 +89,7 @@ def article_list_get(request):
     return JsonResponse(article_collection, safe=False)
 
 
+@login_required_401
 def article_list_post(request):
     """ POST /api/articles/ post new article """
     try:
@@ -149,7 +150,6 @@ def article_list_post(request):
 
 @ensure_csrf_cookie
 @api_view(['GET', 'POST'])
-@login_required_401
 def article_list(request):
     """get article list or create an article"""
     if request.method == 'GET':
