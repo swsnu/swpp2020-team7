@@ -7,6 +7,11 @@ import * as serviceWorker from './serviceWorker';
 import App from './App';
 
 import store, { history } from './store/store';
+import axios from "axios";
+
+/* CSRF TOKEN */
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 ReactDOM.render(
 	<Provider store={store}>

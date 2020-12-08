@@ -11,10 +11,6 @@ import {
 
 import { ChatEntity, MessageEntity } from '../../model/chat';
 
-/* CSRF TOKEN */
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-
 /* SAVE TEMP USER */
 export const saveUserInfo_ = (user: UserSignupInputDTO) => ({
 	type: actionTypes.SAVE_USER_INFO,
