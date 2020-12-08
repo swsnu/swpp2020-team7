@@ -204,7 +204,9 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											placeholder="시간"
 											id="cook-time"
 											min="0"
-											onChange={(e) => setCookTime(e.target.value as unknown as number)}
+											onChange={(e) =>
+												setCookTime((e.target.value as unknown) as number)
+											}
 										/>
 										<div id="cook-time-unit">분</div>
 									</TableCell>

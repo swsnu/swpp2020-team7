@@ -101,8 +101,11 @@ export const extractMLFeatureFromRecipe = (recipe: BaseRecipeEntity) => {
 			bodyFormData.append('recipe', JSON.stringify(recipe));
 			recipe.foodImageFiles!.forEach((image) => bodyFormData.append('image', image));
 			const response = await axios.post('/api/extract/', bodyFormData);
-			window.localStorage.setItem('extractedRecipeInfo', JSON.stringify({ ...response.data, ...recipe, foodImageFiles: [] }));
-			
+			window.localStorage.setItem(
+				'extractedRecipeInfo',
+				JSON.stringify({ ...response.data, ...recipe, foodImageFiles: [] }),
+			);
+
 			dispatch(extractMLFeatureFromRecipe_({ ...response.data, ...recipe }));
 		} catch {
 			dispatch(push('/recipes/create/'));

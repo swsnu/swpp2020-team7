@@ -120,8 +120,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	// need to be directed to recipe detail page, current => recipelist
 	const onClickRegisterRecipe = () => {
 		const func = async () => {
-			if (!foodImageFiles?.length || !foodName || !(cookTime > 0) || !content)
-			{
+			if (!foodImageFiles?.length || !foodName || !(cookTime > 0) || !content) {
 				setAlert(true);
 				setAlertContent(
 					'조리시간, 요리 카테고리, 레시피 내용, 필요한 재료, 해쉬태그 및 사진을 모두 입력해 주세요!!!',
@@ -154,8 +153,8 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
-			console.log(foodImageFiles, " what");
-			console.log(foodName, " whwh");
+			console.log(foodImageFiles, ' what');
+			console.log(foodName, ' whwh');
 			const newRecipe: BaseRecipeEntity = {
 				foodName,
 				cookTime,
@@ -555,7 +554,9 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 											min="1"
 											value={cookTime}
 											id="cook-time"
-											onChange={(e) => setCookTime(e.target.value as unknown as number)}
+											onChange={(e) =>
+												setCookTime((e.target.value as unknown) as number)
+											}
 										/>
 										분
 									</TableCell>
@@ -628,7 +629,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				</>
 			)}
 		</div>
-									
-		);
+	);
 };
 export default ExtractMLFeature;

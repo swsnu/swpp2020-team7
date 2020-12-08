@@ -5,7 +5,7 @@ export {
 	login,
 	logout,
 	getUserList,
-	getUser, //should be deleted
+	getUser, // should be deleted
 	editUser,
 	changePassword,
 	deleteUser, // should be deleted
@@ -13,8 +13,8 @@ export {
 	getChatRoom,
 	createChatRoom,
 	sendChat,
-	receiveChat, //should be deleted
-	deleteChatRoom, //should be deleted
+	receiveChat, // should be deleted
+	deleteChatRoom, // should be deleted
 } from './user';
 export { getRegionList } from './region';
 
