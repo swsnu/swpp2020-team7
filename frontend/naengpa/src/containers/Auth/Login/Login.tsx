@@ -40,7 +40,7 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 			<div id="input-list">
 				<form>
 					<div>
-						<input	
+						<input
 							id="username"
 							type="text"
 							placeholder="USERNAME"
