@@ -1,5 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import configureStore from 'redux-mock-store';
 import MyFridge from './MyFridge';
 import { history } from '../../store/store';
 
@@ -20,11 +23,20 @@ jest.mock('../../components/Footer/Footer', () =>
 	jest.fn(() => <div className="spyFooter">Footer</div>),
 );
 
+const middlewares = [thunk];
+const store = configureStore(middlewares);
+
+const mockStore = store({});
+
 describe('MyFridge', () => {
 	let myFridge: any;
 
 	beforeEach(() => {
-		myFridge = <MyFridge history={history} />;
+		myFridge = (
+			<Provider store={mockStore}>
+				<MyFridge history={history} />
+			</Provider>
+		);
 	});
 	afterEach(() => {
 		jest.clearAllMocks();

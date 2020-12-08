@@ -347,7 +347,7 @@ describe('ActionCreators', () => {
 		const expectedPayload = {
 			type: actionTypes.TOGGLE_RECIPE,
 			target_id: 2,
-			recipeLikeInfo: null,
+			info: null,
 		};
 		expect(actions[0]).toEqual(expectedPayload);
 	});
