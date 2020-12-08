@@ -25,11 +25,11 @@ class Recipe(models.Model):
         return f'[{self.id}] {self.food_name} by {self.author}'
 
     def save(self, *args, **kwargs):
-        cache.delete('recipes')
+        cache.delete_many(['recipes', 'today_recipes'])
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete('recipes')
+        cache.delete_many(['recipes', 'today_recipes'])
         super().save(*args, **kwargs)
 
 
@@ -44,11 +44,11 @@ class Image(models.Model):
         return f'[{self.id}] of {self.recipe}'
 
     def save(self, *args, **kwargs):
-        cache.delete('recipes')
+        cache.delete_many(['recipes', 'today_recipes'])
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete('recipes')
+        cache.delete_many(['recipes', 'today_recipes'])
         super().save(*args, **kwargs)
 
 
@@ -56,7 +56,7 @@ class RecipeIngredient(models.Model):
     """Ingredient model for Recipe"""
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, null=True, related_name="ingredients")
-    ingredient = models.CharField(max_length=50, null=True, unique=True)
+    ingredient = models.CharField(max_length=50, null=True)
     quantity = models.CharField(max_length=50)
 
     created_at = models.DateTimeField(default=timezone.now)
@@ -65,11 +65,11 @@ class RecipeIngredient(models.Model):
         return f'[{self.id}] of {self.recipe}'
 
     def save(self, *args, **kwargs):
-        cache.delete('recipes')
+        cache.delete_many(['recipes', 'today_recipes'])
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete('recipes')
+        cache.delete_many(['recipes', 'today_recipes'])
         super().save(*args, **kwargs)
 
 
@@ -82,3 +82,11 @@ class RecipeLike(models.Model):
 
     def __str__(self):
         return f'[{self.id}] of {self.recipe}'
+
+    def save(self, *args, **kwargs):
+        cache.delete_many(['recipes', 'today_recipes'])
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        cache.delete_many(['recipes', 'today_recipes'])
+        super().save(*args, **kwargs)
