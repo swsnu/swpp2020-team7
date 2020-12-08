@@ -154,12 +154,17 @@ describe('ActionCreators', () => {
 			return new Promise((resolve, reject) => {
 				const result = {
 					status: 200,
-					data: stubInitialState,
+					data: stubInitialState.user.user,
 				};
 				resolve(result);
 			});
 		});
 		await mockStore.dispatch<any>(actionCreators.getUser(stubInitialState.user.user));
+		expect(spy).toBeCalled();
+
+		const actions = mockStore.getActions();
+		const expectedPayload = { type: actionTypes.GET_USER, user: stubInitialState.user.user };
+		expect(actions[0]).toEqual(expectedPayload);
 	});
 
 	it('should return correct actionType for deleteUser', () => {

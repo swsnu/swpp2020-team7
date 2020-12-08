@@ -49,6 +49,7 @@ export const login = (user: UserLoginInputDTO) => {
 		try {
 			const response = await axios.post('/api/login/', user);
 			const currentUser: UserEntity = response.data;
+			localStorage.setItem('userInfo', JSON.stringify(currentUser));
 			dispatch(login_(currentUser));
 			dispatch(push('/fridge'));
 		} catch (e) {
@@ -63,6 +64,7 @@ export function logout() {
 		const response: any = await axios.get('/api/logout/');
 
 		if (response.status === 204) {
+			localStorage.removeItem('userInfo');
 			dispatch({
 				type: actionTypes.LOGOUT,
 			});

@@ -7,8 +7,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """makes up database"""
-        food_category_list = ['육류', '디저트류', '유제품류', '해물류', '밥류', '과일류',
-                              '면류', '채소류', '생선류', '빵류', '튀김류', '계란/알류', '수프/국/찌개류', '기타']
+        food_category_list = ['육류', '디저트류', '해산물류', '밥류', '면류', '채소류',
+                              '빵류', '튀김류', '계란/알류', '수프/국/찌개류', '유제품류', '과일류', '기타']
 
         print('[start]')
         for category in food_category_list:

@@ -11,7 +11,7 @@ export type InitialState = {
 };
 
 const UserState: InitialState = {
-	user: null,
+	user: JSON.parse(window.localStorage.getItem('userInfo')!),
 	saved_user: null,
 	userList: [],
 	chatRoomList: [],

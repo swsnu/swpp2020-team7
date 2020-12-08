@@ -115,7 +115,7 @@ describe('Recipe Reducer', () => {
 			{
 				type: actionTypes.TOGGLE_RECIPE,
 				target_id: 2,
-				recipeLikeInfo: {
+				info: {
 					recipeLike: 0,
 					userLike: 0,
 				},
@@ -131,7 +131,7 @@ describe('Recipe Reducer', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.TOGGLE_RECIPE,
 			target_id: 2,
-			recipeLikeInfo: {
+			info: {
 				recipeLike: 0,
 				userLike: 0,
 			},
@@ -147,7 +147,7 @@ describe('Recipe Reducer', () => {
 			{
 				type: actionTypes.TOGGLE_RECIPE,
 				target_id: 3,
-				recipeLikeInfo: {
+				info: {
 					recipeLike: 1,
 					userLike: 1,
 				},
