@@ -154,7 +154,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	};
 
 	const onClickExtractMLFeatureAgain = async () => {
-		if (foodImageFiles === [] || foodName === '' || cookTime === 0 || content === '') {
+		if (foodImageFiles === [] || foodName === '' || typeof(cookTime) !== "number" || content === '') {
 			setAlert(true);
 			setAlertContent(
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
@@ -559,7 +559,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 											min="1"
 											value={cookTime}
 											id="cook-time"
-											onChange={(e) => setCookTime(e.target.value)}
+											onChange={(e) => setCookTime(e.target.value as unknown as number)}
 										/>
 										분
 									</TableCell>

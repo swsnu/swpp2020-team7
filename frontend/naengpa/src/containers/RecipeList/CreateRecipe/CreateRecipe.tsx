@@ -66,7 +66,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const onClickExtractMLFeature = () => {
 		const extractMLFeatureClosure = async () => {
 			// if one of the input field is empty, then the alert modal shows itself
-			if (foodImageFiles === [] || foodName === '' || cookTime === 0 || content === '') {
+			if (foodImageFiles === [] || foodName === '' || typeof(cookTime) !== "number" || content === '') {
 				setAlert(true);
 				setAlertContent(
 					'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
@@ -203,7 +203,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											type="number"
 											placeholder="시간"
 											id="cook-time"
-											onChange={(e) => setCookTime(e.target.value)}
+											onChange={(e) => setCookTime(e.target.value as unknown as number)}
 										/>
 										<div id="cook-time-unit">분</div>
 									</TableCell>
