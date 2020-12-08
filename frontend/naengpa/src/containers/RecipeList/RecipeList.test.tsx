@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import { act } from '@testing-library/react';
-import waitForComponentToPaint from '../../../test-utils/waitForComponentToPaint';
 import { history } from '../../store/store';
 import RecipeList from './RecipeList';
 import * as recipeActionCreators from '../../store/actions/recipe';
