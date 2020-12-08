@@ -13,9 +13,9 @@ class Recipe(models.Model):
     author = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     food_name = models.CharField(max_length=50)
     food_category = models.CharField(max_length=50)
-    cook_time = models.CharField(max_length=50)
+    cook_time = models.PositiveIntegerField(default=0)
     recipe_content = models.TextField(blank=True)
-    views = models.IntegerField(default=0)
+    views = models.PositiveIntegerField(default=0)
     like_users = models.ManyToManyField(
         User, blank=True, related_name='liked_recipe', through='RecipeLike')
     created_at = models.DateTimeField(default=timezone.now, db_index=True)
