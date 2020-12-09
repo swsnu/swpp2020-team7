@@ -29,7 +29,7 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 	if (recipe.cookTime >= 60) cookTime = `${Math.round(recipe.cookTime / 60)}H`;
 
 	const onClickRecipe = async () => {
-		dispatch(getRecipe(recipe.id!));
+		await dispatch(getRecipe(recipe.id!));
 		history.push(`/recipes/:${recipe.id}`);
 	};
 
@@ -69,8 +69,8 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 					}}
 				/>
 			) : (
-				<></>
-			)}
+					<></>
+				)}
 			<div id="recipe-card-footer">
 				<CardContent
 					id="recipe-content"
@@ -95,12 +95,12 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 								onClick={() => onClickRecipeLike()}
 							/>
 						) : (
-							<FavoriteBorderIcon
-								id="recipe-like-count-icon"
-								fontSize={fontSize}
-								onClick={() => onClickRecipeLike()}
-							/>
-						)}
+								<FavoriteBorderIcon
+									id="recipe-like-count-icon"
+									fontSize={fontSize}
+									onClick={() => onClickRecipeLike()}
+								/>
+							)}
 						{recipeLike}
 					</div>
 				</div>
