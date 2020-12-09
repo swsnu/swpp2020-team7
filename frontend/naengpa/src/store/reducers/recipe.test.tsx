@@ -69,14 +69,15 @@ describe('Recipe Reducer', () => {
 		expect(newState).toEqual({
 			...RecipeState,
 			recipeList: mockRecipeList,
-			lastPageIndexex: 2,
+			lastPageIndex: 2,
 		});
 	});
+
 
 	it('should check if it can get today recipe list correctly', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.GET_TODAY_RECIPE_LIST,
-			payload: mockRecipeList,
+			todayRecipeList: mockRecipeList,
 		});
 		expect(newState).toEqual({
 			...RecipeState,

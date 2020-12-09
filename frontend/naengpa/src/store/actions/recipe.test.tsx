@@ -128,7 +128,7 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.GET_TODAY_RECIPE_LIST, payload: [] };
+		const expectedPayload = { type: actionTypes.GET_TODAY_RECIPE_LIST, todayRecipeList: [] };
 		expect(actions[0]).toEqual(expectedPayload);
 	});
 
@@ -269,7 +269,7 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		expect(actions.length).toBe(0);
+		expect(actions.length).toBe(1);
 	});
 
 	it('should return delete Recipe action correctly', async () => {
