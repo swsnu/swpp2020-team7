@@ -26,5 +26,4 @@ urlpatterns = [
     path('api/articles/', include('article.urls')),
     path('api/comments/', include('comment.urls')),
     path('api/chatrooms/', include('chatroom.urls')),
-    re_path(r'^webpush/', include('webpush.urls'))
 ]
