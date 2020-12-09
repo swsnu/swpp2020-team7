@@ -52,4 +52,4 @@ export { getCommentList, getComment, addComment, deleteComment, editComment } fr
 
 export type DefaultAction = {
 	type: 'default';
-}
+};

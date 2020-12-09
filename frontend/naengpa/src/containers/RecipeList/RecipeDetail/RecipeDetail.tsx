@@ -83,8 +83,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const [alert, setAlert] = useState(false);
 
 	let cookTime = `${recipe.cookTime}M`;
-	if (recipe.cookTime >= 60)
-		cookTime = `${Math.round(recipe.cookTime / 60)}H`;
+	if (recipe.cookTime >= 60) cookTime = `${Math.round(recipe.cookTime / 60)}H`;
 
 	const image = currentList.map((value) => {
 		return (
@@ -122,11 +121,11 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		return (
 			<div id="ingredient-button-box" key={`${item.ingredient}`}>
 				{userIngredientNames.includes(item.ingredient) ? (
-					<Button key={`${item.ingredient}-${i}`} id="ingredient-yes-button">
+					<Button key={item.ingredient} id="ingredient-yes-button">
 						{item.ingredient}
 					</Button>
 				) : (
-					<Button key={`${item.ingredient}-${i}`} id="ingredient-no-button">
+					<Button key={item.ingredient} id="ingredient-no-button">
 						{item.ingredient}
 					</Button>
 				)}

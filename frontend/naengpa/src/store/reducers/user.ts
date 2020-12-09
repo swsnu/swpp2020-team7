@@ -22,7 +22,10 @@ const UserState: InitialState = {
 
 let filteredChatRoomList = null;
 
-function userReducer(state: InitialState = UserState, action: UserAction | DefaultAction = {type: 'default'}): InitialState {
+function userReducer(
+	state: InitialState = UserState,
+	action: UserAction | DefaultAction = { type: 'default' },
+): InitialState {
 	let userList;
 
 	switch (action.type) {

@@ -155,8 +155,8 @@ const AddIngredient: React.FC = () => {
 				</div>
 				{/* grid of ingredient collection for selected category */}
 				<IngredientGrid
-					ingredientList={currentIngredientList}
-					selectedCategory={selectedCategory}
+					ingredientCollection={currentIngredientList}
+					currentCategory={selectedCategory}
 				/>
 			</div>
 		</div>

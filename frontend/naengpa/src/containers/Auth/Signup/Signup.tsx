@@ -26,7 +26,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 
 	useEffect(() => {
 		dispatch(getRegionList());
-	})
+	});
 
 	const onClickSignup = () => {
 		if (

@@ -26,8 +26,7 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 
 	// Cook-Time Unit set for minute and hour
 	let cookTime = `${recipe.cookTime}M`;
-	if (recipe.cookTime >= 60)
-		cookTime = `${Math.round(recipe.cookTime / 60)}H`;
+	if (recipe.cookTime >= 60) cookTime = `${Math.round(recipe.cookTime / 60)}H`;
 
 	const onClickRecipe = async () => {
 		dispatch(getRecipe(recipe.id!));

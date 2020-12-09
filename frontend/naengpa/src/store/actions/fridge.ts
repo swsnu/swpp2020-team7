@@ -2,7 +2,6 @@ import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import { IngredientEntity, UserIngredientEntity } from '../../model/ingredient';
 
-
 /* GET FRIDGE */
 export const getFridge_ = (ingredientList: IngredientEntity[]) => ({
 	type: actionTypes.GET_FRIDGE,

@@ -13,7 +13,10 @@ const initialState: ArticleState = {
 	article: null,
 };
 
-function articleReducer(state: ArticleState = initialState, action: ArticleAction | DefaultAction = {type: 'default'}): ArticleState {
+function articleReducer(
+	state: ArticleState = initialState,
+	action: ArticleAction | DefaultAction = { type: 'default' },
+): ArticleState {
 	switch (action.type) {
 		/* GET ARTICLE LIST */
 		case actionTypes.GET_ARTICLE_LIST:

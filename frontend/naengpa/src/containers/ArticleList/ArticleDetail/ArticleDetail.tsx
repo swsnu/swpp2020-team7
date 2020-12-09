@@ -9,11 +9,7 @@ import Alert from '@material-ui/lab/Alert';
 import EmailIcon from '@material-ui/icons/Email';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import {
-	createChatRoom,
-	deleteArticle,
-	editArticle,
-} from '../../../store/actions/index';
+import { createChatRoom, deleteArticle, editArticle } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import { ArticleEntity, ArticleImage } from '../../../model/article';
 

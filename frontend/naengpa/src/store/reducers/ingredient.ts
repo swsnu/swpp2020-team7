@@ -13,13 +13,12 @@ const initialState: IngredientState = {
 
 function ingredient_reducer(
 	state: IngredientState = initialState,
-	action: IngredientAction | DefaultAction = {type: 'default'},
+	action: IngredientAction | DefaultAction = { type: 'default' },
 ): IngredientState {
-	if(action.type === actionTypes.GET_INGREDIENT_LIST) {
+	if (action.type === actionTypes.GET_INGREDIENT_LIST) {
 		return { ...state, ingredientList: action.payload };
-	} else {
-		return state;
 	}
+	return state;
 }
 
 export default ingredient_reducer;

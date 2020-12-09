@@ -14,7 +14,7 @@ interface IngredientProps {
 }
 
 const Ingredient: React.FC<IngredientProps> = ({ ingredient }) => {
-	const category: string = ingredient.category;
+	const { category } = ingredient;
 	const [deleteIngredient, setDeleteIngredient] = useState(false);
 	const [todayIngredient, setTodayIngredient] = useState(false);
 	const user = useSelector((state: AppState) => state.user.user);

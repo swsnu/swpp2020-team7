@@ -10,7 +10,10 @@ const FridgeState: InitialState = {
 	ingredientList: [],
 };
 
-function fridgeReducer(state: InitialState = FridgeState, action: FridgeAction | DefaultAction = {type: 'default'}): InitialState {
+function fridgeReducer(
+	state: InitialState = FridgeState,
+	action: FridgeAction | DefaultAction = { type: 'default' },
+): InitialState {
 	let ingredientList = [];
 	switch (action.type) {
 		/* GET INGREDIENT LIST */

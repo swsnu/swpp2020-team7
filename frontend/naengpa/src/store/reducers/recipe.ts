@@ -19,7 +19,10 @@ const RecipeState: InitialState = {
 	createdRecipe: JSON.parse(window.localStorage.getItem('extractedRecipeInfo')!),
 };
 
-function recipeReducer(state: InitialState = RecipeState, action: RecipeAction | DefaultAction = {type: 'default'}): InitialState {
+function recipeReducer(
+	state: InitialState = RecipeState,
+	action: RecipeAction | DefaultAction = { type: 'default' },
+): InitialState {
 	let recipeList: RecipeEntity[] = [];
 
 	switch (action.type) {
