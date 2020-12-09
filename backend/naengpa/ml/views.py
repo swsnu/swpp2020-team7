@@ -1,16 +1,15 @@
 """views for ingredient"""
 import json
 from django.http import JsonResponse, HttpResponseBadRequest
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from rest_framework.decorators import api_view
 from utils.auth import login_required_401
 from utils.logmeal_utils import extract_foodcategory, InvalidImageFileGiven
 from utils.konlpy_utils import extract_ingredients
 
 
-@ensure_csrf_cookie
+@csrf_exempt
 @api_view(['POST'])
-@login_required_401
 def extract_ml_feature(request):
     """/api/extract/ extract ml features"""
     if request.method == 'POST':
@@ -24,5 +23,6 @@ def extract_ml_feature(request):
             return_data = {'foodCategory': food_category,
                            'ingredients': ingredients}
         except InvalidImageFileGiven as err:
-            return HttpResponseBadRequest(str(err))
+            print(err)
+            return HttpResponseBadRequest(json.dumps({'code': err.code, 'message': str(err)}))
         return JsonResponse(return_data, safe=False)
