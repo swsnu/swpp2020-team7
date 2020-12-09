@@ -98,7 +98,7 @@ def recipe_list(request):
         ''' POST /api/recipes/ post new recipe '''
         try:
             user_id = request.user.id
-            req_data = eval(request.POST['recipe'])
+            req_data = json.loads(request.POST.get('recipe'))
             food_name, cook_time, recipe_content, food_category_str, ingredients = itemgetter(
                 'foodName', 'cookTime', 'content', 'foodCategory', 'ingredients')(req_data)
             food_images = request.FILES.getlist('image')
