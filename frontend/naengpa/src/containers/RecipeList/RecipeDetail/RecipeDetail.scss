@@ -20,6 +20,10 @@
         style: normal;
     }
     margin: 5% 5% 0% 5%;
+
+    #recipe-foodCategory {
+      margin-left: 5px;
+    }
   }
 
   #recipe-section2 {
@@ -79,6 +83,7 @@
         align-self: right;
         color: #ffffff;  
         background-color: #69e88e;  
+        margin-right: 5px;
       }
 
       #ingredient-no-button{
@@ -91,6 +96,7 @@
         align-self: right;
         color: #ffffff;  
         background-color: #ff6767;  
+        margin-right: 5px;
       }
     }
     #recipe-content {

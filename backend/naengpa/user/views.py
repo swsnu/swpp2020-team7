@@ -267,7 +267,7 @@ def user_fridge(request, id):
                 fridge=user.fridge, ingredient=ingredient)
 
             ingredient_list = [
-                ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient')]
+                ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient').order_by('-created_at')]
         except (User.DoesNotExist, KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
         except Ingredient.DoesNotExist:
@@ -290,7 +290,7 @@ def user_ingredient(request, user_id, id):
             target_ingredient.is_today_ingredient = not target_ingredient.is_today_ingredient
             target_ingredient.save()
             ingredient_list = [
-                ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient')]
+                ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient').order_by('-created_at')]
         except User.DoesNotExist:
             return HttpResponseBadRequest()
         except Ingredient.DoesNotExist:
@@ -302,7 +302,7 @@ def user_ingredient(request, user_id, id):
             ingredient = Ingredient.objects.get(id=id)
             user.fridge.ingredients.remove(ingredient)
             ingredient_list = [
-                ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient')]
+                ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient').order_by('-created_at')]
         except User.DoesNotExist:
             return HttpResponseBadRequest()
         except Ingredient.DoesNotExist:
