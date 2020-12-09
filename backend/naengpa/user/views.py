@@ -163,7 +163,6 @@ def user(request, id):
             edit_date_of_birth = request.data['dateOfBirth']
             edit_email = request.data['email']
             checked_password = request.data['password']
-            # user_image = request.FILES.get('')
 
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
