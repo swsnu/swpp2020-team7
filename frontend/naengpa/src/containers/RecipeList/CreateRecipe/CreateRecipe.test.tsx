@@ -119,15 +119,6 @@ describe('CreateRecipe', () => {
 		expect(component.find('.collapse').at(0).props().in).toBe(false);
 	});
 
-	it('should alert that the recipe contents are missing', async () => {
-		const component = mount(createRecipe);
-		await waitForComponentToPaint(component);
-		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
-		confirmAlertButton.simulate('click');
-		const extractMLFeatureButton = component.find('#extract-ml-feature-button').at(0);
-		extractMLFeatureButton.simulate('click');
-		expect(component.find('.collapse').at(0).props().in).toBe(true);
-	});
 
 	it('should delete the recipe image', async () => {
 		const component = mount(createRecipe);
