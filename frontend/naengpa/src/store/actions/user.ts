@@ -73,14 +73,13 @@ export function logout() {
 	return async (dispatch: any) => {
 		toast.success(`🦄 안녕히 가세요!`);
 		await axios.get('/api/logout/');
-		localStorage.removeItem('userInfo');
+		localStorage.clear();
 		sessionStorage.removeItem('recipeList');
 		sessionStorage.removeItem('recipe');
 		sessionStorage.removeItem('lastPageIndex');
 		sessionStorage.removeItem('extractedRecipeInfo');	
 		sessionStorage.removeItem('chatRoomList');
 		sessionStorage.removeItem('chatRoom');	
-		toast.success(`🦄 안녕히 가세요!`);
 		dispatch(logout_());
 	};
 }
