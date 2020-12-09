@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 import {
@@ -8,7 +9,7 @@ import {
 	EditUserInputDTO,
 	ChangePasswordInputDTO,
 } from '../../model/user';
-
+import { getCurrentTimeGreet } from '../../utils/time';
 import { ChatEntity, MessageEntity } from '../../model/chat';
 
 /* SAVE TEMP USER */
@@ -37,6 +38,7 @@ export const signup = (user: UserSignupInputDTO) => {
 		window.localStorage.removeItem('savedUser');
 		dispatch(signup_(currentUser));
 		dispatch(push('/fridge'));
+		toast.info(`🦄 반가워요, ${user.name}님!`);
 	};
 };
 
@@ -51,8 +53,13 @@ export const login = (user: UserLoginInputDTO) => {
 			window.localStorage.setItem('userInfo', JSON.stringify(currentUser));
 			dispatch(login_(currentUser));
 			dispatch(push('/fridge'));
+			toast.info(`🦄 ${getCurrentTimeGreet(currentUser.name)}`);
 		} catch (e) {
-			alert('존재하지 않는 username이거나 비밀번호가 일치하지 않습니다.');
+			if (e.response && e.response.status === 404) {
+				toast.error(`🦄 존재하지 않는 아이디에요!`);
+			} else if (e.response && e.response.status === 401) {
+				toast.error(`🦄 잘못된 비밀번호에요!`);
+			} 
 		}
 	};
 };
@@ -68,6 +75,7 @@ export function logout() {
 
 		if (response.status === 204) {
 			localStorage.removeItem('userInfo');
+			toast.success(`🦄 안녕히 가세요!`);
 			dispatch(logout_());
 		}
 	};

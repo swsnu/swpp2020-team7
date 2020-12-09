@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { History } from 'history';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import { getRegionList, saveUserInfo } from '../../../store/actions/index';
@@ -18,7 +19,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 	const [dateOfBirth, setDateOfBirth] = useState('');
 	const [email, setEmail] = useState('');
 	const namePat = new RegExp('^[ㄱ-ㅎ|가-힣|a-z|A-Z|*]+$');
-	const birthPat = new RegExp(/^[0-9]{6}$/);
+	const birthPat = new RegExp('^\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$');
 	const emailPat = new RegExp(
 		/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$/i,
 	);
@@ -29,17 +30,22 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 	});
 
 	const onClickSignup = () => {
-		if (
-			name === '' ||
-			username === '' ||
-			password === '' ||
-			passwordConfirm === '' ||
-			dateOfBirth === '' ||
-			email === ''
-		) {
-			alert('fill in the blink');
+		if (!name) {
+			toast.error('🦄 이름을 입력해주세요!');
+		} else if (!username) {
+			toast.error('🦄 아이디를 입력해주세요!');
+		} else if (!password || !passwordConfirm) {
+			toast.error('🦄 비밀번호를 입력해주세요!');
 		} else if (password !== passwordConfirm) {
-			alert('Do not match password');
+			toast.error('🦄 비밀번호가 일치하지 않아요!');
+		} else if (!dateOfBirth) {
+			toast.error('🦄 생년월일을 입력해주세요!');
+		} else if (!birthPat.test(dateOfBirth)) {
+			toast.error(<div>🦄 생년월일을 올바르게 입력해 주세요!<br />&nbsp;&nbsp;&nbsp;&nbsp;ex) 970101</div>);
+		} else if (!email) {
+			toast.error('🦄 이메일을 입력해주세요!');
+		} else if (!emailPat.test(email)) {
+			toast.error('🦄 이메일을 올바르게 입력해주세요!');
 		} else {
 			dispatch(
 				saveUserInfo({
