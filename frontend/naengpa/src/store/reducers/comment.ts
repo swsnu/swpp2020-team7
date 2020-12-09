@@ -3,21 +3,38 @@ import * as actionTypes from '../actions/actionTypes';
 import { DefaultAction } from '../actions/index';
 
 export type CommentState = {
-    commentList: any,
+	commentList: any;
 };
 
 const initialState: CommentState = {
 	commentList: [],
 };
 
-function foodCategoryReducer(
+function commentReducer(
 	state: CommentState = initialState,
 	action: CommentAction | DefaultAction = { type: 'default' },
 ): CommentState {
-	if (action.type === actionTypes.GET_COMMENT_LIST) {
-		return { ...state, commentList: action.payload };
+	switch (action.type) {
+		/* GET COMMENT LIST */
+		case actionTypes.GET_COMMENT_LIST:
+			return { ...state, commentList: action.payload };
+		/* GET COMMENT */
+		case actionTypes.GET_COMMENT:
+			return { ...state, commentList: action.payload };
+		/* CREATE COMMENT */
+		case actionTypes.ADD_COMMENT:
+			return { ...state, commentList: action.payload };
+		/* EDIT COMMENT */
+		case actionTypes.EDIT_COMMENT: {
+			return { ...state, commentList: action.payload };
+		}
+		/* DELETE COMMENT */
+		case actionTypes.DELETE_COMMENT: {
+			return { ...state, commentList: action.payload };
+		}
+		default:
+			return state;
 	}
-	return state;
 }
 
 export default commentReducer;
