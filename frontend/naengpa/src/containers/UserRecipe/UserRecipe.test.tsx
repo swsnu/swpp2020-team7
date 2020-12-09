@@ -42,8 +42,8 @@ const stubInitialState = {
 				authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 				author: 'test',
 				foodName: '딸기',
-				cookTime: '60',
-				recipeContent: '레시피',
+				cookTime: 60,
+				content: '레시피',
 				foodImages: [
 					{
 						id: 2,
@@ -61,8 +61,8 @@ const stubInitialState = {
 				authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 				author: 'test',
 				foodName: '딸기',
-				cookTime: '60',
-				recipeContent: '레시피',
+				cookTime: 60,
+				content: '레시피',
 				foodImages: [
 					{
 						id: 2,

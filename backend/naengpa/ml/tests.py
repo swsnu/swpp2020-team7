@@ -25,7 +25,7 @@ class MlTestCase(TestCase):
         test_user.save()
 
     def test_extract_ml_feature_list(self):
-        response = self.client.post('/api/extract/', "recipe: {'foodName': 'apple', 'cookTime': 0, 'recipeContent': '사과'}, image: []",
+        response = self.client.post('/api/extract/', "recipe: {'foodName': 'apple', 'cookTime': 0, 'content': '사과'}, image: []",
                                     content_type='multipart/form-data')
         self.assertEqual(response.status_code, 401)
 
@@ -35,7 +35,7 @@ class MlTestCase(TestCase):
         # get ml feature list done
         response = self.client.post('/api/extract/',
                                     {
-                                        'recipe': "{'foodName': 'apple', 'cookTime': 0, 'recipeContent': '사과'}",
+                                        'recipe': json.dumps({"foodName": "apple", "cookTime": 0, 'content': '사과'}),
                                         'image': ''
                                     })
         self.assertEqual(response.status_code, 200)

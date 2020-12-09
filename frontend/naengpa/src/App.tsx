@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import './App.scss';
+import { ToastContainer } from 'react-toastify';
+
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
@@ -35,6 +36,9 @@ import ArticleDetail from './containers/ArticleList/ArticleDetail/ArticleDetail'
 import EditArticle from './containers/ArticleList/EditArticle/EditArticle';
 import { AppState } from './store/store';
 
+import 'react-toastify/dist/ReactToastify.css';
+import './App.scss';
+
 interface AppProps {
 	history: History;
 }
@@ -44,6 +48,17 @@ const App: React.FC<AppProps> = ({ history }) => {
 
 	return (
 		<div id="App">
+			<ToastContainer
+				position="top-center"
+				autoClose={3000}
+				hideProgressBar={false}
+				newestOnTop
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
 			<ConnectedRouter history={history}>
 				{user && (
 					<div id="naengpa-header">

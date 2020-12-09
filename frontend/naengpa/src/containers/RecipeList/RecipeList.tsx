@@ -1,86 +1,28 @@
-import React, { useEffect, MouseEvent, useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 
 import Pagination from '@material-ui/lab/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-// import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Recipe from '../../components/Recipe/Recipe';
 import { AppState } from '../../store/store';
-import { getRecipeList, getFoodCategoryList } from '../../store/actions/index';
+import { getRecipeList } from '../../store/actions/index';
 
 import './RecipeList.scss';
-import { RecipeEntity } from '../../model/recipe';
 
 interface RecipeListProps {
 	history: History;
 }
 
 const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
-	const recipeList = useSelector((state: AppState) => state.recipe.recipeList);
-	const recipeCount = useSelector((state: AppState) => state.recipe.recipeCount);
+	const recipes = useSelector((state: AppState) => state.recipe);
+	const [currentList, setCurrentList] = useState(recipes.recipeList);
 	const foodCategoryList = useSelector((state: AppState) => state.foodCategory.foodCategoryList);
 	const [page, setPage] = useState(1);
-	const [currentList, setCurrentList] = useState<RecipeEntity[] | null>(null);
-	const [maxPageIndex, setMaxPageIndex] = useState(1);
-	const [sortBy, setSortBy] = useState('-created_at');
-	const [filterBy, setFilterBy] = useState(true);
-	const [searchCategory, setSearchCategory] = useState('전체');
-	const [loading, setLoading] = useState<boolean>(true);
-	const [query, setQuery] = useState('');
-	const dispatch = useDispatch();
-
-	const getListIndex = (page: number) => (page - 1) * 9;
-
-	const onLoadRecipeList = async (page: number) => {
-		setLoading(true);
-		await dispatch(getRecipeList(query, sortBy, searchCategory, filterBy, getListIndex(page)));
-		setMaxPageIndex(Math.ceil(recipeCount / 9.0));
-		setPage(page);
-		setCurrentList(recipeList);
-		setLoading(false);
-	};
-
-	const onClickSearch = (e: React.KeyboardEvent) => {
-		if (e.key === 'Enter') {
-			onLoadRecipeList(1);
-		}
-	};
-
-	const onClickRecentFilter = (e: MouseEvent<HTMLButtonElement>) => {
-		setSortBy('-created_at');
-		setFilterBy(false);
-		e.preventDefault();
-		onLoadRecipeList(1);
-	};
-
-	const onClickPopularFilter = (e: MouseEvent<HTMLButtonElement>) => {
-		setSortBy('like_users');
-		setFilterBy(false);
-		e.preventDefault();
-		onLoadRecipeList(1);
-	};
-
-	const onClickRecommendedFilter = (e: MouseEvent<HTMLButtonElement>) => {
-		setSortBy('-created_at');
-		setFilterBy(true);
-		e.preventDefault();
-		onLoadRecipeList(1);
-	};
-
-	const onChangePage = (e: React.ChangeEvent<unknown>, value: number) => {
-		e.preventDefault();
-		onLoadRecipeList(value);
-	};
-
-	const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {
-		e.preventDefault();
-		history.push('/recipes/create');
-	};
 
 	const recipe = currentList?.map((item: any) => {
 		return (
@@ -88,25 +30,68 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		);
 	});
 
+	const [maxPageIndex, setMaxPageIndex] = useState(recipes.lastPageIndex);
+	const [searchCategory, setSearchCategory] = useState('전체');
+	const [sortBy, setSortBy] = useState('created_at');
+	const [loading, setLoading] = useState<boolean>(false);
+	const [query, setQuery] = useState('');
+	const dispatch = useDispatch();
+
+	const onLoadPage = async () => {
+		setLoading(true);
+		dispatch(getRecipeList(query, sortBy, searchCategory, page));
+		setMaxPageIndex(recipes.lastPageIndex);
+		setCurrentList(recipes.recipeList);
+		setLoading(false);
+	};
+
+	const onChangekSearch = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+		value: string,
+	) => {
+		e.preventDefault();
+		setQuery(value);
+		if (query) setSortBy('created_at');
+		setPage(1);
+		onLoadPage();
+	};
+
+	const onChangeSearchCategory = (value: string) => {
+		setSearchCategory(value);
+		setSortBy('create_at');
+		setPage(1);
+		onLoadPage();
+	};
+
+	const onClickFilterButton = (e: MouseEvent<HTMLButtonElement>, newSortBy: string) => {
+		e.preventDefault();
+		setSortBy(newSortBy);
+		setPage(1);
+		onLoadPage();
+	};
+
+	const onChangePage = (e: React.ChangeEvent<unknown>, value: number) => {
+		e.preventDefault();
+		setPage(value);
+		onLoadPage();
+	};
+
+	const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {
+		e.preventDefault();
+		history.push('/recipes/create');
+	};
+
 	const selectOption = foodCategoryList?.map((item: any, idx) => {
 		return (
 			<MenuItem
-				key={item.id}
-				value={`#${item.name}-${idx}`}
+				key={`#${item.name}-${idx}`}
+				value={item.name}
 				onClick={(e) => setSearchCategory(item.name)}
 			>
 				{item.name}
 			</MenuItem>
 		);
 	});
-
-	useEffect(() => {
-		const func = async () => {
-			await dispatch(getFoodCategoryList());
-			await onLoadRecipeList(1);
-		};
-		func();
-	}, []);
 
 	return (
 		<div id="recipe-list">
@@ -117,17 +102,16 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 							id="recipe-search-input"
 							placeholder="검색어를 입력해 주세요."
 							inputProps={{ 'aria-label': 'search' }}
-							onChange={(e) => setQuery(e.target.value)}
-							onKeyPress={onClickSearch}
+							onChange={(e) => onChangekSearch(e, e.target.value)}
 						/>
 						<Select
 							labelId="recipe-search-select-label"
 							id="recipe-search-select"
 							value={searchCategory}
 							disableUnderline
-							onChange={(e) => setSearchCategory(e.target.value as string)}
+							onChange={(e) => onChangeSearchCategory(e.target.value as string)}
 						>
-							<MenuItem value="전체" onClick={(e) => setSearchCategory('전체')}>
+							<MenuItem value="전체" onClick={(e) => onChangeSearchCategory('전체')}>
 								전체
 							</MenuItem>
 							{selectOption}
@@ -138,21 +122,27 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 					<button
 						id="most-recent-filter"
 						type="button"
-						onClick={(e) => onClickRecentFilter(e)}
+						onClick={(e) => {
+							onClickFilterButton(e, 'created_at');
+						}}
 					>
 						최신
 					</button>
 					<button
 						id="most-popular-filter"
 						type="button"
-						onClick={(e) => onClickPopularFilter(e)}
+						onClick={(e) => {
+							onClickFilterButton(e, 'likes');
+						}}
 					>
 						인기
 					</button>
 					<button
 						id="most-recommended-filter"
 						type="button"
-						onClick={(e) => onClickRecommendedFilter(e)}
+						onClick={(e) => {
+							onClickFilterButton(e, 'ingredient');
+						}}
 					>
 						추천
 					</button>
@@ -175,11 +165,11 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 				id="recipe-list-page"
 				page={page}
 				size="large"
-				count={maxPageIndex}
+				count={Math.ceil(maxPageIndex / 9.0)}
 				onChange={onChangePage}
 			/>
 		</div>
 	);
 };
 
-export default React.memo(RecipeList);
+export default RecipeList;

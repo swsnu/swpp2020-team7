@@ -65,7 +65,7 @@ describe('Ingredient', () => {
 
 		ingredient = (
 			<Provider store={mockStore}>
-				<Ingredient history={history} ingredient={mockIngredient} />
+				<Ingredient ingredient={mockIngredient} />
 			</Provider>
 		);
 

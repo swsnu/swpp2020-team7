@@ -6,7 +6,8 @@ from .env import get_env_value
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
 
 SECRET_KEY = get_env_value('SECRET_KEY')
 
@@ -126,7 +127,8 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Seoul'
 USE_I18N = True
 USE_L10N = True
-USE_TZ = True
+# Korean Time Applied
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/assets/'
@@ -138,3 +140,9 @@ STATICFILES_DIRS = [
 # media files
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
+
+# WEBPUSH_SETTINGS = {
+#     "VAPID_PUBLIC_KEY": get_env_value("VAPID_PUBLIC_KEY"),
+#     "VAPID_PRIVATE_KEY": get_env_value("VAPID_PRIVATE_KEY"),
+#     "VAPID_ADMIN_EMAIL": get_env_value("VAPID_SUBJECT"),
+# }

@@ -85,19 +85,19 @@ describe('CreateRecipe', () => {
 			const foodName = component.find('input#food-name').find('input');
 			const cookTime = component.find('input#cook-time').find('input');
 			const foodImage = component.find('input#food-image').find('input');
-			const recipeContent = component.find('#recipe-content').find('textarea');
+			const content = component.find('#recipe-content').find('textarea');
 			const extractMLFeatureButton = component
 				.find('#extract-ml-feature-button')
 				.find('button');
 
 			foodName.simulate('change', { target: { value: 'ice Cream' } });
-			cookTime.simulate('change', { target: { value: '40' } });
-			recipeContent.simulate('change', { target: { value: '아이스크림' } });
+			cookTime.simulate('change', { target: { value: 40 } });
+			content.simulate('change', { target: { value: '아이스크림' } });
 			foodImage.simulate('change', { target: { files: [image] } });
 			expect(foodName.length).toBe(1);
 			expect(cookTime.length).toBe(1);
 			expect(foodImage.length).toBe(1);
-			expect(recipeContent.length).toBe(1);
+			expect(content.length).toBe(1);
 			extractMLFeatureButton.simulate('click');
 			// expect(component.find('Loading').length).toBe(1);
 		});

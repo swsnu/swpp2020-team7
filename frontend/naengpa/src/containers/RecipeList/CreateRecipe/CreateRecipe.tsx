@@ -32,9 +32,9 @@ interface CreateRecipeProps {
 
 const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const [foodName, setFoodName] = useState('');
-	const [recipeContent, setRecipeContent] = useState('');
+	const [content, setContent] = useState('');
 	const [foodImageFiles, setFoodImageFiles] = useState<File[]>([]);
-	const [cookTime, setCookTime] = useState('');
+	const [cookTime, setCookTime] = useState(0);
 
 	// alert state is true if alert is necessary, otherwise false.
 	const [alert, setAlert] = useState(true);
@@ -66,12 +66,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const onClickExtractMLFeature = () => {
 		const extractMLFeatureClosure = async () => {
 			// if one of the input field is empty, then the alert modal shows itself
-			if (
-				foodImageFiles === [] ||
-				foodName === '' ||
-				cookTime === '' ||
-				recipeContent === ''
-			) {
+			if (!foodImageFiles?.length || !foodName || cookTime <= 0 || !content) {
 				setAlert(true);
 				setAlertContent(
 					'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
@@ -80,12 +75,12 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				const newRecipe: BaseRecipeEntity = {
 					foodName,
 					cookTime,
-					recipeContent,
+					content,
 					foodImageFiles,
 				};
 
 				setLoading(true);
-				await dispatch(extractMLFeatureFromRecipe(newRecipe));
+				dispatch(extractMLFeatureFromRecipe(newRecipe));
 				setLoading(false);
 				history.push('/ingredients/extract');
 			}
@@ -100,7 +95,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 					<div key={`#${item}`} id="delete-image-icon-box">
 						{!alert && (
 							<CancelIcon
-								key={URL.createObjectURL(item) as string}
+								key={URL.createObjectURL(item)}
 								id="delete-image-button"
 								type="button"
 								onClick={() => onClickDeleteImage(idx)}
@@ -109,7 +104,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 						<img
 							key={`#${item}`}
 							id="delete-image-icon"
-							src={URL.createObjectURL(item) as string}
+							src={URL.createObjectURL(item)}
 							height="150px"
 							width="150px"
 							alt="/api/images" // TODO: check alt path
@@ -206,9 +201,12 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											required
 											disabled={alert}
 											type="number"
-											placeholder="60"
+											placeholder="시간"
 											id="cook-time"
-											onChange={(e) => setCookTime(e.target.value)}
+											min="0"
+											onChange={(e) =>
+												setCookTime((e.target.value as unknown) as number)
+											}
 										/>
 										<div id="cook-time-unit">분</div>
 									</TableCell>
@@ -257,7 +255,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											rows={30}
 											type="text"
 											InputProps={{ classes }}
-											onChange={(e) => setRecipeContent(e.target.value)}
+											onChange={(e) => setContent(e.target.value)}
 										/>
 									</TableCell>
 								</TableRow>

@@ -62,7 +62,7 @@ class User(AbstractUser):
 
     def delete(self, *args, **kwargs):
         cache.delete('users')
-        super().save(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
 
 class Fridge(models.Model):
@@ -82,3 +82,17 @@ class FridgeIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     is_today_ingredient = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
+
+
+class Notification(models.Model):
+    recipient = models.ForeignKey(
+        User, related_name="notifications", on_delete=models.CASCADE)
+    title = models.CharField(max_length=20)
+    content = models.CharField(max_length=50)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f'[to {self.recipient}] {self.title}: {self.content}'
+
+    # def create(self, **obj_data):
+    #     return super().create(**obj_data)

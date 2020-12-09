@@ -33,7 +33,7 @@ class Article(models.Model):
 
     def delete(self, *args, **kwargs):
         cache.delete('articles')
-        super().save(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
 
 class Image(models.Model):
@@ -54,4 +54,4 @@ class Image(models.Model):
 
     def delete(self, *args, **kwargs):
         cache.delete('articles')
-        super().save(*args, **kwargs)
+        super().delete(*args, **kwargs)

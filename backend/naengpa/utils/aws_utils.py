@@ -23,7 +23,7 @@ def get_filename_format(prefix, fid, file_idx, fname):
     file_idx: index of current file in the files to upload
     fname: given input file name
     """
-    current_time = timezone.localtime().strftime("%Y%m%d-%H%M%S-%f")
+    current_time = timezone.now().strftime("%Y%m%d-%H%M%S-%f")
     return "{}/{}/{}-{}{}".format(prefix, fid, current_time, file_idx, os.path.splitext(fname)[1])
 
 

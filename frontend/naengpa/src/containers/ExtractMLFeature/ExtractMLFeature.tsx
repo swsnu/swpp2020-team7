@@ -45,9 +45,9 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	const [loading, setLoading] = useState(false);
 	const [foodName, setFoodName] = useState('');
-	const [recipeContent, setRecipeContent] = useState('');
+	const [content, setContent] = useState('');
 	const [foodImageFiles, setFoodImageFiles] = useState<File[]>([]);
-	const [cookTime, setCookTime] = useState('');
+	const [cookTime, setCookTime] = useState(0);
 	const [foodCategory, setFoodCategory] = useState('');
 	const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
 	const [newIngredient, setNewIngredient] = useState('');
@@ -70,8 +70,8 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	useEffect(() => {
 		dispatch(getFoodCategoryList());
 		setFoodName(createdRecipe?.foodName as string);
-		setRecipeContent(createdRecipe?.recipeContent as string);
-		setCookTime(createdRecipe?.cookTime as string);
+		setContent(createdRecipe?.content as string);
+		setCookTime(createdRecipe?.cookTime as number);
 		setFoodImageFiles(createdRecipe?.foodImageFiles as File[]);
 		setFoodCategory(createdRecipe?.foodCategory as string);
 		setModifiedCategory(createdRecipe?.foodCategory as string);
@@ -119,52 +119,50 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	// need to be directed to recipe detail page, current => recipelist
 	const onClickRegisterRecipe = () => {
-		if (
-			foodImageFiles === [] ||
-			cookTime === '' ||
-			recipeContent === '' ||
-			ingredients === [] ||
-			foodCategory === ''
-		) {
-			setAlert(true);
-			setAlertContent(
-				'조리시간, 요리 카테고리, 레시피 내용, 필요한 재료, 해쉬태그 및 사진을 모두 입력해 주세요!!!',
-			);
-		} else {
-			const newIngredientList: RecipeIngredient[] = ingredients.map((item, idx) => {
-				return { ingredient: item.ingredient, quantity: item.quantity };
-			});
-
-			const newRecipe: RecipeEntity = {
-				foodName,
-				cookTime,
-				recipeContent,
-				foodImageFiles,
-				recipeLike: 0,
-				userLike: 0,
-				foodCategory,
-				ingredients: newIngredientList,
-			};
-			dispatch(createRecipe(newRecipe));
-			history.push('/recipes');
-		}
+		const func = async () => {
+			if (!foodImageFiles?.length || !foodName || cookTime <= 0 || !content) {
+				setAlert(true);
+				setAlertContent(
+					'조리시간, 요리 카테고리, 레시피 내용, 필요한 재료, 해쉬태그 및 사진을 모두 입력해 주세요!!!',
+				);
+			} else {
+				const newIngredientList: RecipeIngredient[] = ingredients.map((item, idx) => {
+					return { ingredient: item.ingredient, quantity: item.quantity };
+				});
+				const newRecipe: RecipeEntity = {
+					foodName,
+					cookTime,
+					content,
+					foodImageFiles,
+					recipeLike: 0,
+					userLike: 0,
+					foodCategory,
+					ingredients: newIngredientList,
+				};
+				dispatch(createRecipe(newRecipe));
+				history.push('/recipes');
+			}
+		};
+		func();
 	};
 
 	const onClickExtractMLFeatureAgain = async () => {
-		if (foodImageFiles === [] || foodName === '' || cookTime === '' || recipeContent === '') {
+		if (!foodImageFiles?.length || !foodName || cookTime <= 0 || !content) {
 			setAlert(true);
 			setAlertContent(
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
+			console.log(foodImageFiles, ' what');
+			console.log(foodName, ' whwh');
 			const newRecipe: BaseRecipeEntity = {
 				foodName,
 				cookTime,
-				recipeContent,
+				content,
 				foodImageFiles,
 			};
 			setLoading(true);
-			await dispatch(extractMLFeatureFromRecipe(newRecipe));
+			dispatch(extractMLFeatureFromRecipe(newRecipe));
 			setLoading(false);
 			history.push('/ingredients/extract');
 		}
@@ -174,19 +172,19 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		? []
 		: foodImageFiles?.map((item, idx) => {
 				return (
-					<div key={`${idx} ` as string} id="delete-image-icon-box">
+					<div key={`${idx} `} id="delete-image-icon-box">
 						{!alert && (
 							<CancelIcon
-								key={URL.createObjectURL(item) as string}
+								key={URL.createObjectURL(item)}
 								id="delete-image-button"
 								type="button"
 								onClick={() => onClickDeleteImage(idx)}
 							/>
 						)}
 						<img
-							key={`${idx}-` as string}
+							key={`${idx}-`}
 							id="delete-image-icon"
-							src={URL.createObjectURL(item) as string}
+							src={URL.createObjectURL(item)}
 							height="150px"
 							width="150px"
 							alt="/api/images" // TODO: check alt path
@@ -338,7 +336,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				<FormControlLabel
 					control={
 						<Checkbox
-							key={`${i}` as string}
+							key={`${i} `}
 							checked={item.checked as boolean}
 							checkedIcon={<CheckBoxIcon id="checkbox" />}
 							onChange={(e) => {
@@ -353,7 +351,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					id="ingredient-quantity"
 					placeholder="수량: "
 					value={item.quantity as string}
-					key={`${item.ingredient}-${i}` as string}
+					key={`${item.ingredient}-${i}`}
 					required
 					onChange={(e) => {
 						onChangeIngredientQuantity(item.ingredient, e.target.value);
@@ -427,10 +425,10 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 									checkedIcon={<CheckBoxIcon id="checkbox" />}
 								/>
 							}
-							label=""
+							label={newIngredient}
 						/>
 						<Input
-							id="ingredient-name"
+							id="new-ingredient-name"
 							placeholder="재료"
 							disableUnderline
 							value={newIngredient}
@@ -440,7 +438,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 						/>
 						{newIngredient && (
 							<Input
-								id="ingredient-quantity"
+								id="new-ingredient-quantity"
 								placeholder="수량: "
 								value={newIngredientQuantity}
 								onChange={(e) => {
@@ -517,7 +515,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 											<Button
 												id="register-recipe-button"
 												onClick={onClickRegisterRecipe}
-												disabled={alert}
+												// disabled={alert}
 											>
 												레시피 등록
 											</Button>
@@ -553,9 +551,12 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 											required
 											disabled={alert}
 											type="number"
+											min="1"
 											value={cookTime}
 											id="cook-time"
-											onChange={(e) => setCookTime(e.target.value)}
+											onChange={(e) =>
+												setCookTime((e.target.value as unknown) as number)
+											}
 										/>
 										분
 									</TableCell>
@@ -613,12 +614,12 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 											fullWidth
 											required
 											disabled={alert}
-											value={recipeContent}
+											value={content}
 											multiline
 											rows={30}
 											type="text"
 											InputProps={{ classes }}
-											onChange={(e) => setRecipeContent(e.target.value)}
+											onChange={(e) => setContent(e.target.value)}
 										/>
 									</TableCell>
 								</TableRow>

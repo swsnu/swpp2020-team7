@@ -2,8 +2,8 @@
 export interface BaseRecipeEntity {
 	id?: number;
 	foodName: string;
-	cookTime: string;
-	recipeContent: string;
+	cookTime: number;
+	content: string;
 	foodImageFiles?: File[];
 }
 

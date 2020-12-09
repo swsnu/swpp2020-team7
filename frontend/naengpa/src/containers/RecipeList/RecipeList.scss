@@ -55,11 +55,12 @@
     outline: 0 !important;
     color: #408bf9
   }    
-  
-  #recipe-list-page {
-    display: flex;
-    justify-content: center;
-  }
+}
+
+#recipe-list-page {
+  display: flex;
+  justify-content: center !important;
+  margin: 0 !important;
 }
 
 #recipe-list-header {

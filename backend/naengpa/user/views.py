@@ -36,7 +36,6 @@ def get_region_list():
 
 @ensure_csrf_cookie
 @api_view(['GET'])
-@login_required_401
 def get_region_info(request):
     """ get region list information for searching Region """
     try:
@@ -102,11 +101,14 @@ def signin(request):
             password = request.data['password']
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
+        if not User.objects.filter(username=username).count():
+            return HttpResponseNotFound()
 
         user = authenticate(
             request, username=username, password=password)
         if user is not None:
             login(request, user)
+
             return JsonResponse(data={
                 'id': user.id,
                 'username': user.username,
@@ -161,7 +163,7 @@ def user(request, id):
             edit_date_of_birth = request.data['dateOfBirth']
             edit_email = request.data['email']
             checked_password = request.data['password']
-            user_image = request.FILES.get('')
+            # user_image = request.FILES.get('')
 
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
@@ -195,10 +197,10 @@ def change_password(request, id):
         except User.DoesNotExist:
             return HttpResponseBadRequest()
         req_data = json.loads(request.body.decode())
-        currentPassword = req_data['currentPassword']
-        newPassword = req_data['newPassword']
-        if check_password(currentPassword, request.user.password):
-            user.set_password(newPassword)
+        current_password = req_data['currentPassword']
+        new_password = req_data['newPassword']
+        if check_password(current_password, request.user.password):
+            user.set_password(new_password)
             user.save()
         else:
             return HttpResponse(status=401)

@@ -9,8 +9,8 @@ const mockRecipeList: RecipeEntity[] = [
 		authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 		author: 'test',
 		foodName: '딸기',
-		cookTime: '60',
-		recipeContent: '레시피',
+		cookTime: 60,
+		content: '레시피',
 		foodImagePaths: [
 			{
 				id: 2,
@@ -28,8 +28,8 @@ const mockRecipeList: RecipeEntity[] = [
 		authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 		author: 'test',
 		foodName: '딸기',
-		cookTime: '60',
-		recipeContent: '레시피',
+		cookTime: 60,
+		content: '레시피',
 		foodImagePaths: [
 			{
 				id: 2,
@@ -48,7 +48,7 @@ const RecipeState: InitialState = {
 	recipeList: [],
 	recipe: null,
 	createdRecipe: null,
-	recipeCount: 0,
+	lastPageIndex: 0,
 	todayRecipeList: [],
 };
 
@@ -64,19 +64,19 @@ describe('Recipe Reducer', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.GET_RECIPE_LIST,
 			recipeList: mockRecipeList,
-			recipeCount: 2,
+			lastPageIndex: 2,
 		});
 		expect(newState).toEqual({
 			...RecipeState,
 			recipeList: mockRecipeList,
-			recipeCount: 2,
+			lastPageIndex: 2,
 		});
 	});
 
 	it('should check if it can get today recipe list correctly', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.GET_TODAY_RECIPE_LIST,
-			payload: mockRecipeList,
+			todayRecipeList: mockRecipeList,
 		});
 		expect(newState).toEqual({
 			...RecipeState,
@@ -102,7 +102,7 @@ describe('Recipe Reducer', () => {
 		});
 		expect(newState).toEqual({
 			...RecipeState,
-			recipeCount: 1,
+			lastPageIndex: 1,
 			recipeList: [...RecipeState.recipeList, mockRecipeList[0]],
 			recipe: mockRecipeList[0],
 			createdRecipe: null,
@@ -115,7 +115,7 @@ describe('Recipe Reducer', () => {
 			{
 				type: actionTypes.TOGGLE_RECIPE,
 				target_id: 2,
-				recipeLikeInfo: {
+				info: {
 					recipeLike: 0,
 					userLike: 0,
 				},
@@ -131,7 +131,7 @@ describe('Recipe Reducer', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.TOGGLE_RECIPE,
 			target_id: 2,
-			recipeLikeInfo: {
+			info: {
 				recipeLike: 0,
 				userLike: 0,
 			},
@@ -143,11 +143,11 @@ describe('Recipe Reducer', () => {
 
 	it('should check if it can toggle recipe case 2 correctly', () => {
 		const newState = recipeReducer(
-			{ ...RecipeState, recipeList: mockRecipeList, recipeCount: 2 },
+			{ ...RecipeState, recipeList: mockRecipeList, lastPageIndex: 2 },
 			{
 				type: actionTypes.TOGGLE_RECIPE,
 				target_id: 3,
-				recipeLikeInfo: {
+				info: {
 					recipeLike: 1,
 					userLike: 1,
 				},
@@ -156,7 +156,7 @@ describe('Recipe Reducer', () => {
 		expect(newState).toEqual({
 			...RecipeState,
 			recipeList: [mockRecipeList[0], { ...mockRecipeList[1], userLike: 1, recipeLike: 1 }],
-			recipeCount: 2,
+			lastPageIndex: 2,
 		});
 	});
 
@@ -173,7 +173,7 @@ describe('Recipe Reducer', () => {
 
 	it('should check if it can delete specific recipe', () => {
 		const newState = recipeReducer(
-			{ ...RecipeState, recipeList: mockRecipeList, recipeCount: 2 },
+			{ ...RecipeState, recipeList: mockRecipeList, lastPageIndex: 2 },
 			{
 				type: actionTypes.DELETE_RECIPE,
 				target_id: 3,
@@ -181,14 +181,14 @@ describe('Recipe Reducer', () => {
 		);
 		expect(newState).toEqual({
 			...RecipeState,
-			recipeCount: 1,
+			lastPageIndex: 1,
 			recipeList: [mockRecipeList[0]],
 		});
 	});
 
 	it('should check if it can edit specific recipe', () => {
 		const newState = recipeReducer(
-			{ ...RecipeState, recipeList: mockRecipeList, recipeCount: 2 },
+			{ ...RecipeState, recipeList: mockRecipeList, lastPageIndex: 2 },
 			{
 				type: actionTypes.EDIT_RECIPE,
 				recipe: mockRecipeList[0],
@@ -196,7 +196,7 @@ describe('Recipe Reducer', () => {
 		);
 		expect(newState).toEqual({
 			...RecipeState,
-			recipeCount: 2,
+			lastPageIndex: 2,
 			recipeList: mockRecipeList,
 		});
 	});

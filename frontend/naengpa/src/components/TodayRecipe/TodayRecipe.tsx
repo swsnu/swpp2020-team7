@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
 import Recipe from '../Recipe/Recipe';
@@ -11,34 +11,28 @@ interface TodayRecipeProps {
 }
 
 const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
-	const recipeList = useSelector((state: AppState) => state.recipe.todayRecipeList);
-	const [recipe, setRecipe] = useState<JSX.Element[]>([]);
+	const recipes = useSelector((state: AppState) => state.recipe);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (!recipeList) {
-			dispatch(getTodayRecipeList());
-		}
-	});
+		dispatch(getTodayRecipeList());
+	}, []);
 
-	useEffect(() => {
-		const recipe = recipeList
-			? recipeList.map((item: any) => (
-					<Recipe
-						key={item.id}
-						recipe={item}
-						attribute="todays-recipe-child"
-						history={history}
-					/>
-			  ))
-			: [];
-		setRecipe(recipe);
-	}, [recipeList]);
+	const recipe = recipes?.todayRecipeList.length
+		? recipes?.todayRecipeList.map((item: any) => (
+				<Recipe
+					key={item.id}
+					recipe={item}
+					attribute="todays-recipe-child"
+					history={history}
+				/>
+		  ))
+		: [];
 
 	return (
 		<div id="today-recipe">
 			<div id="today-recipe-header">#오늘의 레시피</div>
-			<div id="today-recipe-list">{recipe.length && recipe.slice(0, 4)}</div>
+			<div id="today-recipe-list">{recipe}</div>
 		</div>
 	);
 };

@@ -16,7 +16,7 @@ class IngredientCategory(models.Model):
 
     def delete(self, *args, **kwargs):
         cache.delete('ingredients')
-        super().save(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
 
 class Ingredient(models.Model):
@@ -34,4 +34,4 @@ class Ingredient(models.Model):
 
     def delete(self, *args, **kwargs):
         cache.delete('ingredients')
-        super().save(*args, **kwargs)
+        super().delete(*args, **kwargs)

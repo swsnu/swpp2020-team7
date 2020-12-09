@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { History } from 'history';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import { getRegionList, saveUserInfo } from '../../../store/actions/index';
@@ -18,25 +19,39 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 	const [dateOfBirth, setDateOfBirth] = useState('');
 	const [email, setEmail] = useState('');
 	const namePat = new RegExp('^[ㄱ-ㅎ|가-힣|a-z|A-Z|*]+$');
-	const birthPat = new RegExp(/^[0-9]{6}$/);
+	const birthPat = new RegExp(/^\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$/);
 	const emailPat = new RegExp(
 		/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$/i,
 	);
-
 	const dispatch = useDispatch();
 
+	useEffect(() => {
+		dispatch(getRegionList());
+	});
+
 	const onClickSignup = () => {
-		if (
-			name === '' ||
-			username === '' ||
-			password === '' ||
-			passwordConfirm === '' ||
-			dateOfBirth === '' ||
-			email === ''
-		) {
-			alert('fill in the blink');
+		if (!name) {
+			toast.error('🦄 이름을 입력해주세요!');
+		} else if (!username) {
+			toast.error('🦄 아이디를 입력해주세요!');
+		} else if (!password || !passwordConfirm) {
+			toast.error('🦄 비밀번호를 입력해주세요!');
 		} else if (password !== passwordConfirm) {
-			alert('Do not match password');
+			toast.error('🦄 비밀번호가 일치하지 않아요!');
+		} else if (!dateOfBirth) {
+			toast.error('🦄 생년월일을 입력해주세요!');
+		} else if (!birthPat.test(dateOfBirth)) {
+			toast.error(
+				<div>
+					<span role="img">🦄</span> 생년월일을 올바르게 입력해 주세요!
+					<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;ex) 970101
+				</div>,
+			);
+		} else if (!email) {
+			toast.error('🦄 이메일을 입력해주세요!');
+		} else if (!emailPat.test(email)) {
+			toast.error('🦄 이메일을 올바르게 입력해주세요!');
 		} else {
 			dispatch(
 				saveUserInfo({
@@ -70,9 +85,10 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							placeholder="NAME"
 							pattern="^[ㄱ-ㅎ|가-힣|a-z|A-Z|\*]+$"
 							onChange={(e) => setName(e.target.value)}
+							onKeyPress={onKeyPress}
 						/>
 						{name !== '' && !namePat.test(name) && (
-							<p id="invalid-name">INVALID NAME</p>
+							<p id="invalid-name">이름을 올바르게 입력해주세요</p>
 						)}
 					</div>
 					<div id="input-username">
@@ -81,6 +97,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							type="text"
 							placeholder="USERNAME"
 							onChange={(e) => setUserName(e.target.value)}
+							onKeyPress={onKeyPress}
 						/>
 					</div>
 					<div id="input-password">
@@ -89,6 +106,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							type="password"
 							placeholder="PASSWORD"
 							onChange={(e) => setPassword(e.target.value)}
+							onKeyPress={onKeyPress}
 						/>
 					</div>
 					<div id="input-password-confirm">
@@ -97,9 +115,10 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							type="password"
 							placeholder="PASSWORD CONFIRM"
 							onChange={(e) => setPasswordConfirm(e.target.value)}
+							onKeyPress={onKeyPress}
 						/>
 						{passwordConfirm !== '' && password !== passwordConfirm && (
-							<p id="checkPassword">DO NOT MATCH TO PASSWORD</p>
+							<p id="checkPassword">비밀번호가 일치하지 않아요</p>
 						)}
 					</div>
 					<div id="input-date-of-birth">
@@ -108,10 +127,11 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							type="text"
 							placeholder="DATE OF BIRTH (EX 980515)"
 							onChange={(e) => setDateOfBirth(e.target.value)}
-							pattern="^[0-9]{6}$"
+							onKeyPress={onKeyPress}
+							pattern="/^\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$/"
 						/>
 						{dateOfBirth !== '' && !birthPat.test(dateOfBirth) && (
-							<p id="invalidBirth">INVALID DATE OF BIRTH</p>
+							<p id="invalidBirth">생년월일을 올바르게 입력해주세요 (ex. 980101)</p>
 						)}
 					</div>
 					<div id="input-email">
@@ -124,7 +144,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							pattern="^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$"
 						/>
 						{email !== '' && !emailPat.test(email) && (
-							<p id="invalidEmail">INVALID EMAIL</p>
+							<p id="invalidEmail">이메일을 올바르게 입력해주세요</p>
 						)}
 					</div>
 				</div>

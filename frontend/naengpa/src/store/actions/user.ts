@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 import {
@@ -8,12 +9,8 @@ import {
 	EditUserInputDTO,
 	ChangePasswordInputDTO,
 } from '../../model/user';
-
+import { getCurrentTimeGreet } from '../../utils/time';
 import { ChatEntity, MessageEntity } from '../../model/chat';
-
-/* CSRF TOKEN */
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 /* SAVE TEMP USER */
 export const saveUserInfo_ = (user: UserSignupInputDTO) => ({
@@ -24,6 +21,7 @@ export const saveUserInfo_ = (user: UserSignupInputDTO) => ({
 export const saveUserInfo = (user: UserSignupInputDTO) => {
 	return async (dispatch: any) => {
 		const temporaryUser: UserSignupInputDTO = user;
+		window.localStorage.setItem('savedUser', JSON.stringify(temporaryUser));
 		dispatch(push('/regional-setting'));
 		dispatch(saveUserInfo_(temporaryUser));
 	};
@@ -36,8 +34,11 @@ export const signup = (user: UserSignupInputDTO) => {
 	return async (dispatch: any) => {
 		const response = await axios.post('/api/signup/', user);
 		const currentUser: UserEntity = response.data;
-		dispatch(push('/regional-setting'));
+		window.localStorage.setItem('userInfo', JSON.stringify(currentUser));
+		window.localStorage.removeItem('savedUser');
 		dispatch(signup_(currentUser));
+		dispatch(push('/fridge'));
+		toast.info(`🦄 반가워요, ${user.name}님!`);
 	};
 };
 
@@ -49,46 +50,57 @@ export const login = (user: UserLoginInputDTO) => {
 		try {
 			const response = await axios.post('/api/login/', user);
 			const currentUser: UserEntity = response.data;
+			window.localStorage.setItem('userInfo', JSON.stringify(currentUser));
 			dispatch(login_(currentUser));
 			dispatch(push('/fridge'));
+			toast.info(`${getCurrentTimeGreet(currentUser.name)}`);
 		} catch (e) {
-			alert('존재하지 않는 username이거나 비밀번호가 일치하지 않습니다.');
+			if (e?.response && e.response.status === 404) {
+				toast.error(`🦄 존재하지 않는 아이디에요!`);
+			} else if (e?.response && e.response.status === 401) {
+				toast.error(`🦄 잘못된 비밀번호에요!`);
+			}
 		}
 	};
 };
 
+export const logout_ = () => ({
+	type: actionTypes.LOGOUT,
+});
+
 /* LOGOUT */
 export function logout() {
 	return async (dispatch: any) => {
-		const response: any = await axios.get('/api/logout/');
-
-		if (response.status === 204) {
-			dispatch({
-				type: actionTypes.LOGOUT,
-			});
-		}
+		await axios.get('/api/logout/');
+		localStorage.removeItem('userInfo');
+		toast.success(`🦄 안녕히 가세요!`);
+		dispatch(logout_());
 	};
 }
+
+export const getUserList_ = (userList: UserEntity[]) => ({
+	type: actionTypes.GET_USER_LIST,
+	userList,
+});
 
 export function getUserList() {
 	return async (dispatch: any) => {
 		const response: any = await axios.get('/api/users/');
 
-		dispatch({
-			type: actionTypes.GET_USER_LIST,
-			userList: response.data,
-		});
+		dispatch(getUserList_(response.data));
 	};
 }
+
+export const getUser_ = (user: UserEntity) => ({
+	type: actionTypes.GET_USER,
+	user,
+});
 
 export function getUser(user: UserEntity) {
 	return async (dispatch: any) => {
 		const response: any = await axios.get(`/api/users/${user.id}/`);
 
-		dispatch({
-			type: actionTypes.GET_USER,
-			user: response.data,
-		});
+		dispatch(getUser_(response.data));
 	};
 }
 
@@ -130,10 +142,11 @@ export const changePassword = (user: ChangePasswordInputDTO) => {
 };
 
 /* GET ChatRoom List */
-export const getChatRoomList_ = (chatRoomList: ChatEntity) => ({
+export const getChatRoomList_ = (chatRoomList: ChatEntity[]) => ({
 	type: actionTypes.GET_CHATROOM_LIST,
 	chatRoomList,
 });
+
 export const getChatRoomList = () => {
 	return async (dispatch: any) => {
 		try {
@@ -213,10 +226,25 @@ export const deleteChatRoom_ = (id: string) => ({
 export const deleteChatRoom = (chatRoom_id: string) => {
 	return async (dispatch: any) => {
 		try {
-			const response = await axios.delete(`/api/chatrooms/${chatRoom_id}/`);
+			await axios.delete(`/api/chatrooms/${chatRoom_id}/`);
 			await dispatch(deleteChatRoom_(chatRoom_id));
 		} catch (e) {
 			alert('채팅방을 삭제하지 못했습니다! 다시 시도해주세요.');
 		}
 	};
 };
+
+export type UserAction =
+	| ReturnType<typeof saveUserInfo_>
+	| ReturnType<typeof signup_>
+	| ReturnType<typeof login_>
+	| ReturnType<typeof logout_>
+	| ReturnType<typeof editUser_>
+	| ReturnType<typeof getUserList_>
+	| ReturnType<typeof getUser_>
+	| ReturnType<typeof changePassword_>
+	| ReturnType<typeof getChatRoomList_>
+	| ReturnType<typeof getChatRoom_>
+	| ReturnType<typeof createChatRoom_>
+	| ReturnType<typeof sendChat_>
+	| ReturnType<typeof deleteChatRoom_>;

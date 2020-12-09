@@ -1,12 +1,13 @@
 import * as actionTypes from '../actions/actionTypes';
 import { RecipeAction } from '../actions/recipe';
 import { RecipeEntity } from '../../model/recipe';
+import { DefaultAction } from '../actions/index';
 
 export type InitialState = {
 	recipeList: RecipeEntity[];
 	todayRecipeList: RecipeEntity[];
 	recipe: RecipeEntity | null;
-	recipeCount: number;
+	lastPageIndex: number;
 	createdRecipe: RecipeEntity | null;
 };
 
@@ -14,19 +15,23 @@ const RecipeState: InitialState = {
 	recipeList: [],
 	todayRecipeList: [],
 	recipe: null,
-	recipeCount: 0,
-	createdRecipe: null,
+	lastPageIndex: JSON.parse(window.localStorage.getItem('lastPageIndex')!),
+	createdRecipe: JSON.parse(window.localStorage.getItem('extractedRecipeInfo')!),
 };
 
-function recipeReducer(state: InitialState = RecipeState, action: RecipeAction): InitialState {
+function recipeReducer(
+	state: InitialState = RecipeState,
+	action: RecipeAction | DefaultAction = { type: 'default' },
+): InitialState {
 	let recipeList: RecipeEntity[] = [];
+
 	switch (action.type) {
 		/* GET RECIPE LIST */
 		case actionTypes.GET_RECIPE_LIST:
-			return { ...state, recipeList: action.recipeList, recipeCount: action.recipeCount };
+			return { ...state, recipeList: action.recipeList, lastPageIndex: action.lastPageIndex };
 
 		case actionTypes.GET_TODAY_RECIPE_LIST:
-			return { ...state, todayRecipeList: action.payload };
+			return { ...state, todayRecipeList: action.todayRecipeList };
 
 		/* GET RECIPE */
 		case actionTypes.GET_RECIPE:
@@ -37,7 +42,7 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 			return {
 				...state,
 				recipeList: [...state.recipeList, action.recipe],
-				recipeCount: state.recipeCount + 1,
+				lastPageIndex: state.lastPageIndex + 1,
 				recipe: action.recipe,
 				createdRecipe: null,
 			};
@@ -60,7 +65,7 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 			return {
 				...state,
 				recipeList,
-				recipeCount: state.recipeCount - 1,
+				lastPageIndex: state.lastPageIndex - 1,
 			};
 		}
 
@@ -75,9 +80,8 @@ function recipeReducer(state: InitialState = RecipeState, action: RecipeAction):
 			if (state.recipeList.length) {
 				recipeList = state.recipeList.map((recipe) => {
 					if ((recipe.id as number) === action.target_id) {
-						recipe.recipeLike =
-							recipe.userLike === 1 ? recipe.recipeLike - 1 : recipe.recipeLike + 1;
-						recipe.userLike = recipe.userLike === 1 ? 0 : 1;
+						recipe.userLike = action.info.userLike;
+						recipe.recipeLike = action.info.recipeLike;
 						return recipe;
 					}
 					return recipe;

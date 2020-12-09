@@ -231,7 +231,7 @@ class UserTestCase(TestCase):
 
         response = self.client.post(
             '/api/login/', {'username': 'dori', 'password': 'dori'})
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 404)
 
     def test_user_and_user_ingredient(self):
         # with authorization

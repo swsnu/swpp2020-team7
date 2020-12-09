@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { History } from 'history';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 
 import { getArticleList, getIngredientList, login } from '../../../store/actions/index';
@@ -21,10 +22,13 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 	}, [dispatch]);
 
 	const onClickLogin = () => {
-		if (username === '' || password === '') {
-			return;
+		if (!username) {
+			toast.error('🦄 아이디를 입력해주세요!');
+		} else if (!password) {
+			toast.error('🦄 비밀번호를 입력해주세요!');
+		} else {
+			dispatch(login({ username, password }));
 		}
-		dispatch(login({ username, password }));
 	};
 	const onKeyPress = (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter') {
@@ -38,23 +42,26 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 				<div id="naengpa-logo-name">냉파</div>
 			</button>
 			<div id="input-list">
-				<div>
-					<input
-						id="username"
-						type="text"
-						placeholder="USERNAME"
-						onChange={(e) => setUserName(e.target.value)}
-					/>
-				</div>
-				<div>
-					<input
-						id="password"
-						type="password"
-						placeholder="PASSWORD"
-						onChange={(e) => setPassword(e.target.value)}
-						onKeyPress={onKeyPress}
-					/>
-				</div>
+				<form>
+					<div>
+						<input
+							id="username"
+							type="text"
+							placeholder="USERNAME"
+							onChange={(e) => setUserName(e.target.value)}
+							onKeyPress={onKeyPress}
+						/>
+					</div>
+					<div>
+						<input
+							id="password"
+							type="password"
+							placeholder="PASSWORD"
+							onChange={(e) => setPassword(e.target.value)}
+							onKeyPress={onKeyPress}
+						/>
+					</div>
+				</form>
 			</div>
 			<div id="button-list">
 				<button id="signup-button" type="button" onClick={() => history.push('/signup')}>

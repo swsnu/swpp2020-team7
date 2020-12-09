@@ -9,7 +9,6 @@ from .models import IngredientCategory
 
 @ensure_csrf_cookie
 @api_view(['GET'])
-@login_required_401
 def ingredient_list(request):
     """/api/ingredients/ Get article list"""
     if request.method == 'GET':
