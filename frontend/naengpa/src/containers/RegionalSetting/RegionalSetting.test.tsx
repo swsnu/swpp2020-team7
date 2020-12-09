@@ -6,7 +6,7 @@ import configureStore from 'redux-mock-store';
 import { createMemoryHistory } from 'history';
 import RegionalSetting from './RegionalSetting';
 
-jest.mock('../../utils/kakao', () => jest.fn((props) => <div {...props} className="kakaoMap" />));
+jest.mock('../../utils/getKakaoMap', () => jest.fn((props) => <div {...props} className="kakaoMap" />));
 
 const middleware = [thunk];
 const store = configureStore(middleware);

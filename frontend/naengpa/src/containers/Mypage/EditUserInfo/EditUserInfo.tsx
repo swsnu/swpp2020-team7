@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useRef, useCallback } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -89,7 +89,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 										id="edit-profile-picture"
 										width="110px"
 										height="110px"
-										src={URL.createObjectURL(profileImage) as string}
+										src={URL.createObjectURL(profileImage)}
 										alt="/api/images"
 									/>
 								)}

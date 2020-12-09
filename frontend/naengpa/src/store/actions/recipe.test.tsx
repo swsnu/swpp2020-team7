@@ -16,7 +16,7 @@ const stubInitialState = {
 				authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 				author: 'test',
 				foodName: '딸기',
-				cookTime: '60',
+				cookTime: 60,
 				content: '레시피',
 				foodImagePaths: [
 					{
@@ -43,7 +43,7 @@ const stubInitialState = {
 				authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 				author: 'test',
 				foodName: '딸기',
-				cookTime: '60',
+				cookTime: 60,
 				content: '레시피',
 				foodImagePaths: [
 					{
@@ -83,7 +83,7 @@ describe('ActionCreators', () => {
 					status: 200,
 					data: {
 						recipeList: [],
-						recipeCount: 0,
+						lastPageIndex: 0,
 					},
 				};
 				resolve(result);
@@ -96,7 +96,7 @@ describe('ActionCreators', () => {
 		const expectedPayload = {
 			type: actionTypes.GET_RECIPE_LIST,
 			recipeList: [],
-			recipeCount: 0,
+			lastPageIndex: 0,
 		};
 		expect(actions[0]).toEqual(expectedPayload);
 	});
@@ -128,7 +128,10 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.GET_TODAY_RECIPE_LIST, payload: [] };
+		const expectedPayload = {
+			type: actionTypes.GET_TODAY_RECIPE_LIST,
+			todayRecipeList: undefined,
+		};
 		expect(actions[0]).toEqual(expectedPayload);
 	});
 
@@ -185,7 +188,7 @@ describe('ActionCreators', () => {
 		);
 		const mockData = {
 			foodName: 'foodName',
-			cookTime: '100',
+			cookTime: 100,
 			content: 'content',
 			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 1,
@@ -208,7 +211,7 @@ describe('ActionCreators', () => {
 		});
 		const mockData = {
 			foodName: 'foodName',
-			cookTime: '100',
+			cookTime: 100,
 			content: 'content',
 			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 1,
@@ -233,7 +236,7 @@ describe('ActionCreators', () => {
 		});
 		const mockData = {
 			foodName: 'foodName',
-			cookTime: '100',
+			cookTime: 100,
 			content: 'content',
 			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 1,
@@ -259,7 +262,7 @@ describe('ActionCreators', () => {
 		});
 		const mockData = {
 			foodName: 'foodName',
-			cookTime: '100',
+			cookTime: 100,
 			content: 'content',
 			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 1,
@@ -269,7 +272,7 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		expect(actions.length).toBe(0);
+		expect(actions.length).toBe(1);
 	});
 
 	it('should return delete Recipe action correctly', async () => {
@@ -347,7 +350,7 @@ describe('ActionCreators', () => {
 		const expectedPayload = {
 			type: actionTypes.TOGGLE_RECIPE,
 			target_id: 2,
-			recipeLikeInfo: null,
+			info: null,
 		};
 		expect(actions[0]).toEqual(expectedPayload);
 	});

@@ -1,7 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { History } from 'history';
-import { AppState } from '../../store/store';
 import Tab from '../../components/Tab/Tab';
 import '../Mypage/UserInfo/UserInfo.scss';
 

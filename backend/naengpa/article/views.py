@@ -95,7 +95,7 @@ def article_list_post(request):
     try:
         true, false = True, False
         author_id = request.user.id
-        req_data = eval(request.POST['article'])
+        req_data = json.loads(request.POST.get('article'))
         title, content, item_str, price, options = itemgetter(
             'title', 'content', 'item', 'price', 'options')(req_data)
         if len(options) != 3 or True not in options.values():
@@ -148,8 +148,8 @@ def article_list_post(request):
     }, status=201)
 
 
-@ensure_csrf_cookie
-@api_view(['GET', 'POST'])
+@ ensure_csrf_cookie
+@ api_view(['GET', 'POST'])
 def article_list(request):
     """get article list or create an article"""
     if request.method == 'GET':
@@ -158,10 +158,10 @@ def article_list(request):
         return article_list_post(request)
 
 
-@ensure_csrf_cookie
-@api_view(['GET', 'DELETE'])
-@login_required_401
-@transaction.atomic
+@ ensure_csrf_cookie
+@ api_view(['GET', 'DELETE'])
+@ login_required_401
+@ transaction.atomic
 def article_info(request, aid):
     '''process article of given id'''
     if request.method == 'GET':

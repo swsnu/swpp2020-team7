@@ -9,14 +9,8 @@ import Alert from '@material-ui/lab/Alert';
 import EmailIcon from '@material-ui/icons/Email';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import {
-	getArticle,
-	createChatRoom,
-	deleteArticle,
-	editArticle,
-} from '../../../store/actions/index';
+import { createChatRoom, deleteArticle, editArticle } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
-import Article from '../../../components/Article/Article';
 import { ArticleEntity, ArticleImage } from '../../../model/article';
 
 interface ArticleDetailProps {
@@ -30,7 +24,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 	const [currentList, setCurrentList] = useState<ArticleImage[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
 	const [alert, setAlert] = useState(false);
-	const images = article.images as ArticleImage[];
+	const images = article?.images;
 	const dispatch = useDispatch();
 
 	const onClickPage = (e: React.ChangeEvent<unknown>, value: number): void => {
@@ -40,7 +34,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 	};
 
 	const onClickChatIcon = async () => {
-		if (article.authorId !== user!.id) dispatch(createChatRoom(article.authorId as string));
+		if (article.authorId !== user!.id) dispatch(createChatRoom(article.authorId));
 	};
 
 	const onClickEditArticle = () => {

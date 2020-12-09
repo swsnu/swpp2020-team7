@@ -91,7 +91,7 @@ describe('CreateRecipe', () => {
 				.find('button');
 
 			foodName.simulate('change', { target: { value: 'ice Cream' } });
-			cookTime.simulate('change', { target: { value: '40' } });
+			cookTime.simulate('change', { target: { value: 40 } });
 			content.simulate('change', { target: { value: '아이스크림' } });
 			foodImage.simulate('change', { target: { files: [image] } });
 			expect(foodName.length).toBe(1);

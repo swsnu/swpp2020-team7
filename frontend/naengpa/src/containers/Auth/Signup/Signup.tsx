@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { History } from 'history';
 import { useDispatch } from 'react-redux';
 
@@ -22,8 +22,11 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 	const emailPat = new RegExp(
 		/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$/i,
 	);
-
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(getRegionList());
+	});
 
 	const onClickSignup = () => {
 		if (

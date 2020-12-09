@@ -52,6 +52,15 @@ class User(AbstractUser):
     naengpa_score = models.IntegerField(default=0)
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
     region_range = models.IntegerField(default=0)
+    notifications = models.PositiveIntegerField(default=0)
+
+    def increase_notifications(self):
+        self.notifications += 1
+        self.save(update_fields=['notifications'])
+
+    def clear_notifications(self):
+        self.notifications = 0
+        self.save(update_fields=['notifications'])
 
     def __str__(self):
         return f'[{self.id}] {self.name}'
@@ -62,7 +71,7 @@ class User(AbstractUser):
 
     def delete(self, *args, **kwargs):
         cache.delete('users')
-        super().save(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
 
 class Fridge(models.Model):

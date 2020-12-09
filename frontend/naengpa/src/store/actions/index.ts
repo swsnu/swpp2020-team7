@@ -5,16 +5,16 @@ export {
 	login,
 	logout,
 	getUserList,
-	getUser,
+	getUser, // should be deleted
 	editUser,
 	changePassword,
-	deleteUser,
+	deleteUser, // should be deleted
 	getChatRoomList,
 	getChatRoom,
 	createChatRoom,
 	sendChat,
-	receiveChat,
-	deleteChatRoom,
+	receiveChat, // should be deleted
+	deleteChatRoom, // should be deleted
 } from './user';
 export { getRegionList } from './region';
 
@@ -48,4 +48,8 @@ export { getFoodCategoryList } from './foodCategory';
 export { getArticleList, getArticle, createArticle, deleteArticle, editArticle } from './article';
 
 /* Comment actions */
-// export { getCommentList, getComment, addComment, deleteComment, editComment } from './comment';
+export { getCommentList, getComment, addComment, deleteComment, editComment } from './comment';
+
+export type DefaultAction = {
+	type: 'default';
+};

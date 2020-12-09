@@ -1,11 +1,10 @@
-import React, { useEffect, MouseEvent, useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 
 import Pagination from '@material-ui/lab/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-// import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -31,43 +30,50 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		);
 	});
 
-	const [maxPageIndex, setMaxPageIndex] = useState(recipes.recipeCount / 2.0);
+	const [maxPageIndex, setMaxPageIndex] = useState(recipes.lastPageIndex);
 	const [searchCategory, setSearchCategory] = useState('전체');
 	const [sortBy, setSortBy] = useState('created_at');
 	const [loading, setLoading] = useState<boolean>(false);
 	const [query, setQuery] = useState('');
 	const dispatch = useDispatch();
 
-	const onClickSearch = async (e: React.KeyboardEvent) => {
-		if (e.key === 'Enter' && query !== '') {
-			setLoading(true);
-			await dispatch(getRecipeList(query, sortBy, searchCategory, page));
-			await setMaxPageIndex(Math.ceil(recipes.recipeCount / 2.0));
-			await setPage(page);
-			await setCurrentList(recipes.recipeList);
-			setLoading(false);
-		}
-	};
-
-	const onClickFilterButton = async (e: MouseEvent<HTMLButtonElement>, sortBy: string) => {
-		e.preventDefault();
+	const onLoadPage = async () => {
 		setLoading(true);
-		setSortBy(sortBy);
-		await dispatch(getRecipeList(query, sortBy, searchCategory, page));
-		await setMaxPageIndex(Math.ceil(recipes.recipeCount / 2.0));
-		await setPage(page);
-		await setCurrentList(recipes.recipeList);
+		dispatch(getRecipeList(query, sortBy, searchCategory, page));
+		setMaxPageIndex(recipes.lastPageIndex);
+		setCurrentList(recipes.recipeList);
 		setLoading(false);
 	};
 
-	const onChangePage = async (e: React.ChangeEvent<unknown>, value: number) => {
+	const onChangekSearch = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+		value: string,
+	) => {
 		e.preventDefault();
-		await setPage(value);
-		setLoading(true);
-		await dispatch(getRecipeList(query, sortBy, searchCategory, value));
-		await setMaxPageIndex(Math.ceil(recipes.recipeCount / 2.0));
-		await setCurrentList(recipes.recipeList);
-		setLoading(false);
+		setQuery(value);
+		if (query) setSortBy('created_at');
+		setPage(1);
+		onLoadPage();
+	};
+
+	const onChangeSearchCategory = (value: string) => {
+		setSearchCategory(value);
+		setSortBy('create_at');
+		setPage(1);
+		onLoadPage();
+	};
+
+	const onClickFilterButton = (e: MouseEvent<HTMLButtonElement>, newSortBy: string) => {
+		e.preventDefault();
+		setSortBy(newSortBy);
+		setPage(1);
+		onLoadPage();
+	};
+
+	const onChangePage = (e: React.ChangeEvent<unknown>, value: number) => {
+		e.preventDefault();
+		setPage(value);
+		onLoadPage();
 	};
 
 	const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -87,19 +93,6 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		);
 	});
 
-	useEffect(() => {
-		if (sortBy === 'likes') {
-			console.log(currentList);
-
-			const sortedList = currentList.sort((a, b) => {
-				return b.recipeLike - a.recipeLike;
-			});
-			setCurrentList(sortedList);
-			console.log(sortedList);
-		}
-		console.log('like 기준으로 sorting을 하');
-	}, [recipes, currentList]);
-
 	return (
 		<div id="recipe-list">
 			<div id="recipe-list-header">
@@ -109,17 +102,16 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 							id="recipe-search-input"
 							placeholder="검색어를 입력해 주세요."
 							inputProps={{ 'aria-label': 'search' }}
-							onChange={(e) => setQuery(e.target.value)}
-							onKeyPress={onClickSearch}
+							onChange={(e) => onChangekSearch(e, e.target.value)}
 						/>
 						<Select
 							labelId="recipe-search-select-label"
 							id="recipe-search-select"
 							value={searchCategory}
 							disableUnderline
-							onChange={(e) => setSearchCategory(e.target.value as string)}
+							onChange={(e) => onChangeSearchCategory(e.target.value as string)}
 						>
-							<MenuItem value="전체" onClick={(e) => setSearchCategory('전체')}>
+							<MenuItem value="전체" onClick={(e) => onChangeSearchCategory('전체')}>
 								전체
 							</MenuItem>
 							{selectOption}
@@ -173,7 +165,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 				id="recipe-list-page"
 				page={page}
 				size="large"
-				count={maxPageIndex}
+				count={Math.ceil(maxPageIndex / 9.0)}
 				onChange={onChangePage}
 			/>
 		</div>

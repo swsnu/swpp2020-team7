@@ -29,7 +29,7 @@ const mockRecipe = {
 	authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 	author: 'test',
 	foodName: '딸기',
-	cookTime: '100',
+	cookTime: 100,
 	content: '레시피',
 	foodImageFiles: [
 		{
@@ -48,7 +48,7 @@ const mockRecipe2 = {
 	authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 	author: 'test',
 	foodName: '딸기',
-	cookTime: '30',
+	cookTime: 30,
 	content: '레시피',
 	foodImagePaths: [],
 	recipeLike: 0,

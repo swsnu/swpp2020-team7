@@ -1,6 +1,8 @@
 import * as actionTypes from '../actions/actionTypes';
 import { UserEntity, UserSignupInputDTO } from '../../model/user';
 import { ChatEntity } from '../../model/chat';
+import { UserAction } from '../actions/user';
+import { DefaultAction } from '../actions/index';
 
 export type InitialState = {
 	user: UserEntity | null;
@@ -11,34 +13,21 @@ export type InitialState = {
 };
 
 const UserState: InitialState = {
-	user: null,
-	saved_user: null,
+	user: JSON.parse(window.localStorage.getItem('userInfo')!),
+	saved_user: JSON.parse(window.localStorage.getItem('savedUser')!),
 	userList: [],
 	chatRoomList: [],
 	chatRoom: null,
 };
 
-type Action =
-	| { type: 'SAVE_USER_INFO'; user: UserSignupInputDTO }
-	| { type: 'SIGNUP'; user: UserEntity }
-	| { type: 'LOGIN'; user: UserEntity }
-	| { type: 'LOGOUT' }
-	| { type: 'GET_USER_LIST'; userList: UserEntity[] }
-	| { type: 'GET_USER'; user: UserEntity }
-	| { type: 'EDIT_USER'; user: UserEntity }
-	| { type: 'CHANGE_PASSWORD'; user: UserEntity }
-	| { type: 'CREATE_CHATROOM'; chatRoom: ChatEntity }
-	| { type: 'GET_CHATROOM_LIST'; chatRoomList: ChatEntity[] }
-	| { type: 'GET_CHATROOM'; chatRoom: ChatEntity }
-	| { type: 'SEND_CHAT'; chatRoom: ChatEntity }
-	| { type: 'RECEIVE_CHAT'; chatRoomList: ChatEntity[] }
-	| { type: 'DELETE_CHATROOM'; id: string };
-
 let filteredChatRoomList = null;
-let filteredChatRoom = null;
 
-function userReducer(state: InitialState = UserState, action: Action): InitialState {
+function userReducer(
+	state: InitialState = UserState,
+	action: UserAction | DefaultAction = { type: 'default' },
+): InitialState {
 	let userList;
+
 	switch (action.type) {
 		/* SAVE USER INFO */
 		case actionTypes.SAVE_USER_INFO:
@@ -58,7 +47,8 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 
 		/* GET USER LIST */
 		case actionTypes.GET_USER_LIST:
-			userList = action.userList.sort((a: any, b: any) => b.naengpa_score - a.naengpa_score);
+			userList = action.userList;
+			userList.sort((a: any, b: any) => b.naengpa_score - a.naengpa_score);
 			userList = userList.slice(0, Math.min(2, userList.length));
 			return { ...state, userList };
 
@@ -95,17 +85,6 @@ function userReducer(state: InitialState = UserState, action: Action): InitialSt
 		/* SEND CHAT */
 		case actionTypes.SEND_CHAT:
 			return { ...state, chatRoom: action.chatRoom };
-
-		/* RECEIVE CHAT */
-		case actionTypes.RECEIVE_CHAT:
-			filteredChatRoom = null;
-			if (state.chatRoom) {
-				filteredChatRoom = action.chatRoomList.find((chatroom) => {
-					return chatroom.id === state.chatRoom!.id;
-				});
-			}
-			if (!filteredChatRoom) filteredChatRoom = state.chatRoom;
-			return { ...state, chatRoomList: action.chatRoomList, chatRoom: filteredChatRoom };
 
 		/* DELETE CHATROOM */
 		case actionTypes.DELETE_CHATROOM:
