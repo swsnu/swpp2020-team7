@@ -21,14 +21,14 @@ const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
 	}, []);
 
 	const recipe = recipeList?.length
-			? recipeList?.map((item: any) => (
-					<Recipe
-						key={item.id}
-						recipe={item}
-						attribute="todays-recipe-child"
-						history={history}
-					/>
-			  ))
+		? recipeList?.map((item: any) => (
+				<Recipe
+					key={item.id}
+					recipe={item}
+					attribute="todays-recipe-child"
+					history={history}
+				/>
+		  ))
 		: [];
 
 	return (

@@ -9,9 +9,10 @@ import './AddIngredient.scss';
 
 const useIngredientList = () => {
 	const ingredientList = useSelector((state: AppState) => state.ingredient.ingredientList);
-	const [currentIngredientList, setCurrentIngredientList] = useState<
-		IngredientCategoryCollection
-	>({});
+	const [
+		currentIngredientList,
+		setCurrentIngredientList,
+	] = useState<IngredientCategoryCollection>({});
 	const [categoryList, setCategoryList] = useState<string[]>([]);
 	const [selectedCategory, setSelectedCategory] = useState<string>('');
 	const dispatch = useDispatch();

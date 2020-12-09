@@ -128,7 +128,10 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.GET_TODAY_RECIPE_LIST, todayRecipeList: undefined };
+		const expectedPayload = {
+			type: actionTypes.GET_TODAY_RECIPE_LIST,
+			todayRecipeList: undefined,
+		};
 		expect(actions[0]).toEqual(expectedPayload);
 	});
 

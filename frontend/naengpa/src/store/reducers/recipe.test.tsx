@@ -73,7 +73,6 @@ describe('Recipe Reducer', () => {
 		});
 	});
 
-
 	it('should check if it can get today recipe list correctly', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.GET_TODAY_RECIPE_LIST,
