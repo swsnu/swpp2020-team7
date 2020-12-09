@@ -56,7 +56,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 
 	/* CLICK EVENT - DELETE IMAGE */
 	const onClickDeleteImage = (target_id: number) => {
-		setImages(images.filter((item, i) => i !== target_id));
+		setImages(images.filter((_, i) => i !== target_id));
 	};
 
 	const onClickOptions = (target: string) => {
@@ -98,7 +98,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 				options,
 				images,
 			};
-			await dispatch(createArticle(newArticle));
+			dispatch(createArticle(newArticle));
 		}
 	};
 
@@ -116,21 +116,21 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 
 	const image_list = !images.length
 		? []
-		: images.map((item, idx) => {
+		: images.map((img, idx) => {
 				return (
-					<div key={`#${item}`} id="delete-image-icon-box">
+					<div key={`#${img}`} id="delete-image-icon-box">
 						{!onAlert && (
 							<CancelIcon
-								key={URL.createObjectURL(item) as string}
+								key={URL.createObjectURL(img)}
 								id="delete-image-button"
 								type="button"
 								onClick={() => onClickDeleteImage(idx)}
 							/>
 						)}
 						<img
-							key={`#${item}`}
+							key={`#${img}`}
 							id="delete-image-icon"
-							src={URL.createObjectURL(item) as string}
+							src={URL.createObjectURL(img)}
 							height="150px"
 							width="150px"
 							alt="/api/images"
@@ -173,15 +173,15 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 		['sale', '거래', options.isForSale],
 		['exchange', '교환', options.isForExchange],
 		['share', '나눔', options.isForShare],
-	].map((item, idx) => (
+	].map((opt) => (
 		<button
 			type="button"
-			key={item[0] as string}
-			id={`create-article-options-${item[0]}`}
-			className={`${item[2] ? ' selected' : ''}`}
-			onClick={() => onClickOptions(item[0] as string)}
+			key={opt[0] as string}
+			id={`create-article-options-${opt[0]}`}
+			className={`${opt[2] ? ' selected' : ''}`}
+			onClick={() => onClickOptions(opt[0] as string)}
 		>
-			{item[1]}
+			{opt[1]}
 		</button>
 	));
 

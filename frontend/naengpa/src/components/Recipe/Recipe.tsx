@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { History } from 'history';
 import { useDispatch } from 'react-redux';
-import { Card, CardHeader, Avatar, IconButton, CardMedia, CardContent } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Card, CardHeader, Avatar, CardMedia, CardContent } from '@material-ui/core';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -27,12 +26,11 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 
 	// Cook-Time Unit set for minute and hour
 	let cookTime = `${recipe.cookTime}M`;
-	if ((recipe.cookTime as number) >= 60)
-		cookTime = `${Math.round((recipe.cookTime as number) / 60)}H`;
+	if (recipe.cookTime >= 60) cookTime = `${Math.round(recipe.cookTime / 60)}H`;
 
 	const onClickRecipe = async () => {
-		await dispatch(getRecipe(recipe.id as number));
-		history.push(`/recipes/:${recipe.id as number}`);
+		dispatch(getRecipe(recipe.id!));
+		history.push(`/recipes/:${recipe.id}`);
 	};
 
 	const onClickRecipeLike = () => {
@@ -43,7 +41,7 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 			setRecipeLike(recipeLike + 1);
 			setUserLike(1);
 		}
-		dispatch(toggleRecipe(recipe.id as number));
+		dispatch(toggleRecipe(recipe.id!));
 	};
 
 	return (

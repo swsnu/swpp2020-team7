@@ -13,7 +13,6 @@ import { Button, IconButton, Divider, Collapse, Typography, Avatar, Grid } from 
 import EmailIcon from '@material-ui/icons/Email';
 
 import {
-	getRecipe,
 	createChatRoom,
 	deleteRecipe,
 	editRecipe,
@@ -32,17 +31,14 @@ interface RecipeDetailProps {
 
 const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const recipe = useSelector((state: AppState) => state.recipe.recipe) as RecipeEntity;
-	const articleList = useSelector(
-		(state: AppState) => state.article.articleList,
-	) as ArticleEntity[];
+	const articleList = useSelector((state: AppState) => state.article.articleList);
 	const user = useSelector((state: AppState) => state.user.user);
 	const userIngredients = useSelector((state: AppState) => state.fridge.ingredientList);
 	const [page, setPage] = useState(1);
 	const [currentList, setCurrentList] = useState<RecipeImage[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
 	const images = recipe.foodImagePaths as RecipeImage[];
-	const ingredients =
-		recipe.ingredients === undefined ? [] : (recipe.ingredients as RecipeIngredient[]);
+	const ingredients = recipe.ingredients ? recipe.ingredients : [];
 	const recipeId = recipe.id as number;
 	const [userLike, setUserLike] = useState(recipe.userLike);
 	const [recipeLike, setRecipeLike] = useState(recipe.recipeLike);
@@ -87,10 +83,9 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const [alert, setAlert] = useState(false);
 
 	let cookTime = `${recipe.cookTime}M`;
-	if ((recipe.cookTime as number) >= 60)
-		cookTime = `${Math.round((recipe.cookTime as number) / 60)}H`;
+	if (recipe.cookTime >= 60) cookTime = `${Math.round(recipe.cookTime / 60)}H`;
 
-	const image = currentList.map((value: any, idx: number) => {
+	const image = currentList.map((value) => {
 		return (
 			<img
 				key={`#${value}`}
@@ -126,11 +121,11 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		return (
 			<div id="ingredient-button-box" key={`${item.ingredient}`}>
 				{userIngredientNames.includes(item.ingredient) ? (
-					<Button key={`${item.ingredient}-${i}` as string} id="ingredient-yes-button">
+					<Button key={item.ingredient} id="ingredient-yes-button">
 						{item.ingredient}
 					</Button>
 				) : (
-					<Button key={`${item.ingredient}-${i}` as string} id="ingredient-no-button">
+					<Button key={item.ingredient} id="ingredient-no-button">
 						{item.ingredient}
 					</Button>
 				)}

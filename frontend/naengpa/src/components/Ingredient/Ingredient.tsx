@@ -10,12 +10,11 @@ import { IngredientEntity } from '../../model/ingredient';
 import { Dictionary } from '../../model/general';
 
 interface IngredientProps {
-	history: History;
 	ingredient: IngredientEntity;
 }
 
-const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
-	const category: string = ingredient.category!;
+const Ingredient: React.FC<IngredientProps> = ({ ingredient }) => {
+	const { category } = ingredient;
 	const [deleteIngredient, setDeleteIngredient] = useState(false);
 	const [todayIngredient, setTodayIngredient] = useState(false);
 	const user = useSelector((state: AppState) => state.user.user);
@@ -39,7 +38,7 @@ const Ingredient: React.FC<IngredientProps> = ({ history, ingredient }) => {
 		곡류: 'rice.png',
 	};
 
-	const imageUrl = `foodCategory/${foodCategory[category as string]}`;
+	const imageUrl = `foodCategory/${foodCategory[category]}`;
 
 	/* MOUSEOVER EVENT */
 	const onMouseOverIngredient = () => {

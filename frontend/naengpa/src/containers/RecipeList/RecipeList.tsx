@@ -1,11 +1,10 @@
-import React, { useEffect, MouseEvent, useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 
 import Pagination from '@material-ui/lab/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-// import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -40,7 +39,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 
 	const onLoadPage = async () => {
 		setLoading(true);
-		await dispatch(getRecipeList(query, sortBy, searchCategory, page));
+		dispatch(getRecipeList(query, sortBy, searchCategory, page));
 		setMaxPageIndex(recipes.lastPageIndex);
 		setCurrentList(recipes.recipeList);
 		setLoading(false);
@@ -64,9 +63,9 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		onLoadPage();
 	};
 
-	const onClickFilterButton = (e: MouseEvent<HTMLButtonElement>, sortBy: string) => {
+	const onClickFilterButton = (e: MouseEvent<HTMLButtonElement>, newSortBy: string) => {
 		e.preventDefault();
-		setSortBy(sortBy);
+		setSortBy(newSortBy);
 		setPage(1);
 		onLoadPage();
 	};

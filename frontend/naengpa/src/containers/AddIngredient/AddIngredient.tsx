@@ -23,9 +23,9 @@ const useIngredientList = () => {
 		}
 	};
 	const loadCategoryList = async () => {
-		const categoryList = Object.keys(currentIngredientList).sort();
-		setCategoryList(categoryList);
-		setSelectedCategory(categoryList[0]);
+		const sortedCategoryList = Object.keys(currentIngredientList).sort();
+		setCategoryList(sortedCategoryList);
+		setSelectedCategory(sortedCategoryList[0]);
 	};
 	return {
 		categoryList,
@@ -33,7 +33,6 @@ const useIngredientList = () => {
 		currentIngredientList,
 		selectedCategory,
 		setCurrentIngredientList,
-		setCategoryList,
 		setSelectedCategory,
 		loadIngredientList,
 		loadCategoryList,
@@ -47,7 +46,6 @@ const AddIngredient: React.FC = () => {
 		currentIngredientList,
 		selectedCategory,
 		setCurrentIngredientList,
-		setCategoryList,
 		setSelectedCategory,
 		loadIngredientList,
 		loadCategoryList,
@@ -94,19 +92,19 @@ const AddIngredient: React.FC = () => {
 	};
 	const onClickIngredient = (ingredient: IngredientEntity) => {
 		setSelectedIngredient(ingredient);
-		dispatch(addIngredientToFridge(user!.id, ingredient!));
+		dispatch(addIngredientToFridge(user!.id, ingredient));
 	};
 
 	const IngredientGrid = ({
-		ingredientList,
-		selectedCategory,
+		ingredientCollection,
+		currentCategory,
 	}: {
-		ingredientList: IngredientCategoryCollection;
-		selectedCategory: string;
+		ingredientCollection: IngredientCategoryCollection;
+		currentCategory: string;
 	}) => (
 		<div id="add-ingredient-grid" className="grid-container">
-			{ingredientList[selectedCategory] &&
-				ingredientList[selectedCategory].map((ingredient: IngredientEntity) => (
+			{ingredientCollection[currentCategory] &&
+				ingredientCollection[currentCategory].map((ingredient: IngredientEntity) => (
 					<button
 						type="button"
 						id="food-ingredient"
@@ -157,8 +155,8 @@ const AddIngredient: React.FC = () => {
 				</div>
 				{/* grid of ingredient collection for selected category */}
 				<IngredientGrid
-					ingredientList={currentIngredientList}
-					selectedCategory={selectedCategory}
+					ingredientCollection={currentIngredientList}
+					currentCategory={selectedCategory}
 				/>
 			</div>
 		</div>

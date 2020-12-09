@@ -1,6 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
 import { RecipeAction } from '../actions/recipe';
 import { RecipeEntity } from '../../model/recipe';
+import { DefaultAction } from '../actions/index';
 
 export type InitialState = {
 	recipeList: RecipeEntity[];
@@ -14,11 +15,14 @@ const RecipeState: InitialState = {
 	recipeList: [],
 	todayRecipeList: [],
 	recipe: null,
-	lastPageIndex: JSON.parse(window.localStorage.getItem('lastPageIndex')! as string),
-	createdRecipe: JSON.parse(window.localStorage.getItem('extractedRecipeInfo')! as string),
+	lastPageIndex: JSON.parse(window.localStorage.getItem('lastPageIndex')!),
+	createdRecipe: JSON.parse(window.localStorage.getItem('extractedRecipeInfo')!),
 };
 
-function recipeReducer(state: InitialState = RecipeState, action: RecipeAction): InitialState {
+function recipeReducer(
+	state: InitialState = RecipeState,
+	action: RecipeAction | DefaultAction = { type: 'default' },
+): InitialState {
 	let recipeList: RecipeEntity[] = [];
 
 	switch (action.type) {

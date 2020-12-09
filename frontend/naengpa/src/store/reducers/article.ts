@@ -1,6 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
 import { ArticleEntity } from '../../model/article';
 import { ArticleAction } from '../actions/article';
+import { DefaultAction } from '../actions/index';
 
 export type ArticleState = {
 	articleList: ArticleEntity[];
@@ -12,7 +13,10 @@ const initialState: ArticleState = {
 	article: null,
 };
 
-function articleReducer(state: ArticleState = initialState, action: ArticleAction): ArticleState {
+function articleReducer(
+	state: ArticleState = initialState,
+	action: ArticleAction | DefaultAction = { type: 'default' },
+): ArticleState {
 	switch (action.type) {
 		/* GET ARTICLE LIST */
 		case actionTypes.GET_ARTICLE_LIST:

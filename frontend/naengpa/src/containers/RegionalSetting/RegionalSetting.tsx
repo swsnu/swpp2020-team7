@@ -4,14 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { withStyles, Collapse, Button, Slider } from '@material-ui/core';
+import { withStyles, Slider } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import Alert from '@material-ui/lab/Alert';
-import CancelIcon from '@material-ui/icons/Cancel';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import getKakaoMap from '../../utils/kakao';
+import getKakaoMap from '../../utils/getKakaoMap';
 import { signup, getRegionList } from '../../store/actions/index';
 import { RegionEntity, UserSignupInputDTO } from '../../model/user';
 import { AppState } from '../../store/store';
@@ -100,8 +98,8 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 		e.preventDefault();
 
 		if (region) {
-			setLatitude((region!.location!.latitude as unknown) as number);
-			setLongitude((region!.location!.longitude as unknown) as number);
+			setLatitude((region.location!.latitude as unknown) as number);
+			setLongitude((region.location!.longitude as unknown) as number);
 		}
 		setSelectedRegion(region);
 	};
@@ -138,35 +136,35 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 		getOptionLabel: (option: RegionEntity) => option.name,
 	};
 
-	const alertModal = (
-		<Collapse className="collapse" in={alert}>
-			<Alert id="alert-modal" icon={false}>
-				<div id="naengpa-logo-box">
-					<div id="naengpa-logo">
-						<LocalDiningIcon id="naengpa-logo-image" />
-						냉파
-					</div>
-					<CancelIcon
-						id="close-alert-button"
-						onClick={() => {
-							setAlert(false);
-						}}
-					/>
-				</div>
-				<div id="alert-content">{alertContent}</div>
-				<div id="confirm-alert-button-box">
-					<Button
-						id="confirm-alert-button"
-						onClick={() => {
-							setAlert(false);
-						}}
-					>
-						확인
-					</Button>
-				</div>
-			</Alert>
-		</Collapse>
-	);
+	// const alertModal = (
+	// 	<Collapse className="collapse" in={alert}>
+	// 		<Alert id="alert-modal" icon={false}>
+	// 			<div id="naengpa-logo-box">
+	// 				<div id="naengpa-logo">
+	// 					<LocalDiningIcon id="naengpa-logo-image" />
+	// 					냉파
+	// 				</div>
+	// 				<CancelIcon
+	// 					id="close-alert-button"
+	// 					onClick={() => {
+	// 						setAlert(false);
+	// 					}}
+	// 				/>
+	// 			</div>
+	// 			<div id="alert-content">{alertContent}</div>
+	// 			<div id="confirm-alert-button-box">
+	// 				<Button
+	// 					id="confirm-alert-button"
+	// 					onClick={() => {
+	// 						setAlert(false);
+	// 					}}
+	// 				>
+	// 					확인
+	// 				</Button>
+	// 			</div>
+	// 		</Alert>
+	// 	</Collapse>
+	// );
 
 	return (
 		<div id="regional-setting">

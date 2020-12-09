@@ -160,7 +160,7 @@ def user(request, id):
             edit_date_of_birth = request.data['dateOfBirth']
             edit_email = request.data['email']
             checked_password = request.data['password']
-            user_image = request.FILES.get('')
+            # user_image = request.FILES.get('')
 
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
@@ -194,10 +194,10 @@ def change_password(request, id):
         except User.DoesNotExist:
             return HttpResponseBadRequest()
         req_data = json.loads(request.body.decode())
-        currentPassword = req_data['currentPassword']
-        newPassword = req_data['newPassword']
-        if check_password(currentPassword, request.user.password):
-            user.set_password(newPassword)
+        current_password = req_data['currentPassword']
+        new_password = req_data['newPassword']
+        if check_password(current_password, request.user.password):
+            user.set_password(new_password)
             user.save()
         else:
             return HttpResponse(status=401)

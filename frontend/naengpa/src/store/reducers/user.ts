@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 import { UserEntity, UserSignupInputDTO } from '../../model/user';
 import { ChatEntity } from '../../model/chat';
 import { UserAction } from '../actions/user';
+import { DefaultAction } from '../actions/index';
 
 export type InitialState = {
 	user: UserEntity | null;
@@ -20,9 +21,11 @@ const UserState: InitialState = {
 };
 
 let filteredChatRoomList = null;
-const filteredChatRoom = null;
 
-function userReducer(state: InitialState = UserState, action: UserAction): InitialState {
+function userReducer(
+	state: InitialState = UserState,
+	action: UserAction | DefaultAction = { type: 'default' },
+): InitialState {
 	let userList;
 
 	switch (action.type) {
@@ -44,7 +47,8 @@ function userReducer(state: InitialState = UserState, action: UserAction): Initi
 
 		/* GET USER LIST */
 		case actionTypes.GET_USER_LIST:
-			userList = action.userList.sort((a: any, b: any) => b.naengpa_score - a.naengpa_score);
+			userList = action.userList;
+			userList.sort((a: any, b: any) => b.naengpa_score - a.naengpa_score);
 			userList = userList.slice(0, Math.min(2, userList.length));
 			return { ...state, userList };
 

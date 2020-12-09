@@ -66,7 +66,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const onClickExtractMLFeature = () => {
 		const extractMLFeatureClosure = async () => {
 			// if one of the input field is empty, then the alert modal shows itself
-			if (!foodImageFiles?.length || !foodName || !(cookTime > 0) || !content) {
+			if (!foodImageFiles?.length || !foodName || cookTime <= 0 || !content) {
 				setAlert(true);
 				setAlertContent(
 					'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
@@ -80,7 +80,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				};
 
 				setLoading(true);
-				await dispatch(extractMLFeatureFromRecipe(newRecipe));
+				dispatch(extractMLFeatureFromRecipe(newRecipe));
 				setLoading(false);
 				history.push('/ingredients/extract');
 			}
@@ -95,7 +95,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 					<div key={`#${item}`} id="delete-image-icon-box">
 						{!alert && (
 							<CancelIcon
-								key={URL.createObjectURL(item) as string}
+								key={URL.createObjectURL(item)}
 								id="delete-image-button"
 								type="button"
 								onClick={() => onClickDeleteImage(idx)}
@@ -104,7 +104,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 						<img
 							key={`#${item}`}
 							id="delete-image-icon"
-							src={URL.createObjectURL(item) as string}
+							src={URL.createObjectURL(item)}
 							height="150px"
 							width="150px"
 							alt="/api/images" // TODO: check alt path
