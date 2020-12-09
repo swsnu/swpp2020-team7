@@ -47,10 +47,7 @@ function userReducer(
 
 		/* GET USER LIST */
 		case actionTypes.GET_USER_LIST:
-			userList = action.userList;
-			userList.sort((a: any, b: any) => b.naengpa_score - a.naengpa_score);
-			userList = userList.slice(0, Math.min(2, userList.length));
-			return { ...state, userList };
+			return { ...state, userList: action.userList };
 
 		/* GET USER */
 		case actionTypes.GET_USER:

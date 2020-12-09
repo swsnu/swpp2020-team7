@@ -397,7 +397,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		return (
 			<div id="ingredient-button-box" key={`${item.ingredient}`}>
 				{item.checked && (
-					<Button key={`${item.ingredient}-${i}` as string} id="ingredient-button">
+					<Button key={`${item.ingredient}-${i}`} id="ingredient-button">
 						{item.ingredient}
 					</Button>
 				)}

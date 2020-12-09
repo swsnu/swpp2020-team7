@@ -22,26 +22,25 @@ import {
 import { AppState } from '../../../store/store';
 import Article from '../../../components/Article/Article';
 
-import { RecipeEntity, RecipeImage, RecipeIngredient } from '../../../model/recipe';
-import { ArticleEntity } from '../../../model/article';
+import { RecipeEntity, RecipeImage } from '../../../model/recipe';
 
 interface RecipeDetailProps {
 	history: History;
 }
 
 const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
-	const recipe = useSelector((state: AppState) => state.recipe.recipe) as RecipeEntity;
+	const recipe = useSelector((state: AppState) => state.recipe?.recipe) as RecipeEntity;
 	const articleList = useSelector((state: AppState) => state.article.articleList);
 	const user = useSelector((state: AppState) => state.user.user);
 	const userIngredients = useSelector((state: AppState) => state.fridge.ingredientList);
 	const [page, setPage] = useState(1);
 	const [currentList, setCurrentList] = useState<RecipeImage[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
-	const images = recipe.foodImagePaths as RecipeImage[];
-	const ingredients = recipe.ingredients ? recipe.ingredients : [];
-	const recipeId = recipe.id as number;
-	const [userLike, setUserLike] = useState(recipe.userLike);
-	const [recipeLike, setRecipeLike] = useState(recipe.recipeLike);
+	const images = recipe?.foodImagePaths as RecipeImage[];
+	const ingredients = recipe?.ingredients ? recipe?.ingredients : [];
+	const recipeId = recipe?.id as number;
+	const [userLike, setUserLike] = useState(recipe?.userLike);
+	const [recipeLike, setRecipeLike] = useState(recipe?.recipeLike);
 	const dispatch = useDispatch();
 
 	const onClickPage = (e: React.ChangeEvent<unknown>, value: number): void => {
@@ -61,7 +60,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	};
 
 	const onClickChatIcon = async () => {
-		if (recipe.authorId !== user!.id) dispatch(createChatRoom(recipe.authorId as string));
+		if (recipe?.authorId !== user!.id) dispatch(createChatRoom(recipe?.authorId as string));
 	};
 
 	const onClickRecipeLike = () => {
@@ -72,7 +71,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 			setRecipeLike(recipeLike + 1);
 			setUserLike(1);
 		}
-		dispatch(toggleRecipe(recipe.id as number));
+		dispatch(toggleRecipe(recipe?.id as number));
 	};
 
 	const onClickArticle = (id: number) => async () => {
@@ -82,10 +81,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 
 	const [alert, setAlert] = useState(false);
 
-	let cookTime = `${recipe.cookTime}M`;
-	if (recipe.cookTime >= 60) cookTime = `${Math.round(recipe.cookTime / 60)}H`;
+	let cookTime = `${recipe?.cookTime}M`;
+	if (recipe?.cookTime >= 60) cookTime = `${Math.round(recipe?.cookTime / 60)}H`;
 
-	const image = currentList.map((value) => {
+	const image = currentList?.map((value) => {
 		return (
 			<img
 				key={`#${value}`}
@@ -141,11 +140,11 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 
 	useEffect(() => {
 		const func = () => {
-			setMaxPageIndex(Math.ceil(images.length / 4.0));
-			setCurrentList(images.slice((page - 1) * 4, (page - 1) * 4 + 4));
+			setMaxPageIndex(Math.ceil(images?.length / 4.0));
+			setCurrentList(images?.slice((page - 1) * 4, (page - 1) * 4 + 4));
 		};
 		func();
-	}, [dispatch, images.length]);
+	}, [dispatch, images?.length]);
 
 	return (
 		<div id="recipe-detail">
@@ -170,17 +169,17 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<Grid container alignItems="center">
 					<Grid item>
 						<Typography gutterBottom variant="h3">
-							{recipe.foodName}
+							{recipe?.foodName}
 						</Typography>
 					</Grid>
 					<Grid item xs>
 						<Typography id="recipe-foodCategory" gutterBottom variant="h6" align="left">
-							{recipe.foodCategory}
+							{recipe?.foodCategory}
 						</Typography>
 					</Grid>
 					<Grid item>
 						<Typography gutterBottom variant="h6" align="right">
-							{recipe.createdAt}
+							{recipe?.createdAt}
 						</Typography>
 					</Grid>
 				</Grid>
@@ -193,9 +192,9 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						</Grid>
 						<Grid item id="profile-box">
 							<Typography id="profile-title" variant="h5">
-								{recipe.author}
+								{recipe?.author}
 							</Typography>
-							{user!.id !== recipe.authorId && (
+							{user!.id !== recipe?.authorId && (
 								<button
 									id="chatting-icon"
 									type="button"
@@ -233,7 +232,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 							<IconButton
 								id="recipe-setting-button"
 								onClick={() => setAlert(!alert)}
-								disabled={user!.id !== recipe.authorId}
+								disabled={user!.id !== recipe?.authorId}
 							>
 								<MoreVertIcon />
 							</IconButton>
@@ -259,7 +258,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<div id="recipe-ingredient">{ingredientSetForRecipe}</div>
 				<div id="recipe-content">
 					<Typography gutterBottom variant="h6">
-						{recipe.content}
+						{recipe?.content}
 					</Typography>
 				</div>
 			</div>

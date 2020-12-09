@@ -1,6 +1,7 @@
 import axios from 'axios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { toast } from 'react-toastify';
 import * as actionTypes from './actionTypes';
 import * as actionCreators from './user';
 
@@ -27,7 +28,7 @@ describe('ActionCreators', () => {
 	let spyAlert: any;
 
 	beforeEach(() => {
-		spyAlert = jest.spyOn(window, 'alert').mockImplementation(jest.fn());
+		spyAlert = jest.spyOn(toast, 'error').mockImplementation(jest.fn());
 	});
 
 	afterEach(() => {
@@ -92,10 +93,7 @@ describe('ActionCreators', () => {
 		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
 			return new Promise((resolve, reject) => {
 				reject();
-				expect(spyAlert).toBeCalledTimes(1);
-				expect(spyAlert).toBeCalledWith(
-					'존재하지 않는 username이거나 비밀번호가 일치하지 않습니다.',
-				);
+				expect(spyAlert).toBeCalledTimes(0);
 			});
 		});
 		await mockStore.dispatch<any>(
@@ -205,7 +203,7 @@ describe('ActionCreators', () => {
 			return new Promise((resolve, reject) => {
 				reject();
 				expect(spyAlert).toBeCalledTimes(1);
-				expect(spyAlert).toBeCalledWith('비밀번호가 일치하지 않습니다.');
+				expect(spyAlert).toBeCalledWith('🦄 비밀번호가 일치하지 않아요!');
 			});
 		});
 		await mockStore.dispatch<any>(
@@ -267,7 +265,7 @@ describe('ActionCreators', () => {
 		);
 		expect(spy).toBeCalled();
 		expect(spyAlert).toBeCalledTimes(1);
-		expect(spyAlert).toBeCalledWith('비밀번호가 일치하지 않습니다.');
+		expect(spyAlert).toBeCalledWith('🦄 비밀번호가 일치하지 않아요!');
 
 		const actions = mockStore.getActions();
 		expect(actions.length).toBe(0);

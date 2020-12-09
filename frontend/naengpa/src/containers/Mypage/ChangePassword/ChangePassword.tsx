@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { History } from 'history';
+import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
+import { History } from 'history';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { AppState } from '../../../store/store';
+import Tab from '../../../components/Tab/Tab';
 import { changePassword } from '../../../store/actions/index';
 import '../UserInfo/UserInfo.scss';
 import './ChangePassword.scss';
-import Tab from '../../../components/Tab/Tab';
 
 interface ChangePasswordProps {
 	history: History;
@@ -22,7 +23,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 
 	const onClickChangePassword = () => {
 		if (newPassword !== confirmNewPassword) {
-			alert('새 비밀번호가 일치하지 않습니다.');
+			toast.error('🦄 새 비밀번호가 일치하지 않아요!');
 		} else {
 			dispatch(
 				changePassword({

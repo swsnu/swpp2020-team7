@@ -86,7 +86,6 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 
 	/* Alert Modal state */
 	const [alert, setAlert] = useState(false);
-	const alertContent = '지역을 입력해 주세요!!!';
 
 	/* Region Information for latitude, longitude and level */
 	const [latitude, setLatitude] = useState(37.47632914533942);

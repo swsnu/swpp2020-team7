@@ -45,3 +45,23 @@ def upload_images(files, prefix, feed_id):
         )
         images_path.append(S3_URL + file_path)
     return images_path
+
+
+def upload_images_with_local_path(paths, prefix, feed_id):
+    """
+    upload images to aws s3 storage
+    paths: local path to image files (string[])
+    prefix: recipe or article
+    feed_id: recipe_id or article_id
+    returns list of s3 path for each uploaded image
+    """
+    images_path = []
+    for idx, path in enumerate(paths):
+        file_path = get_filename_format(
+            prefix, feed_id, idx, path)
+        s3_bucket.put_object(
+            Key=file_path,
+            Body=open(path, 'rb').read(),
+        )
+        images_path.append(S3_URL + file_path)
+    return images_path

@@ -163,7 +163,6 @@ def user(request, id):
             edit_date_of_birth = request.data['dateOfBirth']
             edit_email = request.data['email']
             checked_password = request.data['password']
-            # user_image = request.FILES.get('')
 
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
@@ -223,7 +222,7 @@ def change_password(request, id):
 @login_required_401
 def user_list(request):
     """user_list"""
-    # GET USER LIST
+    # GET NAENGPASTARS
     if request.method == 'GET':
         user_collection = cache.get('users')
         if not user_collection:
@@ -235,7 +234,7 @@ def user_list(request):
                 "dateOfBirth": user.date_of_birth,
                 'region': get_region(user.region),
                 "naengpaScore": user.naengpa_score
-            } for user in User.objects.select_related('region').all()] if User.objects.count() != 0 else []
+            } for user in User.objects.select_related('region').order_by('-naengpa_score')[:2]] if User.objects.count() else []
             cache.set('users', user_collection)
         return JsonResponse(user_collection, safe=False)
 

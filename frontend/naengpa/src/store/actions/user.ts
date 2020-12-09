@@ -9,8 +9,8 @@ import {
 	EditUserInputDTO,
 	ChangePasswordInputDTO,
 } from '../../model/user';
-import { getCurrentTimeGreet } from '../../utils/time';
 import { ChatEntity, MessageEntity } from '../../model/chat';
+import { getCurrentTimeGreet } from '../../utils/time';
 
 /* SAVE TEMP USER */
 export const saveUserInfo_ = (user: UserSignupInputDTO) => ({
@@ -71,6 +71,7 @@ export const logout_ = () => ({
 /* LOGOUT */
 export function logout() {
 	return async (dispatch: any) => {
+		toast.success(`🦄 안녕히 가세요!`);
 		await axios.get('/api/logout/');
 		localStorage.removeItem('userInfo');
 		sessionStorage.removeItem('recipeList');
@@ -126,7 +127,7 @@ export const editUser = (user: EditUserInputDTO) => {
 			dispatch(editUser_(currentUser));
 			dispatch(push(`/@${currentUser.username}/info`));
 		} catch (e) {
-			alert('비밀번호가 일치하지 않습니다.');
+			toast.error('🦄 비밀번호가 일치하지 않아요!');
 		}
 	};
 };
@@ -142,7 +143,7 @@ export const changePassword = (user: ChangePasswordInputDTO) => {
 			dispatch(changePassword_(currentUser));
 			dispatch(push(`/@${currentUser.username}/info`));
 		} catch (e) {
-			alert('비밀번호가 일치하지 않습니다.');
+			toast.error('🦄 비밀번호가 일치하지 않아요!');
 		}
 	};
 };
@@ -160,7 +161,7 @@ export const getChatRoomList = () => {
 			dispatch(getChatRoomList_(response.data));
 			window.sessionStorage.setItem('chatRoomList', JSON.stringify(response.data));
 		} catch (e) {
-			alert('채팅방 정보를 얻지 못했습니다! 다시 시도해주세요.');
+			toast.error('🦄 채팅방 정보를 얻지 못했습니다! 다시 시도해주세요.');
 		}
 	};
 };
@@ -180,7 +181,7 @@ export const getChatRoom = (chatRoom: ChatEntity) => {
 			window.sessionStorage.setItem('chatRoom', JSON.stringify(response.data));
 		} catch (e) {
 			dispatch(push('/chatrooms'));
-			alert('채팅방에 입장하지 못했습니다! 다시 시도해주세요.');
+			toast.error('🦄 채팅방에 입장하지 못했습니다! 다시 시도해주세요.');
 		}
 	};
 };
@@ -199,7 +200,7 @@ export const createChatRoom = (id: string) => {
 				await dispatch(push(`/chatrooms/${response.data.id}`));
 			}
 		} catch (e) {
-			alert('채팅방을 만들지 못했습니다! 다시 시도해주세요.');
+			toast.error('🦄 채팅방을 만들지 못했습니다! 다시 시도해주세요.');
 		}
 	};
 };
@@ -215,7 +216,7 @@ export const sendChat = (chatRoom_id: string, chat: string) => {
 			const response = await axios.put(`/api/chatrooms/${chatRoom_id}/`, { content: chat });
 			dispatch(sendChat_(response.data));
 		} catch (e) {
-			alert('채팅을 전송하지 못했습니다! 다시 시도해주세요.');
+			toast.error('🦄 채팅을 전송하지 못했습니다! 다시 시도해주세요.');
 		}
 	};
 };
@@ -238,7 +239,7 @@ export const deleteChatRoom = (chatRoom_id: string) => {
 			await axios.delete(`/api/chatrooms/${chatRoom_id}/`);
 			await dispatch(deleteChatRoom_(chatRoom_id));
 		} catch (e) {
-			alert('채팅방을 삭제하지 못했습니다! 다시 시도해주세요.');
+			toast.error('🦄 채팅방을 삭제하지 못했습니다! 다시 시도해주세요.');
 		}
 	};
 };

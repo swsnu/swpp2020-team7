@@ -1,21 +1,20 @@
 """views for recipe"""
 import json
+import numpy as np
 from operator import itemgetter
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.core.cache import cache
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.db import transaction
+from django.utils import timezone
+from django.core.paginator import Paginator
 from rest_framework.decorators import api_view
 from utils.aws_utils import upload_images
 from utils.auth import login_required_401
 from food_category.models import FoodCategory
 from ingredient.models import Ingredient
 from .models import Recipe, Image, RecipeIngredient, RecipeLike
-from user.models import FridgeIngredient
-from django.utils import timezone
-from django.core.paginator import Paginator
-import numpy as np
 
 
 def recipe_list_get(request):
@@ -29,31 +28,35 @@ def recipe_list_get(request):
     page = request.GET.get('page', 1)
 
     user = request.user
-
     # TODO: sort by ingredient
     # if sort_condition == "ingredient":
 
     if query:
         ''' QUERY condition '''
-        sorted_list = Recipe.objects.all().filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)
-                                                  | Q(food_category__contains=query) | Q(ingredients__ingredient__contains=query)).distinct('id')
+        sorted_list = Recipe.objects.select_related(
+            'author', 'food_category'
+        ).prefetch_related('ingredients'
+                           ).filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)
+                                    | Q(food_category__name__contains=query) | Q(ingredients__ingredient__name__contains=query)).distinct('id')
 
         ''' FOOD CATEGORY condition '''
         sorted_list = sorted_list.filter(
-            food_category=food_category) if food_category != '전체' else sorted_list
+            food_category__name=food_category) if food_category != '전체' else sorted_list
 
     else:
         ''' FOOD CATEGORY condition '''
-        sorted_list = Recipe.objects.all().filter(
-            food_category=food_category) if food_category != '전체' else Recipe.objects.all()
+        sorted_list = Recipe.objects.select_related(
+            'author', 'food_category').prefetch_related('ingredients')
+        filtered_list = sorted_list.filter(
+            food_category__name=food_category) if food_category != '전체' else sorted_list
 
         ''' CREATED_AT OR LIKES '''
         if sort_condition == "created_at":
-            sorted_list = sorted_list.order_by('-created_at')
+            sorted_list = filtered_list.order_by('-created_at')
         else:
-            sorted_list = list(sorted_list)
-            sorted_list = sorted(
-                sorted_list, key=lambda x: -x.likes.count())
+            sorted_list = filtered_list.annotate(
+                like_count=Count('likes')).order_by('-like_count')[:4]
+
     paginator = Paginator(sorted_list, 9)
     sorted_list = paginator.get_page(page)
 
@@ -68,8 +71,12 @@ def recipe_list_get(request):
         "recipeLike": recipe.like_users.count(),
         "userLike": recipe.likes.filter(user_id=user.id).count(),
         "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-        "foodCategory": recipe.food_category,
-        "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
+        "foodCategory": recipe.food_category.name,
+        "ingredients": [{
+            "id": item.id,
+            "name": item.ingredient.name,
+            "quantity": item.quantity,
+        } for item in recipe.ingredients.select_related('ingredient')],
     } for recipe in sorted_list]
 
     return {
@@ -86,20 +93,22 @@ def recipe_list_post(request):
         food_name, cook_time, recipe_content, food_category_str, ingredients = itemgetter(
             'foodName', 'cookTime', 'content', 'foodCategory', 'ingredients')(req_data)
         food_images = request.FILES.getlist('image')
+        food_category = FoodCategory.objects.get(name=food_category_str)
         recipe = Recipe.objects.create(
             author_id=user_id,
             food_name=food_name,
             cook_time=cook_time,
             recipe_content=recipe_content,
-            food_category=food_category_str,
+            food_category=food_category,
         )
 
         request.user.naengpa_score += 100
         request.user.save()
 
-        ingredient_list = [RecipeIngredient.objects.create(
-            ingredient=item.get('ingredient', ''), quantity=item.get('quantity', ''), recipe_id=recipe.id
-        ) for item in eval(str(ingredients))]
+        for item in json.loads(ingredients):
+            RecipeIngredient.objects.create(
+                ingredient=Ingredient.objects.get(name=item.get('ingredient', '')), quantity=item.get('quantity', ''), recipe_id=recipe.id
+            )
     except (KeyError, json.decoder.JSONDecodeError):
         return HttpResponseBadRequest()
     except FoodCategory.DoesNotExist:
@@ -122,7 +131,11 @@ def recipe_list_post(request):
         "userLike": 0,
         "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
         "foodCategory": recipe.food_category,
-        "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
+        "ingredients": [{
+            "id": item.id,
+            "name": item.ingredient.name,
+            "quantity": item.quantity,
+        } for item in recipe.ingredients.select_related('ingredient')],
     }
 
 
@@ -143,7 +156,7 @@ def recipe_list(request):
         return JsonResponse(data=return_data, safe=False)
     elif request.method == 'POST':
         return_data = recipe_list_post(request)
-        return JsonResponse(data=return_data, status=201)
+        return JsonResponse(data=return_data, status=201, safe=False)
 
 
 @ensure_csrf_cookie
@@ -158,10 +171,15 @@ def today_recipe_list(request):
     print("[Yesterday]", yesterday)
     user_id = request.user.id
 
-    sorted_list = Recipe.objects.filter(created_at__gte=yesterday)
-    sorted_list = list(sorted_list)
-    sorted_list = sorted(
-        sorted_list, key=lambda x: -x.likes.count())
+    sorted_list = Recipe.objects.select_related(
+        'author', 'food_category'
+    ).prefetch_related(
+        'ingredients', 'likes'
+    ).filter(
+        created_at__gte=yesterday
+    ).annotate(
+        like_count=Count('likes')
+    ).order_by('-like_count')[:4]
 
     today_recipe = [{
         "id": recipe.id,
@@ -174,8 +192,8 @@ def today_recipe_list(request):
         "recipeLike": recipe.likes.count(),
         "userLike": recipe.likes.filter(user_id=user_id).count(),
         "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-        "foodCategory": recipe.food_category,
-    } for recipe in sorted_list[0:4]]
+        "foodCategory": recipe.food_category.name,
+    } for recipe in sorted_list]
     return JsonResponse({"recipeList": today_recipe, "lastPageIndex": 4}, safe=False)
 
 
@@ -198,12 +216,16 @@ def recipe_info(request, id):
         "recipeLike": recipe.likes.count(),
         "userLike": recipe.likes.filter(user_id=user_id).count(),
         "createdAt": recipe.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
-        "foodCategory": recipe.food_category,
-        "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
+        "foodCategory": recipe.food_category.name,
+        "ingredients": [{
+            "id": item.id,
+            "name": item.ingredient.name,
+            "quantity": item.quantity,
+        } for item in recipe.ingredients.select_related('ingredient')],
     }
 
     if request.method == 'GET':
-        return JsonResponse(data=recipe_response, status=200)
+        return JsonResponse(data=recipe_response, safe=False)
     if request.method == 'DELETE':
         Recipe.objects.filter(id=id).delete()
         return HttpResponse(status=204)
@@ -219,7 +241,7 @@ def recipe_like(request, id):
     user_id = request.user.id
     user_like = recipe.likes.filter(user_id=user_id)
 
-    if user_like.count() > 0:
+    if not user_like.count():
         RecipeLike.objects.filter(
             Q(recipe_id=recipe.id) & Q(user_id=user_id)).delete()
         request.user.naengpa_score -= 10
@@ -239,11 +261,13 @@ def recipe_like(request, id):
         "recipeLike": recipe.likes.count(),
         "userLike": recipe.likes.filter(user_id=user_id).count(),
         "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-        "foodCategory": recipe.food_category,
-        "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
+        "foodCategory": recipe.food_category.name,
+        "ingredients": [{
+            "id": item.id,
+            "name": item.ingredient.name,
+            "quantity": item.quantity,
+        } for item in recipe.ingredients.select_related('ingredient')],
     }
-
-    print(recipe_response)
 
     context = {"recipeLike": recipe.likes.count(),
                "userLike": recipe.likes.filter(user_id=user_id).count()}

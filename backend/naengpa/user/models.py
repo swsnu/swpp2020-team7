@@ -40,7 +40,7 @@ class Region(models.Model):
 
     def delete(self, *args, **kwargs):
         cache.delete('users')
-        super().save(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
 
 class User(AbstractUser):
@@ -49,7 +49,7 @@ class User(AbstractUser):
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=30)
     date_of_birth = models.CharField(max_length=30)
-    naengpa_score = models.IntegerField(default=0)
+    naengpa_score = models.IntegerField(default=0, db_index=True)
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
     region_range = models.IntegerField(default=0)
 

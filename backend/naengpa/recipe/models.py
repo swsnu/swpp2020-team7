@@ -10,9 +10,9 @@ User = get_user_model()
 
 class Recipe(models.Model):
     """Recipe model"""
-    author = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     food_name = models.CharField(max_length=50)
-    food_category = models.CharField(max_length=50)
+    food_category = models.ForeignKey(FoodCategory, on_delete=models.CASCADE)
     cook_time = models.PositiveIntegerField(default=0)
     recipe_content = models.TextField(blank=True)
     views = models.PositiveIntegerField(default=0)
@@ -36,8 +36,8 @@ class Recipe(models.Model):
 class Image(models.Model):
     """Image model for Recipe"""
     recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, null=True, related_name="images")
-    file_path = models.URLField(max_length=250, null=True, unique=True)
+        Recipe, on_delete=models.CASCADE, related_name="images")
+    file_path = models.URLField(max_length=250, unique=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -55,10 +55,10 @@ class Image(models.Model):
 class RecipeIngredient(models.Model):
     """Ingredient model for Recipe"""
     recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, null=True, related_name="ingredients")
-    ingredient = models.CharField(max_length=50, null=True)
-    quantity = models.CharField(max_length=50)
-
+        Recipe, on_delete=models.CASCADE, related_name="ingredients")
+    ingredient = models.ForeignKey(
+        Ingredient, on_delete=models.CASCADE, related_name="recipes")
+    quantity = models.CharField(max_length=50, null=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
