@@ -55,11 +55,10 @@ def extract_foodcategory(food_images):
     except requests.exceptions.HTTPError as err:
         if resp.status_code == 413:
             print('[logmeal api] too large image file given')
-            # raise InvalidImageFileGiven(resp.json()['message']) from err
+            raise InvalidImageFileGiven(resp.json()['message']) from err
         if resp.status_code == 400:
             print('[logmeal api] invalid image file given')
-            # raise InvalidImageFileGiven(resp.json()['message']) from err
-        pass
+            raise InvalidImageFileGiven(resp.json()['message']) from err
 
     if response not in food_category_result.keys():
         response = ''
