@@ -71,9 +71,9 @@ export const logout_ = () => ({
 /* LOGOUT */
 export function logout() {
 	return async (dispatch: any) => {
+		toast.success(`🦄 안녕히 가세요!`);
 		await axios.get('/api/logout/');
 		localStorage.removeItem('userInfo');
-		toast.success(`🦄 안녕히 가세요!`);
 		dispatch(logout_());
 	};
 }
