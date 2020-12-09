@@ -19,18 +19,20 @@ interface RecipeListProps {
 }
 
 const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
-	const recipes = useSelector((state: AppState) => state.recipe);
-	const [currentList, setCurrentList] = useState(recipes.recipeList);
+	const recipeState = useSelector((state: AppState) => state.recipe);
 	const foodCategoryList = useSelector((state: AppState) => state.foodCategory.foodCategoryList);
 	const [page, setPage] = useState(1);
+	const [recipes, setRecipes] = useState<JSX.Element[]>([]);
 
-	const recipe = currentList?.map((item: any) => {
-		return (
-			<Recipe key={item.id} recipe={item} attribute="recipe-list-child" history={history} />
-		);
-	});
-
-	const [maxPageIndex, setMaxPageIndex] = useState(recipes.lastPageIndex);
+	const setRecipeList = () => {
+		const recipe = recipeState.recipeList?.map((item: any) => {
+			return (
+				<Recipe key={item.id} recipe={item} attribute="recipe-list-child" history={history} />
+		)});
+		setRecipes(recipe);
+	}
+	
+	const [maxPageIndex, setMaxPageIndex] = useState(recipeState.lastPageIndex);
 	const [searchCategory, setSearchCategory] = useState('전체');
 	const [sortBy, setSortBy] = useState('created_at');
 	const [loading, setLoading] = useState<boolean>(false);
@@ -40,46 +42,43 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const onLoadPage = async () => {
 		setLoading(true);
 		dispatch(getRecipeList(query, sortBy, searchCategory, page));
-		setMaxPageIndex(recipes.lastPageIndex);
-		setCurrentList(recipes.recipeList);
+		setMaxPageIndex(recipeState.lastPageIndex);
+		setRecipeList();
 		setLoading(false);
 	};
 
-	const onChangekSearch = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-		value: string,
-	) => {
-		e.preventDefault();
-		setQuery(value);
-		if (query) setSortBy('created_at');
+	useEffect(() => {
+		if(query) {
+			setSortBy('created_at');
+			setPage(1);
+			onLoadPage();
+		}
+	}, [query]);
+
+	useEffect(() => {
+		setSortBy('created_at');
 		setPage(1);
 		onLoadPage();
-	};
+	}, [searchCategory]);
 
-	const onChangeSearchCategory = (value: string) => {
-		setSearchCategory(value);
-		setSortBy('create_at');
+	useEffect(() => {
 		setPage(1);
 		onLoadPage();
-	};
+	}, [sortBy]); 
 
-	const onClickFilterButton = (e: MouseEvent<HTMLButtonElement>, newSortBy: string) => {
-		e.preventDefault();
-		setSortBy(newSortBy);
-		setPage(1);
+	useEffect(() => {
 		onLoadPage();
-	};
-
-	const onChangePage = (e: React.ChangeEvent<unknown>, value: number) => {
-		e.preventDefault();
-		setPage(value);
-		onLoadPage();
-	};
+	}, [page])
 
 	const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {
 		e.preventDefault();
 		history.push('/recipes/create');
 	};
+
+	const onChangePage = (e: React.ChangeEvent<unknown>, value: number) => {
+		e.preventDefault();
+    setPage(value);
+  };
 
 	const selectOption = foodCategoryList?.map((item: any, idx) => {
 		return (
@@ -93,10 +92,6 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		);
 	});
 
-	useEffect(() => {
-		onLoadPage();
-	}, []);
-
 	return (
 		<div id="recipe-list">
 			<div id="recipe-list-header">
@@ -106,16 +101,16 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 							id="recipe-search-input"
 							placeholder="검색어를 입력해 주세요."
 							inputProps={{ 'aria-label': 'search' }}
-							onChange={(e) => onChangekSearch(e, e.target.value)}
+							onChange={(e) => {setQuery(e.target.value)}}
 						/>
 						<Select
 							labelId="recipe-search-select-label"
 							id="recipe-search-select"
 							value={searchCategory}
 							disableUnderline
-							onChange={(e) => onChangeSearchCategory(e.target.value as string)}
+							onChange={(e) => {setSearchCategory(e.target.value as string)}}
 						>
-							<MenuItem value="전체" onClick={(e) => onChangeSearchCategory('전체')}>
+							<MenuItem value="전체" onClick={(e) => {setSearchCategory('전체')}}>
 								전체
 							</MenuItem>
 							{selectOption}
@@ -126,27 +121,21 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 					<button
 						id="most-recent-filter"
 						type="button"
-						onClick={(e) => {
-							onClickFilterButton(e, 'created_at');
-						}}
+						onClick={(e) => {e.preventDefault(); setSortBy('created_at')}}
 					>
 						최신
 					</button>
 					<button
 						id="most-popular-filter"
 						type="button"
-						onClick={(e) => {
-							onClickFilterButton(e, 'likes');
-						}}
+						onClick={(e) => {e.preventDefault(); setSortBy('likes')}}
 					>
 						인기
 					</button>
 					<button
 						id="most-recommended-filter"
 						type="button"
-						onClick={(e) => {
-							onClickFilterButton(e, 'ingredient');
-						}}
+						onClick={(e) => {e.preventDefault(); setSortBy('ingredient')}}
 					>
 						추천
 					</button>
@@ -159,7 +148,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 					</button>
 				</div>
 			</div>
-			{!loading && <div id="recipe-cards">{recipe}</div>}
+			{!loading && <div id="recipe-cards">{recipes}</div>}
 			{loading && (
 				<div id="recipe-cards">
 					<CircularProgress color="inherit" />
