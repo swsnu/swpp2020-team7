@@ -85,8 +85,14 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
-		const image: File = (target.files as FileList)[0];
-		return setFoodImageFiles([...foodImageFiles, image]);
+		const images = target.files as FileList;
+		let newFileList:File[] = []
+		// convert FileList to File[]
+		// TODO: should find better way to interate FileList
+		for(let i = 0; i<images.length;  i++) {
+				newFileList = [...newFileList, images[i]];
+		};
+		setFoodImageFiles([...foodImageFiles, ...newFileList]);
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
@@ -153,8 +159,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
-			console.log(foodImageFiles, ' what');
-			console.log(foodName, ' whwh');
 			const newRecipe: BaseRecipeEntity = {
 				foodName,
 				cookTime,
@@ -592,10 +596,12 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 													id="add-image-button"
 													type="button"
 												/>
-												<Input
+												<input
 													type="file"
 													id="food-image"
 													required
+													multiple
+													accept="image/*"
 													disabled={alert}
 													onChange={(e: ChangeEvent<HTMLInputElement>) =>
 														onClickAddImage(e)

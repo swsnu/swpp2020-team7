@@ -48,8 +48,14 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
-		const image: File = (target.files as FileList)[0];
-		setFoodImageFiles([...foodImageFiles, image]);
+		const images = target.files as FileList;
+		let newFileList:File[] = []
+		// convert FileList to File[]
+		// TODO: should find better way to interate FileList
+		for(let i = 0; i<images.length;  i++) {
+				newFileList = [...newFileList, images[i]];
+		};
+		setFoodImageFiles([...foodImageFiles, ...newFileList]);
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
@@ -228,9 +234,11 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 													id="add-image-button"
 													type="button"
 												/>
-												<Input
+												<input
 													type="file"
 													id="food-image"
+													accept="image/*"
+													multiple
 													required
 													disabled={alert}
 													onChange={(e: ChangeEvent<HTMLInputElement>) =>
