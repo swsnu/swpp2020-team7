@@ -121,7 +121,7 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 	};
 
 	useEffect(() => {
-		if (!regionList.length) dispatch(getRegionList());
+		if (!regionList || !regionList.length) dispatch(getRegionList());
 
 		const container = document.getElementById('map');
 		getKakaoMap(container, level, latitude, longitude);

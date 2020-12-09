@@ -52,15 +52,6 @@ class User(AbstractUser):
     naengpa_score = models.IntegerField(default=0)
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
     region_range = models.IntegerField(default=0)
-    notifications = models.PositiveIntegerField(default=0)
-
-    def increase_notifications(self):
-        self.notifications += 1
-        self.save(update_fields=['notifications'])
-
-    def clear_notifications(self):
-        self.notifications = 0
-        self.save(update_fields=['notifications'])
 
     def __str__(self):
         return f'[{self.id}] {self.name}'
@@ -91,3 +82,17 @@ class FridgeIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     is_today_ingredient = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
+
+
+class Notification(models.Model):
+    recipient = models.ForeignKey(
+        User, related_name="notifications", on_delete=models.CASCADE)
+    title = models.CharField(max_length=20)
+    content = models.CharField(max_length=50)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f'[to {self.recipient}] {self.title}: {self.content}'
+
+    # def create(self, **obj_data):
+    #     return super().create(**obj_data)
