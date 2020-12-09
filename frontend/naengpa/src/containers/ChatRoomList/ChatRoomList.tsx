@@ -20,7 +20,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 		dispatch(getChatRoomList());
 	}, [dispatch]);
 
-	const chatRoomCollection = chatRoomList.map((chatRoom: any) => {
+	const chatRoomCollection = chatRoomList?.map((chatRoom: any) => {
 		return (
 			<Button key={chatRoom.id} id="chatroom" onClick={() => dispatch(getChatRoom(chatRoom))}>
 				<Divider variant="middle" />

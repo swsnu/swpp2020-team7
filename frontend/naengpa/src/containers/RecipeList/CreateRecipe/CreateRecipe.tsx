@@ -45,11 +45,44 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	const dispatch = useDispatch();
 
+	const compressImage = (file: File) => {
+		const image = document.createElement('img');
+		image.src = URL.createObjectURL(file);
+		console.log(file.size, 'original Size');
+		image.onload = () => {
+			URL.revokeObjectURL(image.src);
+			const canvas = document.createElement('canvas');
+			canvas.width = 500;
+			canvas.height = 500;
+			const context = canvas.getContext('2d');
+			const draw = () => context?.drawImage(image, 0, 0, 500, 500);
+			draw();
+			const getBlob = () =>
+				context?.canvas.toBlob(
+					(newImageBlob) => {
+						console.log(newImageBlob, 'blob image');
+						if (newImageBlob) {
+							setFoodImageFiles((foodImageFiles) => [
+								...foodImageFiles,
+								new File([newImageBlob], file.name),
+							]);
+						}
+					},
+					'images/jpg',
+					0.5,
+				);
+			getBlob();
+		};
+	};
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
-		const image: File = (target.files as FileList)[0];
-		setFoodImageFiles([...foodImageFiles, image]);
+		const images = target.files as FileList;
+		// convert FileList iterable
+		const imageArray = Array.from(images);
+		imageArray.forEach((file) => {
+			compressImage(file);
+		});
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
@@ -105,8 +138,8 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 							key={`#${item}`}
 							id="delete-image-icon"
 							src={URL.createObjectURL(item)}
-							height="150px"
-							width="150px"
+							height="200px"
+							width="200px"
 							alt="/api/images" // TODO: check alt path
 						/>
 					</div>
@@ -211,11 +244,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 										<div id="cook-time-unit">분</div>
 									</TableCell>
 								</TableRow>
-								<TableRow>
-									<TableCell>
-										<div id="ingredient-name">필수 재료</div>
-									</TableCell>
-								</TableRow>
 								<TableRow id="recipe-row-box">
 									<TableCell id="image-box">
 										{image_list}
@@ -228,9 +256,11 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 													id="add-image-button"
 													type="button"
 												/>
-												<Input
+												<input
 													type="file"
 													id="food-image"
+													accept="image/*"
+													multiple
 													required
 													disabled={alert}
 													onChange={(e: ChangeEvent<HTMLInputElement>) =>

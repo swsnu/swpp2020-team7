@@ -12,11 +12,11 @@ export type InitialState = {
 };
 
 const RecipeState: InitialState = {
-	recipeList: [],
+	recipeList: JSON.parse(window.sessionStorage.getItem('recipeList')!),
 	todayRecipeList: [],
-	recipe: null,
-	lastPageIndex: JSON.parse(window.localStorage.getItem('lastPageIndex')!),
-	createdRecipe: JSON.parse(window.localStorage.getItem('extractedRecipeInfo')!),
+	recipe: JSON.parse(window.sessionStorage.getItem('recipe')!),
+	lastPageIndex: JSON.parse(window.sessionStorage.getItem('lastPageIndex')!),
+	createdRecipe: JSON.parse(window.sessionStorage.getItem('extractedRecipeInfo')!),
 };
 
 function recipeReducer(
