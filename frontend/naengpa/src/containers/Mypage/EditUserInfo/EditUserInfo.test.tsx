@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { toast } from 'react-toastify';
 import { history } from '../../../store/store';
 import * as userActionCreators from '../../../store/actions/user';
 import EditUserInfo from './EditUserInfo';
@@ -49,7 +50,7 @@ describe('EditUserInfo', () => {
 		spyEditUserAction = jest
 			.spyOn(userActionCreators, 'editUser')
 			.mockImplementation(() => jest.fn());
-		spyAlert = jest.spyOn(window, 'alert').mockImplementation(jest.fn());
+		spyAlert = jest.spyOn(toast, 'error').mockImplementation(jest.fn());
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 	});
 	afterEach(() => {
@@ -108,26 +109,26 @@ describe('EditUserInfo', () => {
 		storeButton.simulate('click');
 		expect(spyEditUserAction).toBeCalledTimes(0);
 		expect(spyAlert).toBeCalledTimes(1);
-		expect(spyAlert).lastCalledWith('빠짐없이 정보를 입력해주세요!');
+		expect(spyAlert).lastCalledWith('🦄 빠짐없이 정보를 입력해주세요!');
 
 		nameInput.simulate('change', { target: { value: '^$%wrong name' } });
 		storeButton.simulate('click');
 		expect(spyEditUserAction).toBeCalledTimes(0);
 		expect(spyAlert).toBeCalledTimes(2);
-		expect(spyAlert).lastCalledWith('잘못된 이름 형식입니다.');
+		expect(spyAlert).lastCalledWith('🦄 잘못된 이름 형식이에요!');
 
 		nameInput.simulate('change', { target: { value: mockUser.name } });
 		dateInput.simulate('change', { target: { value: 'wrong date' } });
 		storeButton.simulate('click');
 		expect(spyEditUserAction).toBeCalledTimes(0);
 		expect(spyAlert).toBeCalledTimes(3);
-		expect(spyAlert).lastCalledWith('잘못된 생년월일 형식입니다.');
+		expect(spyAlert).lastCalledWith('🦄 잘못된 생년월일 형식이에요!');
 
 		dateInput.simulate('change', { target: { value: mockUser.dateOfBirth } });
 		emailInput.simulate('change', { target: { value: '잘못된 이메일 주소' } });
 		storeButton.simulate('click');
 		expect(spyEditUserAction).toBeCalledTimes(0);
 		expect(spyAlert).toBeCalledTimes(4);
-		expect(spyAlert).lastCalledWith('잘못된 이메일 주소입니다.');
+		expect(spyAlert).lastCalledWith('🦄 잘못된 이메일 주소예요!');
 	});
 });

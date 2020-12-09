@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { history } from '../../../store/store';
-import * as userActionCreators from '../../../store/actions/user';
 import ChangePassword from './ChangePassword';
 
 const middlewares = [thunk];

@@ -1,13 +1,14 @@
 import React, { ChangeEvent, useState } from 'react';
-import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import { History } from 'history';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { Input, Box } from '@material-ui/core';
+import Tab from '../../../components/Tab/Tab';
 import { AppState } from '../../../store/store';
 import { editUser } from '../../../store/actions/index';
 import '../UserInfo/UserInfo.scss';
-import Tab from '../../../components/Tab/Tab';
 import './EditUserInfo.scss';
 
 interface EditUserInfoProps {
@@ -32,13 +33,13 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 
 	const onClickEdit = () => {
 		if (name === '' || dateOfBirth === '' || email === '') {
-			alert('빠짐없이 정보를 입력해주세요!');
+			toast.error('🦄 빠짐없이 정보를 입력해주세요!');
 		} else if (!namePat.test(name)) {
-			alert('잘못된 이름 형식입니다.');
+			toast.error('🦄 잘못된 이름 형식이에요!');
 		} else if (!birthPat.test(dateOfBirth)) {
-			alert('잘못된 생년월일 형식입니다.');
+			toast.error('🦄 잘못된 생년월일 형식이에요!');
 		} else if (!emailPat.test(email)) {
-			alert('잘못된 이메일 주소입니다.');
+			toast.error('🦄 잘못된 이메일 주소예요!');
 		} else {
 			dispatch(
 				editUser({
