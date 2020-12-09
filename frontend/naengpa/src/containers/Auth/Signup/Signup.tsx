@@ -19,7 +19,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 	const [dateOfBirth, setDateOfBirth] = useState('');
 	const [email, setEmail] = useState('');
 	const namePat = new RegExp('^[ㄱ-ㅎ|가-힣|a-z|A-Z|*]+$');
-	const birthPat = new RegExp('^\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$');
+	const birthPat = new RegExp('^dd(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$');
 	const emailPat = new RegExp(
 		/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$/i,
 	);
@@ -41,7 +41,13 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 		} else if (!dateOfBirth) {
 			toast.error('🦄 생년월일을 입력해주세요!');
 		} else if (!birthPat.test(dateOfBirth)) {
-			toast.error(<div>🦄 생년월일을 올바르게 입력해 주세요!<br />&nbsp;&nbsp;&nbsp;&nbsp;ex) 970101</div>);
+			toast.error(
+				<div>
+					<span role="img">🦄</span> 생년월일을 올바르게 입력해 주세요!
+					<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;ex) 970101
+				</div>,
+			);
 		} else if (!email) {
 			toast.error('🦄 이메일을 입력해주세요!');
 		} else if (!emailPat.test(email)) {
