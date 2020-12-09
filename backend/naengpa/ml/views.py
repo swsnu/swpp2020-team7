@@ -8,8 +8,9 @@ from utils.logmeal_utils import extract_foodcategory, InvalidImageFileGiven
 from utils.konlpy_utils import extract_ingredients
 
 
-@csrf_exempt
+@ensure_csrf_cookie
 @api_view(['POST'])
+@login_required_401
 def extract_ml_feature(request):
     """/api/extract/ extract ml features"""
     if request.method == 'POST':
