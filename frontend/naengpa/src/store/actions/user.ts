@@ -53,7 +53,7 @@ export const login = (user: UserLoginInputDTO) => {
 			window.localStorage.setItem('userInfo', JSON.stringify(currentUser));
 			dispatch(login_(currentUser));
 			dispatch(push('/fridge'));
-			toast.info(`🦄 ${getCurrentTimeGreet(currentUser.name)}`);
+			toast.info(`${getCurrentTimeGreet(currentUser.name)}`);
 		} catch (e) {
 			if (e?.response && e.response.status === 404) {
 				toast.error(`🦄 존재하지 않는 아이디에요!`);
