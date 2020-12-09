@@ -38,7 +38,7 @@ def extract_foodcategory(food_images):
     # Parameters
     img = food_images[0]
     headers = {'Authorization': 'Bearer {}'.format(LOGMEAL_TOKEN)}
-
+    response = ''
     # im1 = Image.open(r'path where the PNG is stored\file name.png')
     # im1.save(r'path where the JPG will be stored\new file name.jpg')
 
@@ -55,10 +55,11 @@ def extract_foodcategory(food_images):
     except requests.exceptions.HTTPError as err:
         if resp.status_code == 413:
             print('[logmeal api] too large image file given')
-            raise InvalidImageFileGiven(resp.json()['message']) from err
+            # raise InvalidImageFileGiven(resp.json()['message']) from err
         if resp.status_code == 400:
             print('[logmeal api] invalid image file given')
-            raise InvalidImageFileGiven(resp.json()['message']) from err
+            # raise InvalidImageFileGiven(resp.json()['message']) from err
+        pass
 
     if response not in food_category_result.keys():
         response = ''

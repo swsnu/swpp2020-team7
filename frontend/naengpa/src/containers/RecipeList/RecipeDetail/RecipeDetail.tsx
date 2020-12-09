@@ -87,8 +87,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const [alert, setAlert] = useState(false);
 
 	let cookTime = `${recipe.cookTime}M`;
-	if (((recipe.cookTime as unknown) as number) >= 60)
-		cookTime = `${Math.round(((recipe.cookTime as unknown) as number) / 60)}H`;
+	if ((recipe.cookTime as number) >= 60)
+		cookTime = `${Math.round((recipe.cookTime as number) / 60)}H`;
 
 	const image = currentList.map((value: any, idx: number) => {
 		return (

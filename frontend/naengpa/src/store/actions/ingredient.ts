@@ -8,10 +8,12 @@ export const getIngredientList_ = (ingredients: IngredientCategoryCollection) =>
 });
 export const getIngredientList = () => {
 	return async (dispatch: any) => {
-		const response = await axios.get('/api/ingredients/');
-		const ingredientList: IngredientCategoryCollection = response.data;
-
-		return dispatch(getIngredientList_(ingredientList));
+		if (!window.localStorage.getItem('ingredients')) {
+			const response = await axios.get('/api/ingredients/');
+			const ingredientList: IngredientCategoryCollection = response.data;
+			dispatch(getIngredientList_(ingredientList));
+			window.localStorage.setItem('ingredients', JSON.stringify(ingredientList));
+		}
 	};
 };
 

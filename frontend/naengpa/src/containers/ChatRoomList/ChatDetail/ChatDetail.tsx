@@ -4,12 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import './ChatDetail.scss';
 import { Button, Divider, Typography } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import { sendChat } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import Tab from '../../../components/Tab/Tab';
 
-const ENDPOINT = '127.0.0.0:8000';
+// const ENDPOINT = '127.0.0.0:8000';
 
 interface ChatDetailProps {
 	history: History;
@@ -20,15 +20,15 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const chatRoom = useSelector((state: AppState) => state.user.chatRoom);
 	const [content, setContent] = useState('');
 
-	const socket = io(ENDPOINT);
-	socket.connect();
-	socket.on('connect', (data: any) => {
-		console.log(data);
-		console.log('Server connected to Client');
-	});
-	socket.on('messages', (data: any) => {
-		console.log(data);
-	});
+	// const socket = io(ENDPOINT);
+	// socket.connect();
+	// socket.on('connect', (data: any) => {
+	// 	console.log(data);
+	// 	console.log('Server connected to Client');
+	// });
+	// socket.on('messages', (data: any) => {
+	// 	console.log(data);
+	// });
 
 	const chatMessage = chatRoom!.messages!.map((message, idx) => {
 		if (message.author === user!.username) {
@@ -62,7 +62,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 			e.stopPropagation();
 			dispatch(sendChat(chatRoom!.id, content));
 			setContent('');
-			socket.emit('send message', content);
+			// socket.emit('send message', content);
 		}
 	};
 

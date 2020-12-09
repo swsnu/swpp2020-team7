@@ -7,7 +7,7 @@ export type RegionState = {
 };
 
 const initialState: RegionState = {
-	regionList: [],
+	regionList: JSON.parse(window.localStorage.getItem('regionList')!),
 };
 
 function regionReducer(state: RegionState = initialState, action: RegionAction): RegionState {

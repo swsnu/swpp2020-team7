@@ -3,10 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 
 import { Provider } from 'react-redux';
+import axios from 'axios';
 import * as serviceWorker from './serviceWorker';
 import App from './App';
 
 import store, { history } from './store/store';
+
+/* CSRF TOKEN */
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 ReactDOM.render(
 	<Provider store={store}>
