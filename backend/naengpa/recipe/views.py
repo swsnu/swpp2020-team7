@@ -28,7 +28,7 @@ def recipe_list_get(request):
     page = request.GET.get('page', 1)
 
     user = request.user
-
+    print(query, sort_condition, food_category, page)
     # TODO: sort by ingredient
     # if sort_condition == "ingredient":
 
