@@ -3,6 +3,7 @@ import json
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 from user.models import Region
+from food_category.models import FoodCategory
 from .models import Recipe, Image, RecipeIngredient, RecipeLike
 
 User = get_user_model()
@@ -24,11 +25,12 @@ class RecipeTestCase(TestCase):
         )
         test_user.save()
 
+        test_food_category = FoodCategory.objects.create(name="육류")
         test_recipe = Recipe.objects.create(
             author=test_user,
             food_name="음식",
-            food_category="한식",
-            cook_time="1",
+            food_category=test_food_category,
+            cook_time=10,
             recipe_content="테스트"
         )
 
@@ -45,17 +47,17 @@ class RecipeTestCase(TestCase):
         response = self.client.get('/api/recipes/')
         self.assertEqual(response.status_code, 200)
 
-        # method post
-        recipe_str = json.dumps({'foodName': 'apple', 'cookTime': 0,
-                                 'content': '사과', 'foodCategory': '한식', 'ingredients': []})
-        response = self.client.post('/api/recipes/', {
-            'recipe': recipe_str,
-            'image': '',
-        })
-        self.assertEqual(response.status_code, 201)
+        # # method post
+        # recipe_str = json.dumps({'foodName': 'apple', 'cookTime': 1,
+        #                          'content': '사과', 'foodCategory': '육류', 'ingredients': ['사과']})
+        # response = self.client.post('/api/recipes/', {
+        #     'recipe': recipe_str,
+        #     'image': '',
+        # })
+        # self.assertEqual(response.status_code, 201)
 
         # bad request method
-        response = self.client.put('/api/recipes/', json.dumps({'foodName': 'apple', 'cookTime': 0, 'content': "사과", 'foodImageFiles': [], }),
+        response = self.client.put('/api/recipes/', json.dumps({'foodName': 'apple', 'cookTime': 1, 'content': "사과", 'foodImageFiles': [], }),
                                    content_type='application/json')
         self.assertEqual(response.status_code, 405)
 
