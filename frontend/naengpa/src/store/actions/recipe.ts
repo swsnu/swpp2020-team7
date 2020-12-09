@@ -29,14 +29,8 @@ export const getRecipeList = (
 			});
 			const { recipeList, lastPageIndex } = response.data;
 			dispatch(getRecipeList_(recipeList, lastPageIndex));
-			window.localStorage.setItem(
-				'recipeList',
-				JSON.stringify(recipeList),
-			);	
-			window.localStorage.setItem(
-				'lastPageIndex',
-				JSON.stringify(lastPageIndex),
-			);		
+			window.localStorage.setItem('recipeList', JSON.stringify(recipeList));
+			window.localStorage.setItem('lastPageIndex', JSON.stringify(lastPageIndex));
 		} catch {
 			console.log('레시피 리스트 정보를 가져오지 못했습니다! 다시 시도해주세요!');
 		}

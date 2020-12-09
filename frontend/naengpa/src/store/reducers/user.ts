@@ -20,9 +20,9 @@ const UserState: InitialState = {
 };
 
 let filteredChatRoomList = null;
-let filteredChatRoom = null;
+const filteredChatRoom = null;
 
-function userReducer(state: InitialState = UserState, action: UserAction): InitialState {	
+function userReducer(state: InitialState = UserState, action: UserAction): InitialState {
 	let userList;
 
 	switch (action.type) {

@@ -58,8 +58,8 @@ export const login = (user: UserLoginInputDTO) => {
 };
 
 export const logout_ = () => ({
-	type: actionTypes.LOGOUT,	
-})
+	type: actionTypes.LOGOUT,
+});
 
 /* LOGOUT */
 export function logout() {
@@ -76,7 +76,7 @@ export function logout() {
 export const getUserList_ = (userList: UserEntity[]) => ({
 	type: actionTypes.GET_USER_LIST,
 	userList,
-}) 
+});
 
 export function getUserList() {
 	return async (dispatch: any) => {
@@ -88,8 +88,8 @@ export function getUserList() {
 
 export const getUser_ = (user: UserEntity) => ({
 	type: actionTypes.GET_USER,
-	user,	
-})
+	user,
+});
 
 export function getUser(user: UserEntity) {
 	return async (dispatch: any) => {

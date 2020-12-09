@@ -8,7 +8,7 @@ export const getIngredientList_ = (ingredients: IngredientCategoryCollection) =>
 });
 export const getIngredientList = () => {
 	return async (dispatch: any) => {
-		if(!window.localStorage.getItem('ingredients')) {
+		if (!window.localStorage.getItem('ingredients')) {
 			const response = await axios.get('/api/ingredients/');
 			const ingredientList: IngredientCategoryCollection = response.data;
 			dispatch(getIngredientList_(ingredientList));

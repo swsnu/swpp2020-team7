@@ -9,7 +9,7 @@ export const getFoodCategoryList_ = (foodCategoryList: FoodCategoryEntity[]) => 
 
 export const getFoodCategoryList = () => {
 	return async (dispatch: any) => {
-		if(!window.localStorage.getItem('foodCategory')) {
+		if (!window.localStorage.getItem('foodCategory')) {
 			const response = await axios.get('/api/foodcategory/');
 			dispatch(getFoodCategoryList_(response.data));
 			window.localStorage.setItem('foodCategory', JSON.stringify(response.data));

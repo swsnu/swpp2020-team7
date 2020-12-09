@@ -10,7 +10,7 @@ export const getRegionList_ = (regions: RegionEntity[]) => ({
 export const getRegionList = () => {
 	return async (dispatch: any) => {
 		try {
-			if(!window.localStorage.getItem('regionList')) {
+			if (!window.localStorage.getItem('regionList')) {
 				const response = await axios.get('/api/regions/');
 				const regionList: RegionEntity[] = response.data;
 				dispatch(getRegionList_(regionList));

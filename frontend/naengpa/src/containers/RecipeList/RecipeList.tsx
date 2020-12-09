@@ -44,13 +44,15 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		setMaxPageIndex(recipes.lastPageIndex);
 		setCurrentList(recipes.recipeList);
 		setLoading(false);
-	}
+	};
 
-	const onChangekSearch = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, value: string) => {
+	const onChangekSearch = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+		value: string,
+	) => {
 		e.preventDefault();
 		setQuery(value);
-		if(query)
-			setSortBy('created_at');
+		if (query) setSortBy('created_at');
 		setPage(1);
 		onLoadPage();
 	};
@@ -60,7 +62,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		setSortBy('create_at');
 		setPage(1);
 		onLoadPage();
-	}
+	};
 
 	const onClickFilterButton = (e: MouseEvent<HTMLButtonElement>, sortBy: string) => {
 		e.preventDefault();
@@ -164,7 +166,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 				id="recipe-list-page"
 				page={page}
 				size="large"
-				count={Math.ceil(maxPageIndex/9.0)}
+				count={Math.ceil(maxPageIndex / 9.0)}
 				onChange={onChangePage}
 			/>
 		</div>
