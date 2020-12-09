@@ -111,7 +111,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 
 	let notInFridgeJoined = notInFridgeNames.join(', ');
 	if (notInFridgeJoined.length > 0) {
-		notInFridgeJoined = ((notInFridgeJoined[notInFridgeJoined.length - 1].charCodeAt(0) - 0xAC00) % 28 > 0) ? notInFridgeJoined + "을" : notInFridgeJoined + "를";
+		notInFridgeJoined =
+			(notInFridgeJoined[notInFridgeJoined.length - 1].charCodeAt(0) - 0xac00) % 28 > 0
+				? `${notInFridgeJoined}을`
+				: `${notInFridgeJoined}를`;
 	}
 
 	const articleFiltered = articleList.filter((item) => notInFridgeNames.includes(item.item.name));
@@ -128,10 +131,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						{item.ingredient}
 					</Button>
 				) : (
-						<Button key={item.ingredient} id="ingredient-no-button">
-							{item.ingredient}
-						</Button>
-					)}
+					<Button key={item.ingredient} id="ingredient-no-button">
+						{item.ingredient}
+					</Button>
+				)}
 			</div>
 		);
 	});
@@ -217,12 +220,12 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 										onClick={() => onClickRecipeLike()}
 									/>
 								) : (
-										<FavoriteBorderIcon
-											id="recipe-like-count-icon"
-											fontSize="large"
-											onClick={() => onClickRecipeLike()}
-										/>
-									)}
+									<FavoriteBorderIcon
+										id="recipe-like-count-icon"
+										fontSize="large"
+										onClick={() => onClickRecipeLike()}
+									/>
+								)}
 								{recipeLike}
 							</div>
 						</Grid>

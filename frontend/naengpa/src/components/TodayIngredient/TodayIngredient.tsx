@@ -52,10 +52,12 @@ const TodayIngredient: React.FC = () => {
 						id="help-today-ingredient"
 						onMouseOver={() => setAlert(true)}
 						onMouseLeave={() => setAlert(false)}
-						onFocus={() => setAlert(true)} />
+						onFocus={() => setAlert(true)}
+					/>
 					<Collapse in={alert}>
 						<Alert id="help-today-ingredient-alert" icon={false}>
-							냉장고 속 재료를 클릭하여 오늘의 재료에 추가해보세요! 추가한 재료를 기반으로 레시피를 추천해드립니다.
+							냉장고 속 재료를 클릭하여 오늘의 재료에 추가해보세요! 추가한 재료를
+							기반으로 레시피를 추천해드립니다.
 						</Alert>
 					</Collapse>
 				</Grid>
