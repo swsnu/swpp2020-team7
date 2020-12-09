@@ -146,10 +146,10 @@ def recipe_list(request):
         return JsonResponse(data=return_data, status=201)
 
 
-@ ensure_csrf_cookie
-@ api_view(['GET'])
-@ login_required_401
-@ transaction.atomic
+@ensure_csrf_cookie
+@api_view(['GET'])
+@login_required_401
+@transaction.atomic
 def today_recipe_list(request):
     """ get Today recipe list """
     today = timezone.now().strftime('%Y-%m-%d')
@@ -169,7 +169,7 @@ def today_recipe_list(request):
         "author": recipe.author.username,
         "foodName": recipe.food_name,
         "cookTime": recipe.cook_time,
-        "foodImagePaths": recipe.images.values('id', 'file_path')[0],
+        "foodImagePaths": list(recipe.images.values('id', 'file_path')),
         "content": recipe.recipe_content,
         "recipeLike": recipe.likes.count(),
         "userLike": recipe.likes.filter(user_id=user_id).count(),
@@ -179,9 +179,9 @@ def today_recipe_list(request):
     return JsonResponse({"recipeList": today_recipe, "lastPageIndex": 4}, safe=False)
 
 
-@ ensure_csrf_cookie
-@ api_view(['GET', 'DELETE'])
-@ login_required_401
+@ensure_csrf_cookie
+@api_view(['GET', 'DELETE'])
+@login_required_401
 def recipe_info(request, id):
     """get recipe of given id"""
     user_id = request.user.id
@@ -209,10 +209,10 @@ def recipe_info(request, id):
         return HttpResponse(status=204)
 
 
-@ ensure_csrf_cookie
-@ api_view(['PUT'])
-@ login_required_401
-@ transaction.atomic
+@ensure_csrf_cookie
+@api_view(['PUT'])
+@login_required_401
+@transaction.atomic
 def recipe_like(request, id):
     """like recipe of given id"""
     recipe = Recipe.objects.get(id=id)

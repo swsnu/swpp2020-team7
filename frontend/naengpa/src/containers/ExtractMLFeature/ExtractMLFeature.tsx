@@ -82,11 +82,44 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		setModifiedIngredients(checkedIngredients as RecipeIngredient[]);
 	}, [createdRecipe]);
 
+	const compressImage = (file: File) => {
+		const image = document.createElement('img');
+		image.src = URL.createObjectURL(file);
+		console.log(file.size, 'original Size');
+		image.onload = () => {
+			URL.revokeObjectURL(image.src);
+			const canvas = document.createElement('canvas');
+			canvas.width = 500;
+			canvas.height = 500;
+			const context = canvas.getContext('2d');
+			const draw = () => context?.drawImage(image, 0, 0, 500, 500);
+			draw();
+			const getBlob = () =>
+				context?.canvas.toBlob(
+					(newImageBlob) => {
+						console.log(newImageBlob, 'blob image');
+						if (newImageBlob) {
+							setFoodImageFiles((foodImageFiles) => [
+								...foodImageFiles,
+								new File([newImageBlob], file.name),
+							]);
+						}
+					},
+					'images/jpg',
+					0.5,
+				);
+			getBlob();
+		};
+	};
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
-		const image: File = (target.files as FileList)[0];
-		return setFoodImageFiles([...foodImageFiles, image]);
+		const images = target.files as FileList;
+		// convert FileList iterable
+		const imageArray = Array.from(images);
+		imageArray.forEach((file) => {
+			compressImage(file);
+		});
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
@@ -153,8 +186,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
 			);
 		} else {
-			console.log(foodImageFiles, ' what');
-			console.log(foodName, ' whwh');
 			const newRecipe: BaseRecipeEntity = {
 				foodName,
 				cookTime,
@@ -185,8 +216,8 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							key={`${idx}-`}
 							id="delete-image-icon"
 							src={URL.createObjectURL(item)}
-							height="150px"
-							width="150px"
+							height="200px"
+							width="200px"
 							alt="/api/images" // TODO: check alt path
 						/>
 					</div>
@@ -592,10 +623,12 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 													id="add-image-button"
 													type="button"
 												/>
-												<Input
+												<input
 													type="file"
 													id="food-image"
 													required
+													multiple
+													accept="image/*"
 													disabled={alert}
 													onChange={(e: ChangeEvent<HTMLInputElement>) =>
 														onClickAddImage(e)
