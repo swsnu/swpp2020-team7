@@ -45,7 +45,7 @@ interface AppProps {
 
 const App: React.FC<AppProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user.user);
-		
+
 	return (
 		<div id="App">
 			<ToastContainer
