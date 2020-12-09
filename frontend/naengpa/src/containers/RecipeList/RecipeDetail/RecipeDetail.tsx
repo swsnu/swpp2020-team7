@@ -101,11 +101,11 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	});
 
 	const notInFridgeIngredients = ingredients.filter(
-		(item) => !userIngredientNames.includes(item.ingredient),
+		(item) => !userIngredientNames.includes(item.name),
 	);
 
 	const notInFridgeNames = notInFridgeIngredients.map((item) => {
-		return item.ingredient;
+		return item.name;
 	});
 
 	let notInFridgeJoined = notInFridgeNames.join(', ');
@@ -124,14 +124,14 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 
 	const ingredientSetForRecipe = ingredients.map((item, i) => {
 		return (
-			<div id="ingredient-button-box" key={`${item.ingredient}`}>
-				{userIngredientNames.includes(item.ingredient) ? (
-					<Button key={item.ingredient} id="ingredient-yes-button">
-						{item.ingredient}
+			<div id="ingredient-button-box" key={`${item.name}`}>
+				{userIngredientNames.includes(item.name) ? (
+					<Button key={item.name} id="ingredient-yes-button">
+						{item.name}
 					</Button>
 				) : (
-					<Button key={item.ingredient} id="ingredient-no-button">
-						{item.ingredient}
+					<Button key={item.name} id="ingredient-no-button">
+						{item.name}
 					</Button>
 				)}
 			</div>
