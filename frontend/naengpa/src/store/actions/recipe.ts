@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { toast } from 'react-toastify';
-import { push } from 'connected-react-router'
+import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 import { BaseRecipeEntity, RecipeEntity, RecipeLike } from '../../model/recipe';
 
@@ -112,14 +112,16 @@ export const extractMLFeatureFromRecipe = (recipe: BaseRecipeEntity) => {
 
 			dispatch(extractMLFeatureFromRecipe_({ ...response.data, ...recipe }));
 		} catch (e) {
-			if (e.response && e.response.data.code === 715) {
+			if (e?.response && e.response.data.code === 715) {
 				toast.error(`🦄 이미지 파일의 용량이 너무 커요!`);
-			} else if (e.response && e.response.data.code === 711) {
+			} else if (e?.response && e.response.data.code === 711) {
 				toast.error(`🦄 jpeg, jpg 파일만 허용됩니다!`);
 			} else {
-				toast.error('🦄 알수없는 이유로 ML 재료 추출에 실패했습니다. 관리자에게 연락해주세요');
+				toast.error(
+					'🦄 알수없는 이유로 ML 재료 추출에 실패했습니다. 관리자에게 연락해주세요',
+				);
 			}
-			dispatch(push('/recipes/create'))
+			dispatch(push('/recipes/create'));
 		}
 	};
 };

@@ -55,11 +55,11 @@ export const login = (user: UserLoginInputDTO) => {
 			dispatch(push('/fridge'));
 			toast.info(`🦄 ${getCurrentTimeGreet(currentUser.name)}`);
 		} catch (e) {
-			if (e.response && e.response.status === 404) {
+			if (e?.response && e.response.status === 404) {
 				toast.error(`🦄 존재하지 않는 아이디에요!`);
-			} else if (e.response && e.response.status === 401) {
+			} else if (e?.response && e.response.status === 401) {
 				toast.error(`🦄 잘못된 비밀번호에요!`);
-			} 
+			}
 		}
 	};
 };
