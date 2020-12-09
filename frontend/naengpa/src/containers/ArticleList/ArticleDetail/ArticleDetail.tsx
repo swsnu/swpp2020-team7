@@ -30,7 +30,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 	const [currentList, setCurrentList] = useState<ArticleImage[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
 	const [alert, setAlert] = useState(false);
-	const images = article.images as ArticleImage[];
+	const images = article?.images as ArticleImage[];
 	const dispatch = useDispatch();
 
 	const onClickPage = (e: React.ChangeEvent<unknown>, value: number): void => {
