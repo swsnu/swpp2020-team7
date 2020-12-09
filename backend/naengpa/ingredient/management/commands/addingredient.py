@@ -1,3 +1,4 @@
+import os
 from django.core.management.base import BaseCommand
 from ingredient.models import Ingredient, IngredientCategory
 
@@ -7,7 +8,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """makes up Region db table with gu-dong data in Seoul"""
-        input_fname = "ingredient/management/commands/ingredient.txt"
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        input_fname = os.path.join(base_dir, 'ingredient.txt')
 
         ingredient_data = {}
         with open(input_fname, "r") as f:
