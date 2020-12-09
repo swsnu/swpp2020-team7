@@ -35,8 +35,8 @@ def recipe_list_get(request):
     if query:
         ''' QUERY condition '''
         sorted_list = Recipe.objects.select_related(
-            ['author', 'food_category']
-        ).prefetch_related(['ingredients']
+            'author', 'food_category'
+        ).prefetch_related('ingredients'
                            ).filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)
                                     | Q(food_category__name__contains=query) | Q(ingredients__ingredient__name__contains=query)).distinct('id')
 
@@ -47,16 +47,15 @@ def recipe_list_get(request):
     else:
         ''' FOOD CATEGORY condition '''
         sorted_list = Recipe.objects.select_related(
-            ['author', 'food_category']
-        ).prefetch_related(['ingredients']
-                           ).filter(
-            food_category__name=food_category) if food_category != '전체' else Recipe.objects.all()
+            'author', 'food_category').prefetch_related('ingredients')
+        filtered_list = sorted_list.filter(
+            food_category__name=food_category) if food_category != '전체' else sorted_list
 
         ''' CREATED_AT OR LIKES '''
         if sort_condition == "created_at":
-            sorted_list = sorted_list.order_by('-created_at')
+            sorted_list = filtered_list.order_by('-created_at')
         else:
-            sorted_list = list(sorted_list)
+            sorted_list = list(filtered_list)
             sorted_list = sorted(
                 sorted_list, key=lambda x: -x.likes.count())
     paginator = Paginator(sorted_list, 9)
@@ -73,12 +72,12 @@ def recipe_list_get(request):
         "recipeLike": recipe.like_users.count(),
         "userLike": recipe.likes.filter(user_id=user.id).count(),
         "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-        "foodCategory": recipe.food_category__name,
+        "foodCategory": recipe.food_category.name,
         "ingredients": [{
             "id": item.id,
-            "name": item.ingredient__name,
+            "name": item.ingredient.name,
             "quantity": item.quantity,
-        } for item in recipe.ingredients.values('id', 'ingredient__name', 'quantity')],
+        } for item in recipe.ingredients.select_related('ingredient')],
     } for recipe in sorted_list]
 
     return {
@@ -135,9 +134,9 @@ def recipe_list_post(request):
         "foodCategory": recipe.food_category,
         "ingredients": [{
             "id": item.id,
-            "name": item.ingredient__name,
+            "name": item.ingredient.name,
             "quantity": item.quantity,
-        } for item in recipe.ingredients.values('id', 'ingredient', 'quantity')],
+        } for item in recipe.ingredients.select_related('ingredient')],
     }
 
 
@@ -174,9 +173,9 @@ def today_recipe_list(request):
     user_id = request.user.id
 
     sorted_list = Recipe.objects.select_related(
-        ['author', 'food_category']
+        'author', 'food_category'
     ).prefetch_related(
-        ['ingredients', 'likes']
+        'ingredients', 'likes'
     ).filter(
         created_at__gte=yesterday
     ).annotate(
@@ -194,7 +193,7 @@ def today_recipe_list(request):
         "recipeLike": recipe.likes.count(),
         "userLike": recipe.likes.filter(user_id=user_id).count(),
         "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-        "foodCategory": recipe.food_category__name,
+        "foodCategory": recipe.food_category.name,
     } for recipe in sorted_list]
     return JsonResponse({"recipeList": today_recipe, "lastPageIndex": 4}, safe=False)
 
@@ -218,12 +217,12 @@ def recipe_info(request, id):
         "recipeLike": recipe.likes.count(),
         "userLike": recipe.likes.filter(user_id=user_id).count(),
         "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-        "foodCategory": recipe.food_category__name,
+        "foodCategory": recipe.food_category.name,
         "ingredients": [{
             "id": item.id,
-            "name": item.ingredient__name,
+            "name": item.ingredient.name,
             "quantity": item.quantity,
-        } for item in recipe.ingredients.values('id', 'ingredient', 'quantity')],
+        } for item in recipe.ingredients.select_related('ingredient')],
     }
 
     if request.method == 'GET':
@@ -263,15 +262,13 @@ def recipe_like(request, id):
         "recipeLike": recipe.likes.count(),
         "userLike": recipe.likes.filter(user_id=user_id).count(),
         "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-        "foodCategory": recipe.food_category__name,
+        "foodCategory": recipe.food_category.name,
         "ingredients": [{
             "id": item.id,
-            "name": item.ingredient__name,
+            "name": item.ingredient.name,
             "quantity": item.quantity,
-        } for item in recipe.ingredients.values('id', 'ingredient', 'quantity')],
+        } for item in recipe.ingredients.select_related('ingredient')],
     }
-
-    print(recipe_response)
 
     context = {"recipeLike": recipe.likes.count(),
                "userLike": recipe.likes.filter(user_id=user_id).count()}
