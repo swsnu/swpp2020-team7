@@ -7,7 +7,9 @@ import {
 	UserLoginInputDTO,
 	UserSignupInputDTO,
 	EditUserInputDTO,
+	ChangePasswordInputDTO,
 } from '../../model/user';
+import { ChatEntity, MessageEntity } from '../../model/chat';
 import { getCurrentTimeGreet } from '../../utils/time';
 
 /* SAVE TEMP USER */
