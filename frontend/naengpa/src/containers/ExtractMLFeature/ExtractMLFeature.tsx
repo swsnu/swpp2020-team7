@@ -455,50 +455,11 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					{/* Ingredient List  */}
 					{ingredientSet}
 					{/* New Ingredient */}
-					<div id="ingredient-element">
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={false}
-									checkedIcon={<CheckBoxIcon id="checkbox" />}
-								/>
-							}
-							label={newIngredient}
-						/>
-						<Input
-							id="new-ingredient-name"
-							placeholder="재료"
-							disableUnderline
-							value={newIngredient}
-							onChange={(e) => {
-								setNewIngredient(e.target.value);
-							}}
-						/>
-						{newIngredient && (
-							<Input
-								id="new-ingredient-quantity"
-								placeholder="수량: "
-								value={newIngredientQuantity}
-								onChange={(e) => {
-									setNewIngredientQuantity(e.target.value);
-								}}
-							/>
-						)}
-						{newIngredient &&
-							newIngredientQuantity &&
-							!duplicateIngredient(newIngredient) && (
-								<AddCircleIcon
-									id="add-ingredient-button"
-									type="button"
-									onClick={onClickAddIngredient}
-								/>
-							)}
-					</div>
+					{!ingredientSet.length && <div>추천된 재료가 없습니다!!</div>}
 				</div>
-
 				<div id="confirm-modal-button-box">
 					<Button id="confirm-modal-button" onClick={onClickConfirmModal}>
-						수정
+						{ingredientSet.length ? <>수정</> : <>확인</> }
 					</Button>
 				</div>
 			</Alert>
