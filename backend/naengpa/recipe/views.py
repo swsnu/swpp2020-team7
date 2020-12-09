@@ -28,7 +28,6 @@ def recipe_list_get(request):
     page = request.GET.get('page', 1)
 
     user = request.user
-    print(query, sort_condition, food_category, page)
     # TODO: sort by ingredient
     # if sort_condition == "ingredient":
 
@@ -55,9 +54,9 @@ def recipe_list_get(request):
         if sort_condition == "created_at":
             sorted_list = filtered_list.order_by('-created_at')
         else:
-            sorted_list = list(filtered_list)
-            sorted_list = sorted(
-                sorted_list, key=lambda x: -x.likes.count())
+            sorted_list = filtered_list.annotate(
+                like_count=Count('likes')).order_by('-like_count')[:4]
+
     paginator = Paginator(sorted_list, 9)
     sorted_list = paginator.get_page(page)
 
@@ -157,7 +156,7 @@ def recipe_list(request):
         return JsonResponse(data=return_data, safe=False)
     elif request.method == 'POST':
         return_data = recipe_list_post(request)
-        return JsonResponse(data=return_data, status=201)
+        return JsonResponse(data=return_data, status=201, safe=False)
 
 
 @ensure_csrf_cookie
@@ -226,7 +225,7 @@ def recipe_info(request, id):
     }
 
     if request.method == 'GET':
-        return JsonResponse(data=recipe_response, status=200)
+        return JsonResponse(data=recipe_response, safe=False)
     if request.method == 'DELETE':
         Recipe.objects.filter(id=id).delete()
         return HttpResponse(status=204)
