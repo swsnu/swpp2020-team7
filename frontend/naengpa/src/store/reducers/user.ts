@@ -16,8 +16,8 @@ const UserState: InitialState = {
 	user: JSON.parse(window.localStorage.getItem('userInfo')!),
 	saved_user: JSON.parse(window.localStorage.getItem('savedUser')!),
 	userList: [],
-	chatRoomList: [],
-	chatRoom: null,
+	chatRoomList: JSON.parse(window.localStorage.getItem('chatRoomList')!),
+	chatRoom: JSON.parse(window.localStorage.getItem('chatRoom')!),
 };
 
 let filteredChatRoomList = null;
