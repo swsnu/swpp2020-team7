@@ -49,6 +49,7 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 							type="text"
 							placeholder="USERNAME"
 							onChange={(e) => setUserName(e.target.value)}
+							onKeyPress={onKeyPress}
 						/>
 					</div>
 					<div>

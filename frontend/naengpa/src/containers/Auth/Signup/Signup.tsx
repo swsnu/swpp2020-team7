@@ -79,9 +79,10 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							placeholder="NAME"
 							pattern="^[ㄱ-ㅎ|가-힣|a-z|A-Z|\*]+$"
 							onChange={(e) => setName(e.target.value)}
+							onKeyPress={onKeyPress}
 						/>
 						{name !== '' && !namePat.test(name) && (
-							<p id="invalid-name">INVALID NAME</p>
+							<p id="invalid-name">이름을 올바르게 입력해주세요</p>
 						)}
 					</div>
 					<div id="input-username">
@@ -90,6 +91,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							type="text"
 							placeholder="USERNAME"
 							onChange={(e) => setUserName(e.target.value)}
+							onKeyPress={onKeyPress}
 						/>
 					</div>
 					<div id="input-password">
@@ -98,6 +100,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							type="password"
 							placeholder="PASSWORD"
 							onChange={(e) => setPassword(e.target.value)}
+							onKeyPress={onKeyPress}
 						/>
 					</div>
 					<div id="input-password-confirm">
@@ -106,9 +109,10 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							type="password"
 							placeholder="PASSWORD CONFIRM"
 							onChange={(e) => setPasswordConfirm(e.target.value)}
+							onKeyPress={onKeyPress}
 						/>
 						{passwordConfirm !== '' && password !== passwordConfirm && (
-							<p id="checkPassword">DO NOT MATCH TO PASSWORD</p>
+							<p id="checkPassword">비밀번호가 일치하지 않아요</p>
 						)}
 					</div>
 					<div id="input-date-of-birth">
@@ -117,10 +121,11 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							type="text"
 							placeholder="DATE OF BIRTH (EX 980515)"
 							onChange={(e) => setDateOfBirth(e.target.value)}
+							onKeyPress={onKeyPress}
 							pattern="^[0-9]{6}$"
 						/>
 						{dateOfBirth !== '' && !birthPat.test(dateOfBirth) && (
-							<p id="invalidBirth">INVALID DATE OF BIRTH</p>
+							<p id="invalidBirth">생년월일을 올바르게 입력해주세요 (ex. 980101)</p>
 						)}
 					</div>
 					<div id="input-email">
@@ -133,7 +138,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							pattern="^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$"
 						/>
 						{email !== '' && !emailPat.test(email) && (
-							<p id="invalidEmail">INVALID EMAIL</p>
+							<p id="invalidEmail">이메일을 올바르게 입력해주세요</p>
 						)}
 					</div>
 				</div>
