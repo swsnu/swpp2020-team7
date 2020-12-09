@@ -1,4 +1,5 @@
 """views for ingredient"""
+import json
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.decorators import api_view
@@ -14,7 +15,7 @@ def extract_ml_feature(request):
     """/api/extract/ extract ml features"""
     if request.method == 'POST':
         ''' POST /api/recipes/ post new recipe '''
-        recipe_info = eval(request.POST.dict().get('recipe', ''))
+        recipe_info = json.loads(request.POST.get('recipe'))
         recipe_content = recipe_info['content']
         food_images = request.FILES.getlist('image')
         try:
