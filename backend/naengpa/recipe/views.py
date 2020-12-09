@@ -29,8 +29,6 @@ def recipe_list_get(request):
     page = request.GET.get('page', 1)
 
     user = request.user
-    print("[search-query]- ", query, " [category]- ",
-          food_category, " [sort by]- ", sort_condition, "[page]-", page)
 
     # TODO: sort by ingredient
     # if sort_condition == "ingredient":
@@ -39,29 +37,23 @@ def recipe_list_get(request):
         ''' QUERY condition '''
         sorted_list = Recipe.objects.all().filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)
                                                   | Q(food_category__contains=query) | Q(ingredients__ingredient__contains=query)).distinct('id')
-        print("[*] SORTED BY QUERY ", sorted_list)
 
         ''' FOOD CATEGORY condition '''
         sorted_list = sorted_list.filter(
             food_category=food_category) if food_category != '전체' else sorted_list
-        print("[1] SORED BY FOOD CATEGORY", sorted_list)
 
     else:
         ''' FOOD CATEGORY condition '''
         sorted_list = Recipe.objects.all().filter(
             food_category=food_category) if food_category != '전체' else Recipe.objects.all()
-        print("[1] SORED BY FOOD CATEGORY", sorted_list)
 
         ''' CREATED_AT OR LIKES '''
         if sort_condition == "created_at":
             sorted_list = sorted_list.order_by('-created_at')
-            print("[2] SORED BY CREATED_AT", sorted_list)
         else:
             sorted_list = list(sorted_list)
             sorted_list = sorted(
                 sorted_list, key=lambda x: -x.likes.count())
-            print("[3] SORED BY LIKE USERS", sorted_list)
-            print(timezone.now())
     paginator = Paginator(sorted_list, 9)
     sorted_list = paginator.get_page(page)
 
@@ -105,12 +97,9 @@ def recipe_list_post(request):
         request.user.naengpa_score += 100
         request.user.save()
 
-        print(ingredients, "list")
         ingredient_list = [RecipeIngredient.objects.create(
             ingredient=item.get('ingredient', ''), quantity=item.get('quantity', ''), recipe_id=recipe.id
         ) for item in eval(str(ingredients))]
-
-        print("[Ingredient List] ", ingredient_list)
     except (KeyError, json.decoder.JSONDecodeError):
         return HttpResponseBadRequest()
     except FoodCategory.DoesNotExist:
@@ -173,8 +162,6 @@ def today_recipe_list(request):
     sorted_list = list(sorted_list)
     sorted_list = sorted(
         sorted_list, key=lambda x: -x.likes.count())
-    print("SORTED BY LIKE USERS")
-    print(sorted_list)
 
     today_recipe = [{
         "id": recipe.id,
