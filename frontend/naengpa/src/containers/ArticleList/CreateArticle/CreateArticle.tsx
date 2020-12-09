@@ -83,8 +83,10 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 	const onClickCreateArticle = async () => {
 		// if one of the input field is empty, then the alert modal shows itself
 		if (!images.length || !item || !title || !content || !price) {
+			setOnAlert(true);
 			setAlert('거래품명, 제목, 내용, 가격 및 사진을 모두 입력해 주세요');
 		} else if (!options.isForSale && !options.isForExchange && !options.isForShare) {
+			setOnAlert(true);
 			setAlert('희망 거래 옵션을 선택해주세요.');
 		} else {
 			setOnAlert(false);
@@ -96,7 +98,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 				options,
 				images,
 			};
-			dispatch(createArticle(newArticle));
+			await dispatch(createArticle(newArticle));
 		}
 	};
 
