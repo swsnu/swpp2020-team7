@@ -45,7 +45,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 					</button>
 				</div>
 				<div id="change-password-content">
-					<div id="myinfo-profile">
+					<div id="password-user-profile">
 						<AccountCircleIcon id="profile-picture" />
 						<div id="myinfo-username">{user!.username}</div>
 					</div>
