@@ -146,7 +146,7 @@ def recipe_list(request):
 
 
 @ensure_csrf_cookie
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 @login_required_401
 @transaction.atomic
 def today_recipe_list(request):
@@ -161,7 +161,7 @@ def today_recipe_list(request):
     sorted_list = list(sorted_list)
     sorted_list = sorted(
         sorted_list, key=lambda x: -x.likes.count())
-    print("SORTED BY LIKE USERS", sorted_list)
+    print("SORTED BY LIKE USERS")
     print(sorted_list)
 
     today_recipe = [{
@@ -176,7 +176,6 @@ def today_recipe_list(request):
         "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
         "foodCategory": recipe.food_category,
     } for recipe in sorted_list[0:4]]
-
     return JsonResponse({"recipeList": today_recipe, "lastPageIndex": 4}, safe=False)
 
 

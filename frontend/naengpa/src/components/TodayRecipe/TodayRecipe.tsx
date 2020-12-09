@@ -11,19 +11,16 @@ interface TodayRecipeProps {
 }
 
 const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
+	const recipes = useSelector((state: AppState) => state.recipe);
 	const recipeList = useSelector((state: AppState) => state.recipe.todayRecipeList);
-	const [recipe, setRecipe] = useState<JSX.Element[]>([]);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (!recipeList) {
-			const func = async () => dispatch(getTodayRecipeList());
-			func();
-		}
-	});
+		dispatch(getTodayRecipeList());
+		console.log(recipeList);
+	}, []);
 
-	useEffect(() => {
-		const recipe = recipeList?.length
+	const recipe = recipeList?.length
 			? recipeList?.map((item: any) => (
 					<Recipe
 						key={item.id}
@@ -32,9 +29,7 @@ const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
 						history={history}
 					/>
 			  ))
-			: [];
-		if (recipe) setRecipe(recipe);
-	}, [recipeList]);
+		: [];
 
 	return (
 		<div id="today-recipe">
