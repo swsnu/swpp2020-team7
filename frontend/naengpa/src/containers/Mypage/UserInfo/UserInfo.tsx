@@ -60,7 +60,11 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 							</div>
 							<div className="myinfo-content">
 								<div className="info-head">지역 </div>
-								{/* <div className="info-tail">{user!.region} {user!.regionRange} </div> */}
+								<div className="info-tail">{user!.region.name}</div>
+							</div>
+							<div className="myinfo-content">
+								<div className="info-head">설정범위 </div>
+								<div className="info-tail">{user!.regionRange}km</div>
 							</div>
 							<button
 								type="button"

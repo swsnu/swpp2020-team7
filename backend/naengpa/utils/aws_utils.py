@@ -3,8 +3,8 @@ import os
 import boto3
 from datetime import datetime
 from django.utils import timezone
-
 from naengpa.settings.env import S3_URL, AWS_S3_ACCESS_KEY_ID, AWS_S3_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_REGION_NAME
+
 
 session = boto3.Session(
     aws_access_key_id=AWS_S3_ACCESS_KEY_ID,

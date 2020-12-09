@@ -29,33 +29,22 @@
         align-content: left;
     }
 
-    #myinfo-profile {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-left: -10%;
-        width: 40%;
-    }
-
     #add-image-icon-box {
-        width: 200px;
-        height: 200px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
+        width: 150px;
+        height: 150px;
         float: left;
-        margin-left: 13%;
         background-color: #ffffff;
     }
-    
+
     #profile-image {
         display:none;
     }
 
-    #myinfo-profile-username {
-        margin-top: 20%;
-        margin-left: 10%;
+    #edit-info-profile {
+        margin-top: 6%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     #edit-profile-picture {
@@ -67,34 +56,35 @@
         margin-top: 17%;
         color: #bdbdbd;
     }
-    
+
     #add-image-button {
         position: absolute;
         color: #69e88e;
         top: 0;
         right: 0;
-    
+
         margin-top: 5px;
         margin-right: -7px;
         border-radius: 25px;
         font-size: 150%;
         background-color: #ffffff;
     }
-    
+
     #add-image-icon {
         font-size: 45px;
         color: #ffffff;
     }
 
     #edit-info-list {
-       width:100%;
+        margin-top: 12px;
+        margin-left: 30px;
+        width:100%;
     }
 
     #name-part, #date-of-birth-part, #email-part, #region-part, #password-part {
         padding: 3%;
         display: flex;
         flex-direction: row;
-        margin-left: 10%;
         .info-head {
             width: 30%;
         }
