@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 
@@ -92,6 +92,10 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 			</MenuItem>
 		);
 	});
+
+	useEffect(() => {
+		onLoadPage();
+	}, []);
 
 	return (
 		<div id="recipe-list">
