@@ -53,13 +53,13 @@ export const login = (user: UserLoginInputDTO) => {
 			window.localStorage.setItem('userInfo', JSON.stringify(currentUser));
 			dispatch(login_(currentUser));
 			dispatch(push('/fridge'));
-			toast.info(`🦄 ${getCurrentTimeGreet(currentUser.name)}`);
+			toast.info(`${getCurrentTimeGreet(currentUser.name)}`);
 		} catch (e) {
-			if (e.response && e.response.status === 404) {
+			if (e?.response && e.response.status === 404) {
 				toast.error(`🦄 존재하지 않는 아이디에요!`);
-			} else if (e.response && e.response.status === 401) {
+			} else if (e?.response && e.response.status === 401) {
 				toast.error(`🦄 잘못된 비밀번호에요!`);
-			} 
+			}
 		}
 	};
 };
@@ -71,13 +71,10 @@ export const logout_ = () => ({
 /* LOGOUT */
 export function logout() {
 	return async (dispatch: any) => {
-		const response: any = await axios.get('/api/logout/');
-
-		if (response.status === 204) {
-			localStorage.removeItem('userInfo');
-			toast.success(`🦄 안녕히 가세요!`);
-			dispatch(logout_());
-		}
+		await axios.get('/api/logout/');
+		localStorage.removeItem('userInfo');
+		toast.success(`🦄 안녕히 가세요!`);
+		dispatch(logout_());
 	};
 }
 

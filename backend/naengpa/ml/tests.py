@@ -35,7 +35,7 @@ class MlTestCase(TestCase):
         # get ml feature list done
         response = self.client.post('/api/extract/',
                                     {
-                                        'recipe': "{'foodName': 'apple', 'cookTime': 0, 'content': '사과'}",
+                                        'recipe': json.dumps({"foodName": "apple", "cookTime": 0, 'content': '사과'}),
                                         'image': ''
                                     })
         self.assertEqual(response.status_code, 200)
