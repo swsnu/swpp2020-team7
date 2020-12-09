@@ -19,6 +19,7 @@ const mockUser = {
 	username: 'test',
 	email: 'test@snu.ac.kr',
 	name: '테스트',
+	region: '관악구 청룡동',
 	dateOfBirth: '20201112',
 	naengpaScore: 100,
 };
