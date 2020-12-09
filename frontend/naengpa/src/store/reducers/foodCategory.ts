@@ -7,7 +7,7 @@ export type FoodCategoryState = {
 };
 
 const initialState: FoodCategoryState = {
-	foodCategoryList: [],
+	foodCategoryList: JSON.parse(window.localStorage.getItem('foodCategory')!),
 };
 
 function Food_category_reducer(

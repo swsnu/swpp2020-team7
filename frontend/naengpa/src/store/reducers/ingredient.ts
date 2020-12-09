@@ -7,7 +7,7 @@ export type IngredientState = {
 };
 
 const initialState: IngredientState = {
-	ingredientList: {},
+	ingredientList: JSON.parse(window.localStorage.getItem('ingredients')!),
 };
 
 function ingredient_reducer(
