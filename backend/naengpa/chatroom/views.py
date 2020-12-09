@@ -12,6 +12,8 @@ from utils.auth import login_required_401
 
 User = get_user_model()
 
+LETS_CHAT_MESSAGE = "채팅을 시작해보세요!"
+
 
 def get_time_format(time_str):
     return time_str.strftime("%y.%m.%d") if time_str.strftime("%y.%m.%d") != timezone.now().strftime("%y.%m.%d") \
@@ -36,7 +38,7 @@ def get_chatroom_list(request):
                 "author": message.author.username,
                 "createdAt": get_time_format(message.created_at),
             } for message in chatroom.message_set.select_related('author')],
-            "lastChat": chatroom.message_set.all().last().content if chatroom.message_set.count() != 0 else "채팅을 시작해보세요!",
+            "lastChat": chatroom.message_set.all().last().content if chatroom.message_set.count() != 0 else LETS_CHAT_MESSAGE,
             "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.username,
             "updatedAt": get_time_format(chatroom.updated_at),
             "chatCount": ChatMember.objects.get(Q(chatroom_id=chatroom.id) & Q(member_id=user.id)).notice,
@@ -79,7 +81,7 @@ def make_chatroom(request):
             "author": message.author.user.username,
             "createdAt": get_time_format(message.created_at),
         } for message in messages],
-        "lastChat": messages.last().content if messages.count() != 0 else "채팅을 시작해보세요!",
+        "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": friend.username,
         "updatedAt":  get_time_format(chatroom.updated_at),
         "chatCount": 0,
@@ -119,7 +121,7 @@ def get_chatroom(request, id):
             "author": message.author.username,
             "createdAt": get_time_format(message.created_at),
         } for message in messages],
-        "lastChat": messages.last().content if messages.count() != 0 else "채팅을 시작해보세요!",
+        "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.username,
         "updatedAt":  get_time_format(chatroom.updated_at),
         "chatCount": 0,
@@ -156,7 +158,7 @@ def send_message(request, id):
             "author": message.author.username,
             "createdAt": get_time_format(message.created_at),
         } for message in messages],
-        "lastChat": messages.last().content if messages.count() != 0 else "채팅을 시작해보세요!",
+        "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": chat_member.member.username,
         "updatedAt":  get_time_format(chatroom.updated_at),
         "chatCount": 0,

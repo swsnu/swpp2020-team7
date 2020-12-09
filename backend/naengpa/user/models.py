@@ -71,7 +71,7 @@ class User(AbstractUser):
 
     def delete(self, *args, **kwargs):
         cache.delete('users')
-        super().save(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
 
 class Fridge(models.Model):

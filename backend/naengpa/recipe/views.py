@@ -18,6 +18,122 @@ from django.core.paginator import Paginator
 import numpy as np
 
 
+def recipe_list_get(request):
+    ''' GET /api/recipes/ get recipe list '''
+    if not Recipe.objects.count():
+        return JsonResponse([], safe=False)
+
+    query = request.GET.get('query', "")
+    sort_condition = request.GET.get('sort_by', "created_at")
+    food_category = request.GET.get('category', "")
+    page = request.GET.get('page', 1)
+
+    user = request.user
+    print("[search-query]- ", query, " [category]- ",
+          food_category, " [sort by]- ", sort_condition, "[page]-", page)
+
+    # TODO: sort by ingredient
+    # if sort_condition == "ingredient":
+
+    if query:
+        ''' QUERY condition '''
+        sorted_list = Recipe.objects.all().filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)
+                                                  | Q(food_category__contains=query) | Q(ingredients__ingredient__contains=query)).distinct('id')
+        print("[*] SORTED BY QUERY ", sorted_list)
+
+        ''' FOOD CATEGORY condition '''
+        sorted_list = sorted_list.filter(
+            food_category=food_category) if food_category != '전체' else sorted_list
+        print("[1] SORED BY FOOD CATEGORY", sorted_list)
+
+    else:
+        ''' FOOD CATEGORY condition '''
+        sorted_list = Recipe.objects.all().filter(
+            food_category=food_category) if food_category != '전체' else Recipe.objects.all()
+        print("[1] SORED BY FOOD CATEGORY", sorted_list)
+
+        ''' CREATED_AT OR LIKES '''
+        if sort_condition == "created_at":
+            sorted_list = sorted_list.order_by('-created_at')
+            print("[2] SORED BY CREATED_AT", sorted_list)
+        else:
+            sorted_list = list(sorted_list)
+            sorted_list = sorted(
+                sorted_list, key=lambda x: -x.likes.count())
+            print("[3] SORED BY LIKE USERS", sorted_list)
+            print(timezone.now())
+    paginator = Paginator(sorted_list, 9)
+    sorted_list = paginator.get_page(page)
+
+    recipe_collection = [{
+        "id": recipe.id,
+        "authorId": recipe.author.id,
+        "author": recipe.author.username,
+        "foodName": recipe.food_name,
+        "cookTime": recipe.cook_time,
+        "content": recipe.recipe_content,
+        "foodImagePaths": list(recipe.images.values('id', 'file_path')),
+        "recipeLike": recipe.like_users.count(),
+        "userLike": recipe.likes.filter(user_id=user.id).count(),
+        "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
+        "foodCategory": recipe.food_category,
+        "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
+    } for recipe in sorted_list]
+
+    return JsonResponse({"recipeList": recipe_collection, "lastPageIndex": paginator.count}, safe=False)
+
+
+def recipe_list_post(request):
+    ''' POST /api/recipes/ post new recipe '''
+    try:
+        user_id = request.user.id
+        req_data = json.loads(request.POST.get('recipe'))
+        food_name, cook_time, recipe_content, food_category_str, ingredients = itemgetter(
+            'foodName', 'cookTime', 'content', 'foodCategory', 'ingredients')(req_data)
+        food_images = request.FILES.getlist('image')
+        recipe = Recipe.objects.create(
+            author_id=user_id,
+            food_name=food_name,
+            cook_time=cook_time,
+            recipe_content=recipe_content,
+            food_category=food_category_str,
+        )
+
+        request.user.naengpa_score += 100
+        request.user.save()
+
+        print(ingredients, "list")
+        ingredient_list = [RecipeIngredient.objects.create(
+            ingredient=item.get('ingredient', ''), quantity=item.get('quantity', ''), recipe_id=recipe.id
+        ) for item in eval(str(ingredients))]
+
+        print("[Ingredient List] ", ingredient_list)
+    except (KeyError, json.decoder.JSONDecodeError):
+        return HttpResponseBadRequest()
+    except FoodCategory.DoesNotExist:
+        return HttpResponseBadRequest()
+
+    images_path = upload_images(
+        food_images, "recipe", recipe.id)
+    for path in images_path:
+        Image.objects.create(file_path=path, recipe_id=recipe.id)
+
+    return JsonResponse(data={
+        "id": recipe.id,
+        "authorId": recipe.author.id,
+        "author": recipe.author.username,
+        "foodName": food_name,
+        "cookTime": cook_time,
+        "foodImagePaths": list(recipe.images.values('id', 'file_path')),
+        "content": recipe_content,
+        "recipeLike": recipe.like_users.count(),
+        "userLike": 0,
+        "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
+        "foodCategory": recipe.food_category,
+        "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
+    }, status=201)
+
+
 @ensure_csrf_cookie
 @api_view(['GET', 'POST'])
 @login_required_401
@@ -31,118 +147,9 @@ def recipe_list(request):
         3 : sorted by "ingredients" => recommend tab
     '''
     if request.method == 'GET':
-        ''' GET /api/recipes/ get recipe list '''
-        if not Recipe.objects.count():
-            return JsonResponse([], safe=False)
-
-        query = request.GET.get('query', "")
-        sort_condition = request.GET.get('sort_by', "created_at")
-        food_category = request.GET.get('category', "")
-        page = request.GET.get('page', 1)
-
-        user = request.user
-        print("[search-query]- ", query, " [category]- ",
-              food_category, " [sort by]- ", sort_condition, "[page]-", page)
-
-        # TODO: sort by ingredient
-        # if sort_condition == "ingredient":
-
-        if query:
-            ''' QUERY condition '''
-            sorted_list = Recipe.objects.all().filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)
-                                                      | Q(food_category__contains=query) | Q(ingredients__ingredient__contains=query)).distinct('id')
-            print("[*] SORTED BY QUERY ", sorted_list)
-
-            ''' FOOD CATEGORY condition '''
-            sorted_list = sorted_list.filter(
-                food_category=food_category) if food_category != '전체' else sorted_list
-            print("[1] SORED BY FOOD CATEGORY", sorted_list)
-
-        else:
-            ''' FOOD CATEGORY condition '''
-            sorted_list = Recipe.objects.all().filter(
-                food_category=food_category) if food_category != '전체' else Recipe.objects.all()
-            print("[1] SORED BY FOOD CATEGORY", sorted_list)
-
-            ''' CREATED_AT OR LIKES '''
-            if sort_condition == "created_at":
-                sorted_list = sorted_list.order_by('-created_at')
-                print("[2] SORED BY CREATED_AT", sorted_list)
-            else:
-                sorted_list = list(sorted_list)
-                sorted_list = sorted(
-                    sorted_list, key=lambda x: -x.likes.count())
-                print("[3] SORED BY LIKE USERS", sorted_list)
-                print(timezone.now())
-        paginator = Paginator(sorted_list, 9)
-        sorted_list = paginator.get_page(page)
-
-        recipe_collection = [{
-            "id": recipe.id,
-            "authorId": recipe.author.id,
-            "author": recipe.author.username,
-            "foodName": recipe.food_name,
-            "cookTime": recipe.cook_time,
-            "content": recipe.recipe_content,
-            "foodImagePaths": list(recipe.images.values('id', 'file_path')),
-            "recipeLike": recipe.like_users.count(),
-            "userLike": recipe.likes.filter(user_id=user.id).count(),
-            "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-            "foodCategory": recipe.food_category,
-            "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
-        } for recipe in sorted_list]
-
-        return JsonResponse({"recipeList": recipe_collection, "lastPageIndex": paginator.count}, safe=False)
-
-    else:
-        ''' POST /api/recipes/ post new recipe '''
-        try:
-            user_id = request.user.id
-            req_data = json.loads(request.POST.get('recipe'))
-            food_name, cook_time, recipe_content, food_category_str, ingredients = itemgetter(
-                'foodName', 'cookTime', 'content', 'foodCategory', 'ingredients')(req_data)
-            food_images = request.FILES.getlist('image')
-            recipe = Recipe.objects.create(
-                author_id=user_id,
-                food_name=food_name,
-                cook_time=cook_time,
-                recipe_content=recipe_content,
-                food_category=food_category_str,
-            )
-
-            request.user.naengpa_score += 100
-            request.user.save()
-
-            print(ingredients, "list")
-            ingredient_list = [RecipeIngredient.objects.create(
-                ingredient=item.get('ingredient', ''), quantity=item.get('quantity', ''), recipe_id=recipe.id
-            ) for item in eval(str(ingredients))]
-
-            print("[Ingredient List] ", ingredient_list)
-        except (KeyError, json.decoder.JSONDecodeError):
-            return HttpResponseBadRequest()
-        except FoodCategory.DoesNotExist:
-            return HttpResponseBadRequest()
-
-        images_path = upload_images(
-            food_images, "recipe", recipe.id)
-        for path in images_path:
-            Image.objects.create(file_path=path, recipe_id=recipe.id)
-
-        return JsonResponse(data={
-            "id": recipe.id,
-            "authorId": recipe.author.id,
-            "author": recipe.author.username,
-            "foodName": food_name,
-            "cookTime": cook_time,
-            "foodImagePaths": list(recipe.images.values('id', 'file_path')),
-            "content": recipe_content,
-            "recipeLike": recipe.like_users.count(),
-            "userLike": 0,
-            "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-            "foodCategory": recipe.food_category,
-            "ingredients": list(recipe.ingredients.values('id', 'ingredient', 'quantity')),
-        }, status=201)
+        recipe_list_get(request)
+    elif request.method == 'POST':
+        recipe_list_post(request)
 
 
 @ensure_csrf_cookie
