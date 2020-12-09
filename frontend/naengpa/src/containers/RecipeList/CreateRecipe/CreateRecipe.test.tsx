@@ -138,13 +138,13 @@ describe('CreateRecipe', () => {
 		const addFoodImageButton = component.find('#add-image-button').at(0);
 		addFoodImageButton.simulate('click');
 		foodImage.simulate('change', { target: { files: [image] } });
-		const deleteFoodImageButton = component.find('#delete-image-button').at(0);
-		deleteFoodImageButton.simulate('click');
-		addFoodImageButton.simulate('click');
-		foodImage.simulate('change', { target: { files: [image] } });
+		// const deleteFoodImageButton = component.find('#delete-image-button').at(0);
+		// deleteFoodImageButton.simulate('click');
+		// addFoodImageButton.simulate('click');
+		// foodImage.simulate('change', { target: { files: [image] } });
 		const extractMLFeatureButton = component.find('#extract-ml-feature-button').at(0);
 		extractMLFeatureButton.simulate('click');
-		deleteFoodImageButton.simulate('click');
+		// deleteFoodImageButton.simulate('click');
 	});
 
 	it('should go back to recipe list', async () => {
