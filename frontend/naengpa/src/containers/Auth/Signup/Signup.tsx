@@ -19,7 +19,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 	const [dateOfBirth, setDateOfBirth] = useState('');
 	const [email, setEmail] = useState('');
 	const namePat = new RegExp('^[ㄱ-ㅎ|가-힣|a-z|A-Z|*]+$');
-	const birthPat = new RegExp('^dd(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$');
+	const birthPat = new RegExp(/^\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$/);
 	const emailPat = new RegExp(
 		/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[.a-zA-Z]{1,6}$/i,
 	);
@@ -128,7 +128,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							placeholder="DATE OF BIRTH (EX 980515)"
 							onChange={(e) => setDateOfBirth(e.target.value)}
 							onKeyPress={onKeyPress}
-							pattern="^[0-9]{6}$"
+							pattern="/^\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$/"
 						/>
 						{dateOfBirth !== '' && !birthPat.test(dateOfBirth) && (
 							<p id="invalidBirth">생년월일을 올바르게 입력해주세요 (ex. 980101)</p>
