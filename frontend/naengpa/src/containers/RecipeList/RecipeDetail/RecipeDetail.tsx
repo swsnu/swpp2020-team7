@@ -22,8 +22,7 @@ import {
 import { AppState } from '../../../store/store';
 import Article from '../../../components/Article/Article';
 
-import { RecipeEntity, RecipeImage, RecipeIngredient } from '../../../model/recipe';
-import { ArticleEntity } from '../../../model/article';
+import { RecipeEntity, RecipeImage } from '../../../model/recipe';
 
 interface RecipeDetailProps {
 	history: History;

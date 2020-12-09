@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { History } from 'history';
 import CancelIcon from '@material-ui/icons/Cancel';
 import StarIcon from '@material-ui/icons/Star';
 import { deleteIngredientFromFridge, toggleTodayIngredient } from '../../store/actions/index';
