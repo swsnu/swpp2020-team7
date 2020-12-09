@@ -173,7 +173,7 @@ export const getChatRoom = (chatRoom: ChatEntity) => {
 			dispatch(push(`/chatrooms/${chatRoom.id}`));
 			window.localStorage.setItem('chatRoom', JSON.stringify(response.data));
 		} catch (e) {
-			dispatch(push('/chatrooms'))
+			dispatch(push('/chatrooms'));
 			alert('채팅방에 입장하지 못했습니다! 다시 시도해주세요.');
 		}
 	};

@@ -45,38 +45,44 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	const dispatch = useDispatch();
 
-	const compressImage = (file:File) => {
-		let image = document.createElement('img');
+	const compressImage = (file: File) => {
+		const image = document.createElement('img');
 		image.src = URL.createObjectURL(file);
-		console.log(file.size, "original Size");
+		console.log(file.size, 'original Size');
 		image.onload = () => {
 			URL.revokeObjectURL(image.src);
-			let canvas = document.createElement("canvas");
-			canvas.width = 500; 
-			canvas.height = 500; 
-			let context = canvas.getContext("2d");
-			context?.drawImage(image, 0, 0, 500, 500);
-			context?.canvas.toBlob(
-				(newImageBlob) => {
-						console.log(newImageBlob, "blob image");
-						if(newImageBlob) {
-							setFoodImageFiles((foodImageFiles) => [...foodImageFiles, new File([newImageBlob], file.name)]);
+			const canvas = document.createElement('canvas');
+			canvas.width = 500;
+			canvas.height = 500;
+			const context = canvas.getContext('2d');
+			const draw = () => context?.drawImage(image, 0, 0, 500, 500);
+			draw();
+			const getBlob = () =>
+				context?.canvas.toBlob(
+					(newImageBlob) => {
+						console.log(newImageBlob, 'blob image');
+						if (newImageBlob) {
+							setFoodImageFiles((foodImageFiles) => [
+								...foodImageFiles,
+								new File([newImageBlob], file.name),
+							]);
 						}
 					},
-				"images/jpg",
-				0.5
-			);
+					'images/jpg',
+					0.5,
+				);
+			getBlob();
 		};
-	}
+	};
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
 		const images = target.files as FileList;
-			// convert FileList to File[]
-
-		for(let i = 0; i<images.length;  i++) {
-			compressImage(images[i]);
-		};
+		// convert FileList iterable
+		const imageArray = Array.from(images);
+		imageArray.forEach((file) => {
+			compressImage(file);
+		});
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
