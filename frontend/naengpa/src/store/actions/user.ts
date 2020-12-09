@@ -221,7 +221,7 @@ export const deleteChatRoom_ = (id: string) => ({
 export const deleteChatRoom = (chatRoom_id: string) => {
 	return async (dispatch: any) => {
 		try {
-			const response = await axios.delete(`/api/chatrooms/${chatRoom_id}/`);
+			await axios.delete(`/api/chatrooms/${chatRoom_id}/`);
 			await dispatch(deleteChatRoom_(chatRoom_id));
 		} catch (e) {
 			alert('채팅방을 삭제하지 못했습니다! 다시 시도해주세요.');

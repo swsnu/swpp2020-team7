@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import * as userActionCreators from '../../../store/actions/user';
+import * as regionActionCreators from '../../../store/actions/region';
 import Signup from './Signup';
 import { history } from '../../../store/store';
 import { UserSignupInputDTO } from '../../../model/user';
@@ -13,6 +14,7 @@ jest.mock('react-redux', () => ({
 describe('Signup', () => {
 	let signup: any;
 	let spySaveUserInfoAction: any;
+	let spyGetRegionList: any;
 	let spyHistoryPush: any;
 	let spyAlert: any;
 	const mockUser: UserSignupInputDTO = {
@@ -27,6 +29,9 @@ describe('Signup', () => {
 		signup = <Signup history={history} />;
 		spySaveUserInfoAction = jest
 			.spyOn(userActionCreators, 'saveUserInfo')
+			.mockImplementation(() => jest.fn());
+		spyGetRegionList = jest
+			.spyOn(regionActionCreators, 'getRegionList')
 			.mockImplementation(() => jest.fn());
 		spyAlert = jest.spyOn(window, 'alert').mockImplementation(jest.fn());
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());

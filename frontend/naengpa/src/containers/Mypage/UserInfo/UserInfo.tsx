@@ -38,7 +38,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 						{user?.profileImage && (
 							<img
 								id="profile-picture"
-								src={URL.createObjectURL(user?.profileImage) as string}
+								src={URL.createObjectURL(user?.profileImage)}
 								alt="/api/images"
 							/>
 						)}

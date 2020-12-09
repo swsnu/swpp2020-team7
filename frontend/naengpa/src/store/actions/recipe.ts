@@ -46,7 +46,7 @@ export const getTodayRecipeList = () => {
 	return async (dispatch: any) => {
 		try {
 			const response = await axios.get(`/api/recipes/today/`);
-			const { recipeList, lastPageIndex } = response.data;
+			const { recipeList } = response.data;
 			dispatch(getTodayRecipeList_(recipeList));
 		} catch {
 			console.log('오늘의 레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!');

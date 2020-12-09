@@ -1,5 +1,7 @@
+import { FridgeAction } from '../actions/fridge';
 import * as actionTypes from '../actions/actionTypes';
 import { IngredientEntity } from '../../model/ingredient';
+import { DefaultAction } from '../actions/index';
 
 export type InitialState = {
 	ingredientList: IngredientEntity[];
@@ -8,14 +10,7 @@ const FridgeState: InitialState = {
 	ingredientList: [],
 };
 
-type Action =
-	| { type: 'GET_FRIDGE'; ingredientList: IngredientEntity[] }
-	| { type: 'ADD_INGREDIENT_TO_FRIDGE'; ingredientList: IngredientEntity[] }
-	| { type: 'DELETE_INGREDIENT_FROM_FRIDGE'; id: number }
-	| { type: 'TOGGLE_TODAY_INGREDIENT'; id: number }
-	| { type: 'ADD_INGREDIENT_TO_TODAY_INGREDIENT'; id: number };
-
-function fridgeReducer(state: InitialState = FridgeState, action: Action): InitialState {
+function fridgeReducer(state: InitialState = FridgeState, action: FridgeAction | DefaultAction = {type: 'default'}): InitialState {
 	let ingredientList = [];
 	switch (action.type) {
 		/* GET INGREDIENT LIST */
@@ -29,14 +24,14 @@ function fridgeReducer(state: InitialState = FridgeState, action: Action): Initi
 		/* DELETE INGREDIENT FROM FRIDGE */
 		case actionTypes.DELETE_INGREDIENT_FROM_FRIDGE:
 			ingredientList = state.ingredientList.filter((ingredient) => {
-				return (ingredient.id as number) !== action.id;
+				return ingredient.id !== action.id;
 			});
 			return { ...state, ingredientList };
 
 		/* TOGGLE TODAY INGREDIENT */
 		case actionTypes.TOGGLE_TODAY_INGREDIENT:
 			ingredientList = state.ingredientList.map((ingredient) => {
-				return (ingredient.id as number) === action.id
+				return ingredient.id === action.id
 					? { ...ingredient, isTodayIngredient: !ingredient.isTodayIngredient }
 					: ingredient;
 			});

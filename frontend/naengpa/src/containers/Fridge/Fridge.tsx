@@ -28,7 +28,7 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 	};
 
 	const ingredients = currentList.map((ingredient: any) => {
-		return <Ingredient key={ingredient.id} history={history} ingredient={ingredient} />;
+		return <Ingredient key={ingredient.id} ingredient={ingredient} />;
 	});
 
 	const dispatch = useDispatch();

@@ -1,6 +1,8 @@
 import { FoodCategoryEntity } from '../../model/foodCategory';
 import { FoodCategoryActions } from '../actions/foodCategory';
 import * as actionTypes from '../actions/actionTypes';
+import { DefaultAction } from '../actions/index';
+
 
 export type FoodCategoryState = {
 	foodCategoryList: FoodCategoryEntity[];
@@ -10,16 +12,15 @@ const initialState: FoodCategoryState = {
 	foodCategoryList: JSON.parse(window.localStorage.getItem('foodCategory')!),
 };
 
-function Food_category_reducer(
+function foodCategoryReducer(
 	state: FoodCategoryState = initialState,
-	action: FoodCategoryActions,
+	action: FoodCategoryActions| DefaultAction = {type: 'default'},
 ): FoodCategoryState {
-	switch (action.type) {
-		case actionTypes.GET_FOOD_CATEGORY_LIST:
-			return { ...state, foodCategoryList: action.foodCategoryList };
-		default:
-			return state;
+	if (action.type === actionTypes.GET_FOOD_CATEGORY_LIST) {
+		return { ...state, foodCategoryList: action.foodCategoryList };
+	} else {
+		return state;
 	}
 }
 
-export default Food_category_reducer;
+export default foodCategoryReducer;

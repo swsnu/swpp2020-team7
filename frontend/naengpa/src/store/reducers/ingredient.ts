@@ -1,6 +1,7 @@
 import { IngredientCategoryCollection } from '../../model/ingredient';
 import { IngredientAction } from '../actions/ingredient';
 import * as actionTypes from '../actions/actionTypes';
+import { DefaultAction } from '../actions/index';
 
 export type IngredientState = {
 	ingredientList: IngredientCategoryCollection;
@@ -12,13 +13,12 @@ const initialState: IngredientState = {
 
 function ingredient_reducer(
 	state: IngredientState = initialState,
-	action: IngredientAction,
+	action: IngredientAction | DefaultAction = {type: 'default'},
 ): IngredientState {
-	switch (action.type) {
-		case actionTypes.GET_INGREDIENT_LIST:
-			return { ...state, ingredientList: action.payload };
-		default:
-			return state;
+	if(action.type === actionTypes.GET_INGREDIENT_LIST) {
+		return { ...state, ingredientList: action.payload };
+	} else {
+		return state;
 	}
 }
 

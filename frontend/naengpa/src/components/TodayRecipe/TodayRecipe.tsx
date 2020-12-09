@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
 import Recipe from '../Recipe/Recipe';
@@ -12,16 +12,14 @@ interface TodayRecipeProps {
 
 const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
 	const recipes = useSelector((state: AppState) => state.recipe);
-	const recipeList = useSelector((state: AppState) => state.recipe.todayRecipeList);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dispatch(getTodayRecipeList());
-		console.log(recipeList);
 	}, []);
 
-	const recipe = recipeList?.length
-		? recipeList?.map((item: any) => (
+	const recipe = recipes?.todayRecipeList.length
+		? recipes?.todayRecipeList.map((item: any) => (
 				<Recipe
 					key={item.id}
 					recipe={item}

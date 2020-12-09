@@ -24,7 +24,6 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 
 	const [page, setPage] = useState(1);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
-	const [query, setQuery] = useState('');
 	const dispatch = useDispatch();
 
 	const onChangePage = (e: React.ChangeEvent<unknown>, value: number): void => {
