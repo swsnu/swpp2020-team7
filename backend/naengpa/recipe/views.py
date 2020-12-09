@@ -170,6 +170,7 @@ def today_recipe_list(request):
         "author": recipe.author.username,
         "foodName": recipe.food_name,
         "cookTime": recipe.cook_time,
+        "foodImagePaths": recipe.images.values('id', 'file_path')[0],
         "content": recipe.recipe_content,
         "recipeLike": recipe.likes.count(),
         "userLike": recipe.likes.filter(user_id=user_id).count(),
