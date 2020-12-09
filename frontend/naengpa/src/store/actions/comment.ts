@@ -34,3 +34,10 @@ export function editComment() {
 		payload: {},
 	};
 }
+
+export type CommentAction =
+	| ReturnType<typeof getCommentList>
+	| ReturnType<typeof getComment>
+	| ReturnType<typeof addComment>
+	| ReturnType<typeof deleteComment>
+	| ReturnType<typeof editComment>;
