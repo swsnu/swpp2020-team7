@@ -11,10 +11,6 @@ import {
 
 import { ChatEntity, MessageEntity } from '../../model/chat';
 
-/* CSRF TOKEN */
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-
 /* SAVE TEMP USER */
 export const saveUserInfo_ = (user: UserSignupInputDTO) => ({
 	type: actionTypes.SAVE_USER_INFO,
@@ -24,6 +20,7 @@ export const saveUserInfo_ = (user: UserSignupInputDTO) => ({
 export const saveUserInfo = (user: UserSignupInputDTO) => {
 	return async (dispatch: any) => {
 		const temporaryUser: UserSignupInputDTO = user;
+		window.localStorage.setItem('savedUser', JSON.stringify(temporaryUser));
 		dispatch(push('/regional-setting'));
 		dispatch(saveUserInfo_(temporaryUser));
 	};
@@ -36,8 +33,10 @@ export const signup = (user: UserSignupInputDTO) => {
 	return async (dispatch: any) => {
 		const response = await axios.post('/api/signup/', user);
 		const currentUser: UserEntity = response.data;
-		dispatch(push('/regional-setting'));
+		window.localStorage.setItem('userInfo', JSON.stringify(currentUser));
+		window.localStorage.removeItem('savedUser');
 		dispatch(signup_(currentUser));
+		dispatch(push('/fridge'));
 	};
 };
 
@@ -49,7 +48,7 @@ export const login = (user: UserLoginInputDTO) => {
 		try {
 			const response = await axios.post('/api/login/', user);
 			const currentUser: UserEntity = response.data;
-			localStorage.setItem('userInfo', JSON.stringify(currentUser));
+			window.localStorage.setItem('userInfo', JSON.stringify(currentUser));
 			dispatch(login_(currentUser));
 			dispatch(push('/fridge'));
 		} catch (e) {
@@ -58,6 +57,10 @@ export const login = (user: UserLoginInputDTO) => {
 	};
 };
 
+export const logout_ = () => ({
+	type: actionTypes.LOGOUT,
+});
+
 /* LOGOUT */
 export function logout() {
 	return async (dispatch: any) => {
@@ -65,32 +68,34 @@ export function logout() {
 
 		if (response.status === 204) {
 			localStorage.removeItem('userInfo');
-			dispatch({
-				type: actionTypes.LOGOUT,
-			});
+			dispatch(logout_());
 		}
 	};
 }
+
+export const getUserList_ = (userList: UserEntity[]) => ({
+	type: actionTypes.GET_USER_LIST,
+	userList,
+});
 
 export function getUserList() {
 	return async (dispatch: any) => {
 		const response: any = await axios.get('/api/users/');
 
-		dispatch({
-			type: actionTypes.GET_USER_LIST,
-			userList: response.data,
-		});
+		dispatch(getUserList_(response.data));
 	};
 }
+
+export const getUser_ = (user: UserEntity) => ({
+	type: actionTypes.GET_USER,
+	user,
+});
 
 export function getUser(user: UserEntity) {
 	return async (dispatch: any) => {
 		const response: any = await axios.get(`/api/users/${user.id}/`);
 
-		dispatch({
-			type: actionTypes.GET_USER,
-			user: response.data,
-		});
+		dispatch(getUser_(response.data));
 	};
 }
 
@@ -132,10 +137,11 @@ export const changePassword = (user: ChangePasswordInputDTO) => {
 };
 
 /* GET ChatRoom List */
-export const getChatRoomList_ = (chatRoomList: ChatEntity) => ({
+export const getChatRoomList_ = (chatRoomList: ChatEntity[]) => ({
 	type: actionTypes.GET_CHATROOM_LIST,
 	chatRoomList,
 });
+
 export const getChatRoomList = () => {
 	return async (dispatch: any) => {
 		try {
@@ -222,3 +228,18 @@ export const deleteChatRoom = (chatRoom_id: string) => {
 		}
 	};
 };
+
+export type UserAction =
+	| ReturnType<typeof saveUserInfo_>
+	| ReturnType<typeof signup_>
+	| ReturnType<typeof login_>
+	| ReturnType<typeof logout_>
+	| ReturnType<typeof editUser_>
+	| ReturnType<typeof getUserList_>
+	| ReturnType<typeof getUser_>
+	| ReturnType<typeof changePassword_>
+	| ReturnType<typeof getChatRoomList_>
+	| ReturnType<typeof getChatRoom_>
+	| ReturnType<typeof createChatRoom_>
+	| ReturnType<typeof sendChat_>
+	| ReturnType<typeof deleteChatRoom_>;

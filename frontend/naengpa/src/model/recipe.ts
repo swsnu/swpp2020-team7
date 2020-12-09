@@ -2,7 +2,7 @@
 export interface BaseRecipeEntity {
 	id?: number;
 	foodName: string;
-	cookTime: string;
+	cookTime: number;
 	content: string;
 	foodImageFiles?: File[];
 }

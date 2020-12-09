@@ -2,10 +2,6 @@ import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import { IngredientEntity, UserIngredientEntity } from '../../model/ingredient';
 
-/* CSRF TOKEN */
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-
 /* GET FRIDGE */
 export function getFridge(id: string) {
 	return async (dispatch: any) => {

@@ -37,7 +37,7 @@ const stubInitialState = {
 		recipe: null,
 		createdRecipe: {
 			foodName: '딸기',
-			cookTime: '60',
+			cookTime: 60,
 			content: '레시피',
 			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 0,
@@ -59,7 +59,7 @@ const stubInitialState2 = {
 		recipe: null,
 		createdRecipe: {
 			foodName: '딸기',
-			cookTime: '60',
+			cookTime: 60,
 			content: '레시피',
 			foodImageFiles: [(image as unknown) as File],
 			recipeLike: 0,
@@ -156,7 +156,7 @@ describe('ExtractMLFeature', () => {
 				.find('button')
 				.at(0);
 
-			cookTime.simulate('change', { target: { value: '100' } });
+			cookTime.simulate('change', { target: { value: 100 } });
 			foodImage.simulate('change', { target: { files: [(image as unknown) as File] } });
 			content.simulate('change', { target: { value: 'testContent' } });
 

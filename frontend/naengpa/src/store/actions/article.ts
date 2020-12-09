@@ -4,10 +4,6 @@ import { Dispatch } from 'redux';
 import * as actionTypes from './actionTypes';
 import { ArticleEntity, ArticleOptions, CreateArticleEntity } from '../../model/article';
 
-/* CSRF TOKEN */
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-
 /* GET ARTICLE LIST */
 export const getArticleList_ = (articles: ArticleEntity[]) => ({
 	type: actionTypes.GET_ARTICLE_LIST,
