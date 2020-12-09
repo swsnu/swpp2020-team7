@@ -36,37 +36,10 @@ export const getCurrentTimeGreet = (name: string) => {
 		return `🌆 나른한 오후네요 ${name}님, 반가워요!`;
 	}
 	if (hours >= 18 && hours < 21) {
-		return (
-			<div>
-				<span role="img" aria-label="nightcity">
-					🌃
-				</span>
-				벌써 저녁시간이에요 {name}님!
-				<br />
-				&nbsp;&nbsp;&nbsp;&nbsp;식사는 하셨나요?
-			</div>
-		);
+		return `🌃 벌써 저녁시간이에요 {name}님! 식사는 하셨나요?`;
 	}
 	if (hours >= 21 && hours) {
-		return (
-			<div>
-				<span role="img" aria-label="moon">
-					🌙
-				</span>
-				밝은 달이 뜬 밤이에요 {name}님.
-				<br />
-				&nbsp;&nbsp;&nbsp;&nbsp;반가워요!
-			</div>
-		);
+		return `🌙 밝은 달이 뜬 밤이에요 {name}님. 반가워요!`;
 	}
-	return (
-		<div>
-			<span role="img" aria-label="star">
-				⭐️
-			</span>
-			별이 빛나는 새벽이에요 {name}님.
-			<br />
-			&nbsp;&nbsp;&nbsp;&nbsp;반가워요!
-		</div>
-	);
+	return `⭐️ 별이 빛나는 새벽이에요 {name}님. 반가워요!`;
 };
