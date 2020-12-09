@@ -103,7 +103,17 @@ export const extractMLFeatureFromRecipe_ = (recipe: RecipeEntity) => ({
 export const extractMLFeatureFromRecipe = (recipe: BaseRecipeEntity) => {
 	return async (dispatch: any) => {
 		try {
-			window.sessionStorage.setItem('createdRecipe', JSON.stringify({foodName:"", cookTime: "", content:"", ingredients: [], foodCategory: "기타", foodImageFiles:[]}));
+			window.sessionStorage.setItem(
+				'createdRecipe',
+				JSON.stringify({
+					foodName: '',
+					cookTime: '',
+					content: '',
+					ingredients: [],
+					foodCategory: '기타',
+					foodImageFiles: [],
+				}),
+			);
 			const bodyFormData = new FormData();
 			bodyFormData.append('recipe', JSON.stringify(recipe));
 			recipe.foodImageFiles!.forEach((image) => bodyFormData.append('image', image));

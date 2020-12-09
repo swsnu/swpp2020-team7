@@ -97,7 +97,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	};
 
 	useEffect(() => {
-		if(sessionStorage.getItem('createdRecipe')) {
+		if (sessionStorage.getItem('createdRecipe')) {
 			const storedRecipe = JSON.parse(sessionStorage.getItem('createdRecipe')!)!;
 			setFoodName(storedRecipe.foodName);
 			setContent(storedRecipe.content);
@@ -105,26 +105,25 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		}
 	}, []);
 
-
 	/* CLICK EVENT - redirect to extract-ml-feature page */
 	const onClickExtractMLFeature = () => {
 		const extractMLFeatureClosure = async () => {
 			// if one of the input field is empty, then the alert modal shows itself
-				if(!foodImageFiles?.length) {
-					toast.error('🦄 사진을 입력해주세요!');
-				} else if (!foodName) {
-					toast.error('🦄 요리 이름을 입력해주세요!');
-				} else if (cookTime <= 0) {
-					toast.error('🦄 조리 시간을 입력해주세요! 숫자만 가능합니다!');
-				} else if (!content) {
-					toast.error('🦄 레시피를 입력해주세요!');
-				} else {
-					const newRecipe: BaseRecipeEntity = {
-						foodName,
-						cookTime,
-						content,
-						foodImageFiles,
-					};
+			if (!foodImageFiles?.length) {
+				toast.error('🦄 사진을 입력해주세요!');
+			} else if (!foodName) {
+				toast.error('🦄 요리 이름을 입력해주세요!');
+			} else if (cookTime <= 0) {
+				toast.error('🦄 조리 시간을 입력해주세요! 숫자만 가능합니다!');
+			} else if (!content) {
+				toast.error('🦄 레시피를 입력해주세요!');
+			} else {
+				const newRecipe: BaseRecipeEntity = {
+					foodName,
+					cookTime,
+					content,
+					foodImageFiles,
+				};
 				setLoading(() => true);
 				dispatch(extractMLFeatureFromRecipe(newRecipe));
 				toast.info(`🦄 재료 및 요리 카테고리 추천을 위해 잠시만 기다려 주세요!!!`);

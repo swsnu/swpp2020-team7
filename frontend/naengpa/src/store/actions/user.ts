@@ -77,9 +77,9 @@ export function logout() {
 		sessionStorage.removeItem('recipeList');
 		sessionStorage.removeItem('recipe');
 		sessionStorage.removeItem('lastPageIndex');
-		sessionStorage.removeItem('extractedRecipeInfo');	
+		sessionStorage.removeItem('extractedRecipeInfo');
 		sessionStorage.removeItem('chatRoomList');
-		sessionStorage.removeItem('chatRoom');	
+		sessionStorage.removeItem('chatRoom');
 		dispatch(logout_());
 	};
 }

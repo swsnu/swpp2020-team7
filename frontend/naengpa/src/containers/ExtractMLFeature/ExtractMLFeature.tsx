@@ -24,8 +24,8 @@ import {
 	Divider,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppState } from '../../store/store';
 import { toast } from 'react-toastify';
+import { AppState } from '../../store/store';
 import Loading from '../../components/Loading/Loading';
 import './ExtractMLFeature.scss';
 import { BaseRecipeEntity, RecipeEntity, RecipeIngredient } from '../../model/recipe';
@@ -154,7 +154,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	// need to be directed to recipe detail page, current => recipelist
 	const onClickRegisterRecipe = () => {
 		const func = async () => {
-			if(!foodImageFiles?.length) {
+			if (!foodImageFiles?.length) {
 				toast.error('🦄 사진을 입력해주세요!');
 			} else if (!foodName) {
 				toast.error('🦄 요리 이름을 입력해주세요!');
@@ -184,7 +184,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	};
 
 	const onClickExtractMLFeatureAgain = async () => {
-		if(!foodImageFiles?.length) {
+		if (!foodImageFiles?.length) {
 			toast.error('🦄 사진을 입력해주세요!');
 		} else if (!foodName) {
 			toast.error('🦄 요리 이름을 입력해주세요!');
@@ -459,7 +459,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				</div>
 				<div id="confirm-modal-button-box">
 					<Button id="confirm-modal-button" onClick={onClickConfirmModal}>
-						{ingredientSet.length ? <>수정</> : <>확인</> }
+						{ingredientSet.length ? <>수정</> : <>확인</>}
 					</Button>
 				</div>
 			</Alert>
@@ -540,7 +540,9 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 										}}
 									>
 										<div id="food-name">요리명: {foodName}</div>
-										{!alert && <Button id="food-category">{foodCategory}</Button>}
+										{!alert && (
+											<Button id="food-category">{foodCategory}</Button>
+										)}
 									</TableCell>
 								</TableRow>
 								<TableRow>
