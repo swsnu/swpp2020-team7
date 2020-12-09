@@ -101,11 +101,14 @@ def signin(request):
             password = request.data['password']
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
+        if not User.objects.filter(username=username).count():
+            return HttpResponseNotFound()
 
         user = authenticate(
             request, username=username, password=password)
         if user is not None:
             login(request, user)
+
             return JsonResponse(data={
                 'id': user.id,
                 'username': user.username,

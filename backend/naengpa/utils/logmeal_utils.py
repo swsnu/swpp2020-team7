@@ -27,7 +27,9 @@ food_category_result = {
 #         return f.getvalue()
 
 class InvalidImageFileGiven(Exception):
-    pass
+    def __init__(self, message, code):
+        self.code = code
+        super(InvalidImageFileGiven, self).__init__(message)
 
 
 def extract_foodcategory(food_images):
@@ -53,13 +55,14 @@ def extract_foodcategory(food_images):
     except IndexError:
         response = ''
     except requests.exceptions.HTTPError as err:
-        if resp.status_code == 413:
+        resp = resp.json()
+        if resp['code'] == 715:
             print('[logmeal api] too large image file given')
-            # raise InvalidImageFileGiven(resp.json()['message']) from err
-        if resp.status_code == 400:
-            print('[logmeal api] invalid image file given')
-            # raise InvalidImageFileGiven(resp.json()['message']) from err
-        pass
+        elif resp['code'] == 711:
+            print('[logmeal api] invalid image file format given')
+        else:
+            print('[logmeal api] something went wrong')
+        raise InvalidImageFileGiven(resp['message'], resp['code']) from err
 
     if response not in food_category_result.keys():
         response = ''

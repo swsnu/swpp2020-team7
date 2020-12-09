@@ -34,7 +34,7 @@ jobs:
         - cd ../..
         - cd backend/naengpa
         - pylint **/*.py --load-plugins pylint_django
-        - coverage run --source='.' manage.py test
+        - coverage run --source='.' --omit=*/migrations/*,manage.py,naengpa/*,utils/* manage.py test
         - coverage xml
         - cd ../..
         - sonar-scanner
@@ -70,7 +70,7 @@ jobs:
         - pip install coveralls
       script:
         - pylint **/*.py --load-plugins pylint_django
-        - coverage run --source='.' manage.py test
+        - coverage run --source='.' --omit=*/migrations/*,manage.py,naengpa/*,utils/* manage.py test
         - coverage report -m
 # before_install:
 #   - openssl aes-256-cbc -K $encrypted_db2095f63ba3_key -iv $encrypted_db2095f63ba3_iv

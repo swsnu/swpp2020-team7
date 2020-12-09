@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'ingredient.apps.IngredientConfig',
     'food_category.apps.FoodCategoryConfig',
     'ml.apps.MlConfig',
-    'webpush',
 ]
 
 AUTH_USER_MODEL = 'user.User'
@@ -142,8 +141,8 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
 
-WEBPUSH_SETTINGS = {
-    "VAPID_PUBLIC_KEY": get_env_value("VAPID_PUBLIC_KEY"),
-    "VAPID_PRIVATE_KEY": get_env_value("VAPID_PRIVATE_KEY"),
-    "VAPID_ADMIN_EMAIL": get_env_value("VAPID_SUBJECT"),
-}
+# WEBPUSH_SETTINGS = {
+#     "VAPID_PUBLIC_KEY": get_env_value("VAPID_PUBLIC_KEY"),
+#     "VAPID_PRIVATE_KEY": get_env_value("VAPID_PRIVATE_KEY"),
+#     "VAPID_ADMIN_EMAIL": get_env_value("VAPID_SUBJECT"),
+# }
