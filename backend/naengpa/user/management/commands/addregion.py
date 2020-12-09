@@ -1,3 +1,4 @@
+import os
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Point
@@ -12,7 +13,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """makes up Region db table with gu-dong data in Seoul"""
-        input_fname = "user/management/commands/region.txt"
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        input_fname = os.path.join(base_dir, 'region.txt')
 
         region_data = {}
         with open(input_fname, "r") as f:
