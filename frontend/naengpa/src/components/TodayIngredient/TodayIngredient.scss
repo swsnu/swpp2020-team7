@@ -47,4 +47,23 @@ div#today-ingredient {
       font-family: 'Nanum Pen Script', cursive;
     }
 
+    #help-today-ingredient {
+      position: absolute;
+      margin-top: 1%;
+      margin-left: 6%;
+      color: #ff8a3d;
+    }
+
+    #help-today-ingredient-alert {
+      position: absolute;
+      max-width: 250px;
+      margin-left: 7%;
+      margin-top: 3%;
+      padding: 1%;
+      z-index: 1;
+      background-color: #ffffff;
+      border: solid 0.5px #707070; 
+      text-align: left;
+      line-height: 150%;
+    }
 }
