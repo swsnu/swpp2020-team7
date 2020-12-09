@@ -73,6 +73,12 @@ export function logout() {
 	return async (dispatch: any) => {
 		await axios.get('/api/logout/');
 		localStorage.removeItem('userInfo');
+		sessionStorage.removeItem('recipeList');
+		sessionStorage.removeItem('recipe');
+		sessionStorage.removeItem('lastPageIndex');
+		sessionStorage.removeItem('extractedRecipeInfo');	
+		sessionStorage.removeItem('chatRoomList');
+		sessionStorage.removeItem('chatRoom');	
 		toast.success(`🦄 안녕히 가세요!`);
 		dispatch(logout_());
 	};
@@ -152,7 +158,7 @@ export const getChatRoomList = () => {
 		try {
 			const response = await axios.get(`/api/chatrooms/`);
 			dispatch(getChatRoomList_(response.data));
-			window.localStorage.setItem('chatRoomList', JSON.stringify(response.data));
+			window.sessionStorage.setItem('chatRoomList', JSON.stringify(response.data));
 		} catch (e) {
 			alert('채팅방 정보를 얻지 못했습니다! 다시 시도해주세요.');
 		}
@@ -171,7 +177,7 @@ export const getChatRoom = (chatRoom: ChatEntity) => {
 
 			dispatch(getChatRoom_(response.data));
 			dispatch(push(`/chatrooms/${chatRoom.id}`));
-			window.localStorage.setItem('chatRoom', JSON.stringify(response.data));
+			window.sessionStorage.setItem('chatRoom', JSON.stringify(response.data));
 		} catch (e) {
 			dispatch(push('/chatrooms'));
 			alert('채팅방에 입장하지 못했습니다! 다시 시도해주세요.');
