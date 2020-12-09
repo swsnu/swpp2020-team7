@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useEffect } from 'react';
 import { History } from 'history';
 import { useDispatch } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -43,7 +43,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		'요리 카테고리와 필요한 재료들이 작성한 요리명과 레시피를 기반으로 자동으로 추천해 드립니다. 작성이 완료되면 재료등록 버튼을 눌러주세요.',
 	);
 	const [loading, setLoading] = useState(false);
-
 	const dispatch = useDispatch();
 
 	const compressImage = (file: File) => {
@@ -93,8 +92,19 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	// TODO: need to alert that the content could be lost
 	const onClickBackToRecipeList = () => {
+		sessionStorage.clear();
 		history.push('/recipes');
 	};
+
+	useEffect(() => {
+		if(sessionStorage.getItem('createdRecipe')) {
+			const storedRecipe = JSON.parse(sessionStorage.getItem('createdRecipe')!)!;
+			setFoodName(storedRecipe.foodName);
+			setContent(storedRecipe.content);
+			setCookTime(storedRecipe.cookTime);
+		}
+	}, []);
+
 
 	/* CLICK EVENT - redirect to extract-ml-feature page */
 	const onClickExtractMLFeature = () => {
