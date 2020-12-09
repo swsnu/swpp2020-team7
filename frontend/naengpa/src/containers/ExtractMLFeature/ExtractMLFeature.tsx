@@ -82,17 +82,37 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		setModifiedIngredients(checkedIngredients as RecipeIngredient[]);
 	}, [createdRecipe]);
 
+	const compressImage = (file:File) => {
+		let image = document.createElement('img');
+		image.src = URL.createObjectURL(file);
+		image.onload = () => {
+			URL.revokeObjectURL(image.src);
+			let canvas = document.createElement("canvas");
+			canvas.width = 500; 
+			canvas.height = 500; 
+			let context = canvas.getContext("2d");
+			context?.drawImage(image, 0, 0, 500, 500);
+			context?.canvas.toBlob(
+				(newImageBlob) => {
+						console.log(newImageBlob, "blob image");
+						if(newImageBlob) {
+							setFoodImageFiles((foodImageFiles) => [...foodImageFiles, new File([newImageBlob], file.name)]);
+						}
+					},
+				"images/*",
+				0.5
+			);
+		};
+	}
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
 		const images = target.files as FileList;
-		let newFileList:File[] = []
-		// convert FileList to File[]
-		// TODO: should find better way to interate FileList
+			// convert FileList to File[]
+
 		for(let i = 0; i<images.length;  i++) {
-				newFileList = [...newFileList, images[i]];
+			compressImage(images[i]);
 		};
-		setFoodImageFiles([...foodImageFiles, ...newFileList]);
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
@@ -189,8 +209,8 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							key={`${idx}-`}
 							id="delete-image-icon"
 							src={URL.createObjectURL(item)}
-							height="150px"
-							width="150px"
+							height="200px"
+							width="200px"
 							alt="/api/images" // TODO: check alt path
 						/>
 					</div>
