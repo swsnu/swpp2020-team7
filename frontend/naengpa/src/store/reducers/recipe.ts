@@ -14,7 +14,7 @@ export type InitialState = {
 const RecipeState: InitialState = {
 	recipeList: JSON.parse(window.localStorage.getItem('recipeList')!),
 	todayRecipeList: [],
-	recipe: null,
+	recipe: JSON.parse(window.localStorage.getItem('recipe')!),
 	lastPageIndex: JSON.parse(window.localStorage.getItem('lastPageIndex')!),
 	createdRecipe: JSON.parse(window.localStorage.getItem('extractedRecipeInfo')!),
 };

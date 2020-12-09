@@ -66,7 +66,9 @@ export const getRecipe = (id: number) => {
 		try {
 			const response = await axios.get(`/api/recipes/${id}`);
 			dispatch(getRecipe_(response.data));
+			window.localStorage.setItem('recipe', JSON.stringify(response.data));
 		} catch {
+			dispatch(push('/fidge'));
 			console.log('레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!');
 		}
 	};
