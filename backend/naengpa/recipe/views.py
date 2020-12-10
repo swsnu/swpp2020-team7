@@ -102,7 +102,6 @@ def recipe_list_post(request):
             recipe_content=recipe_content,
             food_category=food_category,
         )
-
         request.user.naengpa_score += 100
         request.user.save()
 
@@ -170,37 +169,37 @@ def recipe_list(request):
 @transaction.atomic
 def today_recipe_list(request):
     """ get Today recipe list """
-    today = timezone.now().strftime('%Y-%m-%d')
-    print("[Today]", today)
-    yesterday = timezone.now()-timezone.timedelta(days=1)
-    print("[Yesterday]", yesterday)
-    user_id = request.user.id
+    today_recipe_collection = cache.get('today_recipes')
+    if not today_recipe_collection:
+        yesterday = timezone.now()-timezone.timedelta(days=1)
+        user_id = request.user.id
 
-    sorted_list = Recipe.objects.select_related(
-        'author', 'food_category'
-    ).prefetch_related(
-        'ingredients', 'likes'
-    ).filter(
-        created_at__gte=yesterday
-    ).annotate(
-        like_count=Count('likes')
-    ).order_by('-like_count')[:4]
+        sorted_list = Recipe.objects.select_related(
+            'author', 'food_category'
+        ).prefetch_related(
+            'ingredients', 'likes'
+        ).filter(
+            created_at__gte=yesterday
+        ).annotate(
+            like_count=Count('likes')
+        ).order_by('-like_count')[:4]
 
-    today_recipe = [{
-        "id": recipe.id,
-        "authorId": recipe.author.id,
-        "author": recipe.author.username,
-        "profileImage": recipe.author.profile_image,
-        "foodName": recipe.food_name,
-        "cookTime": recipe.cook_time,
-        "foodImagePaths": list(recipe.images.values('id', 'file_path')),
-        "content": recipe.recipe_content,
-        "recipeLike": recipe.likes.count(),
-        "userLike": recipe.likes.filter(user_id=user_id).count(),
-        "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-        "foodCategory": recipe.food_category.name,
-    } for recipe in sorted_list]
-    return JsonResponse({"recipeList": today_recipe, "lastPageIndex": 4}, safe=False)
+        today_recipe_collection = [{
+            "id": recipe.id,
+            "authorId": recipe.author.id,
+            "author": recipe.author.username,
+            "profileImage": recipe.author.profile_image,
+            "foodName": recipe.food_name,
+            "cookTime": recipe.cook_time,
+            "foodImagePaths": list(recipe.images.values('id', 'file_path')),
+            "content": recipe.recipe_content,
+            "recipeLike": recipe.likes.count(),
+            "userLike": recipe.likes.filter(user_id=user_id).count(),
+            "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
+            "foodCategory": recipe.food_category.name,
+        } for recipe in sorted_list]
+        cache.set('today_recipes', today_recipe_collection)
+    return JsonResponse({"recipeList": today_recipe_collection, "lastPageIndex": 4}, safe=False)
 
 
 @ensure_csrf_cookie
@@ -208,30 +207,28 @@ def today_recipe_list(request):
 @login_required_401
 def recipe_info(request, id):
     """get recipe of given id"""
-    user_id = request.user.id
-
-    recipe = Recipe.objects.get(id=id)
-    recipe_response = {
-        "id": recipe.id,
-        "authorId": recipe.author.id,
-        "author": recipe.author.username,
-        "profileImage": recipe.author.profile_image,
-        "foodName": recipe.food_name,
-        "cookTime": recipe.cook_time,
-        "content": recipe.recipe_content,
-        "foodImagePaths": list(recipe.images.values('id', 'file_path')),
-        "recipeLike": recipe.likes.count(),
-        "userLike": recipe.likes.filter(user_id=user_id).count(),
-        "createdAt": recipe.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
-        "foodCategory": recipe.food_category.name,
-        "ingredients": [{
-            "id": item.id,
-            "name": item.ingredient.name,
-            "quantity": item.quantity,
-        } for item in recipe.ingredients.select_related('ingredient')],
-    }
-
     if request.method == 'GET':
+        user_id = request.user.id
+        recipe = Recipe.objects.get(id=id)
+        recipe_response = {
+            "id": recipe.id,
+            "authorId": recipe.author.id,
+            "author": recipe.author.username,
+            "profileImage": recipe.author.profile_image,
+            "foodName": recipe.food_name,
+            "cookTime": recipe.cook_time,
+            "content": recipe.recipe_content,
+            "foodImagePaths": list(recipe.images.values('id', 'file_path')),
+            "recipeLike": recipe.likes.count(),
+            "userLike": recipe.likes.filter(user_id=user_id).count(),
+            "createdAt": recipe.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
+            "foodCategory": recipe.food_category.name,
+            "ingredients": [{
+                "id": item.id,
+                "name": item.ingredient.name,
+                "quantity": item.quantity,
+            } for item in recipe.ingredients.select_related('ingredient')],
+        }
         return JsonResponse(data=recipe_response, safe=False)
     if request.method == 'DELETE':
         Recipe.objects.filter(id=id).delete()
@@ -252,30 +249,7 @@ def recipe_like(request, id):
     except RecipeLike.DoesNotExist:
         like = RecipeLike.objects.create(recipe_id=id, user_id=user_id)
         is_like = 1
-    request.user.save(update_fields=['naengpa_score'])
 
-    recipe = Recipe.objects.select_related('author', 'food_category').prefetch_related(
-        'likes', 'images', 'ingredients').get(pk=id)
-    recipe_response = {
-        "id": recipe.id,
-        "authorId": recipe.author.id,
-        "author": recipe.author.username,
-        "profileImage": recipe.author.profile_image,
-        "foodName": recipe.food_name,
-        "cookTime": recipe.cook_time,
-        "content": recipe.recipe_content,
-        "foodImagePaths": list(recipe.images.values('id', 'file_path')),
-        "recipeLike": recipe.likes.count(),
-        "userLike": recipe.likes.filter(user_id=user_id).count(),
-        "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-        "foodCategory": recipe.food_category.name,
-        "ingredients": [{
-            "id": item.id,
-            "name": item.ingredient.name,
-            "quantity": item.quantity,
-        } for item in recipe.ingredients],
-    }
-
-    context = {"recipeLike": recipe.likes.count(),
+    context = {"recipeLike": RecipeLike.objects.filter(recipe_id=id).count(),
                "userLike": 1 if is_like else 0}
     return JsonResponse(context, safe=False)
