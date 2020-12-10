@@ -17,5 +17,21 @@ class Comment(models.Model):
     content = models.CharField(max_length=300)
     created_at = models.DateTimeField(default=timezone.now, db_index=True)
 
+    @property
+    def created_string(self):
+        time = timezone.now() - self.created_at
+        if time < timezone.timedelta(minutes=1):
+            return '방금 전'
+        elif time < timezone.timedelta(hours=1):
+            return str(int(time.seconds / 60)) + '분 전'
+        elif time < timezone.timedelta(days=1):
+            return str(int(time.seconds / 3600)) + '시간 전'
+        elif time < timezone.timedelta(days=7):
+            time = timezone.datetime.now(
+                tz=timezone.utc).date() - self.created_at
+            return str(time.days) + '일 전'
+        else:
+            return False
+
     def __str__(self):
         return f'[{self.id}] {self.content} in {self.recipe} by {self.author}'

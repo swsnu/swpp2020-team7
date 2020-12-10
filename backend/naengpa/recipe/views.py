@@ -20,7 +20,6 @@ def recipe_list_get(request):
     ''' GET /api/recipes/ get recipe list '''
     if not Recipe.objects.count():
         return JsonResponse([], safe=False)
-
     query = request.GET.get('query', "")
     sort_condition = request.GET.get('sort_by', "created_at")
     food_category = request.GET.get('category', "")
@@ -29,7 +28,6 @@ def recipe_list_get(request):
     user = request.user
     # TODO: sort by ingredient
     # if sort_condition == "ingredient":
-
     if query:
         ''' QUERY condition '''
         sorted_list = Recipe.objects.select_related(
@@ -58,7 +56,6 @@ def recipe_list_get(request):
 
     paginator = Paginator(sorted_list, 9)
     sorted_list = paginator.get_page(page)
-
     recipe_collection = [{
         "id": recipe.id,
         "authorId": recipe.author.id,
@@ -76,9 +73,8 @@ def recipe_list_get(request):
             "id": item.id,
             "name": item.ingredient.name,
             "quantity": item.quantity,
-        } for item in recipe.ingredients],
+        } for item in recipe.ingredients.all()],
     } for recipe in sorted_list]
-
     return {
         "recipeList": recipe_collection,
         "lastPageIndex": paginator.count
@@ -138,7 +134,7 @@ def recipe_list_post(request):
             "id": item.id,
             "name": item.ingredient.name,
             "quantity": item.quantity,
-        } for item in recipe.ingredients.select_related('ingredient')],
+        } for item in recipe.ingredients.all()],
         "comments": [],
     }
 
@@ -235,8 +231,8 @@ def recipe_info(request, id):
                 "profileImage": item.author.profile_image,
                 "recipeId": recipe.id,
                 "content": item.content,
-                "createdAt": item.created_at,
-            } for item in recipe.comments.order_by('-id')]
+                "createdAt": item.created_string,
+            } for item in recipe.comments]
         }
         return JsonResponse(data=recipe_response, safe=False)
     if request.method == 'DELETE':

@@ -27,11 +27,11 @@ def comment_list(request):
     """create comment"""
     if request.method == 'POST':
         try:
-            recipe_id, content = request.data['recipe_id'], request.data['content']
+            recipe_id, content = request.data['recipeId'], request.data['content']
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
         comment = Comment.objects.create(
-            user_id=request.user.id,
+            author_id=request.user.id,
             recipe_id=recipe_id,
             content=content,
         )
@@ -41,5 +41,5 @@ def comment_list(request):
             'profileImage': comment.author.profile_image,
             'recipeId': comment.recipe_id,
             'content': comment.content,
-            'createdAt': comment.created_at,
+            'createdAt': comment.created_string,
         }, status=201)
