@@ -94,6 +94,3 @@ class Notification(models.Model):
 
     def __str__(self):
         return f'[to {self.recipient}] {self.title}: {self.content}'
-
-    # def create(self, **obj_data):
-    #     return super().create(**obj_data)

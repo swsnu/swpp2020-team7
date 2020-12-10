@@ -224,8 +224,7 @@ def change_password(request, id):
 @api_view(['GET'])
 @login_required_401
 def user_list(request):
-    """user_list"""
-    # GET NAENGPASTARS
+    """get today naengpa-star user list"""
     if request.method == 'GET':
         user_collection = cache.get('users')
         if not user_collection:
