@@ -20,6 +20,7 @@ interface RecipeListProps {
 
 const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const recipeState = useSelector((state: AppState) => state.recipe);
+	const recipeList = useSelector((state: AppState) => state.recipe.recipeList);
 	const foodCategoryList = useSelector((state: AppState) => state.foodCategory.foodCategoryList);
 	const [page, setPage] = useState(1);
 	const [recipes, setRecipes] = useState<JSX.Element[]>([]);
@@ -54,6 +55,13 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	};
 
 	useEffect(() => {
+		setLoading(true);
+		setMaxPageIndex(recipeState.lastPageIndex);
+		setRecipeList();
+		setLoading(false);
+	}, [recipeList])
+
+	useEffect(() => {
 		if (query) {
 			setSortBy('created_at');
 			setPage(1);
@@ -61,7 +69,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		}
 	}, [query]);
 
-	useEffect(() => {
+	useEffect(() => {:
 		setSortBy('created_at');
 		setPage(1);
 		onLoadPage();
