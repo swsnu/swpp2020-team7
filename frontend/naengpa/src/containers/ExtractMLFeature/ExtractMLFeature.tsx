@@ -71,15 +71,14 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	useEffect(() => {
 		dispatch(getFoodCategoryList());
 		let recipe = null;
-		if(sessionStorage.getItem('createdRecipe')) {
+		if (sessionStorage.getItem('createdRecipe')) {
 			recipe = JSON.parse(sessionStorage.getItem('createdRecipe')!);
 		} else {
 			recipe = createdRecipe;
 		}
-		if(!recipe.content) {
+		if (!recipe.content) {
 			setLoading(() => true);
-		}
-		else {
+		} else {
 			setAlert(true);
 			setLoading(() => false);
 			setFoodName(createdRecipe?.foodName as string);
@@ -88,7 +87,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 			setFoodImageFiles(createdRecipe?.foodImageFiles as File[]);
 			setFoodCategory(createdRecipe?.foodCategory as string);
 			setModifiedCategory(createdRecipe?.foodCategory as string);
-			const checkedIngredients = createdRecipe?.ingredients?.map((item:any) => {
+			const checkedIngredients = createdRecipe?.ingredients?.map((item: any) => {
 				return { ...item, checked: true, quantity: '' };
 			});
 			setIngredients(checkedIngredients as RecipeIngredient[]);
@@ -444,7 +443,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					<div id="modal-header">
 						<div id="modal-title">재료</div>
 						<div id="modal-subtitle">
-							필요한 재료를 선택하고 수량을 수정하거나 추가해주세요. 
+							필요한 재료를 선택하고 수량을 수정하거나 추가해주세요.
 						</div>
 					</div>
 					<CancelIcon id="close-modal-button" onClick={onClickCloseModal} />

@@ -1,16 +1,17 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import { History } from 'history';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import './Navigation.scss';
-import {AppState} from '../../store/store';
+import { AppState } from '../../store/store';
+
 interface NavigationProps {
 	history: History;
 }
 
 const Navigation: React.FC<NavigationProps> = ({ history }) => {
-	const user = useSelector((state: AppState) => state.user.user);	
+	const user = useSelector((state: AppState) => state.user.user);
 	return (
 		<div id="navigation">
 			<button id="naengpa-logo-button" type="button" onClick={() => history.push('/fridge')}>
