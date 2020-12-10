@@ -80,6 +80,9 @@ class RecipeLike(models.Model):
         Recipe, on_delete=models.CASCADE, related_name='likes')
     created_at = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        unique_together = ('user', 'recipe')
+
     def __str__(self):
         return f'[{self.id}] of {self.recipe}'
 
