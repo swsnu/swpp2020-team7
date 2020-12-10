@@ -55,7 +55,7 @@ def recipe_list_get(request):
             sorted_list = filtered_list.order_by('-created_at')
         else:
             sorted_list = filtered_list.annotate(
-                like_count=Count('likes')).order_by('-like_count')[:4]
+                like_count=Count('likes')).order_by('-like_count')
 
     paginator = Paginator(sorted_list, 9)
     sorted_list = paginator.get_page(page)
