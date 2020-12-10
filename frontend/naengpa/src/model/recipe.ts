@@ -24,7 +24,7 @@ export interface RecipeImage {
 }
 export interface RecipeIngredient {
 	id?: number;
-	ingredient: string;
+	name: string;
 	checked?: boolean;
 	quantity?: string;
 }

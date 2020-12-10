@@ -88,7 +88,7 @@ export const createRecipe = (recipe: RecipeEntity) => {
 			recipe.foodImageFiles!.forEach((image: any) => bodyFormData.append('image', image));
 			const response = await axios.post('/api/recipes/', bodyFormData);
 			dispatch(createRecipe_(response.data));
-			window.sessionStorage.removeItem('extractedRecipeInfo');
+			window.sessionStorage.clear();
 		} catch {
 			console.log('레시피를 생성하던 중 문제가 발생했습니다! 다시 시도해주세요!');
 		}
@@ -103,15 +103,25 @@ export const extractMLFeatureFromRecipe_ = (recipe: RecipeEntity) => ({
 export const extractMLFeatureFromRecipe = (recipe: BaseRecipeEntity) => {
 	return async (dispatch: any) => {
 		try {
+			window.sessionStorage.setItem(
+				'createdRecipe',
+				JSON.stringify({
+					foodName: '',
+					cookTime: '',
+					content: '',
+					ingredients: [],
+					foodCategory: '기타',
+					foodImageFiles: [],
+				}),
+			);
 			const bodyFormData = new FormData();
 			bodyFormData.append('recipe', JSON.stringify(recipe));
 			recipe.foodImageFiles!.forEach((image) => bodyFormData.append('image', image));
 			const response = await axios.post('/api/extract/', bodyFormData);
 			window.sessionStorage.setItem(
-				'extractedRecipeInfo',
+				'createdRecipe',
 				JSON.stringify({ ...response.data, ...recipe, foodImageFiles: [] }),
 			);
-
 			dispatch(extractMLFeatureFromRecipe_({ ...response.data, ...recipe }));
 		} catch (e) {
 			if (e?.response && e.response.data.code === 715) {

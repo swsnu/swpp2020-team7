@@ -23,7 +23,7 @@ def extract_ingredients(content):
 
     context = [
         {
-            "ingredient": name,
+            "name": name,
             "quantity": count
         } for name, count in sorted(ingredient_dict.items(), key=lambda x: -x[1])
     ]

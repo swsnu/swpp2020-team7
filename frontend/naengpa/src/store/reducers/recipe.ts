@@ -16,7 +16,7 @@ const RecipeState: InitialState = {
 	todayRecipeList: [],
 	recipe: JSON.parse(window.sessionStorage.getItem('recipe')!),
 	lastPageIndex: JSON.parse(window.sessionStorage.getItem('lastPageIndex')!),
-	createdRecipe: JSON.parse(window.sessionStorage.getItem('extractedRecipeInfo')!),
+	createdRecipe: JSON.parse(window.sessionStorage.getItem('createdRecipe')!),
 };
 
 function recipeReducer(

@@ -5,7 +5,7 @@ from naengpa.settings.env import LOGMEAL_TOKEN
 LOGMEAL_API_URL = 'https://api.logmeal.es/v2/recognition/dish'
 
 food_category_result = {
-    'meat': '고기류',
+    'meat': '육류',
     'dessert': '디저트류',
     'dairy': '유제품류',
     'seafood': '해산물류',
