@@ -85,8 +85,13 @@ class RecipeLike(models.Model):
 
     def save(self, *args, **kwargs):
         cache.delete_many(['recipes', 'today_recipes'])
+        if not self.pk:
+            self.user.naengpa_score += 10
+            self.user.save(update_fields=['naengpa_score'])
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         cache.delete_many(['recipes', 'today_recipes'])
+        self.user.naengpa_score -= 10
+        self.user.save(update_fields=['naengpa_score'])
         super().delete(*args, **kwargs)
