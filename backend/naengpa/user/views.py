@@ -126,7 +126,7 @@ def signin(request):
 
 @ensure_csrf_cookie
 @api_view(['GET'])
-#@login_required_401
+@login_required_401
 def signout(request):
     """signout"""
     if request.method == 'GET':
