@@ -76,7 +76,7 @@ def recipe_list_get(request):
             "id": item.id,
             "name": item.ingredient.name,
             "quantity": item.quantity,
-        } for item in recipe.ingredients.select_related('ingredient')],
+        } for item in recipe.ingredients],
     } for recipe in sorted_list]
 
     return {
@@ -139,6 +139,7 @@ def recipe_list_post(request):
             "name": item.ingredient.name,
             "quantity": item.quantity,
         } for item in recipe.ingredients.select_related('ingredient')],
+        "comments": [],
     }
 
 
@@ -208,7 +209,8 @@ def recipe_info(request, id):
     """get recipe of given id"""
     if request.method == 'GET':
         user_id = request.user.id
-        recipe = Recipe.objects.get(id=id)
+        recipe = Recipe.objects.select_related('author', 'food_category').prefetch_related(
+            'images', 'likes', 'ingredients', 'comments').get(id=id)
         recipe_response = {
             "id": recipe.id,
             "authorId": recipe.author.id,
@@ -227,6 +229,14 @@ def recipe_info(request, id):
                 "name": item.ingredient.name,
                 "quantity": item.quantity,
             } for item in recipe.ingredients.select_related('ingredient')],
+            "comments": [{
+                "id": item.id,
+                "author": item.author.name,
+                "profileImage": item.author.profile_image,
+                "recipeId": recipe.id,
+                "content": item.content,
+                "createdAt": item.created_at,
+            } for item in recipe.comments.order_by('-id')]
         }
         return JsonResponse(data=recipe_response, safe=False)
     if request.method == 'DELETE':
