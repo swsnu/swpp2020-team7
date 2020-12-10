@@ -29,13 +29,12 @@ class Command(BaseCommand):
         user_id_list = list(User.objects.values_list('id', flat=True))
         random.shuffle(user_id_list)
         image_path_list = [os.path.join(image_dir, '{}.jpg'.format(
-            num)) for num in range(1, 62)]
+            num)) for num in range(1, 52)]
         random.shuffle(image_path_list)
 
         s3_path_list = upload_profile_images_with_local_path(
             image_path_list, user_id_list)
 
-        print(s3_path_list)
         for idx, path in enumerate(s3_path_list):
             with transaction.atomic():
                 random_user = User.objects.get(id=user_id_list[idx])
