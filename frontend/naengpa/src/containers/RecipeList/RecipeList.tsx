@@ -59,7 +59,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		setMaxPageIndex(recipeState.lastPageIndex);
 		setRecipeList();
 		setLoading(false);
-	}, [recipeList])
+	}, [recipeList]);
 
 	useEffect(() => {
 		if (query) {
@@ -69,7 +69,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		}
 	}, [query]);
 
-	useEffect(() => {:
+	useEffect(() => {
 		setSortBy('created_at');
 		setPage(1);
 		onLoadPage();
