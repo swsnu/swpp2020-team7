@@ -28,6 +28,38 @@
   margin-top: 100px;
 }
 
+#item-explanation {
+  margin-bottom: 1%;
+  font-size: 120%;
+}
+#create-article-items {
+  Button {
+    font: {
+      weight: bold;
+    }
+    letter-spacing: normal;
+    text-align: left;
+    border-radius: 25px;
+    align-self: right;
+    background-color: #e4e4e4;
+    color: #696464;
+    margin-right: 7px;
+  }
+
+  Button.selected {
+    font: {
+      weight: bold;
+    }
+    letter-spacing: normal;
+    text-align: left;
+    border-radius: 25px;
+    align-self: right;
+    color: #ffffff;  
+    margin-right: 7px;
+    background-color: #ff8a3d;
+  }
+}
+
 #create-article-options {
   width: 35%;
   position: relative; 
