@@ -4,13 +4,18 @@
       display: flex; 
       flex-direction: row;
       align-items:center;
+      margin-left: 0;
 
       #go-to-chatroom-list-button {
         font-weight: bold;
+        width: 12%;
+        padding: 0 !important;
+        color: #919191;
       }
 
       #chat-member-username {
         color: #408bf9;
+        margin-left: 120%;
       }
     }
     #user-message {
@@ -42,15 +47,22 @@
     }
 
     #chat-input-box {
+      position: absolute;
+      bottom: 25%;
       display: flex; 
       flex-direction: row;
-      justify-content: center;
       #chat-input-field {
         border: 1px solid #707070; 
         border-radius: 20px;
         padding: 10px;
+        width: 470px;
+        //min-width: 250%;
+        //margin-right: 50px;
       }
       #send-chat-button {
+        padding: 0;
+        padding-left: 30px;
+        width: 70%;
         color: #408bf9;
         font-weight: bold;
         font-size: 120%;
