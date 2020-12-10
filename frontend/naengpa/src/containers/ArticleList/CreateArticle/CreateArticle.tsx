@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import { History } from 'history';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
@@ -20,17 +20,24 @@ import {
 	TableRow,
 	TextField,
 	Divider,
+	Typography,
 } from '@material-ui/core';
 import './CreateArticle.scss';
+import { toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/core/styles';
 import { ArticleOptions, CreateArticleEntity } from '../../../model/article';
+import { IngredientEntity } from '../../../model/ingredient';
 import { createArticle } from '../../../store/actions/index';
+import { getCurrentTime } from '../../../utils/time';
+import { AppState } from '../../../store/store';
 
 interface CreateArticleProps {
 	history: History;
 }
 
 const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
+	const userIngredients = useSelector((state: AppState) => state.fridge.ingredientList);
+	const time = getCurrentTime();
 	const [item, setItem] = useState('');
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState('');
@@ -44,7 +51,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 
 	// alert state is true if alert is necessary, otherwise false.
 	const [alert, setAlert] = useState('거래품명, 제목, 내용, 가격 및 사진을 모두 입력해 주세요');
-	const [onAlert, setOnAlert] = useState(true);
+	const [onAlert, setOnAlert] = useState(false);
 	const dispatch = useDispatch();
 
 	/* CLICK EVENT - ADD IMAGE */
@@ -82,14 +89,20 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 	/* CLICK EVENT - CREATE ARTICLE */
 	const onClickCreateArticle = async () => {
 		// if one of the input field is empty, then the alert modal shows itself
-		if (!images.length || !item || !title || !content || !price) {
-			setOnAlert(true);
-			setAlert('거래품명, 제목, 내용, 가격 및 사진을 모두 입력해 주세요');
+		if (!images?.length) {
+			toast.error('🦄 사진을 입력해주세요!');
+		} else if (!item) {
+			toast.error('🦄 거래품목을 선택해주세요!');
+		} else if (!title) {
+			toast.error('🦄 제목을 입력해주세요!');
+		} else if (!content) {
+			toast.error('🦄 내용을 입력해주세요!');
+		} else if (!price) {
+			toast.error('🦄 가격을 입력해주세요!');
 		} else if (!options.isForSale && !options.isForExchange && !options.isForShare) {
-			setOnAlert(true);
-			setAlert('희망 거래 옵션을 선택해주세요.');
+			toast.error('🦄 희망 거래 옵션을 선택해주세요.');
 		} else {
-			setOnAlert(false);
+			// setOnAlert(false);
 			const newArticle: CreateArticleEntity = {
 				title,
 				content,
@@ -99,6 +112,17 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 				images,
 			};
 			dispatch(createArticle(newArticle));
+		}
+	};
+
+	/* CLICK EVENT - CHOOSE ITEM */
+	const onClickItem = (target: IngredientEntity) => {
+		if (item && item !== target.name) {
+			toast.error('🦄 거래품목을 하나만 선택해주세요!');
+		} else if (item === target.name) {
+			setItem('');
+		} else {
+			setItem(target.name);
 		}
 	};
 
@@ -169,6 +193,17 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 		</Collapse>
 	);
 
+	const itemSet = userIngredients.map((opt) => (
+		<Button
+			key={opt.name}
+			id={`create-article-items-${opt.name}`}
+			className={`${item && opt.name === item ? ' selected' : ''}`}
+			onClick={() => onClickItem(opt)}
+		>
+			{opt.name}
+		</Button>
+	));
+
 	const optionsBox = [
 		['sale', '거래', options.isForSale],
 		['exchange', '교환', options.isForExchange],
@@ -230,7 +265,11 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 						</TableRow>
 						<TableRow>
 							<TableCell>
-								<Input
+								<div id="item-explanation">
+									냉장고 속 재료 중 거래할 품목을 선택해주세요!
+								</div>
+								<div id="create-article-items">{itemSet}</div>
+								{/* <Input
 									disableUnderline
 									fullWidth
 									required
@@ -238,7 +277,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 									placeholder="품목명"
 									id="item-input"
 									onChange={(e) => setItem(e.target.value)}
-								/>
+								/> */}
 							</TableCell>
 						</TableRow>
 						<TableRow>
@@ -279,7 +318,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 							</TableCell>
 							<TableCell width="100%" id="article-row">
 								<TextField
-									placeholder="안녕하세요, 좋은 아침입니다.&#10;장터에 올릴 게시글 내용을 적어주세요.&#10;판매금지품목은 게시가 제한될 수 있어요."
+									placeholder={`안녕하세요, 좋은 ${time}입니다.\n장터에 올릴 게시글 내용을 적어주세요.\n판매금지품목은 게시가 제한될 수 있어요.`}
 									id="article-content"
 									fullWidth
 									required
