@@ -81,10 +81,6 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		history.push(`/articles/:${id}`);
 	};
 
-	const comments = commentList.map((com: CommentEntity) => (
-		<Comment key={com.id} comment={com} />
-	)) ? commentList.length : '';
-
 	const [alert, setAlert] = useState(false);
 
 	let cookTime = `${recipe?.cookTime}M`;
@@ -128,15 +124,20 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		return <Article key={item.id} article={item} onClick={onClickArticle(item.id)} />;
 	});
 
+	const comments = commentList?.length 
+			? commentList.map((com: CommentEntity) => (
+				<Comment key={com.id} comment={com} />
+			)) : '';
+
 	const ingredientSetForRecipe = ingredients.map((item, i) => {
 		return (
 			<div id="ingredient-button-box" key={`${item.name}`}>
 				{userIngredientNames.includes(item.name) ? (
-					<Button key={item.name} id="ingredient-yes-button">
+					<Button id="ingredient-yes-button">
 						{item.name}
 					</Button>
 				) : (
-					<Button key={item.name} id="ingredient-no-button">
+					<Button id="ingredient-no-button">
 						{item.name}
 					</Button>
 				)}
@@ -155,6 +156,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	return (
 		<div id="recipe-detail">
 			<div id="recipe-header">
+				{/* stylesheet for create-comment sent button */}
+				<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 				<IconButton
 					id="prev-image"
 					onClick={(e) => onClickPage(e, page - 1)}
@@ -281,7 +284,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 					댓글
 				</Typography>
 				{comments}
-				<CreateComment author={user!.id} recipeId={recipe!.id!} />
+				<CreateComment recipeId={recipe!.id!} />
 			</div>
 		</div>
 	);

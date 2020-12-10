@@ -47,6 +47,5 @@ export interface CommentEntity {
 
 export interface CommentInputDTO {
 	recipeId: number;
-	author: string;
 	content: string;
 }
