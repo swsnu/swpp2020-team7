@@ -54,9 +54,7 @@ class User(AbstractUser):
     region_range = models.PositiveIntegerField(default=0)
     profile_image = models.CharField(max_length=250, null=True, unique=True)
 
-
-ㅎ
-   def __str__(self):
+    def __str__(self):
         return f'[{self.id}] {self.name}'
 
     def save(self, *args, **kwargs):
