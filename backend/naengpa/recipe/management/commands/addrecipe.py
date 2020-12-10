@@ -72,7 +72,7 @@ class Command(BaseCommand):
                     random_user.naengpa_score += 100
                     random_user.save()
 
-                    ingredients = map(lambda x: x['ingredient'], extract_ingredients(
+                    ingredients = map(lambda x: x['name'], extract_ingredients(
                         food_name + ' ' + recipe_content))
 
                     for name in ingredients:

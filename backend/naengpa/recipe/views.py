@@ -237,19 +237,20 @@ def recipe_info(request, id):
 @transaction.atomic
 def recipe_like(request, id):
     """like recipe of given id"""
-    recipe = Recipe.objects.get(id=id)
     user_id = request.user.id
-    user_like = recipe.likes.filter(user_id=user_id)
-
-    if not user_like.count():
-        RecipeLike.objects.filter(
-            Q(recipe_id=recipe.id) & Q(user_id=user_id)).delete()
+    try:
+        like = RecipeLike.objects.get(recipe_id=id, user_id=user_id)
+        like.delete()
         request.user.naengpa_score -= 10
-    else:
-        RecipeLike.objects.create(user_id=user_id, recipe_id=recipe.id)
+        is_like = 0
+    except RecipeLike.DoesNotExist:
+        like = RecipeLike.objects.create(recipe_id=id, user_id=user_id)
         request.user.naengpa_score += 10
-    request.user.save()
+        is_like = 1
+    request.user.save(update_fields=['naengpa_score'])
 
+    recipe = Recipe.objects.select_related('author', 'food_category').prefetch_related(
+        'likes', 'images', 'ingredients').get(pk=id)
     recipe_response = {
         "id": recipe.id,
         "authorId": recipe.author.id,
@@ -266,9 +267,9 @@ def recipe_like(request, id):
             "id": item.id,
             "name": item.ingredient.name,
             "quantity": item.quantity,
-        } for item in recipe.ingredients.select_related('ingredient')],
+        } for item in recipe.ingredients.all()],
     }
 
     context = {"recipeLike": recipe.likes.count(),
-               "userLike": recipe.likes.filter(user_id=user_id).count()}
+               "userLike": 1 if is_like else 0}
     return JsonResponse(context, safe=False)

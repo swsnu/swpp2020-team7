@@ -49,9 +49,9 @@ class User(AbstractUser):
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=30)
     date_of_birth = models.CharField(max_length=30)
-    naengpa_score = models.IntegerField(default=0, db_index=True)
+    naengpa_score = models.PositiveIntegerField(default=0, db_index=True)
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
-    region_range = models.IntegerField(default=0)
+    region_range = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f'[{self.id}] {self.name}'
