@@ -2,8 +2,6 @@
   margin: 4% 8%;
   padding: 1% 5%;
 
-  border-radius: 12px;
-  border: solid 1px #707070;
   background-color: #ffffff;
 
   #article-list-header {
@@ -12,6 +10,10 @@
     flex-direction: column;
     margin: 0;
     margin-left: 1%;
+
+    #article-list-header-title {
+      margin-top: 30px;
+    }
 
     #article-list-header-primary {
       display: flex;
@@ -71,6 +73,7 @@
 
         #article-search-box {
           width: 60%;
+          height: 100%;
           display: flex;
           flex-direction: row;
           align-items: center;
@@ -78,6 +81,7 @@
           padding: 0 2%;
           margin: 0 0;
           border: solid 1px #707070;
+          border-radius: 15px;
           background-color: #ffffff;
 
           #article-search-input {
@@ -99,13 +103,19 @@
           width: 40%;
           display: flex;
 
+          #most-recent-filter, #most-popular-filter, #most-recommended-filter {
+            width: 50%;
+            height: 50px;
+            border-radius: 30px;
+          }
+
           button {
-            margin: 0 5%;
+            margin: 0 3%;
             width: 50%;
             height: 100%;
             border-radius: 11px;
             border: solid 1px #f7f7f7;
-            background-color: #ffffff;
+            background-color: #f0f0f0;
         
             font: {
               family: HelveticaNeue;
@@ -143,8 +153,8 @@
       #create-article-button {
         display: flex;
         justify-content: flex-end;
-
         font-family: HelveticaNeue, sans-serif;
+
         font-size: 100%;
         font-weight: normal;
         font-stretch: normal;
@@ -152,9 +162,20 @@
         letter-spacing: normal;
         text-align: center;
         color: #020215;
-
         border: none;
         outline: none;
+        /*
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        flex-direction: column;
+        flex-direction: row;
+        width: 80px;
+        height: 50px;
+        border-radius: 30px;
+        background-color: #ff8a3d;
+        color: white;
+        */
       }
     }
   }

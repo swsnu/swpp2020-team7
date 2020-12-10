@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
-
+import { toast } from 'react-toastify';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { withStyles, Slider } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
@@ -84,9 +84,6 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 	);
 	const [selectedRegion, setSelectedRegion] = useState<RegionEntity | null>(null);
 
-	/* Alert Modal state */
-	const [alert, setAlert] = useState(false);
-
 	/* Region Information for latitude, longitude and level */
 	const [latitude, setLatitude] = useState(37.47632914533942);
 	const [longitude, setLongitude] = useState(126.95840521502);
@@ -115,7 +112,7 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 				} as UserSignupInputDTO),
 			);
 		} else {
-			setAlert(true);
+			toast.info(`🦄 지역 설정을 완료해주세요`);
 		}
 	};
 
@@ -134,36 +131,6 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 		options: regionList,
 		getOptionLabel: (option: RegionEntity) => option.name,
 	};
-
-	// const alertModal = (
-	// 	<Collapse className="collapse" in={alert}>
-	// 		<Alert id="alert-modal" icon={false}>
-	// 			<div id="naengpa-logo-box">
-	// 				<div id="naengpa-logo">
-	// 					<LocalDiningIcon id="naengpa-logo-image" />
-	// 					냉파
-	// 				</div>
-	// 				<CancelIcon
-	// 					id="close-alert-button"
-	// 					onClick={() => {
-	// 						setAlert(false);
-	// 					}}
-	// 				/>
-	// 			</div>
-	// 			<div id="alert-content">{alertContent}</div>
-	// 			<div id="confirm-alert-button-box">
-	// 				<Button
-	// 					id="confirm-alert-button"
-	// 					onClick={() => {
-	// 						setAlert(false);
-	// 					}}
-	// 				>
-	// 					확인
-	// 				</Button>
-	// 			</div>
-	// 		</Alert>
-	// 	</Collapse>
-	// );
 
 	return (
 		<div id="regional-setting">
@@ -214,7 +181,6 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 					</div>
 				</div>
 				<div id="alert-bottom">
-					{alert && <div id="alert-comment">지역을 설정을 완료해 주세요!!!</div>}
 					<button
 						id="confirm-button"
 						type="submit"

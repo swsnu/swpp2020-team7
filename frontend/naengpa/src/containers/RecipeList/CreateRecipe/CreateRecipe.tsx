@@ -1,10 +1,11 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useEffect } from 'react';
 import { History } from 'history';
 import { useDispatch } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Alert from '@material-ui/lab/Alert';
+import { toast } from 'react-toastify';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import {
 	Button,
@@ -42,14 +43,46 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		'요리 카테고리와 필요한 재료들이 작성한 요리명과 레시피를 기반으로 자동으로 추천해 드립니다. 작성이 완료되면 재료등록 버튼을 눌러주세요.',
 	);
 	const [loading, setLoading] = useState(false);
-
 	const dispatch = useDispatch();
 
+	const compressImage = (file: File) => {
+		const image = document.createElement('img');
+		image.src = URL.createObjectURL(file);
+		console.log(file.size, 'original Size');
+		image.onload = () => {
+			URL.revokeObjectURL(image.src);
+			const canvas = document.createElement('canvas');
+			canvas.width = 500;
+			canvas.height = 500;
+			const context = canvas.getContext('2d');
+			const draw = () => context?.drawImage(image, 0, 0, 500, 500);
+			draw();
+			const getBlob = () =>
+				context?.canvas.toBlob(
+					(newImageBlob) => {
+						console.log(newImageBlob, 'blob image');
+						if (newImageBlob) {
+							setFoodImageFiles((foodImageFiles) => [
+								...foodImageFiles,
+								new File([newImageBlob], file.name),
+							]);
+						}
+					},
+					'images/jpg',
+					0.5,
+				);
+			getBlob();
+		};
+	};
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
-		const image: File = (target.files as FileList)[0];
-		setFoodImageFiles([...foodImageFiles, image]);
+		const images = target.files as FileList;
+		// convert FileList iterable
+		const imageArray = Array.from(images);
+		imageArray.forEach((file) => {
+			compressImage(file);
+		});
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
@@ -59,18 +92,31 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	// TODO: need to alert that the content could be lost
 	const onClickBackToRecipeList = () => {
+		sessionStorage.clear();
 		history.push('/recipes');
 	};
+
+	useEffect(() => {
+		if (sessionStorage.getItem('createdRecipe')) {
+			const storedRecipe = JSON.parse(sessionStorage.getItem('createdRecipe')!)!;
+			setFoodName(storedRecipe.foodName);
+			setContent(storedRecipe.content);
+			setCookTime(storedRecipe.cookTime);
+		}
+	}, []);
 
 	/* CLICK EVENT - redirect to extract-ml-feature page */
 	const onClickExtractMLFeature = () => {
 		const extractMLFeatureClosure = async () => {
 			// if one of the input field is empty, then the alert modal shows itself
-			if (!foodImageFiles?.length || !foodName || cookTime <= 0 || !content) {
-				setAlert(true);
-				setAlertContent(
-					'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
-				);
+			if (!foodImageFiles?.length) {
+				toast.error('🦄 사진을 입력해주세요!');
+			} else if (!foodName) {
+				toast.error('🦄 요리 이름을 입력해주세요!');
+			} else if (cookTime <= 0) {
+				toast.error('🦄 조리 시간을 입력해주세요! 숫자만 가능합니다!');
+			} else if (!content) {
+				toast.error('🦄 레시피를 입력해주세요!');
 			} else {
 				const newRecipe: BaseRecipeEntity = {
 					foodName,
@@ -78,10 +124,10 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 					content,
 					foodImageFiles,
 				};
-
-				setLoading(true);
+				setLoading(() => true);
 				dispatch(extractMLFeatureFromRecipe(newRecipe));
-				setLoading(false);
+				toast.info(`🦄 재료 및 요리 카테고리 추천을 위해 잠시만 기다려 주세요!!!`);
+				setLoading(() => false);
 				history.push('/ingredients/extract');
 			}
 		};
@@ -105,8 +151,8 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 							key={`#${item}`}
 							id="delete-image-icon"
 							src={URL.createObjectURL(item)}
-							height="150px"
-							width="150px"
+							height="200px"
+							width="200px"
 							alt="/api/images" // TODO: check alt path
 						/>
 					</div>
@@ -203,17 +249,12 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 											type="number"
 											placeholder="시간"
 											id="cook-time"
-											min="0"
+											min="1"
 											onChange={(e) =>
 												setCookTime((e.target.value as unknown) as number)
 											}
 										/>
 										<div id="cook-time-unit">분</div>
-									</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>
-										<div id="ingredient-name">필수 재료</div>
 									</TableCell>
 								</TableRow>
 								<TableRow id="recipe-row-box">
@@ -228,9 +269,11 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 													id="add-image-button"
 													type="button"
 												/>
-												<Input
+												<input
 													type="file"
 													id="food-image"
+													accept="image/*"
+													multiple
 													required
 													disabled={alert}
 													onChange={(e: ChangeEvent<HTMLInputElement>) =>

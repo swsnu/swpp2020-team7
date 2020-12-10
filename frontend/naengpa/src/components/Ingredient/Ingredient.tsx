@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CancelIcon from '@material-ui/icons/Cancel';
 import StarIcon from '@material-ui/icons/Star';
-import { deleteIngredientFromFridge, toggleTodayIngredient } from '../../store/actions/index';
+import {
+	deleteIngredientFromFridge,
+	toggleTodayIngredient,
+	getFridge,
+} from '../../store/actions/index';
 import './Ingredient.scss';
 import { AppState } from '../../store/store';
 import { IngredientEntity } from '../../model/ingredient';

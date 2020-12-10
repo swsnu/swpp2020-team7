@@ -71,7 +71,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 					</button>
 				</div>
 				<div id="myinfo-user-info">
-					<div id="myinfo-profile">
+					<div id="edit-info-profile">
 						<Box id="add-image-icon-box">
 							<label aria-label="profile-image-label" htmlFor="profile-image">
 								<AddCircleIcon id="add-image-button" type="button" />

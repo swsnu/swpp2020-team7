@@ -24,6 +24,7 @@ import {
 	Divider,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { toast } from 'react-toastify';
 import { AppState } from '../../store/store';
 import Loading from '../../components/Loading/Loading';
 import './ExtractMLFeature.scss';
@@ -82,11 +83,44 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		setModifiedIngredients(checkedIngredients as RecipeIngredient[]);
 	}, [createdRecipe]);
 
+	const compressImage = (file: File) => {
+		const image = document.createElement('img');
+		image.src = URL.createObjectURL(file);
+		console.log(file.size, 'original Size');
+		image.onload = () => {
+			URL.revokeObjectURL(image.src);
+			const canvas = document.createElement('canvas');
+			canvas.width = 500;
+			canvas.height = 500;
+			const context = canvas.getContext('2d');
+			const draw = () => context?.drawImage(image, 0, 0, 500, 500);
+			draw();
+			const getBlob = () =>
+				context?.canvas.toBlob(
+					(newImageBlob) => {
+						console.log(newImageBlob, 'blob image');
+						if (newImageBlob) {
+							setFoodImageFiles((foodImageFiles) => [
+								...foodImageFiles,
+								new File([newImageBlob], file.name),
+							]);
+						}
+					},
+					'images/jpg',
+					0.5,
+				);
+			getBlob();
+		};
+	};
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
-		const image: File = (target.files as FileList)[0];
-		return setFoodImageFiles([...foodImageFiles, image]);
+		const images = target.files as FileList;
+		// convert FileList iterable
+		const imageArray = Array.from(images);
+		imageArray.forEach((file) => {
+			compressImage(file);
+		});
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
@@ -120,14 +154,17 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	// need to be directed to recipe detail page, current => recipelist
 	const onClickRegisterRecipe = () => {
 		const func = async () => {
-			if (!foodImageFiles?.length || !foodName || cookTime <= 0 || !content) {
-				setAlert(true);
-				setAlertContent(
-					'조리시간, 요리 카테고리, 레시피 내용, 필요한 재료, 해쉬태그 및 사진을 모두 입력해 주세요!!!',
-				);
+			if (!foodImageFiles?.length) {
+				toast.error('🦄 사진을 입력해주세요!');
+			} else if (!foodName) {
+				toast.error('🦄 요리 이름을 입력해주세요!');
+			} else if (cookTime <= 0) {
+				toast.error('🦄 조리 시간을 입력해주세요! 숫자만 가능합니다!');
+			} else if (!content) {
+				toast.error('🦄 레시피를 입력해주세요!');
 			} else {
 				const newIngredientList: RecipeIngredient[] = ingredients.map((item, idx) => {
-					return { ingredient: item.ingredient, quantity: item.quantity };
+					return { name: item.name, quantity: item.quantity };
 				});
 				const newRecipe: RecipeEntity = {
 					foodName,
@@ -147,14 +184,15 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	};
 
 	const onClickExtractMLFeatureAgain = async () => {
-		if (!foodImageFiles?.length || !foodName || cookTime <= 0 || !content) {
-			setAlert(true);
-			setAlertContent(
-				'음식 이름, 조리 시간, 레시피 내용 및 레시피 사진을 모두 입력해 주세요!!!',
-			);
+		if (!foodImageFiles?.length) {
+			toast.error('🦄 사진을 입력해주세요!');
+		} else if (!foodName) {
+			toast.error('🦄 요리 이름을 입력해주세요!');
+		} else if (cookTime <= 0) {
+			toast.error('🦄 조리 시간을 입력해주세요! 숫자만 가능합니다!');
+		} else if (!content) {
+			toast.error('🦄 레시피를 입력해주세요!');
 		} else {
-			console.log(foodImageFiles, ' what');
-			console.log(foodName, ' whwh');
 			const newRecipe: BaseRecipeEntity = {
 				foodName,
 				cookTime,
@@ -185,8 +223,8 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							key={`${idx}-`}
 							id="delete-image-icon"
 							src={URL.createObjectURL(item)}
-							height="150px"
-							width="150px"
+							height="200px"
+							width="200px"
 							alt="/api/images" // TODO: check alt path
 						/>
 					</div>
@@ -308,7 +346,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	const onChangeIngredientCheck = (ingredient: string, checked: boolean) => {
 		const newIngredientList = modifiedIngredients.map((item) => {
-			if (item.ingredient === ingredient) return { ...item, checked };
+			if (item.name === ingredient) return { ...item, checked };
 			return item;
 		});
 		setModifiedIngredients(newIngredientList);
@@ -316,7 +354,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	const onChangeIngredientQuantity = (ingredient: string, quantity: string) => {
 		const newIngredientList = modifiedIngredients.map((item) => {
-			if (item.ingredient === ingredient) return { ...item, quantity };
+			if (item.name === ingredient) return { ...item, quantity };
 			return item;
 		});
 		setModifiedIngredients(newIngredientList);
@@ -324,7 +362,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	const duplicateIngredient = (ingredient: string) => {
 		const duplicateList = modifiedIngredients.filter((item) => {
-			return item.ingredient === ingredient;
+			return item.name === ingredient;
 		});
 		if (duplicateList?.length !== 0) return true;
 		return false;
@@ -332,7 +370,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	/* ingredient list for Ingredient Modal */
 	const ingredientSet = modifiedIngredients?.map((item, i) => {
 		return (
-			<div id="ingredient-element" key={item.ingredient}>
+			<div id="ingredient-element" key={item.name}>
 				<FormControlLabel
 					control={
 						<Checkbox
@@ -340,21 +378,21 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							checked={item.checked as boolean}
 							checkedIcon={<CheckBoxIcon id="checkbox" />}
 							onChange={(e) => {
-								onChangeIngredientCheck(item.ingredient, e.target.checked);
+								onChangeIngredientCheck(item.name, e.target.checked);
 							}}
 						/>
 					}
-					key={`${item.ingredient}-`}
-					label={item.ingredient}
+					key={`${item.name}-`}
+					label={item.name}
 				/>
 				<Input
 					id="ingredient-quantity"
 					placeholder="수량: "
 					value={item.quantity as string}
-					key={`${item.ingredient}-${i}`}
+					key={`${item.name}-${i}`}
 					required
 					onChange={(e) => {
-						onChangeIngredientQuantity(item.ingredient, e.target.value);
+						onChangeIngredientQuantity(item.name, e.target.value);
 					}}
 				/>
 			</div>
@@ -364,10 +402,10 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	/* ingredient list for Recipe Form */
 	const ingredientSetForRecipe = ingredients?.map((item, i) => {
 		return (
-			<div id="ingredient-button-box" key={`${item.ingredient}`}>
+			<div id="ingredient-button-box" key={`${item.name}`}>
 				{item.checked && (
-					<Button key={`${item.ingredient}-${i}`} id="ingredient-button">
-						{item.ingredient}
+					<Button key={`${item.name}-${i}`} id="ingredient-button">
+						{item.name}
 					</Button>
 				)}
 			</div>
@@ -378,7 +416,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		setModifiedIngredients([
 			...modifiedIngredients,
 			{
-				ingredient: newIngredient,
+				name: newIngredient,
 				quantity: newIngredientQuantity,
 				checked: true,
 			},
@@ -417,50 +455,11 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					{/* Ingredient List  */}
 					{ingredientSet}
 					{/* New Ingredient */}
-					<div id="ingredient-element">
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={false}
-									checkedIcon={<CheckBoxIcon id="checkbox" />}
-								/>
-							}
-							label={newIngredient}
-						/>
-						<Input
-							id="new-ingredient-name"
-							placeholder="재료"
-							disableUnderline
-							value={newIngredient}
-							onChange={(e) => {
-								setNewIngredient(e.target.value);
-							}}
-						/>
-						{newIngredient && (
-							<Input
-								id="new-ingredient-quantity"
-								placeholder="수량: "
-								value={newIngredientQuantity}
-								onChange={(e) => {
-									setNewIngredientQuantity(e.target.value);
-								}}
-							/>
-						)}
-						{newIngredient &&
-							newIngredientQuantity &&
-							!duplicateIngredient(newIngredient) && (
-								<AddCircleIcon
-									id="add-ingredient-button"
-									type="button"
-									onClick={onClickAddIngredient}
-								/>
-							)}
-					</div>
+					{!ingredientSet.length && <div>추천된 재료가 없습니다!!</div>}
 				</div>
-
 				<div id="confirm-modal-button-box">
 					<Button id="confirm-modal-button" onClick={onClickConfirmModal}>
-						수정
+						{ingredientSet.length ? <>수정</> : <>확인</>}
 					</Button>
 				</div>
 			</Alert>
@@ -541,7 +540,9 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 										}}
 									>
 										<div id="food-name">요리명: {foodName}</div>
-										<Button id="food-category">{foodCategory}</Button>
+										{!alert && (
+											<Button id="food-category">{foodCategory}</Button>
+										)}
 									</TableCell>
 								</TableRow>
 								<TableRow>
@@ -572,11 +573,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 									>
 										{/* RECIPE INGREDIENT 추출 재료들 */}
 										<div id="ingredient-name">필수재료</div>
-										{!`${ingredientSetForRecipe}` && (
-											<div>
-												선택된/추천된 재료가 없습니다! 직접 입력해 주세요.
-											</div>
-										)}
 										<div id="ingredient-list">{ingredientSetForRecipe}</div>
 									</TableCell>
 								</TableRow>
@@ -592,10 +588,12 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 													id="add-image-button"
 													type="button"
 												/>
-												<Input
+												<input
 													type="file"
 													id="food-image"
 													required
+													multiple
+													accept="image/*"
 													disabled={alert}
 													onChange={(e: ChangeEvent<HTMLInputElement>) =>
 														onClickAddImage(e)

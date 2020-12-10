@@ -9,6 +9,7 @@
       font-size: 130%;
       margin-left: 5%; 
       margin-top: 2%;
+      background-color: #ffffff;
     }
     #chatroom {
       display: flex;
@@ -18,6 +19,7 @@
       border: none;
       width: 100%;
       font-size: 120%;
+      overflow: scroll;
       :focus {
         outline: 0 !important;
       }

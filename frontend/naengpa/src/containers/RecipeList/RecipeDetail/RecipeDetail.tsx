@@ -101,14 +101,20 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	});
 
 	const notInFridgeIngredients = ingredients.filter(
-		(item) => !userIngredientNames.includes(item.ingredient),
+		(item) => !userIngredientNames.includes(item.name),
 	);
 
 	const notInFridgeNames = notInFridgeIngredients.map((item) => {
-		return item.ingredient;
+		return item.name;
 	});
 
-	const notInFridgeJoined = notInFridgeNames.join(', ');
+	let notInFridgeJoined = notInFridgeNames.join(', ');
+	if (notInFridgeJoined.length > 0) {
+		notInFridgeJoined =
+			(notInFridgeJoined[notInFridgeJoined.length - 1].charCodeAt(0) - 0xac00) % 28 > 0
+				? `${notInFridgeJoined}을`
+				: `${notInFridgeJoined}를`;
+	}
 
 	const articleFiltered = articleList.filter((item) => notInFridgeNames.includes(item.item.name));
 
@@ -118,14 +124,14 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 
 	const ingredientSetForRecipe = ingredients.map((item, i) => {
 		return (
-			<div id="ingredient-button-box" key={`${item.ingredient}`}>
-				{userIngredientNames.includes(item.ingredient) ? (
-					<Button key={item.ingredient} id="ingredient-yes-button">
-						{item.ingredient}
+			<div id="ingredient-button-box" key={`${item.name}`}>
+				{userIngredientNames.includes(item.name) ? (
+					<Button key={item.name} id="ingredient-yes-button">
+						{item.name}
 					</Button>
 				) : (
-					<Button key={item.ingredient} id="ingredient-no-button">
-						{item.ingredient}
+					<Button key={item.name} id="ingredient-no-button">
+						{item.name}
 					</Button>
 				)}
 			</div>
@@ -167,7 +173,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						</Typography>
 					</Grid>
 					<Grid item xs>
-						<Typography gutterBottom variant="h6" align="left">
+						<Typography id="recipe-foodCategory" gutterBottom variant="h6" align="left">
 							{recipe?.foodCategory}
 						</Typography>
 					</Grid>
@@ -259,7 +265,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 			<Divider variant="middle" />
 			<div id="recipe-section4">
 				<Typography gutterBottom variant="h5">
-					{user!.username}님! 지금 {notInFridgeJoined}을(를) 주변 이웃과 거래해보세요!
+					{user!.username}님! 지금 {notInFridgeJoined} 주변 이웃과 거래해보세요!
 				</Typography>
 				{article}
 			</div>

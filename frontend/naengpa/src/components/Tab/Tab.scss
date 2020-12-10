@@ -10,9 +10,10 @@
     #info {
         background-color: #ffffff;
         margin-top: 4em;
+        margin-bottom: 200px;
         min-width: 500px;
         min-height: 400px;
-        width: 40%;
+        width: 600px;
         padding: 5%;
         padding-top: 2%;
     }
@@ -30,7 +31,9 @@
     }
 
     #button-list {
-        margin: 4em;
+        margin-left: 0px;
+        margin-right: 100px;
+        margin-top: 4em;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
         font-weight: bold;
     }
