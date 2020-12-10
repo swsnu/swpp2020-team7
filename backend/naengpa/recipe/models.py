@@ -10,7 +10,8 @@ User = get_user_model()
 
 class Recipe(models.Model):
     """Recipe model"""
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="recipes")
     food_name = models.CharField(max_length=50)
     food_category = models.ForeignKey(FoodCategory, on_delete=models.CASCADE)
     cook_time = models.PositiveIntegerField(default=0)
