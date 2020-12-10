@@ -1,6 +1,5 @@
 """views for recipe"""
 import json
-import numpy as np
 from operator import itemgetter
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.db.models import Q, Count
