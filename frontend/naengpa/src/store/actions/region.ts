@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { RegionEntity } from '../../model/user';
 import * as actionTypes from './actionTypes';
 
@@ -17,7 +18,7 @@ export const getRegionList = () => {
 				window.localStorage.setItem('reigionList', JSON.stringify(regionList));
 			}
 		} catch (e) {
-			console.log('Error detected, while getting REGION DATA', e);
+			toast.error('😢 지역 정보를 가져오는데 실패했어요', e);
 		}
 	};
 };
