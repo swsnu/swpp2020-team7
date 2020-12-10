@@ -204,36 +204,39 @@ def today_recipe_list(request):
 def recipe_info(request, id):
     """get recipe of given id"""
     if request.method == 'GET':
-        user_id = request.user.id
-        recipe = Recipe.objects.select_related('author', 'food_category').prefetch_related(
-            'images', 'likes', 'ingredients', 'comments').get(id=id)
-        recipe_response = {
-            "id": recipe.id,
-            "authorId": recipe.author.id,
-            "author": recipe.author.username,
-            "profileImage": recipe.author.profile_image,
-            "foodName": recipe.food_name,
-            "cookTime": recipe.cook_time,
-            "content": recipe.recipe_content,
-            "foodImagePaths": list(recipe.images.values('id', 'file_path')),
-            "recipeLike": recipe.likes.count(),
-            "userLike": recipe.likes.filter(user_id=user_id).count(),
-            "createdAt": recipe.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
-            "foodCategory": recipe.food_category.name,
-            "ingredients": [{
-                "id": item.id,
-                "name": item.ingredient.name,
-                "quantity": item.quantity,
-            } for item in recipe.ingredients.select_related('ingredient')],
-            "comments": [{
-                "id": item.id,
-                "author": item.author.name,
-                "profileImage": item.author.profile_image,
-                "recipeId": recipe.id,
-                "content": item.content,
-                "createdAt": item.created_string,
-            } for item in recipe.comments]
-        }
+        recipe_response = cache.get('recipe:{}'.format(id))
+        if not recipe_response:
+            user_id = request.user.id
+            recipe = Recipe.objects.select_related('author', 'food_category').prefetch_related(
+                'images', 'likes', 'ingredients', 'comments').get(id=id)
+            recipe_response = {
+                "id": recipe.id,
+                "authorId": recipe.author.id,
+                "author": recipe.author.username,
+                "profileImage": recipe.author.profile_image,
+                "foodName": recipe.food_name,
+                "cookTime": recipe.cook_time,
+                "content": recipe.recipe_content,
+                "foodImagePaths": list(recipe.images.values('id', 'file_path')),
+                "recipeLike": recipe.likes.count(),
+                "userLike": recipe.likes.filter(user_id=user_id).count(),
+                "createdAt": recipe.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
+                "foodCategory": recipe.food_category.name,
+                "ingredients": [{
+                    "id": item.id,
+                    "name": item.ingredient.name,
+                    "quantity": item.quantity,
+                } for item in recipe.ingredients.select_related('ingredient')],
+                "comments": [{
+                    "id": item.id,
+                    "author": item.author.name,
+                    "profileImage": item.author.profile_image,
+                    "recipeId": recipe.id,
+                    "content": item.content,
+                    "createdAt": item.created_string,
+                } for item in recipe.comments]
+            }
+            cache.set('recipe:{}'.format(id), recipe_response)
         return JsonResponse(data=recipe_response, safe=False)
     if request.method == 'DELETE':
         Recipe.objects.filter(id=id).delete()

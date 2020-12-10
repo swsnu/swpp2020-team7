@@ -35,3 +35,11 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'[{self.id}] {self.content} in {self.recipe} by {self.author}'
+
+    def save(self, *args, **kwargs):
+        cache.delete(f'recipe:{self.recipe.id}')
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        cache.delete(f'recipe:{self.recipe.id}')
+        super().delete(*args, **kwargs)

@@ -25,11 +25,11 @@ class Recipe(models.Model):
         return f'[{self.id}] {self.food_name} by {self.author}'
 
     def save(self, *args, **kwargs):
-        cache.delete_many(['recipes', 'today_recipes'])
+        cache.delete_many(['recipes', 'today_recipes', f'recipe:{self.id}'])
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete_many(['recipes', 'today_recipes'])
+        cache.delete_many(['recipes', 'today_recipes', f'recipe:{self.id}'])
         super().delete(*args, **kwargs)
 
 
@@ -44,11 +44,13 @@ class Image(models.Model):
         return f'[{self.id}] of {self.recipe}'
 
     def save(self, *args, **kwargs):
-        cache.delete_many(['recipes', 'today_recipes'])
+        cache.delete_many(['recipes', 'today_recipes',
+                           f'recipe:{self.recipe.id}'])
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete_many(['recipes', 'today_recipes'])
+        cache.delete_many(['recipes', 'today_recipes',
+                           f'recipe:{self.recipe.id}'])
         super().delete(*args, **kwargs)
 
 
@@ -65,11 +67,13 @@ class RecipeIngredient(models.Model):
         return f'[{self.id}] of {self.recipe}'
 
     def save(self, *args, **kwargs):
-        cache.delete_many(['recipes', 'today_recipes'])
+        cache.delete_many(['recipes', 'today_recipes',
+                           f'recipe:{self.recipe.id}'])
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete_many(['recipes', 'today_recipes'])
+        cache.delete_many(['recipes', 'today_recipes',
+                           f'recipe:{self.recipe.id}'])
         super().delete(*args, **kwargs)
 
 
@@ -87,14 +91,16 @@ class RecipeLike(models.Model):
         return f'[{self.id}] of {self.recipe}'
 
     def save(self, *args, **kwargs):
-        cache.delete_many(['recipes', 'today_recipes'])
+        cache.delete_many(['recipes', 'today_recipes',
+                           f'recipe:{self.recipe.id}'])
         if not self.pk:
             self.user.naengpa_score += 10
             self.user.save(update_fields=['naengpa_score'])
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete_many(['recipes', 'today_recipes'])
+        cache.delete_many(['recipes', 'today_recipes',
+                           f'recipe:{self.recipe.id}'])
         self.user.naengpa_score -= 10
         self.user.save(update_fields=['naengpa_score'])
         super().delete(*args, **kwargs)
