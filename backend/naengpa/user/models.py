@@ -58,13 +58,15 @@ class User(AbstractUser):
         return f'[{self.id}] {self.name}'
 
     def save(self, *args, **kwargs):
+        cache.delete('users')
         cache.delete_many(
-            'users', *map(lambda id: f'recipe:{id}', self.recipes.values_list('id', flat=True)))
+            [f'recipe:{id}' for id in self.recipes.values_list('id', flat=True)])
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
+        cache.delete('users')
         cache.delete_many(
-            'users', *map(lambda id: f'recipe:{id}', self.recipes.values_list('id', flat=True)))
+            [f'recipe:{id}' for id in self.recipes.values_list('id', flat=True)])
         super().delete(*args, **kwargs)
 
 
