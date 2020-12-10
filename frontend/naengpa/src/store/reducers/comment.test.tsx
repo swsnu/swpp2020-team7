@@ -13,14 +13,6 @@ describe('Comment Reducer', () => {
 		expect(newState).toEqual(initialState);
 	});
 
-	it('should check if it can get comment list correctly', () => {
-		const newState = commentReducer(initialState, {
-			type: actionTypes.GET_COMMENT_LIST,
-			payload: [],
-		});
-		expect(newState).toEqual(initialState);
-	});
-
 	it('should check if it can get comment correctly', () => {
 		const newState = commentReducer(initialState, {
 			type: actionTypes.GET_COMMENT,
@@ -48,7 +40,7 @@ describe('Comment Reducer', () => {
 	it('should check if it can delete comment list correctly', () => {
 		const newState = commentReducer(initialState, {
 			type: actionTypes.DELETE_COMMENT,
-			payload: [],
+			targetId: 1,
 		});
 		expect(newState).toEqual(initialState);
 	});

@@ -21,8 +21,9 @@ import {
 } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import Article from '../../../components/Article/Article';
-
-import { RecipeEntity, RecipeImage } from '../../../model/recipe';
+import Comment from '../../../components/Comment/Comment';
+import CreateComment from '../../CreateComment/CreateComment';
+import { CommentEntity, RecipeEntity, RecipeImage } from '../../../model/recipe';
 
 interface RecipeDetailProps {
 	history: History;
@@ -33,6 +34,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const articleList = useSelector((state: AppState) => state.article.articleList);
 	const user = useSelector((state: AppState) => state.user.user);
 	const userIngredients = useSelector((state: AppState) => state.fridge.ingredientList);
+	const commentList = useSelector((state: AppState) => state.comment.commentList);
 	const [page, setPage] = useState(1);
 	const [currentList, setCurrentList] = useState<RecipeImage[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
@@ -78,6 +80,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		dispatch(getArticle(id));
 		history.push(`/articles/:${id}`);
 	};
+
+	const comments = commentList.map((com: CommentEntity) => (
+		<Comment key={com.id} comment={com} />
+	)) ? commentList.length : '';
 
 	const [alert, setAlert] = useState(false);
 
@@ -274,6 +280,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<Typography gutterBottom variant="h5">
 					댓글
 				</Typography>
+				{comments}
+				<CreateComment author={user!.id} recipeId={recipe!.id} />
 			</div>
 		</div>
 	);

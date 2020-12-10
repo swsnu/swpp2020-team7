@@ -1,6 +1,7 @@
 import { CommentAction } from '../actions/comment';
 import * as actionTypes from '../actions/actionTypes';
 import { DefaultAction } from '../actions/index';
+import { CommentEntity } from '../../model/recipe';
 
 export type CommentState = {
 	commentList: any;
@@ -23,14 +24,18 @@ function commentReducer(
 			return { ...state, commentList: action.payload };
 		/* CREATE COMMENT */
 		case actionTypes.ADD_COMMENT:
-			return { ...state, commentList: action.payload };
+			return { ...state, commentList: [...state.commentList, action.payload] };
 		/* EDIT COMMENT */
 		case actionTypes.EDIT_COMMENT: {
 			return { ...state, commentList: action.payload };
 		}
 		/* DELETE COMMENT */
 		case actionTypes.DELETE_COMMENT: {
-			return { ...state, commentList: action.payload };
+			const deleted = state.commentList.filter((com: CommentEntity) => com.id !== action.targetId);
+			return {
+				...state,
+				commentList: deleted,
+			};
 		}
 		default:
 			return state;

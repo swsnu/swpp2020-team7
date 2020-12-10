@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 import { BaseRecipeEntity, RecipeEntity, RecipeLike } from '../../model/recipe';
+import { getCommentList_ } from './comment';
 
 export const getRecipeList_ = (recipeList: RecipeEntity[], lastPageIndex: number) => ({
 	type: actionTypes.GET_RECIPE_LIST,
@@ -66,6 +67,7 @@ export const getRecipe = (id: number) => {
 		try {
 			const response = await axios.get(`/api/recipes/${id}`);
 			dispatch(getRecipe_(response.data));
+			dispatch(getCommentList_(response.data.comments))
 			window.sessionStorage.setItem('recipe', JSON.stringify(response.data));
 		} catch {
 			dispatch(push('/fidge'));
