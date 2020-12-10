@@ -33,7 +33,7 @@ export const getRecipeList = (
 			window.sessionStorage.setItem('recipeList', JSON.stringify(recipeList));
 			window.sessionStorage.setItem('lastPageIndex', JSON.stringify(lastPageIndex));
 		} catch {
-			console.log('레시피 리스트 정보를 가져오지 못했습니다! 다시 시도해주세요!');
+			toast.error('🦄 레시피 리스트 정보를 가져오지 못했습니다! 다시 시도해주세요!');
 		}
 	};
 };
@@ -50,7 +50,7 @@ export const getTodayRecipeList = () => {
 			const { recipeList } = response.data;
 			dispatch(getTodayRecipeList_(recipeList));
 		} catch {
-			console.log('오늘의 레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!');
+			toast.error('🦄 오늘의 레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!');
 		}
 	};
 };
@@ -69,7 +69,7 @@ export const getRecipe = (id: number) => {
 			window.sessionStorage.setItem('recipe', JSON.stringify(response.data));
 		} catch {
 			dispatch(push('/fidge'));
-			console.log('레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!');
+			toast.error('🦄 레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!');
 		}
 	};
 };
@@ -90,7 +90,7 @@ export const createRecipe = (recipe: RecipeEntity) => {
 			dispatch(createRecipe_(response.data));
 			window.sessionStorage.clear();
 		} catch {
-			console.log('레시피를 생성하던 중 문제가 발생했습니다! 다시 시도해주세요!');
+			toast.error('🦄 레시피를 생성하던 중 문제가 발생했습니다! 다시 시도해주세요!');
 		}
 	};
 };
@@ -150,7 +150,7 @@ export const deleteRecipe = (id: number) => {
 			await axios.delete(`/api/recipes/${id}/`);
 			dispatch(deleteRecipe_(id));
 		} catch {
-			console.log('레시피를 삭제하지 못했습니다! 다시 시도해주세요!');
+			toast.error('🦄 레시피를 삭제하지 못했습니다! 다시 시도해주세요!');
 		}
 	};
 };
@@ -167,7 +167,7 @@ export const editRecipe = (recipe: RecipeEntity) => {
 			const response = await axios.put(`/api/recipes/${recipe.id}/`, recipe);
 			dispatch(editRecipe_(response.data));
 		} catch {
-			console.log('레시피를 수정하지 못했습니다. 다시 시도해주세요!');
+			toast.error('🦄 레시피를 수정하지 못했습니다. 다시 시도해주세요!');
 		}
 	};
 };
@@ -185,7 +185,7 @@ export function toggleRecipe(id: number) {
 			const response: any = await axios.put(`/api/recipes/${id}/like/`);
 			dispatch(toggleRecipe_(id, response.data));
 		} catch {
-			console.log('레시피 좋아요를 누르지 못했습니다! 다시 시도해주세요!');
+			toast.error('🦄 레시피 좋아요를 누르지 못했습니다! 다시 시도해주세요!');
 		}
 	};
 }

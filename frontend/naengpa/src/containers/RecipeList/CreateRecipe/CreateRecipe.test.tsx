@@ -119,7 +119,6 @@ describe('CreateRecipe', () => {
 		expect(component.find('.collapse').at(0).props().in).toBe(false);
 	});
 
-
 	it('should delete the recipe image', async () => {
 		const component = mount(createRecipe);
 		await waitForComponentToPaint(component);
