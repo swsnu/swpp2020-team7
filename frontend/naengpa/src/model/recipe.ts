@@ -10,6 +10,7 @@ export interface BaseRecipeEntity {
 export interface RecipeEntity extends BaseRecipeEntity {
 	authorId?: string;
 	author?: string;
+	profileImage?: string;
 	recipeLike: number;
 	userLike: number;
 	createdAt?: string;

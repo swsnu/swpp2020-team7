@@ -52,8 +52,11 @@ class User(AbstractUser):
     naengpa_score = models.PositiveIntegerField(default=0, db_index=True)
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
     region_range = models.PositiveIntegerField(default=0)
+    profile_image = models.CharField(max_length=250, null=True, unique=True)
 
-    def __str__(self):
+
+ㅎ
+   def __str__(self):
         return f'[{self.id}] {self.name}'
 
     def save(self, *args, **kwargs):

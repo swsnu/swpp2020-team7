@@ -87,7 +87,7 @@ def signup(request):
             'dateOfBirth': checked_user.date_of_birth,
             'naengpaScore': checked_user.naengpa_score,
             'region': get_region(checked_user.region),
-            "regionRange": user.region_range,
+            'regionRange': user.region_range,
         }, status=201)
 
 
@@ -118,6 +118,7 @@ def signin(request):
                 'naengpaScore': user.naengpa_score,
                 'region': get_region(user.region),
                 "regionRange": user.region_range,
+                'profileImage': user.profile_image,
             }, status=200)
         else:
             return HttpResponse(status=401)
@@ -150,6 +151,7 @@ def user(request, id):
             'naengpaScore': user.naengpa_score,
             "region": get_region(user.region),
             "regionRange": user.region_range,
+            'profileImage': user.profile_image,
         }
         return JsonResponse(data=current_user, safe=False)
     elif request.method == 'PUT':
@@ -181,6 +183,7 @@ def user(request, id):
             'naengpaScore': user.naengpa_score,
             'region': get_region(user.region),
             'regionRange': user.region_range,
+            'profileImage': user.profile_image,
         }, status=201)
 
 
@@ -212,6 +215,7 @@ def change_password(request, id):
             'naengpaScore': user.naengpa_score,
             'region': get_region(user.region),
             'regionRange': user.region_range,
+            'profileImage': user.profile_image,
         }, status=201)
     return HttpResponseNotAllowed(['PUT'])
 
@@ -232,7 +236,8 @@ def user_list(request):
                 "email": user.email,
                 "dateOfBirth": user.date_of_birth,
                 'region': get_region(user.region),
-                "naengpaScore": user.naengpa_score
+                "naengpaScore": user.naengpa_score,
+                'profileImage': user.profile_image,
             } for user in User.objects.select_related('region').order_by('-naengpa_score')[:2]] if User.objects.count() else []
             cache.set('users', user_collection)
         return JsonResponse(user_collection, safe=False)
