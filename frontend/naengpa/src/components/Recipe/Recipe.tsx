@@ -49,7 +49,17 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 		<Card id={attribute}>
 			<CardHeader
 				id="recipe-card-header"
-				avatar={<Avatar aria-label="recipe" src={(recipe.profileImage as string) ? (recipe.profileImage as string) : "/icons/star.png"} alt="/icons/star.png" />}
+				avatar={
+					<Avatar
+						aria-label="recipe"
+						src={
+							(recipe.profileImage as string)
+								? (recipe.profileImage as string)
+								: '/icons/star.png'
+						}
+						alt="/icons/star.png"
+					/>
+				}
 				// action={
 				// 	<IconButton aria-label="settings">
 				// 		<MoreVertIcon />

@@ -67,7 +67,7 @@ export const getRecipe = (id: number) => {
 		try {
 			const response = await axios.get(`/api/recipes/${id}/`);
 			dispatch(getRecipe_(response.data));
-			dispatch(getCommentList_(response.data.comments))
+			dispatch(getCommentList_(response.data.comments));
 			window.sessionStorage.setItem('recipe', JSON.stringify(response.data));
 		} catch {
 			dispatch(push('/recipes'));

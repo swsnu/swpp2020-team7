@@ -4,8 +4,8 @@ import * as actionTypes from './actionTypes';
 import { CommentEntity, CommentInputDTO } from '../../model/recipe';
 
 export const getCommentList_ = (comments: CommentEntity[]) => ({
-		type: actionTypes.GET_COMMENT_LIST,
-		payload: comments,
+	type: actionTypes.GET_COMMENT_LIST,
+	payload: comments,
 });
 
 export const getComment = () => ({
@@ -15,8 +15,8 @@ export const getComment = () => ({
 
 /* ADD COMMENT */
 export const addComment_ = (comment: CommentEntity) => ({
-		type: actionTypes.ADD_COMMENT,
-		payload: comment,
+	type: actionTypes.ADD_COMMENT,
+	payload: comment,
 });
 
 export const addComment = (comment: CommentInputDTO) => {
@@ -39,7 +39,7 @@ export const deleteComment_ = (id: number) => {
 		type: actionTypes.DELETE_COMMENT,
 		targetId: id,
 	};
-}
+};
 
 export const deleteComment = (id: number) => {
 	return async (dispatch: Dispatch<any>) => {
@@ -47,7 +47,6 @@ export const deleteComment = (id: number) => {
 		dispatch(deleteComment_(id));
 	};
 };
-
 
 export type CommentAction =
 	| ReturnType<typeof getCommentList_>

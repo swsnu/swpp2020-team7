@@ -124,22 +124,17 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		return <Article key={item.id} article={item} onClick={onClickArticle(item.id)} />;
 	});
 
-	const comments = commentList?.length 
-			? commentList.map((com: CommentEntity) => (
-				<Comment key={com.id} comment={com} />
-			)) : '';
+	const comments = commentList?.length
+		? commentList.map((com: CommentEntity) => <Comment key={com.id} comment={com} />)
+		: '';
 
 	const ingredientSetForRecipe = ingredients.map((item, i) => {
 		return (
 			<div id="ingredient-button-box" key={`${item.name}`}>
 				{userIngredientNames.includes(item.name) ? (
-					<Button id="ingredient-yes-button">
-						{item.name}
-					</Button>
+					<Button id="ingredient-yes-button">{item.name}</Button>
 				) : (
-					<Button id="ingredient-no-button">
-						{item.name}
-					</Button>
+					<Button id="ingredient-no-button">{item.name}</Button>
 				)}
 			</div>
 		);
@@ -157,7 +152,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		<div id="recipe-detail">
 			<div id="recipe-header">
 				{/* stylesheet for create-comment sent button */}
-				<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+				<link
+					rel="stylesheet"
+					href="https://fonts.googleapis.com/icon?family=Material+Icons"
+				/>
 				<IconButton
 					id="prev-image"
 					onClick={(e) => onClickPage(e, page - 1)}
