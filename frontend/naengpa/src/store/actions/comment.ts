@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { push } from 'connected-react-router';
 import { Dispatch } from 'redux';
 import * as actionTypes from './actionTypes';
 import { CommentEntity, CommentInputDTO } from '../../model/recipe';
@@ -7,6 +6,11 @@ import { CommentEntity, CommentInputDTO } from '../../model/recipe';
 export const getCommentList_ = (comments: CommentEntity[]) => ({
 		type: actionTypes.GET_COMMENT_LIST,
 		payload: comments,
+});
+
+export const getComment = () => ({
+	type: actionTypes.GET_COMMENT,
+	payload: {},
 });
 
 /* ADD COMMENT */
@@ -46,6 +50,7 @@ export const deleteComment = (id: number) => {
 
 
 export type CommentAction =
+	| ReturnType<typeof getCommentList_>
 	| ReturnType<typeof getComment>
 	| ReturnType<typeof addComment_>
 	| ReturnType<typeof deleteComment_>
