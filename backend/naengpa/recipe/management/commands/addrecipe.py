@@ -14,14 +14,14 @@ User = get_user_model()
 
 
 class Command(BaseCommand):
-    """makes up Region database"""
+    """makes up Recipe database"""
 
     def add_arguments(self, parser):
         parser.add_argument('csv_path', type=str)
         parser.add_argument('img_dir', type=str)
 
     def handle(self, *args, **kwargs):
-        """makes up Region db table with gu-dong data in Seoul"""
+        """makes up Recipe db table with csv file, image directory input"""
         if 'csv_path' not in kwargs.keys():
             print("please specify path to csv input file")
             return
