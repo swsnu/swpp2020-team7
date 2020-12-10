@@ -15,7 +15,7 @@ const Profile: React.FC<ProfileProps> = ({ profile }) => {
 				avatar={<Avatar aria-label="user-image" src="/icons/boy.png" />}
 				title={
 					<Typography id="profile-title" align="left">
-						{profile.username}
+						{profile.name}
 					</Typography>
 				}
 				subheader={
