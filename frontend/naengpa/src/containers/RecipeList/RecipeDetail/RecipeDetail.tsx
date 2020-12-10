@@ -282,7 +282,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 					댓글
 				</Typography>
 				{comments}
-				<CreateComment recipeId={recipe!.id!} />
+				<CreateComment recipeId={recipe?.id!} />
 			</div>
 		</div>
 	);
