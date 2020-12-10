@@ -48,7 +48,7 @@ def article_list_get(request):
                     "isForExchange": article.is_for_exchange,
                     "isForShare": article.is_for_share,
                 },
-                "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
+                "images": list(article.images.values('id', 'file_path')),
                 "createdAt": article.created_at.strftime("%Y.%m.%d")
             } for article in sorted_list] if Article.objects.count() != 0 else []
             cache.set('articles', article_collection)
@@ -83,7 +83,7 @@ def article_list_get(request):
                 "isForExchange": article.is_for_exchange,
                 "isForShare": article.is_for_share,
             },
-            "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
+            "images": list(article.images.values('id', 'file_path')),
             "createdAt": article.created_at.strftime("%Y.%m.%d")
         } for article in sorted_list] if Article.objects.count() != 0 else []
     return JsonResponse(article_collection, safe=False)
@@ -143,7 +143,7 @@ def article_list_post(request):
             "isForExchange": article.is_for_exchange,
             "isForShare": article.is_for_share
         },
-        "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
+        "images": list(article.images.values('id', 'file_path')),
         "createdAt": article.created_at,
     }, status=201)
 
@@ -191,8 +191,8 @@ def article_info(request, aid):
                 "isForExchange": article.is_for_exchange,
                 "isForShare": article.is_for_share
             },
-            "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
-            "createdAt": article.created_at,
+            "images": list(article.images.values('id', 'file_path')),
+            "createdAt": article.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
         }, status=200)
 
     elif request.method == 'DELETE':
@@ -222,7 +222,7 @@ def article_info(request, aid):
                 "isForExchange": article.is_for_exchange,
                 "isForShare": article.is_for_share
             },
-            "images": [img for img in article.images.all().annotate(path=F('file_path')).values('id', 'path')],
+            "images": list(article.images.values('id', 'file_path')),
             "createdAt": article.created_at,
         }
         article.delete()
