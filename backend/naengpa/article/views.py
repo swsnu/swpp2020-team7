@@ -148,8 +148,8 @@ def article_list_post(request):
     }, status=201)
 
 
-@ ensure_csrf_cookie
-@ api_view(['GET', 'POST'])
+@ensure_csrf_cookie
+@api_view(['GET', 'POST'])
 def article_list(request):
     """get article list or create an article"""
     if request.method == 'GET':
@@ -158,10 +158,10 @@ def article_list(request):
         return article_list_post(request)
 
 
-@ ensure_csrf_cookie
-@ api_view(['GET', 'DELETE'])
-@ login_required_401
-@ transaction.atomic
+@ensure_csrf_cookie
+@api_view(['GET', 'DELETE'])
+@login_required_401
+@transaction.atomic
 def article_info(request, aid):
     '''process article of given id'''
     if request.method == 'GET':
