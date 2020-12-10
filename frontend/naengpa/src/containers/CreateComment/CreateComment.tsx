@@ -31,6 +31,12 @@ const Comment: React.FC<CreateCommentProps> = ({ recipeId }) => {
 		}
 	};
 
+	const onKeyPress = (e: React.KeyboardEvent) => {
+		if (e.key === 'Enter') {
+			onClickSubmit();
+		}
+	};
+	
 	return (
 		<div id="create-comment">
 			<TextField
@@ -41,6 +47,7 @@ const Comment: React.FC<CreateCommentProps> = ({ recipeId }) => {
 				placeholder="댓글을 남겨보세요!"
 				value={content}
 				onChange={(e: any) => setContent(e.target.value)}
+				onKeyPress={onKeyPress}
 			/>
 			<Button
 				variant="contained"
