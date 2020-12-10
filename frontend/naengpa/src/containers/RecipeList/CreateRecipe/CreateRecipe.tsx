@@ -55,7 +55,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 			canvas.width = 500;
 			canvas.height = 500;
 			const context = canvas.getContext('2d');
-			const draw = () => context?.drawImage(image, 0, 0, 500, 500);
+			const draw = () => context?.drawImage(image, 0, 0, 200, 200);
 			draw();
 			const getBlob = () =>
 				context?.canvas.toBlob(
