@@ -234,7 +234,7 @@ def recipe_info(request, id):
                     "recipeId": recipe.id,
                     "content": item.content,
                     "createdAt": item.created_string,
-                } for item in recipe.comments]
+                } for item in recipe.comments.all()]
             }
             cache.set('recipe:{}'.format(id), recipe_response)
         return JsonResponse(data=recipe_response, safe=False)
