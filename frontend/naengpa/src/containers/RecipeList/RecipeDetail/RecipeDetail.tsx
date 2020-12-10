@@ -21,8 +21,9 @@ import {
 } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import Article from '../../../components/Article/Article';
-
-import { RecipeEntity, RecipeImage } from '../../../model/recipe';
+import Comment from '../../../components/Comment/Comment';
+import CreateComment from '../../CreateComment/CreateComment';
+import { CommentEntity, RecipeEntity, RecipeImage } from '../../../model/recipe';
 
 interface RecipeDetailProps {
 	history: History;
@@ -33,6 +34,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const articleList = useSelector((state: AppState) => state.article.articleList);
 	const user = useSelector((state: AppState) => state.user.user);
 	const userIngredients = useSelector((state: AppState) => state.fridge.ingredientList);
+	const commentList = useSelector((state: AppState) => state.comment.commentList);
 	const [page, setPage] = useState(1);
 	const [currentList, setCurrentList] = useState<RecipeImage[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
@@ -122,17 +124,17 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		return <Article key={item.id} article={item} onClick={onClickArticle(item.id)} />;
 	});
 
+	const comments = commentList?.length
+		? commentList.map((com: CommentEntity) => <Comment key={com.id} comment={com} />)
+		: '';
+
 	const ingredientSetForRecipe = ingredients.map((item, i) => {
 		return (
 			<div id="ingredient-button-box" key={`${item.name}`}>
 				{userIngredientNames.includes(item.name) ? (
-					<Button key={item.name} id="ingredient-yes-button">
-						{item.name}
-					</Button>
+					<Button id="ingredient-yes-button">{item.name}</Button>
 				) : (
-					<Button key={item.name} id="ingredient-no-button">
-						{item.name}
-					</Button>
+					<Button id="ingredient-no-button">{item.name}</Button>
 				)}
 			</div>
 		);
@@ -149,6 +151,11 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	return (
 		<div id="recipe-detail">
 			<div id="recipe-header">
+				{/* stylesheet for create-comment sent button */}
+				<link
+					rel="stylesheet"
+					href="https://fonts.googleapis.com/icon?family=Material+Icons"
+				/>
 				<IconButton
 					id="prev-image"
 					onClick={(e) => onClickPage(e, page - 1)}
@@ -265,7 +272,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 			<Divider variant="middle" />
 			<div id="recipe-section4">
 				<Typography gutterBottom variant="h5">
-					{user!.username}님! 지금 {notInFridgeJoined} 주변 이웃과 거래해보세요!
+					{user!.name}님! 지금 {notInFridgeJoined} 주변 이웃과 거래해보세요!
 				</Typography>
 				{article}
 			</div>
@@ -274,6 +281,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<Typography gutterBottom variant="h5">
 					댓글
 				</Typography>
+				{comments}
+				<CreateComment recipeId={recipe?.id!} />
 			</div>
 		</div>
 	);

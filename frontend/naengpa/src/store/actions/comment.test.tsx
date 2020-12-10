@@ -46,13 +46,13 @@ describe('ActionCreators', () => {
 	});
 
 	it('should return addComment action correctly', async () => {
-		const action = actionCreators.addComment();
+		const action = actionCreators.addComment_();
 		const expectedPayload = { type: actionTypes.ADD_COMMENT, payload: {} };
 		expect(action).toEqual(expectedPayload);
 	});
 
 	it('should return deleteComment action correctly', async () => {
-		const action = actionCreators.deleteComment();
+		const action = actionCreators.deleteComment_();
 		const expectedPayload = { type: actionTypes.DELETE_COMMENT, payload: {} };
 		expect(action).toEqual(expectedPayload);
 	});

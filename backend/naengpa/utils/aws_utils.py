@@ -65,3 +65,26 @@ def upload_images_with_local_path(paths, prefix, feed_id):
         )
         images_path.append(S3_URL + file_path)
     return images_path
+
+
+def upload_profile_images_with_local_path(paths, user_id_list):
+    """
+    upload images to aws s3 storage
+    paths: local path to image files (string[])
+    user_id_list: list of user_id
+    returns list of s3 path for each uploaded image
+    """
+    if len(paths) != len(user_id_list):
+        print('wrong input for upload_profile_images_with_local_path')
+        return
+
+    images_path = []
+    for idx, path in enumerate(paths):
+        file_path = "profile/{}/profile_image{}".format(
+            user_id_list[idx], os.path.splitext(path)[1])
+        s3_bucket.put_object(
+            Key=file_path,
+            Body=open(path, 'rb').read(),
+        )
+        images_path.append(S3_URL + file_path)
+    return images_path
