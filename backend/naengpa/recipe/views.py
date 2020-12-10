@@ -105,14 +105,22 @@ def recipe_list_post(request):
         request.user.naengpa_score += 100
         request.user.save()
 
-        for item in json.loads(ingredients):
-            RecipeIngredient.objects.create(
-                ingredient=Ingredient.objects.get(name=item.get('ingredient', '')), quantity=item.get('quantity', ''), recipe_id=recipe.id
-            )
+        for item in ingredients:
+            print(item, item.get('name', ''), item.get('quantity', ''))
+            if Ingredient.objects.filter(name=item.get('name', '')).count():
+                print(item, "존재 ")
+                RecipeIngredient.objects.create(
+                    ingredient=Ingredient.objects.get(name=item.get('name', '')), quantity=item.get('quantity', ''), recipe_id=recipe.id
+                )
+            else:
+                print(item, "존재하지 않음")
+
     except (KeyError, json.decoder.JSONDecodeError):
         return HttpResponseBadRequest()
     except FoodCategory.DoesNotExist:
         return HttpResponseBadRequest()
+    except Ingredient.DoesNotExist:
+        pass
 
     images_path = upload_images(
         food_images, "recipe", recipe.id)
@@ -130,7 +138,7 @@ def recipe_list_post(request):
         "recipeLike": recipe.like_users.count(),
         "userLike": 0,
         "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
-        "foodCategory": recipe.food_category,
+        "foodCategory": recipe.food_category.name,
         "ingredients": [{
             "id": item.id,
             "name": item.ingredient.name,
