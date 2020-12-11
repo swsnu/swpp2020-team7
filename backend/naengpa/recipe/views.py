@@ -21,7 +21,7 @@ def recipe_list_get(request):
     ''' GET /api/recipes/ get recipe list '''
     if not Recipe.objects.count():
         return JsonResponse([], safe=False)
-    query = request.GET.get('query', "")
+    query = request.GET.get('query', "").rstrip().lstrip()
     sort_condition = request.GET.get('sort_by', "created_at")
     food_category = request.GET.get('category', "")
     page = request.GET.get('page', 1)
@@ -33,12 +33,12 @@ def recipe_list_get(request):
             'author', 'food_category'
         ).prefetch_related('ingredients'
                            ).filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)
-                                    | Q(food_category__name__contains=query) | Q(ingredients__ingredient__name__contains=query)).distinct('id')
+                                    | Q(food_category__name__contains=query) | Q(ingredients__ingredient__name__contains=query))
 
         ''' FOOD CATEGORY condition '''
         sorted_list = sorted_list.filter(
-            food_category__name=food_category).order_by('-created_at') if food_category != '전체' else sorted_list.order_by('-created_at')
-
+            food_category__name=food_category) if food_category != '전체' else sorted_list
+        sorted_list = sorted_list.order_by('-id').distinct('-id')
     else:
         ''' FOOD CATEGORY condition '''
         sorted_list = Recipe.objects.select_related(
@@ -51,18 +51,20 @@ def recipe_list_get(request):
             sorted_list = filtered_list.order_by('-created_at')
 
         elif sort_condition == 'ingredient':
+            # ingredient queries in user fridge
             user_ingredients = FridgeIngredient.objects.select_related('ingredient').filter(
                 fridge=user.fridge)
+            # ingredient queries in today ingredient of user
             today_ingredients = user_ingredients.filter(
                 is_today_ingredient=True).values('ingredient__name')
             # sort by Today Ingredients first
             todays_list = filtered_list.filter(ingredients__ingredient__name__in=today_ingredients).annotate(ingredient_count=Count(
                 'ingredients__ingredient__name')).order_by('-ingredient_count')
-            # sort by Ingredients in user's Fridge
-            normal_list = filtered_list.filter(ingredients__ingredient__name__in=user_ingredients.values('ingredient__name')).annotate(
+            # sort by Ingredients in user's Fridge except above recipes
+            normal_list = filtered_list.exclude(id__in=todays_list.values('id')).filter(ingredients__ingredient__name__in=user_ingredients.values('ingredient__name')).annotate(
                 ingredient_count=Count('ingredients__ingredient__name')).order_by('-ingredient_count')
-            # union of results in maintenance of Ordering (Today Ingredients comes first)
-            sorted_list = (todays_list | normal_list).distinct()
+            # union of results in maintenance of Ordering (Sorting result of 'Today Ingredients' comes first)
+            sorted_list = (todays_list | normal_list)
 
         else:
             sorted_list = filtered_list.annotate(
