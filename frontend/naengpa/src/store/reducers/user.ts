@@ -26,7 +26,6 @@ function userReducer(
 	state: InitialState = UserState,
 	action: UserAction | DefaultAction = { type: 'default' },
 ): InitialState {
-	let userList;
 
 	switch (action.type) {
 		/* SAVE USER INFO */
@@ -63,10 +62,10 @@ function userReducer(
 
 		/* CREAT CHATROOM */
 		case actionTypes.CREATE_CHATROOM:
-			filteredChatRoomList = state.chatRoomList.filter((chatRoom) => {
+			filteredChatRoomList = state.chatRoomList?.filter((chatRoom) => {
 				return chatRoom.id === action.chatRoom.id;
 			});
-			if (!filteredChatRoomList.length) {
+			if (filteredChatRoomList && !filteredChatRoomList.length) {
 				filteredChatRoomList = [...state.chatRoomList, action.chatRoom];
 			}
 			return { ...state, chatRoomList: filteredChatRoomList, chatRoom: action.chatRoom };
@@ -85,7 +84,7 @@ function userReducer(
 
 		/* DELETE CHATROOM */
 		case actionTypes.DELETE_CHATROOM:
-			filteredChatRoomList = state.chatRoomList.filter((item) => {
+			filteredChatRoomList = state.chatRoomList?.filter((item) => {
 				return item.id !== action.id;
 			});
 

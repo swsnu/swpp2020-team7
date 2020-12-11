@@ -179,7 +179,6 @@ export const getChatRoom = (chatRoom: ChatEntity) => {
 			const response = await axios.get(`/api/chatrooms/${chatRoom.id}/`);
 
 			dispatch(getChatRoom_(response.data));
-			dispatch(push(`/chatrooms/${chatRoom.id}`));
 			window.sessionStorage.setItem('chatRoom', JSON.stringify(response.data));
 		} catch (e) {
 			dispatch(push('/chatrooms'));
@@ -197,11 +196,13 @@ export const createChatRoom = (id: string) => {
 	return async (dispatch: any) => {
 		try {
 			const response = await axios.post(`/api/chatrooms/`, { friend_id: id });
-			if (response.data) {
-				await dispatch(createChatRoom_(response.data));
-				await dispatch(push(`/chatrooms/${response.data.id}`));
-			}
+			window.sessionStorage.removeItem('chatRoomList');
+			window.sessionStorage.removeItem('chatRoom');
+			console.log(response);
+			dispatch(createChatRoom_(response.data));
+			dispatch(push(`/chatrooms/${response.data.id}`));
 		} catch (e) {
+			console.log(e);
 			toast.error('🦄 채팅방을 만들지 못했습니다! 다시 시도해주세요.');
 		}
 	};

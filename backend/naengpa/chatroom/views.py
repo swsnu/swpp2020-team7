@@ -56,8 +56,8 @@ def make_chatroom(request):
     try:
         friend_id = request.data['friend_id']
         friend = User.objects.get(id=friend_id)
-        chatroom = ChatRoom.objects.get(
-            Q(chat_members=user) & Q(chat_members=friend))
+        chatroom = ChatRoom.objects.filter(
+            chat_members__in=[user, friend]).distinct()[0]
         chat_user = user.chat_member.get(chatroom_id=chatroom.id)
         chat_user.notice = 0
         chat_user.save()
@@ -68,6 +68,8 @@ def make_chatroom(request):
     except ChatRoom.DoesNotExist:
         chatroom = ChatRoom.objects.create()
         chatroom.chat_members.add(user, friend)
+        chatroom.save()
+        pass
     except ChatMember.DoesNotExist:
         return HttpResponseBadRequest()
 
@@ -85,7 +87,6 @@ def make_chatroom(request):
         "member": friend.username,
         "updatedAt":  get_time_format(chatroom.updated_at),
         "chatCount": 0,
-
     }, safe=False, status=201)
 
 

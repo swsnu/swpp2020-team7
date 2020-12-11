@@ -14,15 +14,21 @@ interface ChatRoomListProps {
 
 const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	const dispatch = useDispatch();
-	const chatRoomList = useSelector((state: AppState) => state.user.chatRoomList);
+	const user = useSelector((state: AppState) => state.user);
 
 	useEffect(() => {
-		dispatch(getChatRoomList());
-	}, [dispatch]);
+		if(user)
+			dispatch(getChatRoomList());
+	}, [dispatch, user]);
 
-	const chatRoomCollection = chatRoomList?.map((chatRoom: any) => {
+	const chatRoomCollection = user.chatRoomList?.map((chatRoom: any) => {
 		return (
-			<Button key={chatRoom.id} id="chatroom" onClick={() => dispatch(getChatRoom(chatRoom))}>
+			<Button key={chatRoom.id} id="chatroom" onClick={(e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				dispatch(getChatRoom(chatRoom));
+				history.push(`chatrooms/${chatRoom.id}/`);
+			}}>
 				<Divider variant="middle" />
 				<div id="chat-member">{chatRoom.member}</div>
 				<div id="chat-message">{chatRoom.lastChat}</div>
