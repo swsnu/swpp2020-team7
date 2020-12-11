@@ -25,7 +25,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const [maxPageIndex, setMaxPageIndex] = useState(recipeState.lastPageIndex);
 	const [searchCategory, setSearchCategory] = useState('전체');
 	const [sortBy, setSortBy] = useState('created_at');
-	const [loading, setLoading] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(true);
 	const [query, setQuery] = useState('');
 	const dispatch = useDispatch();
 
@@ -35,10 +35,10 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		} else {
 			toast.info('🦄 오늘의 재료와 냉장고 속 재료로 추천된 레시피를 확인해 보세요!!!');		
 		}
-		}, []);
+	}, []);
 
 	useEffect(() => {
-		if(!recipeState)
+		if(!recipeState.recipeList)
 			setLoading(true);
 	}, [recipeState]);
 
@@ -70,7 +70,14 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 			<MenuItem
 				key={`#${item.name}-${idx}`}
 				value={item.name}
-				onClick={(e) => setSearchCategory(item.name)}
+				onClick={
+					(e) => {
+						e.preventDefault();
+						setSearchCategory(item.name);
+						setPage(1);
+						setLoading(true);
+					}
+				}
 			>
 				{item.name}
 			</MenuItem>
@@ -87,7 +94,10 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 							placeholder="검색어를 입력해 주세요."
 							inputProps={{ 'aria-label': 'search' }}
 							onChange={(e) => {
+								e.preventDefault();
 								setQuery(e.target.value);
+								setPage(1);
+								setLoading(true);
 							}}
 						/>
 						<Select
@@ -96,14 +106,17 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 							value={searchCategory}
 							disableUnderline
 							onChange={(e) => {
-								setLoading(true);
+								e.preventDefault();
+								setPage(1);
 								setSearchCategory(e.target.value as string);
+								setLoading(true);
 							}}
 						>
 							<MenuItem
 								value="전체"
 								onClick={(e) => {
 									e.preventDefault();
+									setPage(1);
 									setSearchCategory('전체');
 									setLoading(true);
 								}}
@@ -120,8 +133,10 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 						type="button"
 						onClick={(e) => {
 							e.preventDefault();
-							setLoading(true);
+							setPage(1);
 							setSortBy('created_at');
+							setLoading(true);
+
 						}}
 					>
 						최신
@@ -131,8 +146,9 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 						type="button"
 						onClick={(e) => {
 							e.preventDefault();
-							setLoading(true);
+							setPage(1);
 							setSortBy('likes');
+							setLoading(true);
 						}}
 					>
 						인기
@@ -142,6 +158,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 						type="button"
 						onClick={(e) => {
 							e.preventDefault();
+							setPage(1);
 							setLoading(true);
 							setSortBy('ingredient');
 						}}
@@ -159,7 +176,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 			</div>
 			<div id="recipe-cards">
 			{ 
-				loading ? <CircularProgress color="inherit" />
+				loading ? <CircularProgress id="loading-bar" color="inherit" />
 				: recipeState.recipeList?.map((item: any) => 
 							<Recipe
 								key={item.id}
@@ -168,16 +185,16 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 								history={history}
 							/>)
 			}
-			{ !loading && 
+			</div>
+			{ !loading && ((recipeState.recipeList?.length) ? 
 					<Pagination
 						id="recipe-list-page"
 						page={page}
 						size="large"
 						count={Math.ceil(maxPageIndex / 9.0)}
 						onChange={onChangePage}
-					/>
+					/> : <div id="vacant-recipe"> 해당 조건의 레시피가 존재하지 않습니다!</div>)
 			}
-			</div>
 		</div>
 		)
 };
