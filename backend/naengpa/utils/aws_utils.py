@@ -67,6 +67,23 @@ def upload_images_with_local_path(paths, prefix, feed_id):
     return images_path
 
 
+def upload_profile_image(file, user_id):
+    """
+    upload a single profile image to aws s3 storage
+    file: image file (request.FILES.getlist('image')[0])
+    user_id: user_id
+    returns list of s3 path for uploaded image
+    """
+    file_path = "profile/{}/profile_image{}".format(
+        user_id, os.path.splitext(file.name)[1])
+    s3_bucket.put_object(
+        Key=file_path,
+        Body=file.read(),
+    )
+    s3_path = S3_URL + file_path
+    return s3_path
+
+
 def upload_profile_images_with_local_path(paths, user_id_list):
     """
     upload images to aws s3 storage

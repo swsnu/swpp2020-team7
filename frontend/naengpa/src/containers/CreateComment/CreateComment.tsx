@@ -36,7 +36,7 @@ const Comment: React.FC<CreateCommentProps> = ({ recipeId }) => {
 			onClickSubmit();
 		}
 	};
-	
+
 	return (
 		<div id="create-comment">
 			<TextField
