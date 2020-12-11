@@ -37,7 +37,7 @@ def recipe_list_get(request):
 
         ''' FOOD CATEGORY condition '''
         sorted_list = sorted_list.filter(
-            food_category__name=food_category) if food_category != '전체' else sorted_list
+            food_category__name=food_category).order_by('-created_at') if food_category != '전체' else sorted_list.order_by('-created_at')
 
     else:
         ''' FOOD CATEGORY condition '''
