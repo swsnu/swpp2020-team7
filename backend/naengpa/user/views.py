@@ -1,7 +1,7 @@
 """views for user"""
 import json
 from operator import itemgetter
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseNotAllowed, JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound, HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.hashers import check_password
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -11,6 +11,7 @@ from rest_framework.decorators import api_view
 
 from ingredient.models import Ingredient
 from utils.auth import login_required_401
+from utils.aws_utils import upload_profile_image
 from .models import Fridge, FridgeIngredient, Region
 
 User = get_user_model()
@@ -43,7 +44,6 @@ def get_region_info(request):
         region_list = get_region_list()
     except Region.DoesNotExist:
         return HttpResponseBadRequest()
-
     return JsonResponse(region_list, safe=False)
 
 
@@ -155,6 +155,8 @@ def user(request, id):
         }
         return JsonResponse(data=current_user, safe=False)
     elif request.method == 'PUT':
+        if request.user.id != id:
+            return HttpResponseForbidden()
         try:
             user = User.objects.get(id=id)
         except User.DoesNotExist:
@@ -164,6 +166,11 @@ def user(request, id):
             edit_date_of_birth = request.data['dateOfBirth']
             edit_email = request.data['email']
             checked_password = request.data['password']
+
+            profile_image = request.FILES.getlist('image')
+            if profile_image:
+                uploaded_path = upload_profile_image(profile_image[0], id)
+                user.profile_image = uploaded_path
 
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
