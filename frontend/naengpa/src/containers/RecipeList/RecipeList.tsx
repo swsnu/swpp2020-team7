@@ -1,7 +1,7 @@
 import React, { MouseEvent, useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
-
+import { toast } from 'react-toastify';
 import Pagination from '@material-ui/lab/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -28,6 +28,14 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [query, setQuery] = useState('');
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if(sortBy != 'ingredient'){
+			toast.info('🦄 추천 버튼을 눌러서 오늘의 재료와 냉장고 속 재료로 추천된 레시피를 확인해 보세요!!!');	
+		} else {
+			toast.info('🦄 오늘의 재료와 냉장고 속 재료로 추천된 레시피를 확인해 보세요!!!');		
+		}
+		}, []);
 
 	useEffect(() => {
 		if(!recipeState)

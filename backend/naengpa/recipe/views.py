@@ -2,7 +2,7 @@
 import json
 from operator import itemgetter
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Value, IntegerField
 from django.core.cache import cache
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.db import transaction
@@ -13,6 +13,7 @@ from utils.aws_utils import upload_images
 from utils.auth import login_required_401
 from food_category.models import FoodCategory
 from ingredient.models import Ingredient
+from user.models import FridgeIngredient
 from .models import Recipe, Image, RecipeIngredient, RecipeLike
 
 
@@ -24,10 +25,8 @@ def recipe_list_get(request):
     sort_condition = request.GET.get('sort_by', "created_at")
     food_category = request.GET.get('category', "")
     page = request.GET.get('page', 1)
-
     user = request.user
-    # TODO: sort by ingredient
-    # if sort_condition == "ingredient":
+
     if query:
         ''' QUERY condition '''
         sorted_list = Recipe.objects.select_related(
@@ -50,6 +49,21 @@ def recipe_list_get(request):
         ''' CREATED_AT OR LIKES '''
         if sort_condition == "created_at":
             sorted_list = filtered_list.order_by('-created_at')
+
+        elif sort_condition == 'ingredient':
+            user_ingredients = FridgeIngredient.objects.select_related('ingredient').filter(
+                fridge=user.fridge)
+            today_ingredients = user_ingredients.filter(
+                is_today_ingredient=True).values('ingredient__name')
+            # sort by Today Ingredients first
+            todays_list = filtered_list.filter(ingredients__ingredient__name__in=today_ingredients).annotate(ingredient_count=Count(
+                'ingredients__ingredient__name')).order_by('-ingredient_count')
+            # sort by Fridge Infredients and merged with above qurey result
+            normal_list = filtered_list.filter(ingredients__ingredient__name__in=user_ingredients.values('ingredient__name')).annotate(
+                ingredient_count=Count('ingredients__ingredient__name')).order_by('-ingredient_count')
+            # union of results
+            sorted_list = (todays_list | normal_list).distinct()
+
         else:
             sorted_list = filtered_list.annotate(
                 like_count=Count('likes')).order_by('-like_count')
@@ -139,10 +153,10 @@ def recipe_list_post(request):
     }
 
 
-@ensure_csrf_cookie
-@api_view(['GET', 'POST'])
-@login_required_401
-@transaction.atomic
+@ ensure_csrf_cookie
+@ api_view(['GET', 'POST'])
+@ login_required_401
+@ transaction.atomic
 def recipe_list(request):
     """get recipe list"""
     '''
@@ -159,10 +173,10 @@ def recipe_list(request):
         return JsonResponse(data=return_data, status=201, safe=False)
 
 
-@ensure_csrf_cookie
-@api_view(['GET'])
-@login_required_401
-@transaction.atomic
+@ ensure_csrf_cookie
+@ api_view(['GET'])
+@ login_required_401
+@ transaction.atomic
 def today_recipe_list(request):
     """ get Today recipe list """
     today_recipe_collection = cache.get('today_recipes')
@@ -198,9 +212,9 @@ def today_recipe_list(request):
     return JsonResponse({"recipeList": today_recipe_collection, "lastPageIndex": 4}, safe=False)
 
 
-@ensure_csrf_cookie
-@api_view(['GET', 'DELETE'])
-@login_required_401
+@ ensure_csrf_cookie
+@ api_view(['GET', 'DELETE'])
+@ login_required_401
 def recipe_info(request, id):
     """get recipe of given id"""
     if request.method == 'GET':
@@ -243,10 +257,10 @@ def recipe_info(request, id):
         return HttpResponse(status=204)
 
 
-@ensure_csrf_cookie
-@api_view(['PUT'])
-@login_required_401
-@transaction.atomic
+@ ensure_csrf_cookie
+@ api_view(['PUT'])
+@ login_required_401
+@ transaction.atomic
 def recipe_like(request, id):
     """like recipe of given id"""
     user_id = request.user.id
