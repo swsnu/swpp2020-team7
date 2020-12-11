@@ -73,14 +73,9 @@ export function logout() {
 	return async (dispatch: any) => {
 		toast.success(`🦄 안녕히 가세요!`);
 		localStorage.clear();
-		await axios.get('/api/logout/');
-		sessionStorage.removeItem('recipeList');
-		sessionStorage.removeItem('recipe');
-		sessionStorage.removeItem('lastPageIndex');
-		sessionStorage.removeItem('extractedRecipeInfo');
-		sessionStorage.removeItem('chatRoomList');
-		sessionStorage.removeItem('chatRoom');
+		sessionStorage.clear();
 		dispatch(logout_());
+		await axios.get('/api/logout/');
 	};
 }
 
@@ -121,7 +116,15 @@ export const editUser_ = (user: UserEntity) => ({ type: actionTypes.EDIT_USER, u
 export const editUser = (user: EditUserInputDTO) => {
 	return async (dispatch: any) => {
 		try {
-			const response = await axios.put(`/api/users/${user.id}/`, user);
+			let response;
+			if (user.profileImage) {
+				const bodyFormData = new FormData();
+				bodyFormData.append('user', JSON.stringify(user));
+				bodyFormData.append('image', user.profileImage);
+				response = await axios.put(`/api/users/${user.id}/`, bodyFormData);
+			} else {
+				response = await axios.put(`/api/users/${user.id}/`, user);
+			}
 			const currentUser: UserEntity = response.data;
 			dispatch(editUser_(currentUser));
 			dispatch(push(`/@${currentUser.username}/info`));
