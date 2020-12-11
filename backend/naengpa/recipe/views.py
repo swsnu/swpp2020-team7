@@ -58,10 +58,10 @@ def recipe_list_get(request):
             # sort by Today Ingredients first
             todays_list = filtered_list.filter(ingredients__ingredient__name__in=today_ingredients).annotate(ingredient_count=Count(
                 'ingredients__ingredient__name')).order_by('-ingredient_count')
-            # sort by Fridge Infredients and merged with above qurey result
+            # sort by Ingredients in user's Fridge
             normal_list = filtered_list.filter(ingredients__ingredient__name__in=user_ingredients.values('ingredient__name')).annotate(
                 ingredient_count=Count('ingredients__ingredient__name')).order_by('-ingredient_count')
-            # union of results
+            # union of results in maintenance of Ordering (Today Ingredients comes first)
             sorted_list = (todays_list | normal_list).distinct()
 
         else:
@@ -153,10 +153,10 @@ def recipe_list_post(request):
     }
 
 
-@ ensure_csrf_cookie
-@ api_view(['GET', 'POST'])
-@ login_required_401
-@ transaction.atomic
+@ensure_csrf_cookie
+@api_view(['GET', 'POST'])
+@login_required_401
+@transaction.atomic
 def recipe_list(request):
     """get recipe list"""
     '''
@@ -173,10 +173,10 @@ def recipe_list(request):
         return JsonResponse(data=return_data, status=201, safe=False)
 
 
-@ ensure_csrf_cookie
-@ api_view(['GET'])
-@ login_required_401
-@ transaction.atomic
+@ensure_csrf_cookie
+@api_view(['GET'])
+@login_required_401
+@transaction.atomic
 def today_recipe_list(request):
     """ get Today recipe list """
     today_recipe_collection = cache.get('today_recipes')
@@ -212,9 +212,9 @@ def today_recipe_list(request):
     return JsonResponse({"recipeList": today_recipe_collection, "lastPageIndex": 4}, safe=False)
 
 
-@ ensure_csrf_cookie
-@ api_view(['GET', 'DELETE'])
-@ login_required_401
+@ensure_csrf_cookie
+@api_view(['GET', 'DELETE'])
+@login_required_401
 def recipe_info(request, id):
     """get recipe of given id"""
     if request.method == 'GET':
@@ -257,10 +257,10 @@ def recipe_info(request, id):
         return HttpResponse(status=204)
 
 
-@ ensure_csrf_cookie
-@ api_view(['PUT'])
-@ login_required_401
-@ transaction.atomic
+@ensure_csrf_cookie
+@api_view(['PUT'])
+@login_required_401
+@transaction.atomic
 def recipe_like(request, id):
     """like recipe of given id"""
     user_id = request.user.id
