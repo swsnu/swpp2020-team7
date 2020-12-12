@@ -52,8 +52,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const [cookTime, setCookTime] = useState(0);
 	const [foodCategory, setFoodCategory] = useState('기타');
 	const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
-	const [newIngredient, setNewIngredient] = useState('');
-	const [newIngredientQuantity, setNewIngredientQuantity] = useState('');
 	// alert state is true if alert is necessary, otherwise false.
 	const [alert, setAlert] = useState(false);
 	const [alertContent, setAlertContent] = useState(
@@ -94,7 +92,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 			setIngredients(checkedIngredients as RecipeIngredient[]);
 			setModifiedIngredients(checkedIngredients as RecipeIngredient[]);
 		}
-	}, [createdRecipe]);
+	}, [createdRecipe, dispatch]);
 
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,6 +102,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		const imageArray = Array.from(images);
 		imageArray.forEach((file) => {
 			const compressedImage = compressImage(file);
+			console.log(compressImage);
 			if (compressedImage) setFoodImageFiles((state) => [...state, compressedImage]);
 		});
 	};
@@ -125,15 +124,11 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const onClickConfirmModal = () => {
 		setShowIngredientModal(false);
 		setIngredients(modifiedIngredients);
-		setNewIngredient('');
-		setNewIngredientQuantity('');
 	};
 
 	const onClickCloseModal = () => {
 		setShowIngredientModal(false);
 		setModifiedIngredients(ingredients);
-		setNewIngredient('');
-		setNewIngredientQuantity('');
 	};
 
 	// need to be directed to recipe detail page, current => recipelist
@@ -345,13 +340,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		setModifiedIngredients(newIngredientList);
 	};
 
-	const duplicateIngredient = (ingredient: string) => {
-		const duplicateList = modifiedIngredients.filter((item) => {
-			return item.name === ingredient;
-		});
-		if (duplicateList?.length !== 0) return true;
-		return false;
-	};
 	/* ingredient list for Ingredient Modal */
 	const ingredientSet = modifiedIngredients?.map((item, i) => {
 		return (

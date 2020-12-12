@@ -37,7 +37,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		} else {
 			toast.info('🦄 오늘의 재료와 냉장고 속 재료로 추천된 레시피를 확인해 보세요!!!');
 		}
-	}, []);
+	}, [sortBy]);
 
 	useEffect(() => {
 		if (!recipeState.recipeList) setLoading(true);
@@ -49,7 +49,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 			setMaxPageIndex(recipeState.lastPageIndex);
 			setLoading(false);
 		}
-	}, [loading, query, page, sortBy, searchCategory]);
+	}, [recipeState.lastPageIndex, loading, query, page, sortBy, searchCategory]);
 
 	useEffect(() => {
 		onLoadPage();

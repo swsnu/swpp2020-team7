@@ -1,4 +1,3 @@
-import React from 'react';
 
 export const getCurrentTime = () => {
 	const today = new Date();
