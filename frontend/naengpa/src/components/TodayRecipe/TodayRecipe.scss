@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
 div#today-recipe {
-  // padding: 5%;
   div#today-recipe-header {
     text-align: left;
-    padding-bottom: 5%;
+    padding-bottom: 1%;
     font-family: 'Jua', sans-serif;
+    font-size: 115%;
   }
 
   div#today-recipe-list {
@@ -14,6 +14,21 @@ div#today-recipe {
     grid-template-rows: repeat(2, 1fr);
     font-weight: bold;
     justify-content: center;
-    gap:5%;
+    gap:2.5%;
+  }
+
+  #recipe-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #recipe-food-category {
+    font-size: 90%;
+    font-weight: lighter !important;
+
+  }
+
+  #recipe-cook-time, #recipe-like-count {
+    font-size: 10px;
   }
 }

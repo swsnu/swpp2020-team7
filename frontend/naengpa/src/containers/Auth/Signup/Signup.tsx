@@ -133,7 +133,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 							placeholder="DATE OF BIRTH (EX 980515)"
 							onChange={(e) => setDateOfBirth(e.target.value)}
 							onKeyPress={onKeyPress}
-							pattern="/^\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$/"
+							pattern="^\d\d(0[0-9]|1[012])(0[1-9]|[12][0-9]|3[01])$"
 						/>
 						{dateOfBirth !== '' && !birthPat.test(dateOfBirth) && (
 							<p id="invalidBirth">생년월일을 올바르게 입력해주세요 (ex. 980101)</p>
@@ -153,9 +153,14 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 						)}
 					</div>
 				</div>
-				<button id="signup-button" type="submit" onClick={onClickSignup}>
-					SIGN UP
-				</button>
+				<div id="button-list">
+					<button id="login-button" type="submit" onClick={() => history.push('/login')}>
+						LOGIN
+					</button>
+					<button id="signup-button" type="submit" onClick={onClickSignup}>
+						SIGN UP
+					</button>
+				</div>
 			</div>
 		</div>
 	);
