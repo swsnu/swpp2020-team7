@@ -48,7 +48,14 @@ export { getFoodCategoryList } from './foodCategory';
 export { getArticleList, getArticle, createArticle, deleteArticle, editArticle } from './article';
 
 /* Comment actions */
-export { getCommentList_, getComment, addComment, deleteComment, editComment } from './comment';
+export {
+	getCommentList_,
+	getComment,
+	addComment,
+	toggleCommentLike,
+	deleteComment,
+	editComment,
+} from './comment';
 
 export type DefaultAction = {
 	type: 'default';

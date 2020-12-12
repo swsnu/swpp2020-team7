@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from ingredient.models import Ingredient
 from food_category.models import FoodCategory
+from user.models import Notification
+
 User = get_user_model()
 
 
@@ -89,7 +91,7 @@ class RecipeLike(models.Model):
         unique_together = ('user', 'recipe')
 
     def __str__(self):
-        return f'[{self.id}] of {self.recipe}'
+        return f'[{self.id}] {self.user} likes {self.recipe}'
 
     def save(self, *args, **kwargs):
         cache.delete_many(['recipes', 'today_recipes',
@@ -97,6 +99,10 @@ class RecipeLike(models.Model):
         if not self.pk:
             self.user.naengpa_score += 10
             self.user.save(update_fields=['naengpa_score'])
+            Notification.objects.create(
+                recipient=self.recipe.author,
+                content=f"{self.user.name}님이 '{self.recipe.food_name}' 레시피에 좋아요를 눌렀어요"
+            )
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):

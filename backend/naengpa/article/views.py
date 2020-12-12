@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view
 
 from ingredient.models import Ingredient
 from utils.aws_utils import upload_images
+from utils.gis_utils import get_nearest_places_ids_from_region, get_nearest_places_names_from_region
 from utils.auth import login_required_401
 from .models import Article, Image
 
@@ -24,11 +25,17 @@ def article_list_get(request):
     if not query:
         article_collection = cache.get('articles')
         if not article_collection:
+            included_region_ids = get_nearest_places_ids_from_region(
+                request.user.region.id, max_distance=request.user.region_range)
             sorted_list = Article.objects.select_related(
                 'author', 'author__region', 'item'
             ).prefetch_related(
                 'images',
-            ).exclude(done=True).all().order_by('-created_at')
+            ).exclude(
+                done=True
+            ).filter(
+                author__region__id__in=included_region_ids
+            ).order_by('-created_at')
             article_collection = [{
                 "id": article.id,
                 "authorId": article.author.id,
@@ -52,8 +59,15 @@ def article_list_get(request):
                 "createdAt": article.created_at.strftime("%Y.%m.%d")
             } for article in sorted_list] if Article.objects.count() != 0 else []
             cache.set('articles', article_collection)
+        else:
+            included_region_names = get_nearest_places_names_from_region(
+                request.user.region.id, max_distance=request.user.region_range)
+            article_collection = list(
+                filter(lambda art: art.region in included_region_names, article_collection))
     else:
-        q = Q()
+        included_region_ids = get_nearest_places_ids_from_region(
+            request.user.region.id, max_distance=request.user.region_range)
+        q = Q(author__region__id__in=included_region_ids)
         if query:
             q |= Q(title__icontains=query) | Q(content__icontains=query) | Q(
                 querystring__icontains=F('item__name'))

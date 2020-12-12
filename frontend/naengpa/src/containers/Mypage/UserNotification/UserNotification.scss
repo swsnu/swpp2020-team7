@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+#mypage {
+    #notifications-header {
+        display: flex;
+        flex-direction: row;
+        font-weight: bold;
+    }
+
+    #notifications-title {
+        margin-right: 50px;
+    }
+    
+    #notifications-info {
+        font-family: 'Jua', sans-serif;
+    }
+}

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { History } from 'history';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { Box } from '@material-ui/core';
+import { Input, Box, Avatar } from '@material-ui/core';
 import Tab from '../../../components/Tab/Tab';
 import { AppState } from '../../../store/store';
 import { editUser } from '../../../store/actions/index';
@@ -87,15 +87,19 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 								/>
 							</label>
 							<div id="add-image-icon">
-								{!profileImage && <AccountCircleIcon id="profile-picture" />}
-								{profileImage && (
+								{profileImage ? (
 									<img
 										id="edit-profile-picture"
-										width="110px"
-										height="110px"
 										src={URL.createObjectURL(profileImage)}
 										alt="/api/images"
 									/>
+								) : user?.profileImage ? (
+									<Avatar
+										id="edit-profile-picture"
+										src={user?.profileImage as string}
+									/>
+								) : (
+									<AccountCircleIcon id="profile-picture" />
 								)}
 							</div>
 						</Box>
@@ -131,6 +135,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 						</div>
 						<div id="region-part">
 							<div className="info-head">지역 </div>
+							<span id="edit-region">{user?.region.name}</span>
 						</div>
 						<div id="password-part">
 							<div className="info-head">비밀번호 </div>
