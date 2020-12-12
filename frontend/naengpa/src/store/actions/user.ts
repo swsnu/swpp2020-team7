@@ -169,6 +169,7 @@ export const getChatRoomList_ = (chatRoomList: ChatEntity[]) => ({
 export const getChatRoomList = () => {
 	return async (dispatch: any) => {
 		try {
+			window.sessionStorage.removeItem('chatRoomList');
 			const response = await axios.get(`/api/chatrooms/`);
 			dispatch(getChatRoomList_(response.data));
 			window.sessionStorage.setItem('chatRoomList', JSON.stringify(response.data));
@@ -210,6 +211,7 @@ export const createChatRoom = (id: string) => {
 			window.sessionStorage.removeItem('chatRoom');
 			dispatch(createChatRoom_(response.data));
 			dispatch(push(`/chatrooms/${response.data.id}`));
+			window.sessionStorage.setItem('chatRoom', response.data);
 		} catch (e) {
 			console.log(e);
 			toast.error('🦄 채팅방을 만들지 못했습니다! 다시 시도해주세요.');
