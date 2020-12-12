@@ -8,6 +8,8 @@ export interface UserEntity {
 	region: RegionEntity;
 	regionRange?: number;
 	profileImage?: File | string;
+	notifications?: NotificationEntity[];
+	totalNotifications?: number;
 }
 
 export interface UserLoginInputDTO {
@@ -50,4 +52,11 @@ export interface RegionEntity {
 export interface LocationEntity {
 	latitude: number;
 	longitude: number;
+}
+
+export interface NotificationEntity {
+	id: number;
+	content: string;
+	createdAt: string;
+	deleted: boolean;
 }

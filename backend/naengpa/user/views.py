@@ -4,6 +4,7 @@ from operator import itemgetter
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound, HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.hashers import check_password
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
 from django.db import transaction
@@ -12,7 +13,7 @@ from rest_framework.decorators import api_view
 from ingredient.models import Ingredient
 from utils.auth import login_required_401
 from utils.aws_utils import upload_profile_image
-from .models import Fridge, FridgeIngredient, Region
+from .models import Fridge, FridgeIngredient, Region, Notification
 
 User = get_user_model()
 
@@ -88,11 +89,12 @@ def signup(request):
             'naengpaScore': checked_user.naengpa_score,
             'region': get_region(checked_user.region),
             'regionRange': user.region_range,
+            'totalNotifications': 0,
         }, status=201)
 
 
 @ensure_csrf_cookie
-@api_view(['POST'])
+@api_view(['POST', 'PUT'])
 def signin(request):
     """signin"""
     if request.method == 'POST':
@@ -117,12 +119,22 @@ def signin(request):
                 'dateOfBirth': user.date_of_birth,
                 'naengpaScore': user.naengpa_score,
                 'region': get_region(user.region),
-                "regionRange": user.region_range,
+                'regionRange': user.region_range,
                 'profileImage': user.profile_image,
+                'totalNotifications': user.total_notifications,
             }, status=200)
         else:
             return HttpResponse(status=401)
-    return HttpResponseNotAllowed(['POST'])
+    elif request.method == 'PUT':
+        """check if username already exists"""
+        try:
+            username = request.data['username']
+        except (KeyError, json.decoder.JSONDecodeError):
+            return HttpResponseBadRequest()
+        return JsonResponse({
+            "isDuplicate": True if User.objects.filter(
+                username=username).exists() else False,
+        })
 
 
 @ensure_csrf_cookie
@@ -141,7 +153,7 @@ def user(request, id):
     """user"""
     # GET USER
     if request.method == 'GET':
-        user = User.objects.select_related('region').get(id=id)
+        user = get_object_or_404(User, pk=id)
         current_user = {
             "id": user.id,
             "username": user.username,
@@ -152,29 +164,39 @@ def user(request, id):
             "region": get_region(user.region),
             "regionRange": user.region_range,
             'profileImage': user.profile_image,
+            'notifications': [{
+                'id': item.id,
+                'content': item.content,
+                'createdAt': item.created_string,
+                'deleted': item.deleted,
+            } for item in user.notifications.all()],
+            'totalNotifications': user.total_notifications,
         }
         return JsonResponse(data=current_user, safe=False)
     elif request.method == 'PUT':
         if request.user.id != id:
             return HttpResponseForbidden()
         try:
-            user = User.objects.get(id=id)
+            user = get_object_or_404(User, pk=id)
         except User.DoesNotExist:
             return HttpResponseBadRequest()
         try:
-            edit_name = request.data['name']
-            edit_date_of_birth = request.data['dateOfBirth']
-            edit_email = request.data['email']
-            checked_password = request.data['password']
+            req_data = json.loads(request.POST.get('user'))
+            edit_name = req_data['name']
+            edit_date_of_birth = req_data['dateOfBirth']
+            edit_email = req_data['email']
+            password_to_check = req_data['password']
+            edit_name, edit_date_of_birth, edit_email, password_to_check = itemgetter(
+                'name', 'dateOfBirth', 'email', 'password')(req_data)
 
             profile_image = request.FILES.getlist('image')
             if profile_image:
                 uploaded_path = upload_profile_image(profile_image[0], id)
                 user.profile_image = uploaded_path
 
-        except (KeyError, json.decoder.JSONDecodeError):
+        except (KeyError, json.decoder.JSONDecodeError) as e:
             return HttpResponseBadRequest()
-        if check_password(checked_password, request.user.password):
+        if check_password(password_to_check, request.user.password):
             user.name = edit_name
             user.date_of_birth = edit_date_of_birth
             user.email = edit_email
@@ -191,6 +213,7 @@ def user(request, id):
             'region': get_region(user.region),
             'regionRange': user.region_range,
             'profileImage': user.profile_image,
+            'totalNotifications': user.notifications.filter(deleted=False).count(),
         }, status=201)
 
 
@@ -223,6 +246,7 @@ def change_password(request, id):
             'region': get_region(user.region),
             'regionRange': user.region_range,
             'profileImage': user.profile_image,
+            'totalNotifications': user.total_notifications,
         }, status=201)
     return HttpResponseNotAllowed(['PUT'])
 
@@ -317,3 +341,19 @@ def user_ingredient(request, user_id, id):
         except Ingredient.DoesNotExist:
             return HttpResponseNotFound()
         return JsonResponse(ingredient_list, safe=False)
+
+
+@ensure_csrf_cookie
+@api_view(['DELETE'])
+@login_required_401
+def notification_info(request, id):
+    """soft-delete notification of given id"""
+    if request.method == 'DELETE':
+        notification = get_object_or_404(Notification, pk=id)
+        notification.delete()  # overriden delete method
+        return JsonResponse(data={
+            'id': notification.id,
+            'content': notification.content,
+            'deleted': notification.deleted,
+            'createdAt': notification.created_string,
+        })

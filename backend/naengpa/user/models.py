@@ -54,6 +54,10 @@ class User(AbstractUser):
     region_range = models.PositiveIntegerField(default=0)
     profile_image = models.CharField(max_length=250, null=True, unique=True)
 
+    @property
+    def total_notifications(self):
+        return self.notifications.filter(deleted=False).count(),
+
     def __str__(self):
         return f'[{self.id}] {self.name}'
 
@@ -92,9 +96,29 @@ class FridgeIngredient(models.Model):
 class Notification(models.Model):
     recipient = models.ForeignKey(
         User, related_name="notifications", on_delete=models.CASCADE)
-    title = models.CharField(max_length=20)
     content = models.CharField(max_length=50)
     created_at = models.DateTimeField(default=timezone.now)
+    deleted = models.BooleanField(default=False, db_index=True)
+
+    @property
+    def created_string(self):
+        time = timezone.now() - self.created_at
+        if time < timezone.timedelta(minutes=1):
+            return '방금 전'
+        elif time < timezone.timedelta(hours=1):
+            return str(int(time.seconds / 60)) + '분 전'
+        elif time < timezone.timedelta(days=1):
+            return str(int(time.seconds / 3600)) + '시간 전'
+        elif time < timezone.timedelta(days=7):
+            time = timezone.datetime.now(
+                tz=timezone.utc).date() - self.created_at
+            return str(time.days) + '일 전'
+        else:
+            return False
 
     def __str__(self):
-        return f'[to {self.recipient}] {self.title}: {self.content}'
+        return f'[to {self.recipient}] {self.content}'
+
+    def delete(self, *args, **kwargs):
+        self.deleted = True
+        self.save(update_fields=['deleted'])

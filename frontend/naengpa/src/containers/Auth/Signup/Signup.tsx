@@ -8,6 +8,7 @@ import { getRegionList, saveUserInfo } from '../../../store/actions/index';
 import './Signup.scss';
 import { RegionEntity } from '../../../model/user';
 import { AppState } from '../../../store/store';
+import { checkUsernameDuplicate } from '../../../store/actions/user';
 
 interface SignupProps {
 	history: History;
@@ -34,7 +35,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 		}
 	});
 
-	const onClickSignup = () => {
+	const onClickSignup = async () => {
 		if (!name) {
 			toast.error('🦄 이름을 입력해주세요!');
 		} else if (!username) {
@@ -58,15 +59,20 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 		} else if (!emailPat.test(email)) {
 			toast.error('🦄 이메일을 올바르게 입력해주세요!');
 		} else {
-			dispatch(
-				saveUserInfo({
-					name,
-					username,
-					password,
-					dateOfBirth,
-					email,
-				}),
-			);
+			const isUsernameDuplicate = await checkUsernameDuplicate(username);
+			if (isUsernameDuplicate) {
+				toast.error('🦄 이미 존재하는 아이디예요!');
+			} else {
+				dispatch(
+					saveUserInfo({
+						name,
+						username,
+						password,
+						dateOfBirth,
+						email,
+					}),
+				);
+			}
 		}
 	};
 	const onKeyPress = (e: React.KeyboardEvent) => {
