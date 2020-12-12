@@ -3,6 +3,7 @@ import { History } from 'history';
 import './UserInfo.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
 import { AppState } from '../../../store/store';
 import { getUser } from '../../../store/actions/index';
 import Tab from '../../../components/Tab/Tab';
@@ -36,11 +37,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 					<div id="myinfo-profile">
 						{!user?.profileImage && <AccountCircleIcon id="profile-picture" />}
 						{user?.profileImage && (
-							<img
-								id="profile-picture"
-								src={URL.createObjectURL(user?.profileImage)}
-								alt="/api/images"
-							/>
+							<Avatar id="profile-picture" src={user?.profileImage as string} />
 						)}
 						<div id="myinfo-username">{user!.username}</div>
 					</div>

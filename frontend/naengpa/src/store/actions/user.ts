@@ -126,12 +126,22 @@ export const editUser = (user: EditUserInputDTO) => {
 				response = await axios.put(`/api/users/${user.id}/`, user);
 			}
 			const currentUser: UserEntity = response.data;
-			dispatch(editUser_(currentUser));
+			await dispatch(editUser_(currentUser));
 			dispatch(push(`/@${currentUser.username}/info`));
 		} catch (e) {
 			toast.error('🦄 비밀번호가 일치하지 않아요!');
 		}
 	};
+};
+
+export const checkUsernameDuplicate = async (username: string) => {
+	try {
+		const response = await axios.put(`/api/login/`, { username });
+		return response.data.isDuplicate;
+	} catch (e) {
+		toast.error('🦄 서버와의 연결이 원활하지 않아요!');
+		return e;
+	}
 };
 
 export const changePassword_ = (user: UserEntity) => ({ type: actionTypes.CHANGE_PASSWORD, user });
@@ -244,6 +254,14 @@ export const deleteChatRoom = (chatRoom_id: string) => {
 			toast.error('🦄 채팅방을 삭제하지 못했습니다! 다시 시도해주세요.');
 		}
 	};
+};
+
+export const readNotification = async (notification_id: number) => {
+	try {
+		await axios.delete(`/api/notifications/${notification_id}/`);
+	} catch (e) {
+		toast.error('🦄 서버와의 연결이 원활하지 않아요!');
+	}
 };
 
 export type UserAction =

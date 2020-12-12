@@ -42,10 +42,16 @@ export interface CommentEntity {
 	profileImage: string;
 	recipeId: number;
 	content: string;
+	totalLikes: number;
 	createdAt: string;
 }
 
 export interface CommentInputDTO {
 	recipeId: number;
+	content: string;
+}
+
+export interface CommentEditDTO {
+	id: number;
 	content: string;
 }

@@ -15,9 +15,6 @@ export const getArticleList = (query?: string, options?: ArticleOptions) => {
 		const response = await axios.get('/api/articles/', {
 			params: {
 				q: query,
-				fs: options?.isForSale,
-				fe: options?.isForExchange,
-				fh: options?.isForShare,
 			},
 		});
 

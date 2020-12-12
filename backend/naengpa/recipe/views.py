@@ -186,15 +186,24 @@ def today_recipe_list(request):
         yesterday = timezone.now()-timezone.timedelta(days=1)
         user_id = request.user.id
 
-        sorted_list = Recipe.objects.select_related(
-            'author', 'food_category'
-        ).prefetch_related(
-            'ingredients', 'likes'
-        ).filter(
-            created_at__gte=yesterday
-        ).annotate(
-            like_count=Count('likes')
-        ).order_by('-like_count')[:4]
+        if Recipe.objects.filter(created_at__gte=yesterday).count() > 4:
+            sorted_list = Recipe.objects.select_related(
+                'author', 'food_category'
+            ).prefetch_related(
+                'ingredients', 'likes'
+            ).filter(
+                created_at__gte=yesterday
+            ).annotate(
+                like_count=Count('likes')
+            ).order_by('-like_count')[:4]
+        else:
+            sorted_list = Recipe.objects.select_related(
+                'author', 'food_category'
+            ).prefetch_related(
+                'ingredients', 'likes'
+            ).annotate(
+                like_count=Count('likes')
+            ).order_by('-like_count')[:4]
 
         today_recipe_collection = [{
             "id": recipe.id,
@@ -254,7 +263,7 @@ def recipe_info(request, id):
             }
             cache.set('recipe:{}'.format(id), recipe_response)
         return JsonResponse(data=recipe_response, safe=False)
-    if request.method == 'DELETE':
+    elif request.method == 'DELETE':
         Recipe.objects.filter(id=id).delete()
         return HttpResponse(status=204)
 
