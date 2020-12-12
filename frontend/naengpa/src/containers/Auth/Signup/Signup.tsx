@@ -30,10 +30,8 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (!regionList || !regionList.length) {
-			dispatch(getRegionList());
-		}
-	});
+		if (!regionList) dispatch(getRegionList());
+	}, [regionList]);
 
 	const onClickSignup = async () => {
 		if (!name) {
@@ -49,7 +47,10 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 		} else if (!birthPat.test(dateOfBirth)) {
 			toast.error(
 				<div>
-					<span role="img">🦄</span> 생년월일을 올바르게 입력해 주세요!
+					<span role="img" aria-label="signup-img">
+						🦄
+					</span>{' '}
+					생년월일을 올바르게 입력해 주세요!
 					<br />
 					&nbsp;&nbsp;&nbsp;&nbsp;ex) 970101
 				</div>,

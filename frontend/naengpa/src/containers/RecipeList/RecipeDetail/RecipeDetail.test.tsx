@@ -113,6 +113,9 @@ const stubInitialState = {
 			},
 		],
 	},
+	comment: {
+		commentList: [],
+	},
 };
 
 describe('RecipeDetail', () => {

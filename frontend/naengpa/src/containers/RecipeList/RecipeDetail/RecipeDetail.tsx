@@ -146,7 +146,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 			setCurrentList(images?.slice((page - 1) * 4, (page - 1) * 4 + 4));
 		};
 		func();
-	}, [dispatch, images?.length]);
+	}, [dispatch, images, page]);
 
 	return (
 		<div id="recipe-detail">

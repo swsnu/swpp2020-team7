@@ -81,6 +81,9 @@ const stubInitialState = {
 		],
 		article: mockArticle,
 	},
+	fridge: {
+		ingredientList: [],
+	},
 };
 const mockStore = store(stubInitialState);
 
