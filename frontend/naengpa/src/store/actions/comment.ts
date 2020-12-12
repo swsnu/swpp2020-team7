@@ -44,7 +44,6 @@ export const editComment = (comment: CommentEditDTO) => {
 	};
 };
 
-
 /* TOGGLE COMMENT LIKE */
 export const toggleCommentLike_ = (updated_comment: CommentEntity) => ({
 	type: actionTypes.TOGGLE_COMMENT_LIKE,
