@@ -371,17 +371,22 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	});
 
 	/* ingredient list for Recipe Form */
-	const ingredientSetForRecipe = (ingredients && !ingredients.length) ? ingredients?.map((item, i) => {
-		return (
-			<div id="ingredient-button-box" key={`${item.name}`}>
-				{item.checked && (
-					<Button key={`${item.name}-${i}`} id="ingredient-button">
-						{item.name}
-					</Button>
-				)}
-			</div>
+	const ingredientSetForRecipe =
+		ingredients && !ingredients.length ? (
+			ingredients?.map((item, i) => {
+				return (
+					<div id="ingredient-button-box" key={`${item.name}`}>
+						{item.checked && (
+							<Button key={`${item.name}-${i}`} id="ingredient-button">
+								{item.name}
+							</Button>
+						)}
+					</div>
+				);
+			})
+		) : (
+			<></>
 		);
-	}) : <></>;
 
 	const ingredientListModal = (
 		<Collapse className="collapse" in={showIngredientModal}>
