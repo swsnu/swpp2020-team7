@@ -64,7 +64,7 @@ class User(AbstractUser):
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete_many(['users', 'today_recipes', 'recipes'])
+        cache.delete('users')
         cache.delete_many(
             [f'recipe:{id}' for id in self.recipes.values_list('id', flat=True)])
         super().delete(*args, **kwargs)
