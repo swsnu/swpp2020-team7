@@ -21,6 +21,7 @@ export const getRecipeList = (
 ) => {
 	return async (dispatch: any) => {
 		try {
+			window.sessionStorage.removeItem('recipeList');
 			const response = await axios.get('/api/recipes/', {
 				params: {
 					query,

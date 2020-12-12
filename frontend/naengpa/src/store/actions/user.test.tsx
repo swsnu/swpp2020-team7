@@ -437,7 +437,7 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		expect(actions.length).toEqual(0);
+		expect(actions.length).toEqual(1);
 	});
 
 	it('should resolve createChatRoom error correctly', async () => {

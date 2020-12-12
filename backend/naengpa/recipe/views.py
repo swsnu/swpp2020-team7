@@ -2,7 +2,7 @@
 import json
 from operator import itemgetter
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Value, IntegerField
 from django.core.cache import cache
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.db import transaction
@@ -13,6 +13,7 @@ from utils.aws_utils import upload_images
 from utils.auth import login_required_401
 from food_category.models import FoodCategory
 from ingredient.models import Ingredient
+from user.models import FridgeIngredient
 from .models import Recipe, Image, RecipeIngredient, RecipeLike
 
 
@@ -20,26 +21,24 @@ def recipe_list_get(request):
     ''' GET /api/recipes/ get recipe list '''
     if not Recipe.objects.count():
         return JsonResponse([], safe=False)
-    query = request.GET.get('query', "")
+    query = request.GET.get('query', "").rstrip().lstrip()
     sort_condition = request.GET.get('sort_by', "created_at")
     food_category = request.GET.get('category', "")
     page = request.GET.get('page', 1)
-
     user = request.user
-    # TODO: sort by ingredient
-    # if sort_condition == "ingredient":
+
     if query:
         ''' QUERY condition '''
         sorted_list = Recipe.objects.select_related(
             'author', 'food_category'
         ).prefetch_related('ingredients'
                            ).filter(Q(recipe_content__contains=query) | Q(food_name__contains=query)
-                                    | Q(food_category__name__contains=query) | Q(ingredients__ingredient__name__contains=query)).distinct('id')
+                                    | Q(food_category__name__contains=query) | Q(ingredients__ingredient__name__contains=query))
 
         ''' FOOD CATEGORY condition '''
         sorted_list = sorted_list.filter(
             food_category__name=food_category) if food_category != '전체' else sorted_list
-
+        sorted_list = sorted_list.order_by('-id').distinct('-id')
     else:
         ''' FOOD CATEGORY condition '''
         sorted_list = Recipe.objects.select_related(
@@ -50,6 +49,23 @@ def recipe_list_get(request):
         ''' CREATED_AT OR LIKES '''
         if sort_condition == "created_at":
             sorted_list = filtered_list.order_by('-created_at')
+
+        elif sort_condition == 'ingredient':
+            # ingredient queries in user fridge
+            user_ingredients = FridgeIngredient.objects.select_related('ingredient').filter(
+                fridge=user.fridge)
+            # ingredient queries in today ingredient of user
+            today_ingredients = user_ingredients.filter(
+                is_today_ingredient=True).values('ingredient__name')
+            # sort by Today Ingredients first
+            todays_list = filtered_list.filter(ingredients__ingredient__name__in=today_ingredients).annotate(ingredient_count=Count(
+                'ingredients__ingredient__name')).order_by('-ingredient_count')
+            # sort by Ingredients in user's Fridge except above recipes
+            normal_list = filtered_list.exclude(id__in=todays_list.values('id')).filter(ingredients__ingredient__name__in=user_ingredients.values('ingredient__name')).annotate(
+                ingredient_count=Count('ingredients__ingredient__name')).order_by('-ingredient_count')
+            # union of results in maintenance of Ordering (Sorting result of 'Today Ingredients' comes first)
+            sorted_list = (todays_list | normal_list)
+
         else:
             sorted_list = filtered_list.annotate(
                 like_count=Count('likes')).order_by('-like_count')

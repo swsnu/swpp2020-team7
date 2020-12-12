@@ -26,6 +26,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Loading from '../../../components/Loading/Loading';
 import { BaseRecipeEntity } from '../../../model/recipe';
 import { extractMLFeatureFromRecipe } from '../../../store/actions/index';
+import compressImage from '../../../utils/compressImage';
 
 interface CreateRecipeProps {
 	history: History;
@@ -39,41 +40,11 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	// alert state is true if alert is necessary, otherwise false.
 	const [alert, setAlert] = useState(true);
-	const [alertContent, setAlertContent] = useState(
-		'요리 카테고리와 필요한 재료들이 작성한 요리명과 레시피를 기반으로 자동으로 추천해 드립니다. 작성이 완료되면 재료등록 버튼을 눌러주세요.',
-	);
+	const alertContent =
+		'요리 카테고리와 필요한 재료들이 작성한 요리명과 레시피를 기반으로 자동으로 추천해 드립니다. 작성이 완료되면 재료등록 버튼을 눌러주세요.';
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 
-	const compressImage = (file: File) => {
-		const image = document.createElement('img');
-		image.src = URL.createObjectURL(file);
-		console.log(file.size, 'original Size');
-		image.onload = () => {
-			URL.revokeObjectURL(image.src);
-			const canvas = document.createElement('canvas');
-			canvas.width = 200;
-			canvas.height = 200;
-			const context = canvas.getContext('2d');
-			const draw = () => context?.drawImage(image, 0, 0, 200, 200);
-			draw();
-			const getBlob = () =>
-				context?.canvas.toBlob(
-					(newImageBlob) => {
-						console.log(newImageBlob, 'blob image');
-						if (newImageBlob) {
-							setFoodImageFiles((foodImageFiles) => [
-								...foodImageFiles,
-								new File([newImageBlob], file.name),
-							]);
-						}
-					},
-					'images/jpg',
-					0.5,
-				);
-			getBlob();
-		};
-	};
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
@@ -81,7 +52,8 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		// convert FileList iterable
 		const imageArray = Array.from(images);
 		imageArray.forEach((file) => {
-			compressImage(file);
+			const compressedImage = compressImage(file);
+			if (compressedImage) setFoodImageFiles((state) => [...state, compressedImage]);
 		});
 	};
 
@@ -97,6 +69,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	};
 
 	useEffect(() => {
+		toast.info('🦄 레시피를 등록해 보세요!');
 		if (sessionStorage.getItem('createdRecipe')) {
 			const storedRecipe = JSON.parse(sessionStorage.getItem('createdRecipe')!)!;
 			setFoodName(storedRecipe.foodName);

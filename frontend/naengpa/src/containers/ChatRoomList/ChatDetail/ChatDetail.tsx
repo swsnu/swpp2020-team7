@@ -16,8 +16,7 @@ interface ChatDetailProps {
 }
 const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const dispatch = useDispatch();
-	const user = useSelector((state: AppState) => state.user.user);
-	const chatRoom = useSelector((state: AppState) => state.user.chatRoom);
+	const user = useSelector((state: AppState) => state.user);
 	const [content, setContent] = useState('');
 
 	// const socket = io(ENDPOINT);
@@ -30,26 +29,30 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	// 	console.log(data);
 	// });
 
-	const chatMessage = chatRoom!.messages!.map((message, idx) => {
-		if (message.author === user!.username) {
+	const chatMessage = user ? (
+		user.chatRoom!.messages!.map((message, idx) => {
+			if (message.author === user?.user?.username) {
+				return (
+					<Typography
+						key={`${message.createdAt}-${message.author}`}
+						id="user-message"
+						gutterBottom
+					>
+						<span id="message-created-time">{message.createdAt}</span>
+						<span id="message-content">{message.content}</span>
+					</Typography>
+				);
+			}
 			return (
-				<Typography
-					key={`${message.createdAt}-${message.author}`}
-					id="user-message"
-					gutterBottom
-				>
-					<span id="message-created-time">{message.createdAt}s</span>
+				<Typography id="member-message" gutterBottom>
 					<span id="message-content">{message.content}</span>
+					<span id="message-created-time">{message.createdAt}</span>
 				</Typography>
 			);
-		}
-		return (
-			<Typography id="member-message" gutterBottom>
-				<span id="message-content">{message.content}</span>
-				<span id="message-created-time">{message.createdAt}</span>
-			</Typography>
-		);
-	});
+		})
+	) : (
+		<></>
+	);
 
 	const onClickGoBackToChatRoomList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
@@ -60,7 +63,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		if (e.key === 'Enter' && content !== '') {
 			e.preventDefault();
 			e.stopPropagation();
-			dispatch(sendChat(chatRoom!.id, content));
+			dispatch(sendChat(user.chatRoom!.id, content));
 			setContent('');
 			// socket.emit('send message', content);
 		}
@@ -69,7 +72,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const onClickSendMessage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		if (content !== '') {
 			e.preventDefault();
-			dispatch(sendChat(chatRoom!.id, content));
+			dispatch(sendChat(user.chatRoom!.id, content));
 			setContent('');
 		}
 	};
@@ -87,7 +90,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					</Button>
 					<div id="member-info-box">
 						<div id="chat-member-image" />
-						<div id="chat-member-username">{chatRoom!.member}</div>{' '}
+						<div id="chat-member-username">{user.chatRoom!.member}</div>{' '}
 					</div>
 				</Typography>
 				<Divider />

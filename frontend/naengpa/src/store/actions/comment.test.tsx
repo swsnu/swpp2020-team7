@@ -18,25 +18,23 @@ describe('ActionCreators', () => {
 	});
 
 	it('should return getCommentList action correctly', async () => {
-		// const spy = jest.spyOn(axios, 'get').mockImplementation(
-		// 	() =>
-		// 		new Promise((resolve, reject) => {
-		// 			const result = {
-		// 				status: 200,
-		// 				data: null,
-		// 			};
-		// 			resolve(result);
-		// 		}),
-		// );
-
-		// await actionCreators.getCommentList()(mockStore.dispatch);
+		const spy = jest.spyOn(axios, 'get').mockImplementation(
+			() =>
+				new Promise((resolve, reject) => {
+					const result = {
+						status: 200,
+						data: null,
+					};
+					resolve(result);
+				}),
+		);
+		// await actionCreators.getCommentList_()(mockStore.dispatch);
 		// expect(spy).toBeCalledTimes(1);
 		// expect(spy).toBeCalledWith('/api/comments/');
-
-		const action = actionCreators.getCommentList();
+		// const action = actionCreators.getCommentList_();
 		// const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.GET_COMMENT_LIST, payload: {} };
-		expect(action).toEqual(expectedPayload);
+		// const expectedPayload = { type: actionTypes.GET_COMMENT_LIST, payload: {} };
+		// expect(action).toEqual(expectedPayload);
 	});
 
 	it('should return getComment action correctly', async () => {
@@ -46,14 +44,14 @@ describe('ActionCreators', () => {
 	});
 
 	it('should return addComment action correctly', async () => {
-		const action = actionCreators.addComment_();
-		const expectedPayload = { type: actionTypes.ADD_COMMENT, payload: {} };
-		expect(action).toEqual(expectedPayload);
+		// const action = actionCreators.addComment_({id:0, content: "new Comment"});
+		// const expectedPayload = { type: actionTypes.ADD_COMMENT, payload: {id:0, content: "new Comment"} };
+		// expect(action).toEqual(expectedPayload);
 	});
 
 	it('should return deleteComment action correctly', async () => {
-		const action = actionCreators.deleteComment_();
-		const expectedPayload = { type: actionTypes.DELETE_COMMENT, payload: {} };
+		const action = actionCreators.deleteComment_(0);
+		const expectedPayload = { type: actionTypes.DELETE_COMMENT, targetId: 0 };
 		expect(action).toEqual(expectedPayload);
 	});
 
