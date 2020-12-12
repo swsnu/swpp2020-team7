@@ -62,10 +62,12 @@ function userReducer(
 		/* CREAT CHATROOM */
 		case actionTypes.CREATE_CHATROOM:
 			filteredChatRoomList = state.chatRoomList?.filter((chatRoom) => {
-				return chatRoom.id === action.chatRoom.id;
+				return chatRoom.id !== action.chatRoom.id;
 			});
 			if (filteredChatRoomList && !filteredChatRoomList.length) {
-				filteredChatRoomList = [...state.chatRoomList, action.chatRoom];
+				filteredChatRoomList = [...filteredChatRoomList, action.chatRoom];
+			} else {
+				filteredChatRoomList = [ ...state.chatRoomList, action.chatRoom];
 			}
 			return { ...state, chatRoomList: filteredChatRoomList, chatRoom: action.chatRoom };
 
