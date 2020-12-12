@@ -20,7 +20,7 @@ const compressImage = (file: File) => {
 					if (newImageBlob) {
 						const func = () => {
 							return new File([newImageBlob], file.name);
-						}
+						};
 						return func();
 					}
 				},

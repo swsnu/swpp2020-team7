@@ -198,7 +198,6 @@ export const createChatRoom = (id: string) => {
 			const response = await axios.post(`/api/chatrooms/`, { friend_id: id });
 			window.sessionStorage.removeItem('chatRoomList');
 			window.sessionStorage.removeItem('chatRoom');
-			console.log(response);
 			dispatch(createChatRoom_(response.data));
 			dispatch(push(`/chatrooms/${response.data.id}`));
 		} catch (e) {

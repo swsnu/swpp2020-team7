@@ -102,7 +102,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		const imageArray = Array.from(images);
 		imageArray.forEach((file) => {
 			const compressedImage = compressImage(file);
-			console.log(compressImage);
 			if (compressedImage) setFoodImageFiles((state) => [...state, compressedImage]);
 		});
 	};
@@ -146,7 +145,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				const newIngredientList: RecipeIngredient[] = ingredients.map((item, idx) => {
 					return { name: item.name, quantity: item.quantity };
 				});
-				console.log(newIngredientList);
 				const newRecipe: RecipeEntity = {
 					foodName,
 					cookTime,
@@ -347,7 +345,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				<FormControlLabel
 					control={
 						<Checkbox
-							key={`${i} `}
+							key={`${i}-${item.name}`}
 							checked={item.checked as boolean}
 							checkedIcon={<CheckBoxIcon id="checkbox" />}
 							onChange={(e) => {
@@ -373,7 +371,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	});
 
 	/* ingredient list for Recipe Form */
-	const ingredientSetForRecipe = ingredients?.map((item, i) => {
+	const ingredientSetForRecipe = (ingredients && !ingredients.length) ? ingredients?.map((item, i) => {
 		return (
 			<div id="ingredient-button-box" key={`${item.name}`}>
 				{item.checked && (
@@ -383,7 +381,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				)}
 			</div>
 		);
-	});
+	}) : <></>;
 
 	const ingredientListModal = (
 		<Collapse className="collapse" in={showIngredientModal}>

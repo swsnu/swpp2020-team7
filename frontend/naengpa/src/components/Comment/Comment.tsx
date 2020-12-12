@@ -25,7 +25,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 	const dispatch = useDispatch();
 
 	const onClickDelete = () => {
-		dispatch(deleteComment(comment.id));
+		dispatch(deleteComment(comment?.id));
 	};
 
 	return (
@@ -34,14 +34,14 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 				<Grid item>
 					<Avatar
 						aria-label="user-image"
-						src={comment.profileImage}
+						src={comment?.profileImage}
 						alt="/icons/boy.png"
 					/>
 				</Grid>
 				<Grid justify="flex-start" item xs zeroMinWidth>
-					<p style={{ margin: 0, textAlign: 'left' }}>{comment.author}</p>
-					<p style={{ textAlign: 'left' }}>{comment.content}</p>
-					<p style={{ textAlign: 'left', color: 'gray' }}>{comment.createdAt}</p>
+					<p style={{ margin: 0, textAlign: 'left' }}>{comment?.author}</p>
+					<p style={{ textAlign: 'left' }}>{comment?.content}</p>
+					<p style={{ textAlign: 'left', color: 'gray' }}>{comment?.createdAt}</p>
 				</Grid>
 				<Button
 					variant="contained"
