@@ -80,7 +80,7 @@ def make_chatroom(request):
         "id": chatroom.id,
         "messages": [{
             "content": message.content,
-            "author": message.author.user.username,
+            "author": message.author.username,
             "createdAt": get_time_format(message.created_at),
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
