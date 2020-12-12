@@ -1,4 +1,3 @@
-
 export const getCurrentTime = () => {
 	const today = new Date();
 	const hours = today.getHours();

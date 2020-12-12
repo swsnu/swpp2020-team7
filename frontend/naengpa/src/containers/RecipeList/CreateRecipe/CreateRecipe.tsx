@@ -40,7 +40,8 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	// alert state is true if alert is necessary, otherwise false.
 	const [alert, setAlert] = useState(true);
-	const alertContent = '요리 카테고리와 필요한 재료들이 작성한 요리명과 레시피를 기반으로 자동으로 추천해 드립니다. 작성이 완료되면 재료등록 버튼을 눌러주세요.';
+	const alertContent =
+		'요리 카테고리와 필요한 재료들이 작성한 요리명과 레시피를 기반으로 자동으로 추천해 드립니다. 작성이 완료되면 재료등록 버튼을 눌러주세요.';
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 
