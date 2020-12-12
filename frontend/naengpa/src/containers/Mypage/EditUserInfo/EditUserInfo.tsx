@@ -4,12 +4,13 @@ import { toast } from 'react-toastify';
 import { History } from 'history';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { Input, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import Tab from '../../../components/Tab/Tab';
 import { AppState } from '../../../store/store';
 import { editUser } from '../../../store/actions/index';
 import '../UserInfo/UserInfo.scss';
 import './EditUserInfo.scss';
+import compressImage from '../../../utils/compressImage';
 
 interface EditUserInfoProps {
 	history: History;
@@ -57,7 +58,8 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const target = e.target as HTMLInputElement;
 		const image: File = (target.files as FileList)[0];
-		setProfileImage(image);
+		const compressedImage = compressImage(image);
+		if (compressedImage) setProfileImage(image);
 	};
 
 	return (
@@ -75,9 +77,10 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 						<Box id="add-image-icon-box">
 							<label aria-label="profile-image-label" htmlFor="profile-image">
 								<AddCircleIcon id="add-image-button" type="button" />
-								<Input
+								<input
 									type="file"
 									id="profile-image"
+									accept="image/*"
 									onChange={(e: ChangeEvent<HTMLInputElement>) =>
 										onClickAddImage(e)
 									}
