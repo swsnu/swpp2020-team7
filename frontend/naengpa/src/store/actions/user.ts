@@ -140,6 +140,7 @@ export const checkUsernameDuplicate = async (username: string) => {
 		return response.data.isDuplicate;
 	} catch (e) {
 		toast.error('🦄 서버와의 연결이 원활하지 않아요!');
+		return e;
 	}
 };
 
