@@ -169,23 +169,16 @@ def user(request, id):
                 'content': item.content,
                 'createdAt': item.created_string,
                 'deleted': item.deleted,
-            } for item in user.notifications.all()],
+            } for item in user.notifications.all().order_by('-id')],
             'totalNotifications': user.total_notifications,
         }
         return JsonResponse(data=current_user, safe=False)
     elif request.method == 'PUT':
         if request.user.id != id:
             return HttpResponseForbidden()
-        try:
-            user = get_object_or_404(User, pk=id)
-        except User.DoesNotExist:
-            return HttpResponseBadRequest()
+        user = get_object_or_404(User, pk=id)
         try:
             req_data = json.loads(request.POST.get('user'))
-            edit_name = req_data['name']
-            edit_date_of_birth = req_data['dateOfBirth']
-            edit_email = req_data['email']
-            password_to_check = req_data['password']
             edit_name, edit_date_of_birth, edit_email, password_to_check = itemgetter(
                 'name', 'dateOfBirth', 'email', 'password')(req_data)
 
@@ -226,7 +219,7 @@ def change_password(request, id):
         try:
             user = User.objects.get(id=id)
         except User.DoesNotExist:
-            return HttpResponseBadRequest()
+            return HttpResponseNotFound()
         req_data = json.loads(request.body.decode())
         current_password = req_data['currentPassword']
         new_password = req_data['newPassword']
@@ -325,7 +318,7 @@ def user_ingredient(request, user_id, id):
             ingredient_list = [
                 ingredient for ingredient in FridgeIngredient.objects.filter(fridge=user.fridge).all().values('ingredient__id', 'ingredient__name', 'ingredient__category__name', 'is_today_ingredient').order_by('-created_at')]
         except User.DoesNotExist:
-            return HttpResponseBadRequest()
+            return HttpResponseNotFound()
         except Ingredient.DoesNotExist:
             return HttpResponseNotFound()
         return JsonResponse(ingredient_list, safe=False)

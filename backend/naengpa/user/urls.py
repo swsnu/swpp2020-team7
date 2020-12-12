@@ -14,6 +14,6 @@ urlpatterns = [
     path('users/<uuid:user_id>/ingredients/<int:id>/',
          views.user_ingredient, name='user_ingredient'),
     path('regions/', views.get_region_info, name="get_region_info"),
-    path('notifications/<int:id>', views.notification_info,
+    path('notifications/<int:id>/', views.notification_info,
          name="read_notification"),
 ]

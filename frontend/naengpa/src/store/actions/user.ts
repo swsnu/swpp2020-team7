@@ -136,7 +136,7 @@ export const editUser = (user: EditUserInputDTO) => {
 
 export const checkUsernameDuplicate = async (username: string) => {
 	try {
-		const response = await axios.put(`/api/login/`, {username});
+		const response = await axios.put(`/api/login/`, { username });
 		return response.data.isDuplicate;
 	} catch (e) {
 		toast.error('🦄 서버와의 연결이 원활하지 않아요!');
@@ -261,7 +261,7 @@ export const readNotification = async (notification_id: number) => {
 	} catch (e) {
 		toast.error('🦄 서버와의 연결이 원활하지 않아요!');
 	}
-}
+};
 
 export type UserAction =
 	| ReturnType<typeof saveUserInfo_>

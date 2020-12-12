@@ -247,7 +247,7 @@ def recipe_info(request, id):
             }
             cache.set('recipe:{}'.format(id), recipe_response)
         return JsonResponse(data=recipe_response, safe=False)
-    if request.method == 'DELETE':
+    elif request.method == 'DELETE':
         Recipe.objects.filter(id=id).delete()
         return HttpResponse(status=204)
 
