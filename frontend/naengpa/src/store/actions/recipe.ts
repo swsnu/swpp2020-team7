@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 import { BaseRecipeEntity, RecipeEntity, RecipeLike } from '../../model/recipe';
+import { getCommentList_ } from './comment';
 
 export const getRecipeList_ = (recipeList: RecipeEntity[], lastPageIndex: number) => ({
 	type: actionTypes.GET_RECIPE_LIST,
@@ -64,11 +65,12 @@ export const getRecipe_ = (recipe: RecipeEntity) => ({
 export const getRecipe = (id: number) => {
 	return async (dispatch: any) => {
 		try {
-			const response = await axios.get(`/api/recipes/${id}`);
+			const response = await axios.get(`/api/recipes/${id}/`);
 			dispatch(getRecipe_(response.data));
+			dispatch(getCommentList_(response.data.comments));
 			window.sessionStorage.setItem('recipe', JSON.stringify(response.data));
 		} catch {
-			dispatch(push('/fidge'));
+			dispatch(push('/recipes'));
 			toast.error('🦄 레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!');
 		}
 	};

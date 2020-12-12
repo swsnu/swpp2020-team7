@@ -12,10 +12,16 @@ const Profile: React.FC<ProfileProps> = ({ profile }) => {
 		<Card id="profile">
 			<CardHeader
 				id="profile-card-header"
-				avatar={<Avatar aria-label="user-image" src="/icons/boy.png" />}
+				avatar={
+					<Avatar
+						aria-label="user-image"
+						src={profile.profileImage as string}
+						alt="/icons/boy.png"
+					/>
+				}
 				title={
 					<Typography id="profile-title" align="left">
-						{profile.username}
+						{profile.name}
 					</Typography>
 				}
 				subheader={

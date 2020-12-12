@@ -1,5 +1,7 @@
 '''utility functions for logmeal detection'''
+import io
 import requests
+from PIL import Image
 from naengpa.settings.env import LOGMEAL_TOKEN
 
 LOGMEAL_API_URL = 'https://api.logmeal.es/v2/recognition/dish'
@@ -21,10 +23,12 @@ food_category_result = {
     '': '기타'}
 
 
-# def convertToJpeg(img):
-#     with BytesIO() as f:
-#         img.save(f, format='JPEG')
-#         return f.getvalue()
+def convert_png_to_jpeg(img_data):
+    png = Image.open(io.BytesIO(img_data))
+    jpeg = Image.new('RGB', (png.width, png.height), color=(255, 255, 255))
+    jpeg.paste(png, png)
+    return jpeg
+
 
 class InvalidImageFileGiven(Exception):
     def __init__(self, message, code):
@@ -39,10 +43,11 @@ def extract_foodcategory(food_images):
 
     # Parameters
     img = food_images[0]
+    if img.name.endswith('png'):
+        img = convert_png_to_jpeg(img)
+
     headers = {'Authorization': 'Bearer {}'.format(LOGMEAL_TOKEN)}
     response = ''
-    # im1 = Image.open(r'path where the PNG is stored\file name.png')
-    # im1.save(r'path where the JPG will be stored\new file name.jpg')
 
     # Food Dish/Groups Detection
     try:

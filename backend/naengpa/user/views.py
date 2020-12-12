@@ -1,7 +1,7 @@
 """views for user"""
 import json
 from operator import itemgetter
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseNotAllowed, JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound, HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.hashers import check_password
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -11,6 +11,7 @@ from rest_framework.decorators import api_view
 
 from ingredient.models import Ingredient
 from utils.auth import login_required_401
+from utils.aws_utils import upload_profile_image
 from .models import Fridge, FridgeIngredient, Region
 
 User = get_user_model()
@@ -43,7 +44,6 @@ def get_region_info(request):
         region_list = get_region_list()
     except Region.DoesNotExist:
         return HttpResponseBadRequest()
-
     return JsonResponse(region_list, safe=False)
 
 
@@ -87,7 +87,7 @@ def signup(request):
             'dateOfBirth': checked_user.date_of_birth,
             'naengpaScore': checked_user.naengpa_score,
             'region': get_region(checked_user.region),
-            "regionRange": user.region_range,
+            'regionRange': user.region_range,
         }, status=201)
 
 
@@ -118,6 +118,7 @@ def signin(request):
                 'naengpaScore': user.naengpa_score,
                 'region': get_region(user.region),
                 "regionRange": user.region_range,
+                'profileImage': user.profile_image,
             }, status=200)
         else:
             return HttpResponse(status=401)
@@ -150,9 +151,12 @@ def user(request, id):
             'naengpaScore': user.naengpa_score,
             "region": get_region(user.region),
             "regionRange": user.region_range,
+            'profileImage': user.profile_image,
         }
         return JsonResponse(data=current_user, safe=False)
     elif request.method == 'PUT':
+        if request.user.id != id:
+            return HttpResponseForbidden()
         try:
             user = User.objects.get(id=id)
         except User.DoesNotExist:
@@ -162,6 +166,11 @@ def user(request, id):
             edit_date_of_birth = request.data['dateOfBirth']
             edit_email = request.data['email']
             checked_password = request.data['password']
+
+            profile_image = request.FILES.getlist('image')
+            if profile_image:
+                uploaded_path = upload_profile_image(profile_image[0], id)
+                user.profile_image = uploaded_path
 
         except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
@@ -181,6 +190,7 @@ def user(request, id):
             'naengpaScore': user.naengpa_score,
             'region': get_region(user.region),
             'regionRange': user.region_range,
+            'profileImage': user.profile_image,
         }, status=201)
 
 
@@ -212,6 +222,7 @@ def change_password(request, id):
             'naengpaScore': user.naengpa_score,
             'region': get_region(user.region),
             'regionRange': user.region_range,
+            'profileImage': user.profile_image,
         }, status=201)
     return HttpResponseNotAllowed(['PUT'])
 
@@ -220,8 +231,7 @@ def change_password(request, id):
 @api_view(['GET'])
 @login_required_401
 def user_list(request):
-    """user_list"""
-    # GET NAENGPASTARS
+    """get today naengpa-star user list"""
     if request.method == 'GET':
         user_collection = cache.get('users')
         if not user_collection:
@@ -232,7 +242,8 @@ def user_list(request):
                 "email": user.email,
                 "dateOfBirth": user.date_of_birth,
                 'region': get_region(user.region),
-                "naengpaScore": user.naengpa_score
+                "naengpaScore": user.naengpa_score,
+                'profileImage': user.profile_image,
             } for user in User.objects.select_related('region').order_by('-naengpa_score')[:2]] if User.objects.count() else []
             cache.set('users', user_collection)
         return JsonResponse(user_collection, safe=False)

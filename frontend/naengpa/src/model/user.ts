@@ -7,7 +7,7 @@ export interface UserEntity {
 	email: string;
 	region: RegionEntity;
 	regionRange?: number;
-	profileImage?: File;
+	profileImage?: File | string;
 }
 
 export interface UserLoginInputDTO {

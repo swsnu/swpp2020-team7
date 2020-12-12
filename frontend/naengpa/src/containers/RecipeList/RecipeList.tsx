@@ -62,7 +62,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	}, [recipeList]);
 
 	useEffect(() => {
-		if (query) {
+		if (query && !loading) {
 			setSortBy('created_at');
 			setPage(1);
 			onLoadPage();
@@ -70,18 +70,24 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	}, [query]);
 
 	useEffect(() => {
-		setSortBy('created_at');
-		setPage(1);
-		onLoadPage();
+		if (!loading) {
+			setSortBy('created_at');
+			setPage(1);
+			onLoadPage();
+		}
 	}, [searchCategory]);
 
 	useEffect(() => {
-		setPage(1);
-		onLoadPage();
+		if (!loading) {
+			setPage(1);
+			onLoadPage();
+		}
 	}, [sortBy]);
 
 	useEffect(() => {
-		onLoadPage();
+		if (!loading) {
+			onLoadPage();
+		}
 	}, [page]);
 
 	const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {

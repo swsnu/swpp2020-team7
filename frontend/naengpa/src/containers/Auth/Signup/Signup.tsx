@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { History } from 'history';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import { getRegionList, saveUserInfo } from '../../../store/actions/index';
 import './Signup.scss';
+import { RegionEntity } from '../../../model/user';
+import { AppState } from '../../../store/store';
 
 interface SignupProps {
 	history: History;
 }
 
 const Signup: React.FC<SignupProps> = ({ history }) => {
+	const regionList: RegionEntity[] = useSelector((state: AppState) => state.region.regionList);
 	const [name, setName] = useState('');
 	const [username, setUserName] = useState('');
 	const [password, setPassword] = useState('');
@@ -26,7 +29,9 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(getRegionList());
+		if (!regionList || !regionList.length) {
+			dispatch(getRegionList());
+		}
 	});
 
 	const onClickSignup = () => {

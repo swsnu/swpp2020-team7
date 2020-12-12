@@ -52,16 +52,21 @@ class User(AbstractUser):
     naengpa_score = models.PositiveIntegerField(default=0, db_index=True)
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
     region_range = models.PositiveIntegerField(default=0)
+    profile_image = models.CharField(max_length=250, null=True, unique=True)
 
     def __str__(self):
         return f'[{self.id}] {self.name}'
 
     def save(self, *args, **kwargs):
         cache.delete('users')
+        cache.delete_many(
+            [f'recipe:{id}' for id in self.recipes.values_list('id', flat=True)])
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         cache.delete('users')
+        cache.delete_many(
+            [f'recipe:{id}' for id in self.recipes.values_list('id', flat=True)])
         super().delete(*args, **kwargs)
 
 
@@ -93,6 +98,3 @@ class Notification(models.Model):
 
     def __str__(self):
         return f'[to {self.recipient}] {self.title}: {self.content}'
-
-    # def create(self, **obj_data):
-    #     return super().create(**obj_data)

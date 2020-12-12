@@ -10,12 +10,14 @@ export interface BaseRecipeEntity {
 export interface RecipeEntity extends BaseRecipeEntity {
 	authorId?: string;
 	author?: string;
+	profileImage?: string;
 	recipeLike: number;
 	userLike: number;
 	createdAt?: string;
 	foodCategory?: string;
 	foodImagePaths?: RecipeImage[];
 	ingredients?: RecipeIngredient[];
+	comments?: CommentEntity[];
 }
 
 export interface RecipeImage {
@@ -32,4 +34,18 @@ export interface RecipeIngredient {
 export interface RecipeLike {
 	recipeLike: number;
 	userLike: number;
+}
+
+export interface CommentEntity {
+	id: number;
+	author: string;
+	profileImage: string;
+	recipeId: number;
+	content: string;
+	createdAt: string;
+}
+
+export interface CommentInputDTO {
+	recipeId: number;
+	content: string;
 }

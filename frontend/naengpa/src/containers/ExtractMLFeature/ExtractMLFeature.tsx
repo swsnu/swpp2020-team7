@@ -102,10 +102,10 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		image.onload = () => {
 			URL.revokeObjectURL(image.src);
 			const canvas = document.createElement('canvas');
-			canvas.width = 500;
-			canvas.height = 500;
+			canvas.width = 200;
+			canvas.height = 200;
 			const context = canvas.getContext('2d');
-			const draw = () => context?.drawImage(image, 0, 0, 500, 500);
+			const draw = () => context?.drawImage(image, 0, 0, 200, 200);
 			draw();
 			const getBlob = () =>
 				context?.canvas.toBlob(
