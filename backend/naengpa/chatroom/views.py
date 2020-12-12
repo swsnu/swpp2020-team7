@@ -56,8 +56,8 @@ def make_chatroom(request):
     try:
         friend_id = request.data['friend_id']
         friend = User.objects.get(id=friend_id)
-        chatroom = ChatRoom.objects.filter(
-            chat_members__in=[user, friend]).distinct()[0]
+        chatroom = ChatRoom.objects.get(
+            Q(chat_members=user) & Q(chat_members=friend))
         chat_user = user.chat_member.get(chatroom_id=chatroom.id)
         chat_user.notice = 0
         chat_user.save()

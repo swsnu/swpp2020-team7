@@ -4,12 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import './ChatDetail.scss';
 import { Button, Divider, Typography } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
-// import { io } from 'socket.io-client';
 import { sendChat } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import Tab from '../../../components/Tab/Tab';
-
-// const ENDPOINT = '127.0.0.0:8000';
 
 interface ChatDetailProps {
 	history: History;
@@ -18,16 +15,6 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user);
 	const [content, setContent] = useState('');
-
-	// const socket = io(ENDPOINT);
-	// socket.connect();
-	// socket.on('connect', (data: any) => {
-	// 	console.log(data);
-	// 	console.log('Server connected to Client');
-	// });
-	// socket.on('messages', (data: any) => {
-	// 	console.log(data);
-	// });
 
 	const chatMessage = user ? (
 		user.chatRoom!.messages!.map((message, idx) => {
@@ -65,7 +52,6 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 			e.stopPropagation();
 			dispatch(sendChat(user.chatRoom!.id, content));
 			setContent('');
-			// socket.emit('send message', content);
 		}
 	};
 
@@ -76,6 +62,10 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 			setContent('');
 		}
 	};
+
+	// useEffect(() => {
+	// 	history.push('/chatrooms')
+	// }, []);
 
 	return (
 		<div id="mypage">

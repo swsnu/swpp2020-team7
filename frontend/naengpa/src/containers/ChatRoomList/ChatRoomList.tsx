@@ -18,7 +18,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 
 	useEffect(() => {
 		if (user) dispatch(getChatRoomList());
-	}, [user]);
+	}, [dispatch]);
 
 	const chatRoomCollection = user.chatRoomList?.map((chatRoom: any) => {
 		return (
