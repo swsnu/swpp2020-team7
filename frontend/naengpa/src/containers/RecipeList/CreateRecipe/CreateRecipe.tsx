@@ -27,6 +27,7 @@ import Loading from '../../../components/Loading/Loading';
 import { BaseRecipeEntity } from '../../../model/recipe';
 import { extractMLFeatureFromRecipe } from '../../../store/actions/index';
 import compressImage from '../../../utils/compressImage';
+
 interface CreateRecipeProps {
 	history: History;
 }
@@ -53,8 +54,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		const imageArray = Array.from(images);
 		imageArray.forEach((file) => {
 			const compressedImage = compressImage(file);
-			if(compressedImage)
-				setFoodImageFiles((state) => [...state, compressedImage]);
+			if (compressedImage) setFoodImageFiles((state) => [...state, compressedImage]);
 		});
 	};
 
@@ -70,6 +70,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	};
 
 	useEffect(() => {
+		toast.info('🦄 레시피를 등록해 보세요!');
 		if (sessionStorage.getItem('createdRecipe')) {
 			const storedRecipe = JSON.parse(sessionStorage.getItem('createdRecipe')!)!;
 			setFoodName(storedRecipe.foodName);

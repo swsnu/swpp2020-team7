@@ -63,8 +63,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 		const imageArray = Array.from(images);
 		imageArray.forEach((file) => {
 			const compressedImage = compressImage(file);
-			if(compressedImage)
-				setImages((state) => [...state, compressedImage]);
+			if (compressedImage) setImages((state) => [...state, compressedImage]);
 		});
 	};
 

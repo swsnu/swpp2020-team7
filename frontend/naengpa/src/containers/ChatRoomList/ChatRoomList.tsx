@@ -17,18 +17,21 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user);
 
 	useEffect(() => {
-		if(user)
-			dispatch(getChatRoomList());
+		if (user) dispatch(getChatRoomList());
 	}, [dispatch, user]);
 
 	const chatRoomCollection = user.chatRoomList?.map((chatRoom: any) => {
 		return (
-			<Button key={chatRoom.id} id="chatroom" onClick={(e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				dispatch(getChatRoom(chatRoom));
-				history.push(`chatrooms/${chatRoom.id}/`);
-			}}>
+			<Button
+				key={chatRoom.id}
+				id="chatroom"
+				onClick={(e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					dispatch(getChatRoom(chatRoom));
+					history.push(`chatrooms/${chatRoom.id}/`);
+				}}
+			>
 				<Divider variant="middle" />
 				<div id="chat-member">{chatRoom.member}</div>
 				<div id="chat-message">{chatRoom.lastChat}</div>

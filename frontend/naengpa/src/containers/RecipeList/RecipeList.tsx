@@ -30,20 +30,21 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if(sortBy != 'ingredient'){
-			toast.info('🦄 추천 버튼을 눌러서 오늘의 재료와 냉장고 속 재료로 추천된 레시피를 확인해 보세요!!!');	
+		if (sortBy !== 'ingredient') {
+			toast.info(
+				'🦄 추천 버튼을 눌러서 오늘의 재료와 냉장고 속 재료로 추천된 레시피를 확인해 보세요!!!',
+			);
 		} else {
-			toast.info('🦄 오늘의 재료와 냉장고 속 재료로 추천된 레시피를 확인해 보세요!!!');		
+			toast.info('🦄 오늘의 재료와 냉장고 속 재료로 추천된 레시피를 확인해 보세요!!!');
 		}
 	}, []);
 
 	useEffect(() => {
-		if(!recipeState.recipeList)
-			setLoading(true);
+		if (!recipeState.recipeList) setLoading(true);
 	}, [recipeState]);
 
 	const onLoadPage = useCallback(async () => {
-		if(loading) {
+		if (loading) {
 			await dispatch(getRecipeList(query, sortBy, searchCategory, page));
 			setMaxPageIndex(recipeState.lastPageIndex);
 			setLoading(false);
@@ -70,14 +71,12 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 			<MenuItem
 				key={`#${item.name}-${idx}`}
 				value={item.name}
-				onClick={
-					(e) => {
-						e.preventDefault();
-						setSearchCategory(item.name);
-						setPage(1);
-						setLoading(true);
-					}
-				}
+				onClick={(e) => {
+					e.preventDefault();
+					setSearchCategory(item.name);
+					setPage(1);
+					setLoading(true);
+				}}
 			>
 				{item.name}
 			</MenuItem>
@@ -136,7 +135,6 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 							setPage(1);
 							setSortBy('created_at');
 							setLoading(true);
-
 						}}
 					>
 						최신
@@ -175,28 +173,33 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 				</div>
 			</div>
 			<div id="recipe-cards">
-			{ 
-				loading ? <CircularProgress id="loading-bar" color="inherit" />
-				: recipeState.recipeList?.map((item: any) => 
-							<Recipe
-								key={item.id}
-								recipe={item}
-								attribute="recipe-list-child"
-								history={history}
-							/>)
-			}
+				{loading ? (
+					<CircularProgress id="loading-bar" color="inherit" />
+				) : (
+					recipeState.recipeList?.map((item: any) => (
+						<Recipe
+							key={item.id}
+							recipe={item}
+							attribute="recipe-list-child"
+							history={history}
+						/>
+					))
+				)}
 			</div>
-			{ !loading && ((recipeState.recipeList?.length) ? 
+			{!loading &&
+				(recipeState.recipeList?.length ? (
 					<Pagination
 						id="recipe-list-page"
 						page={page}
 						size="large"
 						count={Math.ceil(maxPageIndex / 9.0)}
 						onChange={onChangePage}
-					/> : <div id="vacant-recipe"> 해당 조건의 레시피가 존재하지 않습니다!</div>)
-			}
+					/>
+				) : (
+					<div id="vacant-recipe"> 해당 조건의 레시피가 존재하지 않습니다!</div>
+				))}
 		</div>
-		)
+	);
 };
 
 export default RecipeList;

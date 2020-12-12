@@ -104,8 +104,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		const imageArray = Array.from(images);
 		imageArray.forEach((file) => {
 			const compressedImage = compressImage(file);
-			if(compressedImage)
-				setFoodImageFiles((state) => [...state, compressedImage]);
+			if (compressedImage) setFoodImageFiles((state) => [...state, compressedImage]);
 		});
 	};
 

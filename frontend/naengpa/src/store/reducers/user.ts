@@ -26,7 +26,6 @@ function userReducer(
 	state: InitialState = UserState,
 	action: UserAction | DefaultAction = { type: 'default' },
 ): InitialState {
-
 	switch (action.type) {
 		/* SAVE USER INFO */
 		case actionTypes.SAVE_USER_INFO:
