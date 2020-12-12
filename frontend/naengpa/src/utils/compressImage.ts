@@ -1,7 +1,9 @@
+/* eslint consistent-return: 0 */
+
 /* Compress Image */
 const compressImage = (file: File) => {
-	let compressedImage  = file;
-	
+	const compressedImage = file;
+
 	const image = document.createElement('img');
 	image.src = URL.createObjectURL(file);
 	image.onload = () => {
