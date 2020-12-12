@@ -1,7 +1,7 @@
 /* Compress Image */
 const compressImage = (file: File) => {
-	let compressedImage = file;
-
+	let compressedImage  = file;
+	
 	const image = document.createElement('img');
 	image.src = URL.createObjectURL(file);
 	image.onload = () => {
@@ -16,7 +16,10 @@ const compressImage = (file: File) => {
 			context?.canvas.toBlob(
 				(newImageBlob) => {
 					if (newImageBlob) {
-						compressedImage = new File([newImageBlob], file.name);
+						const func = () => {
+							return new File([newImageBlob], file.name);
+						}
+						return func();
 					}
 				},
 				'images/jpg',
