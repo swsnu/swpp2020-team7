@@ -65,7 +65,7 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 			</div>
 			<div id="button-list">
 				<button id="signup-button" type="button" onClick={() => history.push('/signup')}>
-					SIGNUP
+					SIGN UP
 				</button>
 				<button id="login-button" type="button" onClick={onClickLogin}>
 					LOGIN

@@ -15,7 +15,8 @@
 
       #chat-member-username {
         color: #408bf9;
-        margin-left: 120%;
+        //margin-left: 120%;
+        //align-content: center;
       }
     }
     #user-message {
@@ -61,7 +62,7 @@
       }
       #send-chat-button {
         padding: 0;
-        padding-left: 30px;
+        margin-left: 30px;
         width: 70%;
         color: #408bf9;
         font-weight: bold;

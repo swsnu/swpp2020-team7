@@ -32,6 +32,8 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 		setCurrentList(recipeList?.slice((value - 1) * 3, (value - 1) * 3 + 3));
 	};
 
+	// const recipe = currentList?.filter((item: any) => item.author === user?.username);
+
 	const recipe = currentList?.map((item: any) => {
 		return (
 			<Recipe key={item.id} recipe={item} attribute="recipe-list-child" history={history} />

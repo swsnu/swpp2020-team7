@@ -13,8 +13,10 @@
     font-size: 100%;
     border: none;
     outline: none;
+    //margin-left: 90%;
     text-align: right !important;
-    width: 80% !important;
+    width: 15% !important;
+    width: 81% !important;
     padding: {
         top: 0 !important;
         bottom: 0 !important;
@@ -34,6 +36,7 @@
         height: 150px;
         float: left;
         background-color: #ffffff;
+        margin-bottom: 8px;
     }
 
     #profile-image {
@@ -41,7 +44,8 @@
     }
 
     #edit-info-profile {
-        margin-top: 6%;
+        margin-top: 6.3%;
+        margin-left: -0.6%;
         display: flex;
         flex-direction: column;
         align-items: center;

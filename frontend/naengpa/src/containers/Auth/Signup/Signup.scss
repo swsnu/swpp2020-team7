@@ -228,15 +228,24 @@
         color: #b4b4b4;
     }
 
-    #signup-button {
-        margin-top: 7.5%;
-        margin-bottom: 11.2%;
-        margin-left: 50%;
-        width: 50%;
-        height: 50%;
-        min-height: 80px;
-        border-radius: 100px;
+    #button-list {
+        display: flex;
+        justify-content: center;
+        margin-left: 40%;
+        padding: 5%;
+    }
+
+    #login-button, #signup-button {
+        margin-bottom: 1%;
+        margin-left: 5%;
+        width: 150px;
+        height: 200%;
+        padding: 5%;
+        min-height: 65px;
+        min-width: 150px;
+
         border: none;
+        border-radius: 100px;
         box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.27);
         background-color: #ffffff;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
