@@ -58,4 +58,5 @@ export const GET_COMMENT_LIST = 'GET_COMMENT_LIST' as const;
 export const GET_COMMENT = 'GET_COMMENT' as const;
 export const ADD_COMMENT = 'ADD_COMMENT' as const;
 export const EDIT_COMMENT = 'EDIT_COMMENT' as const;
+export const TOGGLE_COMMENT_LIKE = 'TOGGLE_COMMENT_LIKE' as const;
 export const DELETE_COMMENT = 'DELETE_COMMENT' as const;

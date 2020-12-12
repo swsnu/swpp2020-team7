@@ -52,6 +52,6 @@ export interface CommentInputDTO {
 }
 
 export interface CommentEditDTO {
-	commentId: number;
+	id: number;
 	content: string;
 }
