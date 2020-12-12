@@ -103,6 +103,11 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 	/* CLICK EVENT - user signup completed */
 	const onClickConfirmRegion = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
+
+		if (!userInfo) {
+			history.push('/signup');
+		}
+
 		if (selectedRegion) {
 			dispatch(
 				signup({
@@ -120,15 +125,11 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 		if (!regionList || !regionList.length) {
 			dispatch(getRegionList());
 		}
-	});
+	}, [regionList]);
 
 	useEffect(() => {
 		const container = document.getElementById('map');
 		getKakaoMap(container, level, latitude, longitude);
-
-		if (!userInfo) {
-			history.push('/signup');
-		}
 	}, [latitude, longitude, level]);
 
 	const defaultRegions = {
