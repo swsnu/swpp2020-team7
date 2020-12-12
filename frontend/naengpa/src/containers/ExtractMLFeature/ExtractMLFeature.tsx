@@ -34,6 +34,7 @@ import {
 	getFoodCategoryList,
 	extractMLFeatureFromRecipe,
 } from '../../store/actions/index';
+import compressImage from '../../utils/compressImage';
 
 interface ExtractMLFeatureProps {
 	history: History;
@@ -95,35 +96,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		}
 	}, [createdRecipe]);
 
-	const compressImage = (file: File) => {
-		const image = document.createElement('img');
-		image.src = URL.createObjectURL(file);
-		console.log(file.size, 'original Size');
-		image.onload = () => {
-			URL.revokeObjectURL(image.src);
-			const canvas = document.createElement('canvas');
-			canvas.width = 200;
-			canvas.height = 200;
-			const context = canvas.getContext('2d');
-			const draw = () => context?.drawImage(image, 0, 0, 200, 200);
-			draw();
-			const getBlob = () =>
-				context?.canvas.toBlob(
-					(newImageBlob) => {
-						console.log(newImageBlob, 'blob image');
-						if (newImageBlob) {
-							setFoodImageFiles((foodImageFiles) => [
-								...foodImageFiles,
-								new File([newImageBlob], file.name),
-							]);
-						}
-					},
-					'images/jpg',
-					0.5,
-				);
-			getBlob();
-		};
-	};
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
@@ -131,7 +103,9 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		// convert FileList iterable
 		const imageArray = Array.from(images);
 		imageArray.forEach((file) => {
-			compressImage(file);
+			const compressedImage = compressImage(file);
+			if(compressedImage)
+				setFoodImageFiles((state) => [...state, compressedImage]);
 		});
 	};
 

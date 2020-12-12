@@ -26,7 +26,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Loading from '../../../components/Loading/Loading';
 import { BaseRecipeEntity } from '../../../model/recipe';
 import { extractMLFeatureFromRecipe } from '../../../store/actions/index';
-
+import compressImage from '../../../utils/compressImage';
 interface CreateRecipeProps {
 	history: History;
 }
@@ -45,35 +45,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 
-	const compressImage = (file: File) => {
-		const image = document.createElement('img');
-		image.src = URL.createObjectURL(file);
-		console.log(file.size, 'original Size');
-		image.onload = () => {
-			URL.revokeObjectURL(image.src);
-			const canvas = document.createElement('canvas');
-			canvas.width = 200;
-			canvas.height = 200;
-			const context = canvas.getContext('2d');
-			const draw = () => context?.drawImage(image, 0, 0, 200, 200);
-			draw();
-			const getBlob = () =>
-				context?.canvas.toBlob(
-					(newImageBlob) => {
-						console.log(newImageBlob, 'blob image');
-						if (newImageBlob) {
-							setFoodImageFiles((foodImageFiles) => [
-								...foodImageFiles,
-								new File([newImageBlob], file.name),
-							]);
-						}
-					},
-					'images/jpg',
-					0.5,
-				);
-			getBlob();
-		};
-	};
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
@@ -81,7 +52,9 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		// convert FileList iterable
 		const imageArray = Array.from(images);
 		imageArray.forEach((file) => {
-			compressImage(file);
+			const compressedImage = compressImage(file);
+			if(compressedImage)
+				setFoodImageFiles((state) => [...state, compressedImage]);
 		});
 	};
 

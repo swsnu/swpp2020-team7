@@ -30,6 +30,7 @@ import { IngredientEntity } from '../../../model/ingredient';
 import { createArticle } from '../../../store/actions/index';
 import { getCurrentTime } from '../../../utils/time';
 import { AppState } from '../../../store/store';
+import compressImage from '../../../utils/compressImage';
 
 interface CreateArticleProps {
 	history: History;
@@ -57,8 +58,14 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
-		const image: File = (target.files as FileList)[0];
-		setImages([...images, image]);
+		const images = target.files as FileList;
+		// convert FileList iterable
+		const imageArray = Array.from(images);
+		imageArray.forEach((file) => {
+			const compressedImage = compressImage(file);
+			if(compressedImage)
+				setImages((state) => [...state, compressedImage]);
+		});
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
@@ -300,10 +307,12 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 								<Box id="add-image-icon-box">
 									<label aria-label="food-image-label" htmlFor="food-image">
 										<AddCircleIcon id="add-image-button" type="button" />
-										<Input
+										<input
 											type="file"
 											id="food-image"
 											required
+											multiple
+											accept="image/*"
 											disabled={onAlert}
 											onChange={(e: ChangeEvent<HTMLInputElement>) =>
 												onClickAddImage(e)
