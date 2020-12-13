@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { Avatar } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
 import { AppState } from '../../../store/store';
 import Tab from '../../../components/Tab/Tab';
 import { changePassword } from '../../../store/actions/index';
@@ -47,10 +47,16 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 				</div>
 				<div id="change-password-content">
 					<div id="password-user-profile">
+<<<<<<< HEAD
 						{user?.profileImage ? (
 							<Avatar id="edit-profile-picture" src={user?.profileImage as string} />
 						) : (
 							<AccountCircleIcon id="profile-picture" />
+=======
+						{!user?.profileImage && <AccountCircleIcon id="profile-picture" />}
+						{user?.profileImage && (
+							<Avatar id="profile-picture" src={user?.profileImage as string} />
+>>>>>>> origin/dori
 						)}
 						<div id="myinfo-username">{user!.username}</div>
 					</div>

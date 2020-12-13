@@ -31,6 +31,22 @@ class ChatRoom(models.Model):
     def __str__(self):
         return f'[{self.id}] by {self.chat_members} - {self.updated_at}]'
 
+    @property
+    def updated_string(self):
+        time = timezone.now() - self.updated_at
+        if time < timezone.timedelta(minutes=1):
+            return '방금 전'
+        elif time < timezone.timedelta(hours=1):
+            return str(int(time.seconds / 60)) + '분 전'
+        elif time < timezone.timedelta(days=1):
+            return str(int(time.seconds / 3600)) + '시간 전'
+        elif time < timezone.timedelta(days=7):
+            time = timezone.datetime.now(
+                tz=timezone.utc).date() - self.updated_at
+            return str(time.days) + '일 전'
+        else:
+            return False
+
 
 class ChatMember(models.Model):
     member = models.ForeignKey(
