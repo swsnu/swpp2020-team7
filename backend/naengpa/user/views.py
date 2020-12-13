@@ -44,7 +44,7 @@ def get_region_info(request):
         """ get region list from seoul's center('종로', id:44) """
         region_list = get_region_list()
     except Region.DoesNotExist:
-        return HttpResponseBadRequest()
+        return HttpResponseNotFound()
     return JsonResponse(region_list, safe=False)
 
 
