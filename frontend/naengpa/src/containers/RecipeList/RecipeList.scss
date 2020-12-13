@@ -1,6 +1,10 @@
 #recipe-list {
-  margin: 5% 10%;
-
+  min-width: 1024px !important;
+  margin:  {
+    bottom: 100px; 
+    left: 50px;
+    right: 100px;
+  }
   #create-recipe-button {
     display: flex;
     justify-content: flex-end;
@@ -30,7 +34,7 @@
 
   #filter-button-true {
     color: #ff8a3d !important;
-    font-size: 20px;
+    font-size: 17px;
   }
 
   #filter-button-false {
@@ -77,7 +81,11 @@
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  margin: 0% 10%;
+  margin: {
+    top: 50px;
+    left: 80px;
+    right: 100px;
+  }
 }
 
 #recipe-search-input-box {
@@ -85,11 +93,12 @@
   flex-direction: row;
   border: solid 1px #696464;
   padding: 2% 4%;
-  min-width: 220px;
+  min-width: 300px;
   align-items: center;
   border-radius: 15px;
 
   #recipe-search-input {
+    min-width: 250px;
     margin-right: 10px;
   }
 }
