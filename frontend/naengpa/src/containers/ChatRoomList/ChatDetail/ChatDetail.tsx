@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
 import './ChatDetail.scss';
 import { Button, Divider, Typography } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
-import { sendChat } from '../../../store/actions/index';
+import { sendChat, getMessages } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import Tab from '../../../components/Tab/Tab';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { MessageEntity } from '../../../model/chat';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface ChatDetailProps {
 	history: History;
@@ -14,14 +17,18 @@ interface ChatDetailProps {
 const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user);
+	const [chatMessageList, setChatMessageList] = useState<MessageEntity[]>([]);
 	const [content, setContent] = useState('');
-
-	const chatMessage = user ? (
+	const [index, setIndex] = useState(1);
+	const [lastTime, setLastTime] = useState('');
+	
+	const chatScroll = useRef<HTMLDivElement>(null);
+	const chatMessage = (user && user.chatRoom) ? (
 		user.chatRoom!.messages!.map((message, idx) => {
 			if (message.author === user?.user?.username) {
 				return (
 					<Typography
-						key={`${message.createdAt}-${message.author}`}
+						key={`${message.createdAt}-${message.author}-${idx}`}
 						id="user-message"
 						gutterBottom
 					>
@@ -62,10 +69,15 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 			setContent('');
 		}
 	};
+	
+ useEffect(() => {
+	 	if(chatScroll)
+			chatScroll?.current?.scrollIntoView({behavior:'smooth', block:'end', inline:'nearest'});
+		if(user?.chatRoom && user!.chatRoom?.messages)
+			setChatMessageList((state) => [...state, ...user.messages]);
+}, [user.chatRoom]);
 
-	// useEffect(() => {
-	// 	history.push('/chatrooms')
-	// }, []);
+
 
 	return (
 		<div id="mypage">
@@ -84,7 +96,25 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					</div>
 				</Typography>
 				<Divider />
-				{chatMessage}
+				<div id="scrollabelDiv"
+					style={{
+						height: 400,
+						overflow: 'auto',
+						display: 'flex',
+						flexDirection: 'column-reverse',
+					}}>
+				
+				<InfiniteScroll 
+					dataLength={chatMessageList?.length}
+					style={{ display: 'flex', flexDirection: 'column-reverse' }}
+					next={() => dispatch(getMessages(index))}
+					inverse={true}
+					hasMore={false}
+					loader={<h4>Loading...</h4>}
+				>
+				<div id="chat-message-box">{chatMessage}</div>
+				</InfiniteScroll>
+				</div>
 				<div id="chat-input-box">
 					<InputBase
 						id="chat-input-field"
