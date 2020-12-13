@@ -141,7 +141,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 							<div className="info-head">비밀번호 </div>
 							<input
 								id="password-confirm"
-								type="text"
+								type="password"
 								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</div>
