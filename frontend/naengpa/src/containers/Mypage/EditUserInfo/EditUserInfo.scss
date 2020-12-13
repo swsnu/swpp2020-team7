@@ -13,7 +13,6 @@
     font-size: 100%;
     border: none;
     outline: none;
-    //margin-left: 90%;
     text-align: right !important;
     width: 15% !important;
     width: 81% !important;
@@ -44,8 +43,8 @@
     }
 
     #edit-info-profile {
-        margin-top: 6.3%;
-        margin-left: -0.6%;
+        margin-top: 0.3%;
+        margin-left: -3%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -67,8 +66,8 @@
         top: 0;
         right: 0;
 
-        margin-top: 5px;
-        margin-right: -7px;
+        margin-top: 25px;
+        margin-right: 1px;
         border-radius: 25px;
         font-size: 150%;
         background-color: #ffffff;
