@@ -36,7 +36,7 @@ def get_chatroom_list(request):
             "messages": [{
                 "content": message.content,
                 "author": message.author.username,
-                "createdAt": get_time_format(message.created_string),
+                "createdAt": message.created_string,
             } for message in chatroom.message_set.select_related('author')],
             "lastChat": chatroom.message_set.all().last().content if chatroom.message_set.count() != 0 else LETS_CHAT_MESSAGE,
             "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.username,
@@ -81,7 +81,7 @@ def make_chatroom(request):
         "messages": [{
             "content": message.content,
             "author": message.author.username,
-            "createdAt": get_time_format(message.created_string),
+            "createdAt": message.created_string,
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": friend.username,
@@ -120,7 +120,7 @@ def get_chatroom(request, id):
         "messages": [{
             "content": message.content,
             "author": message.author.username,
-            "createdAt": get_time_format(message.created_string),
+            "createdAt": message.created_string,
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.username,
@@ -161,7 +161,7 @@ def send_message(request, id):
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": chat_member.member.username,
-        "updatedAt":  get_time_format(target_chatroom.updated_string),
+        "updatedAt": target_chatroom.updated_string,
         "chatCount": 0,
     }, status=201, safe=False)
 
