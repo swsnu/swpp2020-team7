@@ -15,11 +15,6 @@ User = get_user_model()
 LETS_CHAT_MESSAGE = "채팅을 시작해보세요!"
 
 
-def get_time_format(time_str):
-    return time_str.strftime("%y.%m.%d") if time_str.strftime("%y.%m.%d") != timezone.now().strftime("%y.%m.%d") \
-        else time_str.strftime("%H:%M")
-
-
 def get_chatroom_list(request):
     try:
         user = request.user
