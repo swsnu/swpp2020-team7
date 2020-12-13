@@ -33,5 +33,5 @@ export interface ArticleEntity {
 
 export interface ArticleImage {
 	id: number;
-	path: string;
+	file_path: string;
 }
