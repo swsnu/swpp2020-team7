@@ -14,12 +14,18 @@ class Command(BaseCommand):
         """makes up Neighborhood db table"""
 
         print('[start]')
-        for region in Region.objects.all():
+        bulk_list = []
+        for idx, region in enumerate(Region.objects.all()):
             for region_range in range(1, 5):
-                neighborhood_ids = [region.id] + list(get_nearest_places_ids_from_region(
+                neighborhood_ids = list(get_nearest_places_ids_from_region(
                     region.id, max_distance=region_range))
-                bulk_list = [NeighborhoodRegion(from_region=region, neighborhood_id=nid)
-                             for nid in neighborhood_ids]
-                NeighborhoodRegion.objects.bulk_create(bulk_list)
-                print(region, 'has', region.neighborhood.count(),
+                if region.id not in neighborhood_ids:
+                    neighborhood_ids.append(region.id)
+                new_neighbors = [NeighborhoodRegion(from_region=region, neighborhood_id=nid, region_range=region_range)
+                                 for nid in neighborhood_ids]
+                bulk_list += new_neighbors
+                print(region, 'has', len(new_neighbors),
                       'neighborhood for', region_range, 'range')
+            if (idx + 1) % 30 == 0:
+                NeighborhoodRegion.objects.bulk_create(bulk_list)
+                bulk_list = []
