@@ -9,6 +9,8 @@ User = get_user_model()
 
 
 class FoodCategoryTestCase(TestCase):
+    """ testcase for food category api """
+
     def setUp(self):
         # create a user
         test_region = Region.objects.create(
@@ -37,5 +39,11 @@ class FoodCategoryTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # bad request method
+        response = self.client.post('/api/foodcategory/')
+        self.assertEqual(response.status_code, 405)
+
         response = self.client.put('/api/foodcategory/')
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.delete('/api/foodcategory/')
         self.assertEqual(response.status_code, 405)

@@ -39,6 +39,14 @@ class IngredientTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # bad requeset method
+        response = self.client.post('/api/ingredients/',
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 405)
+
         response = self.client.put('/api/ingredients/',
                                    content_type='application/json')
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.delete('/api/ingredients/',
+                                      content_type='application/json')
         self.assertEqual(response.status_code, 405)
