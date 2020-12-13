@@ -67,7 +67,7 @@ def article_list_get(request):
             article_collection = list(
                 filter(lambda art: art['region'] in list(included_region_names), article_collection))
     else:
-        included_region_ids = request.user.region.neighborhood.objects.filter(
+        included_region_ids = request.user.region.neighborhoodregion_set.filter(
             region_range=request.user.region_range).values_list('neighborhood_id', flat=True)
         q = Q(author__region__id__in=included_region_ids)
         if query:
