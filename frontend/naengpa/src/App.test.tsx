@@ -24,7 +24,6 @@ jest.mock('./containers/Auth/Signup/Signup', () => jest.fn(() => <div />));
 jest.mock('./containers/RegionalSetting/RegionalSetting', () => jest.fn(() => <div />));
 jest.mock('./containers/AddIngredient/AddIngredient', () => jest.fn(() => <div />));
 jest.mock('./containers/UserRecipe/UserRecipe', () => jest.fn(() => <div />));
-jest.mock('./containers/UserNotification/UserNotification', () => jest.fn(() => <div />));
 jest.mock('./containers/Mypage/UserInfo/UserInfo', () => jest.fn(() => <div />));
 jest.mock('./containers/Mypage/EditUserInfo/EditUserInfo', () => jest.fn(() => <div />));
 jest.mock('./containers/Mypage/ChangePassword/ChangePassword', () => jest.fn(() => <div />));
