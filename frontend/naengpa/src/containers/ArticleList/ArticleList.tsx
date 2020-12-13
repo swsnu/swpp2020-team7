@@ -78,7 +78,6 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 					isForShare: forShare,
 				}),
 			);
-			console.log(articleList, 'list가 잘 나오나 ');
 			setCurrentList(
 				forShare || forSale || forExchange
 					? articleList.filter(
@@ -115,6 +114,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 							<InputBase
 								id="article-search-input"
 								placeholder="찾고싶은 재료명을 검색해보세요!"
+								fullWidth
 								inputProps={{ 'aria-label': 'search' }}
 								onChange={(e) => {
 									setQuery(e.target.value);
@@ -122,7 +122,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 								}}
 								onKeyDown={onClickSearch}
 							/>
-							<SearchIcon id="article-list-search-icon" />
+							<SearchIcon id="article-list-search-icon" onKeyDown={onClickSearch}/>
 						</div>
 						<div id="article-list-options-filter">
 							<button
@@ -163,19 +163,23 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 					</div>
 				</div>
 			</div>
-			{!loading && <div id="article-cards">{articles}</div>}
-			{loading && (
-				<div id="article-cards">
-					<CircularProgress color="inherit" />
-				</div>
-			)}
-			<Pagination
-				id="article-list-page"
-				page={page}
-				size="large"
-				count={maxPageIndex}
-				onChange={onChangePage}
-			/>
+			<div id={`article-cards-${loading}`}>
+				{loading ? (
+						<CircularProgress id="loading-bar" color="inherit" />
+				) : <>{articles}</>}
+			</div>
+			{!loading &&
+				(articleList?.length ? (
+					<Pagination
+						id="article-list-page"
+						page={page}
+						size="large"
+						count={Math.ceil(maxPageIndex / 9.0)}
+						onChange={onChangePage}
+					/>
+				) : (
+					<div id="vacant-article"> 해당 조건의 게시글이 존재하지 않습니다!</div>
+				))}
 		</div>
 	);
 };

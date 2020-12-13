@@ -63,16 +63,14 @@
       align-content: space-between;
 
       #article-search {
-        width: 60%;
         display: flex;
         flex-direction: row;
         padding: 0;
-        min-width: 220px;
         align-items: center;
         justify-content: space-between;
 
         #article-search-box {
-          width: 60%;
+          min-width: 300px;
           height: 100%;
           display: flex;
           flex-direction: row;
@@ -87,12 +85,10 @@
           #article-search-input {
             font: {
               family: HelveticaNeue, sans-serif;
-              size: 100%;
               weight: bold;
               stretch: normal;
               style: normal;
             }
-            width: 450px;
             letter-spacing: normal;
             text-align: left;
             color: #707070;
@@ -104,14 +100,13 @@
           display: flex;
 
           #most-recent-filter, #most-popular-filter, #most-recommended-filter {
-            width: 50%;
+            width: 85px;
             height: 50px;
             border-radius: 30px;
           }
 
           button {
             margin: 0 3%;
-            width: 50%;
             height: 100%;
             border-radius: 11px;
             border: solid 1px #f7f7f7;
@@ -145,7 +140,6 @@
           
           button:focus {
             outline: 0 !important;
-            //color: #408bf9
           }   
         }
       }
@@ -164,23 +158,11 @@
         color: #020215;
         border: none;
         outline: none;
-        /*
-        display: flex;
-        justify-content: center;
-        align-content: center;
-        flex-direction: column;
-        flex-direction: row;
-        width: 80px;
-        height: 50px;
-        border-radius: 30px;
-        background-color: #ff8a3d;
-        color: white;
-        */
       }
     }
   }
 
-  #article-cards {
+  #article-cards-false {
     min-height: 400px;
     display: flex;
     flex-flow: wrap;
@@ -191,6 +173,12 @@
   
   #article-list-page {
     display: flex;
+    justify-content: center !important;
+    margin: 0 !important;
+  }
+
+  #article-cards-true {
+    display: flex;
     justify-content: center;
   }
 
@@ -199,4 +187,15 @@
     justify-content: center;
     align-items: center;
   }
+  
+  #vacant-article {
+    display: flex;
+    margin-top: 30%;
+    font-size: 100%;
+    color: #707070;
+    font-family: 'Jua', sans-serif;
+    justify-content: center;
+  }
 }
+
+
