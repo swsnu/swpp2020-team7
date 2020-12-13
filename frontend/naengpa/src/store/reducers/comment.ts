@@ -35,7 +35,10 @@ function commentReducer(
 			const filtered = state.commentList.filter(
 				(com: CommentEntity) => com.id !== action.payload.id,
 			);
-			window.sessionStorage.setItem('comments', JSON.stringify([...filtered, action.payload]));
+			window.sessionStorage.setItem(
+				'comments',
+				JSON.stringify([...filtered, action.payload]),
+			);
 			return { ...state, commentList: [...filtered, action.payload] };
 		}
 		/* DELETE COMMENT */
@@ -53,7 +56,7 @@ function commentReducer(
 		case actionTypes.TOGGLE_COMMENT_LIKE: {
 			commentList = [];
 			if (state.commentList.length) {
-				commentList = state.commentList.map((comment:CommentEntity) => {
+				commentList = state.commentList.map((comment: CommentEntity) => {
 					if ((comment.id as number) === action.payload.id) {
 						comment.userLike = action.payload.userLike;
 						comment.totalLikes = action.payload.totalLikes;

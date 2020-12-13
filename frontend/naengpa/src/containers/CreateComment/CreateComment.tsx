@@ -1,4 +1,4 @@
-import { Button, createStyles,makeStyles, Input, Theme, Grid } from '@material-ui/core';
+import { Button, createStyles, makeStyles, Input, Theme, Grid } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { CommentInputDTO } from '../../model/comment';
@@ -55,11 +55,7 @@ const Comment: React.FC<CreateCommentProps> = ({ recipeId }) => {
 				onChange={(e) => setContent(e.target.value)}
 				onKeyPress={onKeyPress}
 			/>
-			<Button
-				id="comment-input-button"
-				className={classes.button}
-				onClick={onClickSubmit}
-			>
+			<Button id="comment-input-button" className={classes.button} onClick={onClickSubmit}>
 				등록하기
 			</Button>
 		</Grid>

@@ -245,8 +245,10 @@ export const getMessages = (index: number) => {
 	return async (dispatch: any) => {
 		try {
 			const chatRoom = JSON.parse(window.localStorage.getItem('chatroom') as string);
-			if(chatRoom) {
-				const response = await axios.put(`/api/chatrooms/${chatRoom?.id}/`, { page: index });
+			if (chatRoom) {
+				const response = await axios.put(`/api/chatrooms/${chatRoom?.id}/`, {
+					page: index,
+				});
 				dispatch(getMessages_(response.data));
 			}
 		} catch (e) {
