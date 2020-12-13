@@ -32,11 +32,11 @@ function commentReducer(
 			return { ...state, commentList: [...state.commentList, action.payload] };
 		/* EDIT COMMENT */
 		case actionTypes.EDIT_COMMENT: {
-			const edited = state.commentList.filter(
+			const filtered = state.commentList.filter(
 				(com: CommentEntity) => com.id !== action.payload.id,
 			);
-			window.sessionStorage.setItem('comments', JSON.stringify([...edited, action.payload]));
-			return { ...state, commentList: action.payload };
+			window.sessionStorage.setItem('comments', JSON.stringify([...filtered, action.payload]));
+			return { ...state, commentList: [...filtered, action.payload] };
 		}
 		/* DELETE COMMENT */
 		case actionTypes.DELETE_COMMENT: {

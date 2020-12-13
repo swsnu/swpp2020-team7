@@ -1,13 +1,18 @@
-import { Button, createStyles, Icon, makeStyles, TextField, Theme } from '@material-ui/core';
+import { Button, createStyles,makeStyles, Input, Theme, Grid } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { CommentInputDTO } from '../../model/comment';
 import { addComment } from '../../store/actions';
+import './CreateComment.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		button: {
 			margin: theme.spacing(1),
+		},
+		underline: {
+			'&&&::before': { borderBottom: 'none' },
+			'&&:after': { borderBottom: 'none' },
 		},
 	}),
 );
@@ -28,6 +33,7 @@ const Comment: React.FC<CreateCommentProps> = ({ recipeId }) => {
 				content,
 			};
 			dispatch(addComment(comment));
+			setContent('');
 		}
 	};
 
@@ -38,27 +44,25 @@ const Comment: React.FC<CreateCommentProps> = ({ recipeId }) => {
 	};
 
 	return (
-		<div id="create-comment">
-			<TextField
-				id="outlined-basic"
-				label="Outlined"
-				variant="outlined"
+		<Grid id="create-comment">
+			<Input
+				id="comment-input-field"
 				fullWidth
+				className={classes.underline}
 				placeholder="댓글을 남겨보세요!"
+				inputProps={{ 'aria-label': 'search' }}
 				value={content}
-				onChange={(e: any) => setContent(e.target.value)}
+				onChange={(e) => setContent(e.target.value)}
 				onKeyPress={onKeyPress}
 			/>
 			<Button
-				variant="contained"
-				color="primary"
+				id="comment-input-button"
 				className={classes.button}
-				endIcon={<Icon>send</Icon>}
 				onClick={onClickSubmit}
 			>
 				등록하기
 			</Button>
-		</div>
+		</Grid>
 	);
 };
 
