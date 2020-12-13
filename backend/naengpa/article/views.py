@@ -5,6 +5,7 @@ from django.http import JsonResponse, HttpResponseBadRequest,  HttpResponseNotFo
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
 from django.db import transaction
+from django.db.models.functions import Concat
 from django.db.models import F, Q, Value, CharField
 from rest_framework.decorators import api_view
 
@@ -61,10 +62,10 @@ def article_list_get(request):
             } for article in sorted_list] if Article.objects.count() != 0 else []
             cache.set('articles', article_collection)
         else:
-            included_region_names = request.user.region.neighborhood.objects.filter(
-                region_range=request.user.region_range).values_list('neighborhood__name', flat=True)
+            included_region_names = NeighborhoodRegion.objects.filter(from_region_id=request.user.region.id,
+                                                                      region_range=request.user.region_range).annotate(name=Concat(F('neighborhood__gu_name'), Value(' '), F('neighborhood__dong_name'))).values_list('name', flat=True)
             article_collection = list(
-                filter(lambda art: art.region in included_region_names, article_collection))
+                filter(lambda art: art['region'] in list(included_region_names), article_collection))
     else:
         included_region_ids = request.user.region.neighborhood.objects.filter(
             region_range=request.user.region_range).values_list('neighborhood_id', flat=True)
