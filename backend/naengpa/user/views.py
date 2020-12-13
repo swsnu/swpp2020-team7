@@ -44,7 +44,7 @@ def get_region_info(request):
         """ get region list from seoul's center('종로', id:44) """
         region_list = get_region_list()
     except Region.DoesNotExist:
-        return HttpResponseBadRequest()
+        return HttpResponseNotFound()
     return JsonResponse(region_list, safe=False)
 
 
@@ -77,6 +77,7 @@ def signup(request):
         user.save()
         my_fridge = Fridge(user=user)
         my_fridge.save()
+
         checked_user = authenticate(
             request, username=username, password=password)
         login(request, checked_user)
@@ -178,16 +179,14 @@ def user(request, id):
             return HttpResponseForbidden()
         user = get_object_or_404(User, pk=id)
         try:
-            req_data = json.loads(request.POST.get('user'))
+            req_data = json.loads(request.data['user'])
             edit_name, edit_date_of_birth, edit_email, password_to_check = itemgetter(
                 'name', 'dateOfBirth', 'email', 'password')(req_data)
-
             profile_image = request.FILES.getlist('image')
             if profile_image:
                 uploaded_path = upload_profile_image(profile_image[0], id)
                 user.profile_image = uploaded_path
-
-        except (KeyError, json.decoder.JSONDecodeError) as e:
+        except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
         if check_password(password_to_check, request.user.password):
             user.name = edit_name
@@ -220,9 +219,8 @@ def change_password(request, id):
             user = User.objects.get(id=id)
         except User.DoesNotExist:
             return HttpResponseNotFound()
-        req_data = json.loads(request.body.decode())
-        current_password = req_data['currentPassword']
-        new_password = req_data['newPassword']
+        current_password = request.data['currentPassword']
+        new_password = request.data['newPassword']
         if check_password(current_password, request.user.password):
             user.set_password(new_password)
             user.save()
@@ -246,7 +244,6 @@ def change_password(request, id):
 
 @ensure_csrf_cookie
 @api_view(['GET'])
-@login_required_401
 def user_list(request):
     """get today naengpa-star user list"""
     if request.method == 'GET':
@@ -261,7 +258,7 @@ def user_list(request):
                 'region': get_region(user.region),
                 "naengpaScore": user.naengpa_score,
                 'profileImage': user.profile_image,
-            } for user in User.objects.select_related('region').order_by('-naengpa_score')[:2]] if User.objects.count() else []
+            } for user in User.objects.select_related('region').order_by('-naengpa_score')[:4]] if User.objects.count() else []
             cache.set('users', user_collection)
         return JsonResponse(user_collection, safe=False)
 

@@ -10,25 +10,10 @@ div#today-recipe {
 
   div#today-recipe-list {
     display: grid;
-    grid-template-columns: 5fr 5fr;
+    grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
     font-weight: bold;
     justify-content: center;
-    gap:2.5%;
-  }
-
-  #recipe-content {
-    display: flex;
-    flex-direction: column;
-  }
-
-  #recipe-food-category {
-    font-size: 90%;
-    font-weight: lighter !important;
-
-  }
-
-  #recipe-cook-time, #recipe-like-count {
-    font-size: 10px;
+    gap:3%;
   }
 }

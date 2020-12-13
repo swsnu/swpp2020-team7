@@ -35,7 +35,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	const [query, setQuery] = useState('');
 
 	useEffect(() => {
-		if (!articleList) {
+		if (!articleList || !articleList.length) {
 			setLoading(true);
 			dispatch(getArticleList(query, optionsFilter));
 		}
