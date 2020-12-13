@@ -36,7 +36,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const onLoadPage = useCallback(async () => {
 		if (loading) {
 			await dispatch(getRecipeList(query, sortBy, searchCategory, page));
-			if(!recipeState.recipeList.length) {
+			if(!recipeState.recipeList || !recipeState.recipeList.length) {
 				if(sortBy === 'ingredient') {
 					toast.info(
 						'🐬 냉장고 속 재료와 오늘의 재료로 추천된 레시피가 없습니다!'
