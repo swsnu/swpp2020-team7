@@ -2,4 +2,71 @@
 
 div#comment {
     font-family: 'Jua', sans-serif;
+    
+    #comment-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+    #comment-author {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    #comment-info-box {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #comment-edit-box {
+      display: flex !important;
+      flex-direction: row !important;
+    }
+
+    #comment-like {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        color: #ff8a3d; 
+        font-weight: bold;
+        margin-top: 5px;
+        
+        #comment-like-count-icon {
+          color: #ff8a3d;
+        }
+    }
+  
+      #comment-setting-alert {
+        position: absolute;
+        display: inline-block;
+        z-index: 1;
+        background-color: #ffffff;
+        border: solid 1px #707070; 
+      }
+
+      #comment-setting-button {
+          align-items: center;
+      }
+
+      #comment-content {
+        display: flex;
+        flex-direction: row;
+        justify-content:space-between;
+        padding: 0;
+        margin: 0 !important;
+
+        #comment-edit-content {
+          border-radius: 10px;
+          padding-left: 10px;
+          border: solid 1px #707070;  
+        }
+
+        #confirm-edit-button {
+          border-radius: 10px;
+          margin-right: 100px;
+          width: 115px;
+          border: 1px solid #707070; 
+        }
+    }
 }

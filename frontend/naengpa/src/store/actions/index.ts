@@ -13,7 +13,7 @@ export {
 	getChatRoom,
 	createChatRoom,
 	sendChat,
-	receiveChat, // should be deleted
+	getMessages,
 	deleteChatRoom, // should be deleted
 } from './user';
 export { getRegionList } from './region';
@@ -52,8 +52,8 @@ export {
 	getCommentList_,
 	getComment,
 	addComment,
-	toggleCommentLike,
 	deleteComment,
+	toggleCommentLike,
 	editComment,
 } from './comment';
 

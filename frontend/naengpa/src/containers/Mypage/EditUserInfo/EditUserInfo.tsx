@@ -135,7 +135,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 						</div>
 						<div id="region-part">
 							<div className="info-head">지역 </div>
-							<span id="edit-region">{user?.region.name}</span>
+							<span id="edit-region">{user?.region?.name}</span>
 						</div>
 						<div id="password-part">
 							<div className="info-head">비밀번호 </div>
