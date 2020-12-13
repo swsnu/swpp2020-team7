@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { History } from 'history';
 import { useSelector, useDispatch } from 'react-redux';
 import './ChatDetail.scss';
 import { Button, Divider, Typography } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
-// import { io } from 'socket.io-client';
-import { sendChat } from '../../../store/actions/index';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { sendChat, getMessages } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import Tab from '../../../components/Tab/Tab';
-
-// const ENDPOINT = '127.0.0.0:8000';
+import { MessageEntity } from '../../../model/chat';
 
 interface ChatDetailProps {
 	history: History;
@@ -17,42 +16,35 @@ interface ChatDetailProps {
 const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user);
+	const [chatMessageList, setChatMessageList] = useState<MessageEntity[]>([]);
 	const [content, setContent] = useState('');
+	const [index, setIndex] = useState(1);
 
-	// const socket = io(ENDPOINT);
-	// socket.connect();
-	// socket.on('connect', (data: any) => {
-	// 	console.log(data);
-	// 	console.log('Server connected to Client');
-	// });
-	// socket.on('messages', (data: any) => {
-	// 	console.log(data);
-	// });
-
-	const chatMessage = user ? (
-		user.chatRoom!.messages!.map((message, idx) => {
-			if (message.author === user?.user?.username) {
+	const chatMessage =
+		user && user.chatRoom ? (
+			user.chatRoom!.messages!.map((message, idx) => {
+				if (message.author === user?.user?.username) {
+					return (
+						<Typography
+							key={`${message.createdAt}-${message.author}-${idx + 1}`}
+							id="user-message"
+							gutterBottom
+						>
+							<span id="message-created-time">{message.createdAt}</span>
+							<span id="message-content">{message.content}</span>
+						</Typography>
+					);
+				}
 				return (
-					<Typography
-						key={`${message.createdAt}-${message.author}`}
-						id="user-message"
-						gutterBottom
-					>
-						<span id="message-created-time">{message.createdAt}</span>
+					<Typography id="member-message" gutterBottom>
 						<span id="message-content">{message.content}</span>
+						<span id="message-created-time">{message.createdAt}</span>
 					</Typography>
 				);
-			}
-			return (
-				<Typography id="member-message" gutterBottom>
-					<span id="message-content">{message.content}</span>
-					<span id="message-created-time">{message.createdAt}</span>
-				</Typography>
-			);
-		})
-	) : (
-		<></>
-	);
+			})
+		) : (
+			<></>
+		);
 
 	const onClickGoBackToChatRoomList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
@@ -65,7 +57,6 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 			e.stopPropagation();
 			dispatch(sendChat(user.chatRoom!.id, content));
 			setContent('');
-			// socket.emit('send message', content);
 		}
 	};
 
@@ -76,6 +67,11 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 			setContent('');
 		}
 	};
+
+	useEffect(() => {
+		if (user?.chatRoom && user!.chatRoom?.messages)
+			setChatMessageList((state) => [...state, ...user.messages]);
+	}, [user.chatRoom]);
 
 	return (
 		<div id="mypage">
@@ -90,11 +86,30 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					</Button>
 					<div id="member-info-box">
 						<div id="chat-member-image" />
-						<div id="chat-member-username">{user.chatRoom!.member}</div>{' '}
+						<div id="chat-member-username">{user.chatRoom?.member}</div>{' '}
 					</div>
 				</Typography>
 				<Divider />
-				{chatMessage}
+				<div
+					id="scrollabelDiv"
+					style={{
+						height: 400,
+						overflow: 'auto',
+						display: 'flex',
+						flexDirection: 'column-reverse',
+					}}
+				>
+					<InfiniteScroll
+						dataLength={chatMessageList?.length}
+						style={{ display: 'flex', flexDirection: 'column-reverse' }}
+						next={() => dispatch(getMessages(index))}
+						inverse
+						hasMore={false}
+						loader={<h4>Loading...</h4>}
+					>
+						<div id="chat-message-box">{chatMessage}</div>
+					</InfiniteScroll>
+				</div>
 				<div id="chat-input-box">
 					<InputBase
 						id="chat-input-field"

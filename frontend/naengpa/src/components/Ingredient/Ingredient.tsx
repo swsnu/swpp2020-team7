@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CancelIcon from '@material-ui/icons/Cancel';
 import StarIcon from '@material-ui/icons/Star';
@@ -65,6 +65,10 @@ const Ingredient: React.FC<IngredientProps> = ({ ingredient }) => {
 		setIsTodayIngredient(!isTodayIngredient);
 		dispatch(toggleTodayIngredient(user!.id, target_id));
 	};
+
+	useEffect(() => {
+		setIsTodayIngredient(ingredient.isTodayIngredient);
+	}, [ingredient.isTodayIngredient]);
 
 	return (
 		<div id="ingredient">

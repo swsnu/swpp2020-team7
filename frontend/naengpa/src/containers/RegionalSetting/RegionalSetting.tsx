@@ -176,12 +176,12 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 							aria-label="pretto slider"
 							valueLabelDisplay="auto"
 							min={1}
-							max={5}
+							max={4}
 							onChange={(e, value) => setLevel((value as number) + 3)}
 							id="slider-bar"
 						/>
 						<div id="region-level-mark">
-							<div>좁음(1 km)</div> <div>넓음(5 km)</div>
+							<div>좁음(1 km)</div> <div>넓음(4 km)</div>
 						</div>
 					</div>
 				</div>

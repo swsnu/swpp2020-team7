@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { Avatar } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
 import { AppState } from '../../../store/store';
 import Tab from '../../../components/Tab/Tab';
 import { changePassword } from '../../../store/actions/index';

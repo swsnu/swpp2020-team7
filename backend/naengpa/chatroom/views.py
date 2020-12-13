@@ -15,11 +15,6 @@ User = get_user_model()
 LETS_CHAT_MESSAGE = "채팅을 시작해보세요!"
 
 
-def get_time_format(time_str):
-    return time_str.strftime("%y.%m.%d") if time_str.strftime("%y.%m.%d") != timezone.now().strftime("%y.%m.%d") \
-        else time_str.strftime("%H:%M")
-
-
 def get_chatroom_list(request):
     try:
         user = request.user
@@ -56,8 +51,8 @@ def make_chatroom(request):
     try:
         friend_id = request.data['friend_id']
         friend = User.objects.get(id=friend_id)
-        chatroom = ChatRoom.objects.filter(
-            chat_members__in=[user, friend]).distinct()[0]
+        chatroom = ChatRoom.objects.get(
+            Q(chat_members=user) & Q(chat_members=friend))
         chat_user = user.chat_member.get(chatroom_id=chatroom.id)
         chat_user.notice = 0
         chat_user.save()
