@@ -108,7 +108,6 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	}, [
 		page,
 		query,
-		articleList,
 		optionsFilter.isForSale,
 		optionsFilter.isForExchange,
 		optionsFilter.isForShare,

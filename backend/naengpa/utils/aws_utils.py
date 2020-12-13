@@ -1,6 +1,9 @@
 """utils for aws s3"""
 import os
 import boto3
+import requests
+from PIL import Image
+from io import BytesIO
 from datetime import datetime
 from django.utils import timezone
 from naengpa.settings.env import S3_URL, AWS_S3_ACCESS_KEY_ID, AWS_S3_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_REGION_NAME
@@ -15,6 +18,20 @@ s3 = session.resource('s3')
 s3_bucket = s3.Bucket(AWS_STORAGE_BUCKET_NAME)
 
 
+class S3ImagesInvalidExtension(Exception):
+    pass
+
+
+def get_safe_ext(key):
+    ext = os.path.splitext(key)[-1].strip('.').upper()
+    if ext in ['JPG', 'JPEG']:
+        return 'jpeg'
+    elif ext in ['PNG']:
+        return 'png'
+    else:
+        raise S3ImagesInvalidExtension('Extension is invalid')
+
+
 def get_filename_format(prefix, fid, file_idx, fname):
     """
     return file path for aws s3 storage
@@ -24,7 +41,7 @@ def get_filename_format(prefix, fid, file_idx, fname):
     fname: given input file name
     """
     current_time = timezone.now().strftime("%Y%m%d-%H%M%S-%f")
-    return "{}/{}/{}-{}{}".format(prefix, fid, current_time, file_idx, os.path.splitext(fname)[1])
+    return "{}/{}/{}-{}.{}".format(prefix, fid, current_time, file_idx, get_safe_ext(fname))
 
 
 def upload_images(files, prefix, feed_id):
@@ -75,7 +92,7 @@ def upload_profile_image(file, user_id):
     returns list of s3 path for uploaded image
     """
     file_path = "profile/{}/profile_image{}".format(
-        user_id, os.path.splitext(file.name)[1])
+        user_id, get_safe_ext(file.name))
     s3_bucket.put_object(
         Key=file_path,
         Body=file.read(),
@@ -102,6 +119,29 @@ def upload_profile_images_with_local_path(paths, user_id_list):
         s3_bucket.put_object(
             Key=file_path,
             Body=open(path, 'rb').read(),
+        )
+        images_path.append(S3_URL + file_path)
+    return images_path
+
+
+def upload_images_from_urls(urls, prefix, feed_id):
+    """
+    upload images to aws s3 storage
+    urls: url list to images
+    prefix: recipe or article
+    feed_id: recipe_id or article_id
+    returns list of s3 path for each uploaded image
+    """
+    images_path = []
+    for idx, url in enumerate(urls):
+        response = requests.get(url)
+        buffer = BytesIO(response.content)
+        img = Image.open(buffer)
+        file_path = get_filename_format(
+            prefix, feed_id, idx, 'foo.jpeg' if img.format != 'PNG' else 'bar.png')
+        s3_bucket.put_object(
+            Key=file_path,
+            Body=buffer.getvalue(),
         )
         images_path.append(S3_URL + file_path)
     return images_path

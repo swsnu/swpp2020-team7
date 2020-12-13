@@ -355,6 +355,30 @@ class UserTestCase(TestCase):
         response = self.client.delete('/api/users/')
         self.assertEqual(response.status_code, 405)
 
+    def test_user_recipes(self):
+        response = self.client.get(
+            '/api/users/{}/recipes/'.format(self.test_user.id))
+        self.assertEqual(response.status_code, 401)
+
+        # with authorization
+        self.client.login(username='test', password='test')
+
+        response = self.client.get(
+            '/api/users/{}/recipes/'.format(self.test_user.id))
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(
+            '/api/users/{}/recipes/'.format(self.test_user.id))
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.put(
+            '/api/users/{}/recipes/'.format(self.test_user.id))
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.delete(
+            '/api/users/{}/recipes/'.format(self.test_user.id))
+        self.assertEqual(response.status_code, 405)
+
     def test_fridge_ingredient(self):
         # with authorization
         self.client.login(username='test', password='test')
