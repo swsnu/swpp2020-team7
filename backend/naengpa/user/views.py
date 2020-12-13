@@ -179,10 +179,9 @@ def user(request, id):
             return HttpResponseForbidden()
         user = get_object_or_404(User, pk=id)
         try:
-            req_data = json.loads(request.POST.get('user'))
+            req_data = json.loads(request.data['user'])
             edit_name, edit_date_of_birth, edit_email, password_to_check = itemgetter(
                 'name', 'dateOfBirth', 'email', 'password')(req_data)
-
             profile_image = request.FILES.getlist('image')
             if profile_image:
                 uploaded_path = upload_profile_image(profile_image[0], id)
@@ -220,9 +219,8 @@ def change_password(request, id):
             user = User.objects.get(id=id)
         except User.DoesNotExist:
             return HttpResponseNotFound()
-        req_data = json.loads(request.body.decode())
-        current_password = req_data['currentPassword']
-        new_password = req_data['newPassword']
+        current_password = request.data['currentPassword']
+        new_password = request.data['newPassword']
         if check_password(current_password, request.user.password):
             user.set_password(new_password)
             user.save()
