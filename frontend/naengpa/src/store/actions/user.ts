@@ -150,7 +150,7 @@ export const changePassword = (user: ChangePasswordInputDTO) => {
 	return async (dispatch: any) => {
 		let response;
 		try {
-			response = await axios.put(`/api/users/${user.id}/changePassword/`, user);
+			response = await axios.put(`/api/users/${user.id}/password/`, user);
 			const currentUser: UserEntity = response.data;
 			dispatch(changePassword_(currentUser));
 			dispatch(push(`/@${currentUser.username}/info`));
