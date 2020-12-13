@@ -10,7 +10,6 @@ import { ArticleEntity, ArticleOptions } from '../../model/article';
 import Article from '../../components/Article/Article';
 import { getArticle, getArticleList } from '../../store/actions/index';
 import { AppState } from '../../store/store';
-
 import './ArticleList.scss';
 
 interface ArticleListProps {
@@ -26,35 +25,22 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	const [currentList, setCurrentList] = useState<ArticleEntity[]>(articleList);
 	const [currentPage, setCurrentPage] = useState<ArticleEntity[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
-	const [optionsFilter, setOptionsFilter] = useState<ArticleOptions>({
-		isForSale: false,
-		isForExchange: false,
-		isForShare: false,
-	});
+	const [forSale, setForSale] = useState<boolean>(true);
+	const [forExchange, setForExchange] = useState<boolean>(true);
+	const [forShare, setForShare] = useState<boolean>(true);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [query, setQuery] = useState('');
-
-	// const [articles, setArticles] = useState<JSX.Element[]>([]);
-
-	// const setArticleList = () => {
-	// 	const article = currentPage.map((item: any) => {
-	// 		return (
-	// 			<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
-	// 		);
-	// 	});
-	// 	setArticles(article);
-	// };
 
 	const onClickOptions = (target: string) => {
 		switch (target) {
 			case 'sale':
-				setOptionsFilter({ ...optionsFilter, isForSale: !optionsFilter.isForSale });
+				setForSale((state) => !state);
 				break;
 			case 'exchange':
-				setOptionsFilter({ ...optionsFilter, isForExchange: !optionsFilter.isForExchange });
+				setForExchange((state) => !state);
 				break;
 			case 'share':
-				setOptionsFilter({ ...optionsFilter, isForShare: !optionsFilter.isForShare });
+				setForShare((state) => !state);
 				break;
 			default:
 		}
@@ -64,17 +50,13 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	const onClickSearch = async (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter') {
 			setLoading(true);
-			onLoadPage();
-			// await dispatch(getArticleList(query));
-			// setLoading(true);
 		}
 	};
 
 	const onChangePage = (e: React.ChangeEvent<unknown>, value: number): void => {
 		e.preventDefault();
 		setPage(value);
-		setCurrentPage(currentList.slice((value - 1) * 9, (value - 1) * 9 + 9));
-		// setLoading(true);
+		setLoading(true);
 	};
 
 	const onClickCreateArticle = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -89,29 +71,28 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 
 	const onLoadPage = useCallback(async () => {
 		if (loading) {
-			// setLoading(true);
-			await dispatch(getArticleList(query, optionsFilter));
+			await dispatch(
+				getArticleList(query, {
+					isForExchange: forExchange,
+					isForSale: forSale,
+					isForShare: forShare,
+				}),
+			);
+			console.log(articleList, 'list가 잘 나오나 ');
 			setCurrentList(
-				optionsFilter.isForShare || optionsFilter.isForSale || optionsFilter.isForExchange
+				forShare || forSale || forExchange
 					? articleList.filter(
 							(a) =>
-								(optionsFilter.isForShare && a.options.isForShare) ||
-								(optionsFilter.isForSale && a.options.isForSale) ||
-								(optionsFilter.isForExchange && a.options.isForExchange),
+								(forShare && a.options.isForShare) ||
+								(forSale && a.options.isForSale) ||
+								(forExchange && a.options.isForExchange),
 					  )
 					: articleList,
 			);
 			setCurrentPage(currentList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-			// setArticleList();
 			setLoading(false);
 		}
-	}, [
-		page,
-		query,
-		optionsFilter.isForSale,
-		optionsFilter.isForExchange,
-		optionsFilter.isForShare,
-	]);
+	}, [page, query, forSale, forExchange, forShare]);
 
 	const articles = currentPage.map((item) => (
 		<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
@@ -120,80 +101,6 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	useEffect(() => {
 		onLoadPage();
 	}, [onLoadPage]);
-
-	// useEffect(() => {
-	// 	onLoadPage();
-	// }, [
-	// 	articleList,
-	// 	optionsFilter.isForSale,
-	// 	optionsFilter.isForExchange,
-	// 	optionsFilter.isForShare,
-	// ]);
-
-	// useEffect(() => {
-	// 	if (!articleList) setLoading(true);
-	// }, [articleList]);
-
-	// useEffect(() => {
-	// 	if (query && !loading) {
-	// 		setPage(1);
-	// 		//setLoading(true);
-	// 		//onLoadPage();
-	// 	}
-	// }, [query]);
-
-	// useEffect(() => {
-	// 	if (!loading) {
-	// 		setLoading(true);
-	// 		//onLoadPage();
-	// 	}
-	// }, [page]);
-
-	// const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {
-	// 	e.preventDefault();
-	// 	history.push('/recipes/create');
-	// };
-
-	// const onChangePage = (e: React.ChangeEvent<unknown>, value: number) => {
-	// 	e.preventDefault();
-	// 	setPage(value);
-	// };
-
-	// useEffect(() => {
-	// 	if (!articleList) {
-	// 		// setLoading(true);
-	// 		// dispatch(getArticleList(query, optionsFilter));
-	// 		onLoadArticle();
-	// 	}
-	// });
-
-	// useEffect(() => {
-	// 	setLoading(true);
-	// 	setCurrentList(
-	// 		articleList
-	// 			.filter((a) => !optionsFilter.isForSale || a.options.isForSale)
-	// 			.filter((a) => !optionsFilter.isForExchange || a.options.isForExchange)
-	// 			.filter((a) => !optionsFilter.isForShare || a.options.isForShare),
-	// 	);
-	// 	setMaxPageIndex(Math.ceil(currentList.length / 9.0));
-	// 	setCurrentPage(currentList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-	// 	setLoading(false);
-	// }, [
-	// 	articleList,
-	// 	optionsFilter.isForSale,
-	// 	optionsFilter.isForExchange,
-	// 	optionsFilter.isForShare,
-	// ]);
-
-	// const onLoadArticle = async () => {
-	// 	setLoading(true);
-	// 	await dispatch(getArticleList(query));
-	// 	setLoading(false);
-	// };
-
-	// const articles = currentPage.map((item) => (
-	// 	<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
-	// ));
 
 	return (
 		<div id="article-list">
@@ -209,7 +116,10 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 								id="article-search-input"
 								placeholder="찾고싶은 재료명을 검색해보세요!"
 								inputProps={{ 'aria-label': 'search' }}
-								onChange={(e) => setQuery(e.target.value)}
+								onChange={(e) => {
+									setQuery(e.target.value);
+									setLoading(true);
+								}}
 								onKeyDown={onClickSearch}
 							/>
 							<SearchIcon id="article-list-search-icon" />
@@ -217,7 +127,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 						<div id="article-list-options-filter">
 							<button
 								id="most-recent-filter"
-								className={optionsFilter.isForSale ? 'selected' : ''}
+								className={forSale ? 'selected' : ''}
 								type="button"
 								onClick={() => onClickOptions('sale')}
 							>
@@ -225,7 +135,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 							</button>
 							<button
 								id="most-popular-filter"
-								className={optionsFilter.isForExchange ? 'selected' : ''}
+								className={forExchange ? 'selected' : ''}
 								type="button"
 								onClick={() => onClickOptions('exchange')}
 							>
@@ -233,7 +143,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 							</button>
 							<button
 								id="most-recommended-filter"
-								className={optionsFilter.isForShare ? 'selected' : ''}
+								className={forShare ? 'selected' : ''}
 								type="button"
 								onClick={() => onClickOptions('share')}
 							>
