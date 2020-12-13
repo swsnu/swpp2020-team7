@@ -23,8 +23,8 @@ import { AppState } from '../../../store/store';
 import Article from '../../../components/Article/Article';
 import Comment from '../../../components/Comment/Comment';
 import CreateComment from '../../CreateComment/CreateComment';
-import { CommentEntity, RecipeEntity, RecipeImage } from '../../../model/recipe';
-
+import { RecipeEntity, RecipeImage } from '../../../model/recipe';
+import { CommentEntity } from '../../../model/comment';
 interface RecipeDetailProps {
 	history: History;
 }
@@ -236,26 +236,28 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 							</div>
 						</Grid>
 						<Grid item>
-							<IconButton
-								id="recipe-setting-button"
-								onClick={() => setAlert(!alert)}
-								disabled={user!.id !== recipe?.authorId}
-							>
+							{user!.id !== recipe?.authorId && (<>
+								<IconButton
+									id="recipe-setting-button"
+									onClick={() => setAlert(!alert)}
+								>
 								<MoreVertIcon />
-							</IconButton>
-							<Collapse in={alert}>
-								<Alert id="recipe-setting-alert" icon={false}>
-									<Button id="recipe-edit" onClick={() => onClickEditRecipe()}>
-										수정
-									</Button>
-									<Button
-										id="recipe-delete"
-										onClick={() => onClickDeleteRecipe()}
-									>
-										삭제
-									</Button>
-								</Alert>
-							</Collapse>
+								</IconButton>
+								<Collapse in={alert}>
+									<Alert id="recipe-setting-alert" icon={false}>
+										<Button id="recipe-edit" onClick={() => onClickEditRecipe()}>
+											수정
+										</Button>
+										<Button
+											id="recipe-delete"
+											onClick={() => onClickDeleteRecipe()}
+										>
+											삭제
+										</Button>
+									</Alert>
+								</Collapse>
+								</>
+							)}	
 						</Grid>
 					</Grid>
 				</Grid>
