@@ -77,6 +77,7 @@ def signup(request):
         user.save()
         my_fridge = Fridge(user=user)
         my_fridge.save()
+
         checked_user = authenticate(
             request, username=username, password=password)
         login(request, checked_user)
