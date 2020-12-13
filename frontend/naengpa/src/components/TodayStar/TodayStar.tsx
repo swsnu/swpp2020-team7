@@ -11,7 +11,7 @@ const TodayStar: React.FC = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (!userList) {
+		if (!userList || !userList.length) {
 			dispatch(getUserList());
 		}
 	}, [dispatch]);

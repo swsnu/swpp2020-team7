@@ -186,8 +186,7 @@ def user(request, id):
             if profile_image:
                 uploaded_path = upload_profile_image(profile_image[0], id)
                 user.profile_image = uploaded_path
-
-        except (KeyError, json.decoder.JSONDecodeError) as e:
+        except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
         if check_password(password_to_check, request.user.password):
             user.name = edit_name
@@ -260,7 +259,7 @@ def user_list(request):
                 'region': get_region(user.region),
                 "naengpaScore": user.naengpa_score,
                 'profileImage': user.profile_image,
-            } for user in User.objects.select_related('region').order_by('-naengpa_score')[:2]] if User.objects.count() else []
+            } for user in User.objects.select_related('region').order_by('-naengpa_score')[:4]] if User.objects.count() else []
             cache.set('users', user_collection)
         return JsonResponse(user_collection, safe=False)
 
