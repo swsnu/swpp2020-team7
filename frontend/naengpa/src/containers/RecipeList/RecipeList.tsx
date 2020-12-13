@@ -36,12 +36,10 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const onLoadPage = useCallback(async () => {
 		if (loading) {
 			await dispatch(getRecipeList(query, sortBy, searchCategory, page));
-			if(!recipeState.recipeList || !recipeState.recipeList.length) {
-				if(sortBy === 'ingredient') {
-					toast.info(
-						'🐬 냉장고 속 재료와 오늘의 재료로 추천된 레시피가 없습니다!'
-					);
-						setSortBy(() => 'created_at')
+			if (!recipeState.recipeList || !recipeState.recipeList.length) {
+				if (sortBy === 'ingredient') {
+					toast.info('🐬 냉장고 속 재료와 오늘의 재료로 추천된 레시피가 없습니다!');
+					setSortBy(() => 'created_at');
 				}
 			}
 			setMaxPageIndex(recipeState.lastPageIndex);
@@ -126,7 +124,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 				</div>
 				<div id="recipe-list-buttons">
 					<button
-						id={`filter-button-${sortBy==='created_at'}`}
+						id={`filter-button-${sortBy === 'created_at'}`}
 						type="button"
 						onClick={(e) => {
 							e.preventDefault();
@@ -138,7 +136,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 						최신
 					</button>
 					<button
-						id={`filter-button-${sortBy==='likes'}`}
+						id={`filter-button-${sortBy === 'likes'}`}
 						type="button"
 						onClick={(e) => {
 							e.preventDefault();
@@ -150,7 +148,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 						인기
 					</button>
 					<button
-						id={`filter-button-${sortBy==='ingredient'}`}
+						id={`filter-button-${sortBy === 'ingredient'}`}
 						type="button"
 						onClick={(e) => {
 							e.preventDefault();
@@ -200,4 +198,4 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	);
 };
 
-export default RecipeList;
+export default React.memo(RecipeList);
