@@ -4,10 +4,10 @@ import { History } from 'history';
 import './ChatRoomList.scss';
 import '../Mypage/UserInfo/UserInfo.scss';
 import { Button, Divider, Typography } from '@material-ui/core';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Tab from '../../components/Tab/Tab';
 import { getChatRoomList, getChatRoom } from '../../store/actions/index';
 import { AppState } from '../../store/store';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { ChatEntity } from '../../model/chat';
 
 interface ChatRoomListProps {
@@ -50,23 +50,24 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 				<Typography id="chatroom-header" gutterBottom>
 					쪽지함
 				</Typography>
-				<div id="scrollabelDiv"
+				<div
+					id="scrollabelDiv"
 					style={{
 						height: 500,
 						overflow: 'auto',
 						display: 'flex',
 						flexDirection: 'column',
-					}}>
-				<InfiniteScroll 
-					dataLength={user.chatRoomList?.length}
-					style={{ display: 'flex', flexDirection: 'column' }}
-					next={() => dispatch(getChatRoomList())}
-					hasMore={false}
-					loader={<h4>Loading...</h4>}
+					}}
 				>
-				</InfiniteScroll>			
-				<div>{chatRoomCollection}</div>
-			</div>
+					<InfiniteScroll
+						dataLength={user.chatRoomList?.length}
+						style={{ display: 'flex', flexDirection: 'column' }}
+						next={() => dispatch(getChatRoomList())}
+						hasMore={false}
+						loader={<h4>Loading...</h4>}
+					/>
+					<div>{chatRoomCollection}</div>
+				</div>
 			</div>
 		</div>
 	);

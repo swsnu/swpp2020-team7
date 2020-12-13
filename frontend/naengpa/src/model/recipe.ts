@@ -1,4 +1,4 @@
-import {CommentEntity} from './comment';
+import { CommentEntity } from './comment';
 
 /* RECIPE INTERFACE */
 export interface BaseRecipeEntity {

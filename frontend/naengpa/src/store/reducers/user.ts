@@ -69,7 +69,7 @@ function userReducer(
 			if (filteredChatRoomList && !filteredChatRoomList.length) {
 				filteredChatRoomList = [...filteredChatRoomList, action.chatRoom];
 			} else {
-				filteredChatRoomList = [ ...state.chatRoomList, action.chatRoom];
+				filteredChatRoomList = [...state.chatRoomList, action.chatRoom];
 			}
 			return { ...state, chatRoomList: filteredChatRoomList, chatRoom: action.chatRoom };
 
@@ -78,7 +78,7 @@ function userReducer(
 			return { ...state, chatRoom: action.chatRoom };
 
 		case actionTypes.GET_CHAT_MESSAGES:
-			return { ...state, messages: [...state.messages, ...action.messages] }
+			return { ...state, messages: [...state.messages, ...action.messages] };
 
 		/* GET CHATROOM LIST */
 		case actionTypes.GET_CHATROOM_LIST:
