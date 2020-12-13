@@ -334,6 +334,40 @@ def user_ingredient(request, user_id, id):
 
 
 @ensure_csrf_cookie
+@api_view(['GET'])
+@login_required_401
+def user_recipes(request, id):
+    """GET /api/users/:id/recipes/ Get given user's recipe list"""
+    if request.method == 'GET':
+        try:
+            user = User.objects.get(id=id)
+            recipe_collection = [{
+                "id": recipe.id,
+                "authorId": recipe.author.id,
+                "author": recipe.author.username,
+                "profileImage": recipe.author.profile_image,
+                "foodName": recipe.food_name,
+                "cookTime": recipe.cook_time,
+                "content": recipe.recipe_content,
+                "foodImagePaths": list(recipe.images.values('id', 'file_path')),
+                "recipeLike": recipe.like_users.count(),
+                "userLike": recipe.likes.filter(user_id=user.id).count(),
+                "createdAt": recipe.created_at.strftime("%Y.%m.%d"),
+                "foodCategory": recipe.food_category.name,
+                "ingredients": [{
+                    "id": item.id,
+                    "name": item.ingredient.name,
+                    "quantity": item.quantity,
+                } for item in recipe.ingredients.all().order_by('-id')],
+            } for recipe in user.recipes.select_related(
+                'author', 'food_category'
+            ).prefetch_related('ingredients').all()]
+        except User.DoesNotExist:
+            return HttpResponseBadRequest()
+        return JsonResponse(recipe_collection, safe=False)
+
+
+@ensure_csrf_cookie
 @api_view(['DELETE'])
 @login_required_401
 def notification_info(request, id):
