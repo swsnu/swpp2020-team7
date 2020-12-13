@@ -15,6 +15,8 @@ class Region(models.Model):
     dong_name = models.CharField(max_length=20)
     location = models.PointField(
         geography=True, default=Point(0.0, 0.0))
+    neighborhood = models.ManyToManyField(
+        'self', through='NeighborhoodRegion')
 
     @property
     def name(self):
@@ -91,6 +93,18 @@ class FridgeIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     is_today_ingredient = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
+
+
+class NeighborhoodRegion(models.Model):
+    ''' ManyToMany Through model for User's neighborhood Region list '''
+    from_region = models.ForeignKey(
+        Region, on_delete=models.CASCADE)
+    neighborhood = models.ForeignKey(
+        Region, on_delete=models.CASCADE, related_name='neighborhoods')
+    region_range = models.PositiveIntegerField(default=3, db_index=True)
+
+    class Meta:
+        unique_together = ('from_region', 'neighborhood', 'region_range')
 
 
 class Notification(models.Model):
