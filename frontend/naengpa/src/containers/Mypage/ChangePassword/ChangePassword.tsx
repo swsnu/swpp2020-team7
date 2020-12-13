@@ -6,7 +6,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { AppState } from '../../../store/store';
 import Tab from '../../../components/Tab/Tab';
 import { changePassword } from '../../../store/actions/index';
-import '../UserInfo/UserInfo.scss';
+import { Avatar } from '@material-ui/core';
 import './ChangePassword.scss';
 
 interface ChangePasswordProps {
@@ -47,7 +47,14 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 				</div>
 				<div id="change-password-content">
 					<div id="password-user-profile">
-						<AccountCircleIcon id="profile-picture" />
+						{user?.profileImage ? (
+							<Avatar
+								id="edit-profile-picture"
+								src={user?.profileImage as string}
+							/>
+						) : (
+							<AccountCircleIcon id="profile-picture" />
+						)}
 						<div id="myinfo-username">{user!.username}</div>
 					</div>
 					<div id="password-list">
