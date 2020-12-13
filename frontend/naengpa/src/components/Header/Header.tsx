@@ -7,10 +7,10 @@ interface NavigationProps {
 }
 
 const Header: React.FC<NavigationProps> = ({ history }) => {
-	const [currentBranchPath, setCurrentBranchPath] = useState('/fridge')
+	const [currentBranchPath, setCurrentBranchPath] = useState('/fridge');
 
 	const unlisten = history.listen((location, action) => {
-		switch(location.pathname) {
+		switch (location.pathname) {
 			case '/fridge':
 				setCurrentBranchPath('/fridge');
 				break;
