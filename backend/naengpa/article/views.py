@@ -158,7 +158,7 @@ def article_list_post(request):
             "isForShare": article.is_for_share
         },
         "images": list(article.images.values('id', 'file_path')),
-        "createdAt": article.created_at,
+        "createdAt": article.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
     }, status=201)
 
 

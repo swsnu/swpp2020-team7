@@ -1,4 +1,4 @@
-import React, { useEffect, MouseEvent, useState } from 'react';
+import React, { useEffect, MouseEvent, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 import Pagination from '@material-ui/lab/Pagination';
@@ -23,7 +23,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	const dispatch = useDispatch();
 
 	const [page, setPage] = useState(1);
-	const [currentList, setCurrentList] = useState<ArticleEntity[]>([]);
+	const [currentList, setCurrentList] = useState<ArticleEntity[]>(articleList);
 	const [currentPage, setCurrentPage] = useState<ArticleEntity[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
 	const [optionsFilter, setOptionsFilter] = useState<ArticleOptions>({
@@ -34,34 +34,17 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [query, setQuery] = useState('');
 
-	useEffect(() => {
-		if (!articleList) {
-			setLoading(true);
-			dispatch(getArticleList(query, optionsFilter));
-		}
-	});
 
-	useEffect(() => {
-		setLoading(true);
-		setCurrentList(
-			optionsFilter.isForShare || optionsFilter.isForSale || optionsFilter.isForExchange
-				? articleList.filter(
-						(a) =>
-							(optionsFilter.isForShare && a.options.isForShare) ||
-							(optionsFilter.isForSale && a.options.isForSale) ||
-							(optionsFilter.isForExchange && a.options.isForExchange),
-				  )
-				: articleList,
-		);
-		setMaxPageIndex(Math.ceil(currentList.length / 9.0));
-		setCurrentPage(currentList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-		setLoading(false);
-	}, [
-		articleList,
-		optionsFilter.isForSale,
-		optionsFilter.isForExchange,
-		optionsFilter.isForShare,
-	]);
+	// const [articles, setArticles] = useState<JSX.Element[]>([]);
+
+	// const setArticleList = () => {
+	// 	const article = currentPage.map((item: any) => {
+	// 		return (
+	// 			<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
+	// 		);
+	// 	});
+	// 	setArticles(article);
+	// };
 
 	const onClickOptions = (target: string) => {
 		switch (target) {
@@ -76,11 +59,15 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 				break;
 			default:
 		}
+		setLoading(true);
 	};
-	const onClickSearch = (e: React.KeyboardEvent) => {
+
+	const onClickSearch = async (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter') {
 			setLoading(true);
-			dispatch(getArticleList(query));
+			onLoadPage();
+			//await dispatch(getArticleList(query));
+			//setLoading(true);
 		}
 	};
 
@@ -88,6 +75,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		e.preventDefault();
 		setPage(value);
 		setCurrentPage(currentList.slice((value - 1) * 9, (value - 1) * 9 + 9));
+		//setLoading(true);
 	};
 
 	const onClickCreateArticle = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -96,13 +84,110 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	};
 
 	const onClickArticle = (id: number) => async () => {
-		dispatch(getArticle(id));
+		await dispatch(getArticle(id));
 		history.push(`/articles/:${id}`);
 	};
+
+	const onLoadPage = useCallback(async () => {
+		if (loading) {
+			//setLoading(true);
+			await dispatch(getArticleList(query, optionsFilter));
+			setCurrentList(
+				(optionsFilter.isForShare || optionsFilter.isForSale || optionsFilter.isForExchange) ?
+					articleList
+						.filter((a) =>
+							(optionsFilter.isForShare && a.options.isForShare) ||
+							(optionsFilter.isForSale && a.options.isForSale) ||
+							(optionsFilter.isForExchange && a.options.isForExchange)) : articleList
+			);
+			setCurrentPage(currentList.slice((page - 1) * 9, (page - 1) * 9 + 9));
+			//setArticleList();
+			setLoading(false);
+		}
+	}, [page, query, articleList, optionsFilter.isForSale, optionsFilter.isForExchange, optionsFilter.isForShare]);
 
 	const articles = currentPage.map((item) => (
 		<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
 	));
+
+
+	useEffect(() => {
+		onLoadPage();
+	}, [onLoadPage]);
+
+	// useEffect(() => {
+	// 	onLoadPage();
+	// }, [
+	// 	articleList,
+	// 	optionsFilter.isForSale,
+	// 	optionsFilter.isForExchange,
+	// 	optionsFilter.isForShare,
+	// ]);
+
+	// useEffect(() => {
+	// 	if (!articleList) setLoading(true);
+	// }, [articleList]);
+
+	// useEffect(() => {
+	// 	if (query && !loading) {
+	// 		setPage(1);
+	// 		//setLoading(true);
+	// 		//onLoadPage();
+	// 	}
+	// }, [query]);
+
+	// useEffect(() => {
+	// 	if (!loading) {
+	// 		setLoading(true);
+	// 		//onLoadPage();
+	// 	}
+	// }, [page]);
+
+	// const onClickCreateRecipe = (e: MouseEvent<HTMLButtonElement>): void => {
+	// 	e.preventDefault();
+	// 	history.push('/recipes/create');
+	// };
+
+	// const onChangePage = (e: React.ChangeEvent<unknown>, value: number) => {
+	// 	e.preventDefault();
+	// 	setPage(value);
+	// };
+
+	// useEffect(() => {
+	// 	if (!articleList) {
+	// 		// setLoading(true);
+	// 		// dispatch(getArticleList(query, optionsFilter));
+	// 		onLoadArticle();
+	// 	}
+	// });
+
+	// useEffect(() => {
+	// 	setLoading(true);
+	// 	setCurrentList(
+	// 		articleList
+	// 			.filter((a) => !optionsFilter.isForSale || a.options.isForSale)
+	// 			.filter((a) => !optionsFilter.isForExchange || a.options.isForExchange)
+	// 			.filter((a) => !optionsFilter.isForShare || a.options.isForShare),
+	// 	);
+	// 	setMaxPageIndex(Math.ceil(currentList.length / 9.0));
+	// 	setCurrentPage(currentList.slice((page - 1) * 9, (page - 1) * 9 + 9));
+	// 	setLoading(false);
+	// }, [
+	// 	articleList,
+	// 	optionsFilter.isForSale,
+	// 	optionsFilter.isForExchange,
+	// 	optionsFilter.isForShare,
+	// ]);
+
+	// const onLoadArticle = async () => {
+	// 	setLoading(true);
+	// 	await dispatch(getArticleList(query));
+	// 	setLoading(false);
+	// };
+
+	// const articles = currentPage.map((item) => (
+	// 	<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
+	// ));
 
 	return (
 		<div id="article-list">
