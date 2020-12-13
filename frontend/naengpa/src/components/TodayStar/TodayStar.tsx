@@ -1,22 +1,20 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { History } from 'history';
 import { AppState } from '../../store/store';
 import { getUserList } from '../../store/actions/index';
 import Profile from '../Profile/Profile';
 import './TodayStar.scss';
 
-interface TodayStarProps {
-	history: History;
-}
 
-const TodayStar: React.FC<TodayStarProps> = ({ history }) => {
+const TodayStar: React.FC = () => {
 	const userList = useSelector((state: AppState) => state.user.userList);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(getUserList());
-	}, []);
+		if (!userList) {
+			dispatch(getUserList());
+		}
+	}, [dispatch]);
 
 	const user = userList.map((item: any) => {
 		return <Profile key={item.id} profile={item} />;
