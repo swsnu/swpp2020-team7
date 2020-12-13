@@ -59,7 +59,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 							<label>현재 비밀번호</label>
 							<input
 								id="current-password"
-								type="text"
+								type="password"
 								onChange={(e) => setCurrentPassword(e.target.value)}
 							/>
 						</div>
@@ -67,7 +67,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 							<label>비밀번호</label>
 							<input
 								id="new-password"
-								type="text"
+								type="password"
 								onChange={(e) => setNewPassword(e.target.value)}
 							/>
 						</div>
@@ -75,7 +75,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 							<label>비밀번호 확인</label>
 							<input
 								id="confirm-new-password"
-								type="text"
+								type="password"
 								onChange={(e) => setConfirmNewPassword(e.target.value)}
 							/>
 						</div>

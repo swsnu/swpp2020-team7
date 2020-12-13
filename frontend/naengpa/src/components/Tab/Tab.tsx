@@ -10,6 +10,8 @@ interface TabProps {
 
 const Tab: React.FC<TabProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user.user);
+	console.log(window.location.pathname);
+	console.log(window.location.pathname === '/notifications');
 
 	return (
 		<div id="button-list">
@@ -17,6 +19,12 @@ const Tab: React.FC<TabProps> = ({ history }) => {
 				<button
 					id="myinfo-tab"
 					type="button"
+					style={{
+						backgroundColor:
+							window.location.pathname === `/@${user!.username}/info`
+								? 'lightgrey'
+								: 'white',
+					}}
 					onClick={() => history.push(`/@${user!.username}/info`)}
 				>
 					내 정보
@@ -26,6 +34,12 @@ const Tab: React.FC<TabProps> = ({ history }) => {
 				<button
 					id="myrecipe-tab"
 					type="button"
+					style={{
+						backgroundColor:
+							window.location.pathname === `/@${user!.username}/recipes`
+								? 'lightgrey'
+								: 'white',
+					}}
 					onClick={() => history.push(`/@${user!.username}/recipes`)}
 				>
 					나의 레시피
@@ -35,13 +49,25 @@ const Tab: React.FC<TabProps> = ({ history }) => {
 				<button
 					id="notification-tab"
 					type="button"
+					style={{
+						backgroundColor:
+							window.location.pathname === '/notifications' ? 'lightgrey' : 'white',
+					}}
 					onClick={() => history.push('/notifications')}
 				>
 					게시글 알림
 				</button>
 			</div>
 			<div>
-				<button id="chatting-tab" type="button" onClick={() => history.push('/chatrooms')}>
+				<button
+					id="chatting-tab"
+					type="button"
+					style={{
+						backgroundColor:
+							window.location.pathname === '/chatrooms' ? 'lightgrey' : 'white',
+					}}
+					onClick={() => history.push('/chatrooms')}
+				>
 					채팅
 				</button>
 			</div>

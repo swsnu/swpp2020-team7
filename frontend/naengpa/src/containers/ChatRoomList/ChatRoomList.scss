@@ -11,15 +11,18 @@
       margin-top: 2%;
       background-color: #ffffff;
     }
+
     #chatroom {
       display: flex;
       flex-direction: row; 
       justify-content: space-between;
+      align-items: flex-end;
       background-color: #ffffff;
       border: none;
       width: 100%;
       font-size: 120%;
-      overflow: scroll;
+      padding: 3%;
+      //overflow: scroll;
       :focus {
         outline: 0 !important;
       }
@@ -37,8 +40,8 @@
         border-radius: 100%;
         font-size: 90%;
         padding: {
-          left: 1.5%;
-          right: 1.5%;
+          left: 2.4%;
+          right: 2.4%;
           top: 0;
           bottom: 0;
         }
