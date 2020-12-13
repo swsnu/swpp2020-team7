@@ -26,8 +26,8 @@ def article_list_get(request):
     if not query:
         article_collection = cache.get('articles')
         if not article_collection:
-            included_region_ids = request.user.region.neighborhood.objects.filter(
-                region_range=request.user.region_range).values_list('region__id', flat=True)
+            included_region_ids = NeighborhoodRegion.objects.filter(from_region_id=request.user.region.id,
+                                                                    region_range=request.user.region_range).values_list('region__id', flat=True)
             sorted_list = Article.objects.select_related(
                 'author', 'author__region', 'item'
             ).prefetch_related(
@@ -93,11 +93,11 @@ def article_list_get(request):
             },
             "price": article.price,
             "views": article.views,
-            "options": {s
-                        "isForSale": article.is_for_sale,
-                        "isForExchange": article.is_for_exchange,
-                        "isForShare": article.is_for_share,
-                        },
+            "options": {
+                "isForSale": article.is_for_sale,
+                "isForExchange": article.is_for_exchange,
+                "isForShare": article.is_for_share,
+            },
             "images": list(article.images.values('id', 'file_path')),
             "createdAt": article.created_at.strftime("%Y.%m.%d")
         } for article in sorted_list] if Article.objects.count() != 0 else []
