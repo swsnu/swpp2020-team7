@@ -153,11 +153,11 @@ def send_message(request, id):
         return HttpResponseBadRequest()
 
     return JsonResponse(data={
-        "id": chatroom.id,
+        "id": target_chatroom.id,
         "messages": [{
             "content": message.content,
             "author": message.author.username,
-            "createdAt": get_time_format(message.created_string),
+            "createdAt": message.created_string,
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": chat_member.member.username,
