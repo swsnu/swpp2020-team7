@@ -38,7 +38,7 @@ export const signup = (user: UserSignupInputDTO) => {
 		window.localStorage.removeItem('savedUser');
 		dispatch(signup_(currentUser));
 		dispatch(push('/fridge'));
-		toast.info(`🦄 반가워요, ${user.name}님!`);
+		toast.info(`🐬 반가워요, ${user.name}님!`);
 	};
 };
 

@@ -69,7 +69,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	};
 
 	useEffect(() => {
-		toast.info('🦄 레시피를 등록해 보세요!');
+		toast.info('🐬 레시피를 등록해 보세요!');
 		if (sessionStorage.getItem('createdRecipe')) {
 			const storedRecipe = JSON.parse(sessionStorage.getItem('createdRecipe')!)!;
 			setFoodName(storedRecipe.foodName);
@@ -99,7 +99,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 				};
 				setLoading(() => true);
 				dispatch(extractMLFeatureFromRecipe(newRecipe));
-				toast.info(`🦄 재료 및 요리 카테고리 추천을 위해 잠시만 기다려 주세요!!!`);
+				toast.info(`🐬 재료 및 요리 카테고리 추천을 위해 잠시만 기다려 주세요!!!`);
 				setLoading(() => false);
 				history.push('/ingredients/extract');
 			}
