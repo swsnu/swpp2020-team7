@@ -20,12 +20,15 @@ def comment_info(request, cid):
         return HttpResponse(status=204)
     elif request.method == 'PUT':
         comment = get_object_or_404(Comment, pk=cid)
-        if request.user.id != comment.author.id:
+        user_id = request.user.id
+        if user_id != comment.author.id:
             return HttpResponseForbidden()
         try:
             new_content = request.data['content']
             comment.content = new_content
             comment.save(update_fields=['content'])
+            user_like = CommentLike.objects.filter(
+                comment_id=cid, user_id=user_id).count()
         except (KeyError, json.decoder.JSONDecodeError) as e:
             return HttpResponseBadRequest()
         return JsonResponse(data={
@@ -34,6 +37,7 @@ def comment_info(request, cid):
             'profileImage': comment.author.profile_image,
             'recipeId': comment.recipe_id,
             'content': comment.content,
+            'userLike': user_like,
             'totalLikes': comment.total_likes,
             'createdAt': comment.created_string,
         }, status=201)
@@ -60,6 +64,7 @@ def comment_list(request):
             'profileImage': comment.author.profile_image,
             'recipeId': comment.recipe_id,
             'content': comment.content,
+            'userLike': 0,
             'totalLikes': comment.total_likes,
             'createdAt': comment.created_string,
         }, status=201)
