@@ -42,7 +42,6 @@ class Command(BaseCommand):
                 price = 0 if not price else price
                 content = content.replace('<SEP>', '\n')
                 item = Ingredient.objects.get(name=item)
-                print(title, content, item, price, img_path)
 
                 with transaction.atomic():
                     try:
