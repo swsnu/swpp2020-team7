@@ -65,8 +65,9 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 						next={() => dispatch(getChatRoomList())}
 						hasMore={false}
 						loader={<h4>Loading...</h4>}
-					/>
+					>
 					<div>{chatRoomCollection}</div>
+					</InfiniteScroll>
 				</div>
 			</div>
 		</div>
