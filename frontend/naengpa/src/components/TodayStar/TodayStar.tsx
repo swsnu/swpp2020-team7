@@ -11,14 +11,14 @@ interface TodayStarProps {
 }
 
 const TodayStar: React.FC<TodayStarProps> = ({ history }) => {
-	const user_list = useSelector((state: AppState) => state.user.userList);
+	const userList = useSelector((state: AppState) => state.user.userList);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dispatch(getUserList());
 	}, []);
 
-	const user = user_list.map((item: any) => {
+	const user = userList.map((item: any) => {
 		return <Profile key={item.id} profile={item} />;
 	});
 

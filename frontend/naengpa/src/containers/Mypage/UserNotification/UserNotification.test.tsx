@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import UserNotification from './UserNotification';
-import { history } from '../../store/store';
+import { history } from '../../../store/store';
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);

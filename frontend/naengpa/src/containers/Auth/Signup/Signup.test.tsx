@@ -2,14 +2,57 @@ import React from 'react';
 import { mount } from 'enzyme';
 import * as userActionCreators from '../../../store/actions/user';
 import * as regionActionCreators from '../../../store/actions/region';
+import thunk from 'redux-thunk';
 import Signup from './Signup';
-import { history } from '../../../store/store';
 import { UserSignupInputDTO } from '../../../model/user';
+import configureStore from 'redux-mock-store';
+import { Provider } from 'react-redux';
+import { createMemoryHistory } from 'history';
 
-jest.mock('react-redux', () => ({
-	useDispatch: () => jest.fn(),
-	connect: () => jest.fn(),
-}));
+
+
+const middleware = [thunk];
+const store = configureStore(middleware);
+const history = createMemoryHistory({ initialEntries: ['/'] });
+
+const mockUser: UserSignupInputDTO = {
+	name: 'test',
+	username: 'test',
+	password: 'test',
+	dateOfBirth: '20201111',
+	email: 'test@snu.ac.kr',
+};
+
+
+const mockRegionList = [
+{
+	id: 4,
+	name: '종로구 청운효자동',
+	location: {
+		latitude: 37.5841161738354,
+		longitude: 126.97064969123,
+	},
+},
+{
+	id: 5,
+	name: '종로구 사직동',
+	location: {
+		latitude: 37.5761869658796,
+		longitude: 126.968846056089,
+	},
+},
+]
+
+const stubInitialState = {
+	user: {
+		savedUser:mockUser,
+	},
+	region: {
+		regionList: mockRegionList,
+	},
+};
+
+const mockStore = store(stubInitialState);
 
 describe('Signup', () => {
 	let signup: any;
@@ -17,25 +60,29 @@ describe('Signup', () => {
 	let spyGetRegionList: any;
 	let spyHistoryPush: any;
 	let spyAlert: any;
-	const mockUser: UserSignupInputDTO = {
-		name: 'test',
-		username: 'test',
-		password: 'test',
-		dateOfBirth: '20201111',
-		email: 'test@snu.ac.kr',
-	};
-
+	spySaveUserInfoAction = jest
+		.spyOn(userActionCreators, 'saveUserInfo')
+		.mockImplementation(() => jest.fn());
+	spyGetRegionList = jest
+		.spyOn(regionActionCreators, 'getRegionList')
+		.mockImplementation(() => jest.fn());
+	spyAlert = jest.spyOn(window, 'alert').mockImplementation(jest.fn());
+	spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
+	
 	beforeEach(() => {
-		signup = <Signup history={history} />;
-		spySaveUserInfoAction = jest
-			.spyOn(userActionCreators, 'saveUserInfo')
-			.mockImplementation(() => jest.fn());
-		spyGetRegionList = jest
-			.spyOn(regionActionCreators, 'getRegionList')
-			.mockImplementation(() => jest.fn());
-		spyAlert = jest.spyOn(window, 'alert').mockImplementation(jest.fn());
-		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
+		jest.mock('react-redux', () => ({
+			useSelector: jest.fn((fn) => fn(mockStore.getState())),
+			useDispatch: () => jest.fn(),
+			connect: () => jest.fn(),
+		}));
+		signup = (
+			<Provider store={mockStore}>
+				<Signup history={history} />;
+			</Provider>
+		);
+
 	});
+
 	afterEach(() => {
 		jest.clearAllMocks();
 	});
@@ -43,13 +90,13 @@ describe('Signup', () => {
 		jest.restoreAllMocks();
 	});
 
-	it('Signup renders without crashing', () => {
+	it('Signup renders without crashing',  () => {
 		const component = mount(signup);
 		expect(component.find('Signup').length).toBe(1);
 		expect(component.find('div#input-list').find('input').length).toBe(6);
 	});
 
-	it('Signup should dispatch signup correctly', () => {
+	it('Signup should dispatch signup correctly',  () => {
 		const component = mount(signup);
 		const inputList = component.find('div#input-list').find('input');
 		inputList.find('#name').simulate('change', { target: { value: mockUser.name } }); // name

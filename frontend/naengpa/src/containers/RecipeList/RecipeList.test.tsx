@@ -7,6 +7,7 @@ import { act } from '@testing-library/react';
 import { history } from '../../store/store';
 import RecipeList from './RecipeList';
 import * as recipeActionCreators from '../../store/actions/recipe';
+import waitForComponentToPaint from '../../../test-utils/waitForComponentToPaint';
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
@@ -111,7 +112,7 @@ describe('RecipeList', () => {
 
 	it('RecipeList renders without crashing', async () => {
 		const component = mount(getRecipeList);
-		// await waitForComponentToPaint(component);
+		await waitForComponentToPaint(component);
 		// act(() => {
 		// expect(component.find('#recipe-list').length).toBe(1);
 		// expect(spyGetRecipeList).toBeCalledTimes(1);

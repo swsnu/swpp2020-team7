@@ -44,10 +44,14 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	useEffect(() => {
 		setLoading(true);
 		setCurrentList(
-			articleList
-				.filter((a) => !optionsFilter.isForSale || a.options.isForSale)
-				.filter((a) => !optionsFilter.isForExchange || a.options.isForExchange)
-				.filter((a) => !optionsFilter.isForShare || a.options.isForShare),
+			optionsFilter.isForShare || optionsFilter.isForSale || optionsFilter.isForExchange
+				? articleList.filter(
+						(a) =>
+							(optionsFilter.isForShare && a.options.isForShare) ||
+							(optionsFilter.isForSale && a.options.isForSale) ||
+							(optionsFilter.isForExchange && a.options.isForExchange),
+				  )
+				: articleList,
 		);
 		setMaxPageIndex(Math.ceil(currentList.length / 9.0));
 		setCurrentPage(currentList.slice((page - 1) * 9, (page - 1) * 9 + 9));

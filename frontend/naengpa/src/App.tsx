@@ -18,7 +18,7 @@ import MyFridge from './containers/MyFridge/MyFridge';
 import AddIngredient from './containers/AddIngredient/AddIngredient';
 
 import UserRecipe from './containers/UserRecipe/UserRecipe';
-import UserNotification from './containers/UserNotification/UserNotification';
+import UserNotification from './containers/Mypage/UserNotification/UserNotification';
 import UserInfo from './containers/Mypage/UserInfo/UserInfo';
 import EditUserInfo from './containers/Mypage/EditUserInfo/EditUserInfo';
 import ChangePassword from './containers/Mypage/ChangePassword/ChangePassword';
