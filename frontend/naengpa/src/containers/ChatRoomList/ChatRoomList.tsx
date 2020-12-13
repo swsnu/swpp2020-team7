@@ -8,7 +8,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Tab from '../../components/Tab/Tab';
 import { getChatRoomList, getChatRoom } from '../../store/actions/index';
 import { AppState } from '../../store/store';
-import { ChatEntity } from '../../model/chat';
 
 interface ChatRoomListProps {
 	history: History;
@@ -66,7 +65,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 						hasMore={false}
 						loader={<h4>Loading...</h4>}
 					>
-					<div>{chatRoomCollection}</div>
+						<div>{chatRoomCollection}</div>
 					</InfiniteScroll>
 				</div>
 			</div>
