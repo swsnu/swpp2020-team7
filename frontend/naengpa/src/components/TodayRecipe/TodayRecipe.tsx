@@ -15,7 +15,7 @@ const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (!todayRecipeList) {
+		if (!todayRecipeList || !todayRecipeList.length) {
 			dispatch(getTodayRecipeList());
 		}
 	}, [dispatch]);

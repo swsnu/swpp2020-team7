@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
 div#today-recipe {
-  // padding: 5%;
   div#today-recipe-header {
     text-align: left;
     padding-bottom: 5%;
@@ -10,10 +9,10 @@ div#today-recipe {
 
   div#today-recipe-list {
     display: grid;
-    grid-template-columns: 5fr 5fr;
+    grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
     font-weight: bold;
     justify-content: center;
-    gap:5%;
+    gap:3%;
   }
 }
