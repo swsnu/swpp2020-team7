@@ -22,11 +22,11 @@ class ChatRoom(models.Model):
         elif time < timezone.timedelta(days=1):
             return str(int(time.seconds / 3600)) + '시간 전'
         elif time < timezone.timedelta(days=7):
-            time = timezone.datetime.now(
-                tz=timezone.utc).date() - self.updated_at
+            time = timezone.now().date() - self.updated_at.date()
             return str(time.days) + '일 전'
         else:
-            return False
+            time = timezone.now().date() - self.updated_at.date()
+            return str(time.month) + '개월 전'
 
     def __str__(self):
         return f'[{self.id}] by {self.chat_members} - {self.updated_at}]'
@@ -61,11 +61,11 @@ class Message(models.Model):
         elif time < timezone.timedelta(days=1):
             return str(int(time.seconds / 3600)) + '시간 전'
         elif time < timezone.timedelta(days=7):
-            time = timezone.datetime.now(
-                tz=timezone.utc).date() - self.created_at
+            time = timezone.now().date() - self.created_at.date()
             return str(time.days) + '일 전'
         else:
-            return False
+            time = timezone.now().date() - self.created_at.date()
+            return str(time.month) + '개월 전'
 
     def __str__(self):
         return f'[message-{self.id}] by {self.author}'
