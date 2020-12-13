@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { UserEntity, UserSignupInputDTO } from '../../model/user';
-import { ChatEntity } from '../../model/chat';
+import { ChatEntity, MessageEntity } from '../../model/chat';
 import { UserAction } from '../actions/user';
 import { DefaultAction } from '../actions/index';
 
@@ -10,6 +10,7 @@ export type InitialState = {
 	userList: UserEntity[];
 	chatRoomList: ChatEntity[];
 	chatRoom: ChatEntity | null;
+	messages: MessageEntity[];
 };
 
 const UserState: InitialState = {
@@ -18,6 +19,7 @@ const UserState: InitialState = {
 	userList: [],
 	chatRoomList: JSON.parse(window.sessionStorage.getItem('chatRoomList')!),
 	chatRoom: JSON.parse(window.sessionStorage.getItem('chatRoom')!),
+	messages: [],
 };
 
 let filteredChatRoomList = null;
@@ -74,6 +76,9 @@ function userReducer(
 		/* GET CHATROOM */
 		case actionTypes.GET_CHATROOM:
 			return { ...state, chatRoom: action.chatRoom };
+
+		case actionTypes.GET_CHAT_MESSAGES:
+			return { ...state, messages: [...state.messages, ...action.messages] }
 
 		/* GET CHATROOM LIST */
 		case actionTypes.GET_CHATROOM_LIST:
