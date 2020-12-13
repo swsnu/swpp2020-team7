@@ -1,7 +1,7 @@
 import { Button, createStyles, Icon, makeStyles, TextField, Theme } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { CommentInputDTO } from '../../model/recipe';
+import { CommentInputDTO } from '../../model/comment';
 import { addComment } from '../../store/actions';
 
 const useStyles = makeStyles((theme: Theme) =>

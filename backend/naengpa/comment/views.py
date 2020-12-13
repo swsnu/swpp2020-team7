@@ -83,6 +83,7 @@ def comment_like(request, id):
         'profileImage': like.comment.author.profile_image,
         'recipeId': like.comment.recipe_id,
         'content': like.comment.content,
+        'userLike': 1 if like else 0,
         'totalLikes': like.comment.total_likes,
         'createdAt': like.comment.created_string,
     }

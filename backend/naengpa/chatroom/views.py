@@ -40,7 +40,7 @@ def get_chatroom_list(request):
             } for message in chatroom.message_set.select_related('author')],
             "lastChat": chatroom.message_set.all().last().content if chatroom.message_set.count() != 0 else LETS_CHAT_MESSAGE,
             "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.username,
-            "updatedAt": get_time_format(chatroom.updated_at),
+            "updatedAt": chatroom.updated_string,
             "chatCount": ChatMember.objects.get(Q(chatroom_id=chatroom.id) & Q(member_id=user.id)).notice,
         } for chatroom in chatrooms]
     except Message.DoesNotExist:
@@ -85,7 +85,7 @@ def make_chatroom(request):
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": friend.username,
-        "updatedAt":  get_time_format(chatroom.updated_at),
+        "updatedAt":  chatroom.updated_string,
         "chatCount": 0,
     }, safe=False, status=201)
 
@@ -124,7 +124,7 @@ def get_chatroom(request, id):
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.username,
-        "updatedAt":  get_time_format(chatroom.updated_at),
+        "updatedAt":  chatroom.updated_string,
         "chatCount": 0,
     }
     return JsonResponse(chatroom_collection, safe=False)
@@ -161,7 +161,7 @@ def send_message(request, id):
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": chat_member.member.username,
-        "updatedAt":  get_time_format(chatroom.updated_at),
+        "updatedAt":  chatroom.updated_string,
         "chatCount": 0,
     }, safe=False)
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Dispatch } from 'redux';
 import * as actionTypes from './actionTypes';
-import { CommentEditDTO, CommentEntity, CommentInputDTO } from '../../model/recipe';
+import { CommentEditDTO, CommentEntity, CommentInputDTO } from '../../model/comment';
 
 export const getCommentList_ = (comments: CommentEntity[]) => ({
 	type: actionTypes.GET_COMMENT_LIST,
@@ -45,9 +45,9 @@ export const editComment = (comment: CommentEditDTO) => {
 };
 
 /* TOGGLE COMMENT LIKE */
-export const toggleCommentLike_ = (updated_comment: CommentEntity) => ({
+export const toggleCommentLike_ = (comment: CommentEntity) => ({
 	type: actionTypes.TOGGLE_COMMENT_LIKE,
-	payload: updated_comment,
+	payload: comment,
 });
 
 export function toggleCommentLike(id: number) {
