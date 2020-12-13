@@ -47,16 +47,10 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 				</div>
 				<div id="change-password-content">
 					<div id="password-user-profile">
-<<<<<<< HEAD
 						{user?.profileImage ? (
 							<Avatar id="edit-profile-picture" src={user?.profileImage as string} />
 						) : (
 							<AccountCircleIcon id="profile-picture" />
-=======
-						{!user?.profileImage && <AccountCircleIcon id="profile-picture" />}
-						{user?.profileImage && (
-							<Avatar id="profile-picture" src={user?.profileImage as string} />
->>>>>>> origin/dori
 						)}
 						<div id="myinfo-username">{user!.username}</div>
 					</div>
