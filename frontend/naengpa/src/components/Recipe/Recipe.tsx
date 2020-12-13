@@ -55,9 +55,9 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 						src={
 							(recipe.profileImage as string)
 								? (recipe.profileImage as string)
-								: '/icons/star.png'
+								: '/icons/account_circle.png'
 						}
-						alt="/icons/star.png"
+						alt="/icons/account_circle.png"
 					/>
 				}
 				// action={

@@ -29,8 +29,11 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 	const onChangePage = (e: React.ChangeEvent<unknown>, value: number): void => {
 		e.preventDefault();
 		setPage(value);
-		setCurrentList(recipeList?.slice((value - 1) * 3, (value - 1) * 3 + 3));
+		// setCurrentList(recipeList?.slice((value - 1) * 3, (value - 1) * 3 + 3));
+		setCurrentList(userRecipeList?.slice((value - 1) * 3, (value - 1) * 3 + 3));
 	};
+
+	// const recipe = currentList?.filter((item: any) => item.author === user?.username);
 
 	const recipe = currentList?.map((item: any) => {
 		return (
@@ -41,7 +44,7 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 	useEffect(() => {
 		const func = () => {
 			dispatch(getRecipeList(''));
-			setMaxPageIndex(Math.ceil(recipeList?.length / 3.0));
+			setMaxPageIndex(Math.ceil(userRecipeList?.length / 3.0));
 			setCurrentList(userRecipeList?.slice((page - 1) * 3, (page - 1) * 3 + 3));
 			// setLoading(false);
 		};
