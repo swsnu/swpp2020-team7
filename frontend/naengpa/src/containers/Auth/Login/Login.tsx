@@ -18,7 +18,6 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 
 	useEffect(() => {
 		dispatch(getIngredientList());
-		dispatch(getArticleList());
 		dispatch(getTodayRecipeList());
 		dispatch(getUserList());
 	}, [dispatch]);
