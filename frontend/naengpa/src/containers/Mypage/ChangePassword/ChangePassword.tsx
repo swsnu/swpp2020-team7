@@ -3,10 +3,10 @@ import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { Avatar } from '@material-ui/core';
 import { AppState } from '../../../store/store';
 import Tab from '../../../components/Tab/Tab';
 import { changePassword } from '../../../store/actions/index';
-import '../UserInfo/UserInfo.scss';
 import './ChangePassword.scss';
 
 interface ChangePasswordProps {
@@ -47,7 +47,11 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 				</div>
 				<div id="change-password-content">
 					<div id="password-user-profile">
-						<AccountCircleIcon id="profile-picture" />
+						{user?.profileImage ? (
+							<Avatar id="edit-profile-picture" src={user?.profileImage as string} />
+						) : (
+							<AccountCircleIcon id="profile-picture" />
+						)}
 						<div id="myinfo-username">{user!.username}</div>
 					</div>
 					<div id="password-list">
@@ -55,7 +59,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 							<label>현재 비밀번호</label>
 							<input
 								id="current-password"
-								type="text"
+								type="password"
 								onChange={(e) => setCurrentPassword(e.target.value)}
 							/>
 						</div>
@@ -63,7 +67,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 							<label>비밀번호</label>
 							<input
 								id="new-password"
-								type="text"
+								type="password"
 								onChange={(e) => setNewPassword(e.target.value)}
 							/>
 						</div>
@@ -71,7 +75,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ history }) => {
 							<label>비밀번호 확인</label>
 							<input
 								id="confirm-new-password"
-								type="text"
+								type="password"
 								onChange={(e) => setConfirmNewPassword(e.target.value)}
 							/>
 						</div>

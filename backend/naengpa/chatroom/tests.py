@@ -9,6 +9,8 @@ User = get_user_model()
 
 
 class ChatRoomTestCase(TestCase):
+    """ testcase for chatrooms api """
+
     def setUp(self):
         # create a user
         test_region = Region.objects.create(
@@ -35,9 +37,11 @@ class ChatRoomTestCase(TestCase):
         self.test_user2.save()
 
         # create a chatroom
-        chatroom = ChatRoom.objects.create()
-        ChatMember.objects.create(chatroom=chatroom, member=test_user)
-        ChatMember.objects.create(chatroom=chatroom, member=self.test_user2)
+        self.mock_chatroom = ChatRoom.objects.create()
+        ChatMember.objects.create(
+            chatroom=self.mock_chatroom, member=test_user)
+        ChatMember.objects.create(
+            chatroom=self.mock_chatroom, member=self.test_user2)
 
     def test_chatroom_list(self):
         # user is not defined
@@ -60,22 +64,35 @@ class ChatRoomTestCase(TestCase):
         response = self.client.put('/api/chatrooms/')
         self.assertEqual(response.status_code, 405)
 
+        response = self.client.delete('/api/chatrooms/')
+        self.assertEqual(response.status_code, 405)
+
     def test_chatroom(self):
         # user is not defined
-        response = self.client.get('/api/chatrooms/1/', follow=True)
+        response = self.client.get(
+            '/api/chatrooms/{}/'.format(self.mock_chatroom.id), follow=True)
         self.assertEqual(response.status_code, 401)
 
         # with authorization
         self.client.login(username='test', password='test')
 
         # get chatroom
-        response = self.client.get('/api/chatrooms/1/')
+        response = self.client.get(
+            '/api/chatrooms/{}/'.format(self.mock_chatroom.id))
         self.assertEqual(response.status_code, 200)
 
+        # put chatroom, send message
+        response = self.client.put('/api/chatrooms/{}/'.format(self.mock_chatroom.id), json.dumps({
+            'content': 'message'
+        }), content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
         # delete chatroom
-        response = self.client.delete('/api/chatrooms/1/')
+        response = self.client.delete(
+            '/api/chatrooms/{}/'.format(self.mock_chatroom.id))
         self.assertEqual(response.status_code, 204)
 
         # bad request method
-        response = self.client.post('/api/chatrooms/1/')
+        response = self.client.post(
+            '/api/chatrooms/{}/'.format(self.mock_chatroom.id))
         self.assertEqual(response.status_code, 405)

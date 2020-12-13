@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Box, Grid, Collapse } from '@material-ui/core';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Alert from '@material-ui/lab/Alert';
-import { toggleTodayIngredient, getFridge } from '../../store/actions/index';
-import { AppState } from '../../store/store';
-import './TodayIngredient.scss';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+import { toggleTodayIngredient, getFridge } from '../../store/actions/index';
+import { AppState } from '../../store/store';
+import './TodayIngredient.scss';
 
 const TodayIngredient: React.FC = () => {
 	const dispatch = useDispatch();
@@ -39,7 +39,7 @@ const TodayIngredient: React.FC = () => {
 						onClick={() => onClickDeleteTodayIngredient(ingredient.id)}
 					>
 						X
-				</Button>
+					</Button>
 				</div>
 			</GridListTile>
 		);
@@ -52,7 +52,7 @@ const TodayIngredient: React.FC = () => {
 				flexWrap: 'wrap',
 				justifyContent: 'start',
 				overflow: 'hidden',
-				//backgroundColor: theme.palette.background.paper,
+				// backgroundColor: theme.palette.background.paper,
 			},
 			// gridList: {
 			// 	width: 250,
@@ -84,7 +84,7 @@ const TodayIngredient: React.FC = () => {
 							<Alert id="help-today-ingredient-alert" icon={false}>
 								냉장고 속 재료를 클릭하여 오늘의 재료에 추가해보세요! 추가한 재료를
 								기반으로 레시피를 추천해드립니다.
-						</Alert>
+							</Alert>
 						</Collapse>
 					</div>
 				</Grid>

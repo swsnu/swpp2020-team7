@@ -32,11 +32,11 @@ class Comment(models.Model):
         elif time < timezone.timedelta(days=1):
             return str(int(time.seconds / 3600)) + '시간 전'
         elif time < timezone.timedelta(days=7):
-            time = timezone.datetime.now(
-                tz=timezone.utc).date() - self.created_at
+            time = timezone.now().date() - self.created_at.date()
             return str(time.days) + '일 전'
         else:
-            return False
+            time = timezone.now().date() - self.created_at.date()
+            return str(time.month) + '개월 전'
 
     def __str__(self):
         return f'[{self.id}] {self.content} in {self.recipe} by {self.author}'
@@ -73,6 +73,7 @@ class CommentLike(models.Model):
         return f'[{self.id}] {self.user} likes {self.comment}'
 
     def save(self, *args, **kwargs):
+        cache.delete(f'recipe:{self.comment.recipe.id}')
         if not self.pk:
             Notification.objects.create(
                 recipient=self.comment.author,
@@ -81,4 +82,5 @@ class CommentLike(models.Model):
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
+        cache.delete(f'recipe:{self.comment.recipe.id}')
         super().delete(*args, **kwargs)

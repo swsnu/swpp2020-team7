@@ -15,6 +15,8 @@ class Region(models.Model):
     dong_name = models.CharField(max_length=20)
     location = models.PointField(
         geography=True, default=Point(0.0, 0.0))
+    neighborhood = models.ManyToManyField(
+        'self', through='NeighborhoodRegion')
 
     @property
     def name(self):
@@ -93,6 +95,18 @@ class FridgeIngredient(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
 
 
+class NeighborhoodRegion(models.Model):
+    ''' ManyToMany Through model for User's neighborhood Region list '''
+    from_region = models.ForeignKey(
+        Region, on_delete=models.CASCADE)
+    neighborhood = models.ForeignKey(
+        Region, on_delete=models.CASCADE, related_name='neighborhoods')
+    region_range = models.PositiveIntegerField(default=3, db_index=True)
+
+    class Meta:
+        unique_together = ('from_region', 'neighborhood', 'region_range')
+
+
 class Notification(models.Model):
     recipient = models.ForeignKey(
         User, related_name="notifications", on_delete=models.CASCADE)
@@ -110,11 +124,11 @@ class Notification(models.Model):
         elif time < timezone.timedelta(days=1):
             return str(int(time.seconds / 3600)) + '시간 전'
         elif time < timezone.timedelta(days=7):
-            time = timezone.datetime.now(
-                tz=timezone.utc).date() - self.created_at
+            time = timezone.now().date() - self.created_at.date()
             return str(time.days) + '일 전'
         else:
-            return False
+            time = timezone.now().date() - self.created_at.date()
+            return str(time.month) + '개월 전'
 
     def __str__(self):
         return f'[to {self.recipient}] {self.content}'

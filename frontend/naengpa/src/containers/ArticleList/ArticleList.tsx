@@ -34,7 +34,6 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [query, setQuery] = useState('');
 
-
 	// const [articles, setArticles] = useState<JSX.Element[]>([]);
 
 	// const setArticleList = () => {
@@ -66,8 +65,8 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		if (e.key === 'Enter') {
 			setLoading(true);
 			onLoadPage();
-			//await dispatch(getArticleList(query));
-			//setLoading(true);
+			// await dispatch(getArticleList(query));
+			// setLoading(true);
 		}
 	};
 
@@ -75,7 +74,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		e.preventDefault();
 		setPage(value);
 		setCurrentPage(currentList.slice((value - 1) * 9, (value - 1) * 9 + 9));
-		//setLoading(true);
+		// setLoading(true);
 	};
 
 	const onClickCreateArticle = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -90,26 +89,34 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 
 	const onLoadPage = useCallback(async () => {
 		if (loading) {
-			//setLoading(true);
+			// setLoading(true);
 			await dispatch(getArticleList(query, optionsFilter));
 			setCurrentList(
-				(optionsFilter.isForShare || optionsFilter.isForSale || optionsFilter.isForExchange) ?
-					articleList
-						.filter((a) =>
-							(optionsFilter.isForShare && a.options.isForShare) ||
-							(optionsFilter.isForSale && a.options.isForSale) ||
-							(optionsFilter.isForExchange && a.options.isForExchange)) : articleList
+				optionsFilter.isForShare || optionsFilter.isForSale || optionsFilter.isForExchange
+					? articleList.filter(
+							(a) =>
+								(optionsFilter.isForShare && a.options.isForShare) ||
+								(optionsFilter.isForSale && a.options.isForSale) ||
+								(optionsFilter.isForExchange && a.options.isForExchange),
+					  )
+					: articleList,
 			);
 			setCurrentPage(currentList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-			//setArticleList();
+			// setArticleList();
 			setLoading(false);
 		}
-	}, [page, query, articleList, optionsFilter.isForSale, optionsFilter.isForExchange, optionsFilter.isForShare]);
+	}, [
+		page,
+		query,
+		articleList,
+		optionsFilter.isForSale,
+		optionsFilter.isForExchange,
+		optionsFilter.isForShare,
+	]);
 
 	const articles = currentPage.map((item) => (
 		<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
 	));
-
 
 	useEffect(() => {
 		onLoadPage();

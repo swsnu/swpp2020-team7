@@ -117,7 +117,7 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 				} as UserSignupInputDTO),
 			);
 		} else {
-			toast.info(`🦄 지역 설정을 완료해주세요`);
+			toast.info(`🐬 지역 설정을 완료해주세요`);
 		}
 	};
 

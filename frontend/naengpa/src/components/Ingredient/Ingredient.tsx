@@ -86,12 +86,12 @@ const Ingredient: React.FC<IngredientProps> = ({ ingredient }) => {
 							onClick={() => onClickToggleTodayIngredient()}
 						/>
 					) : (
-							<StarIcon
-								id="no-ingredient-button"
-								type="button"
-								onClick={() => onClickToggleTodayIngredient()}
-							/>
-						))}
+						<StarIcon
+							id="no-ingredient-button"
+							type="button"
+							onClick={() => onClickToggleTodayIngredient()}
+						/>
+					))}
 				{deleteIngredient && (
 					<CancelIcon
 						id="delete-ingredient-button"

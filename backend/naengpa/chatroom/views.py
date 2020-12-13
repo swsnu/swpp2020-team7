@@ -36,11 +36,11 @@ def get_chatroom_list(request):
             "messages": [{
                 "content": message.content,
                 "author": message.author.username,
-                "createdAt": get_time_format(message.created_at),
+                "createdAt": message.created_string,
             } for message in chatroom.message_set.select_related('author')],
             "lastChat": chatroom.message_set.all().last().content if chatroom.message_set.count() != 0 else LETS_CHAT_MESSAGE,
             "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.username,
-            "updatedAt": get_time_format(chatroom.updated_at),
+            "updatedAt": chatroom.updated_string,
             "chatCount": ChatMember.objects.get(Q(chatroom_id=chatroom.id) & Q(member_id=user.id)).notice,
         } for chatroom in chatrooms]
     except Message.DoesNotExist:
@@ -81,11 +81,11 @@ def make_chatroom(request):
         "messages": [{
             "content": message.content,
             "author": message.author.username,
-            "createdAt": get_time_format(message.created_at),
+            "createdAt": message.created_string,
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": friend.username,
-        "updatedAt":  get_time_format(chatroom.updated_at),
+        "updatedAt":  chatroom.updated_string,
         "chatCount": 0,
     }, safe=False, status=201)
 
@@ -120,11 +120,11 @@ def get_chatroom(request, id):
         "messages": [{
             "content": message.content,
             "author": message.author.username,
-            "createdAt": get_time_format(message.created_at),
+            "createdAt": message.created_string,
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.username,
-        "updatedAt":  get_time_format(chatroom.updated_at),
+        "updatedAt":  chatroom.updated_string,
         "chatCount": 0,
     }
     return JsonResponse(chatroom_collection, safe=False)
@@ -134,18 +134,18 @@ def send_message(request, id):
     """ send message to given chatroom """
     try:
         user = request.user
-        content = json.loads(request.body.decode())['content']
-        chatroom = ChatRoom.objects.get(id=id)
-        chatroom.updated_at = timezone.now()
+        content = request.data['content']
+        target_chatroom = ChatRoom.objects.get(id=id)
+        target_chatroom.updated_at = timezone.now()
         Message.objects.create(
             author_id=user.id, content=content, chatroom_id=id)
-        messages = chatroom.message_set.select_related(
+        messages = target_chatroom.message_set.select_related(
             'author').all().order_by('created_at')
         chat_member = ChatMember.objects.select_related('member').filter(
-            chatroom_id=chatroom.id).exclude(member_id=user.id).first()
+            chatroom_id=target_chatroom.id).exclude(member_id=user.id).first()
         chat_member.notice += 1
         chat_member.save()
-        chatroom.save()
+        target_chatroom.save()
 
     except (KeyError, json.decoder.JSONDecodeError):
         return HttpResponseBadRequest()
@@ -153,17 +153,17 @@ def send_message(request, id):
         return HttpResponseBadRequest()
 
     return JsonResponse(data={
-        "id": chatroom.id,
+        "id": target_chatroom.id,
         "messages": [{
             "content": message.content,
             "author": message.author.username,
-            "createdAt": get_time_format(message.created_at),
+            "createdAt": message.created_string,
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
         "member": chat_member.member.username,
-        "updatedAt":  get_time_format(chatroom.updated_at),
+        "updatedAt": target_chatroom.updated_string,
         "chatCount": 0,
-    }, safe=False)
+    }, status=201, safe=False)
 
 
 def delete_chatroom(request, id):

@@ -177,7 +177,6 @@ def recipe_list(request):
 
 @ensure_csrf_cookie
 @api_view(['GET'])
-@login_required_401
 @transaction.atomic
 def today_recipe_list(request):
     """ get Today recipe list """

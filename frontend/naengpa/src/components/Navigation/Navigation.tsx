@@ -4,6 +4,7 @@ import { History } from 'history';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import './Navigation.scss';
+import { Badge } from '@material-ui/core';
 import { AppState } from '../../store/store';
 
 interface NavigationProps {
@@ -19,24 +20,32 @@ const Navigation: React.FC<NavigationProps> = ({ history }) => {
 				<div id="naengpa-logo-name">냉파</div>
 			</button>
 			<div id="right-navigation-buttons">
-				<button
-					id="user-notice-button"
-					type="button"
+				<Badge
+					badgeContent={user?.totalNotifications}
+					max={9}
+					color="secondary"
+					overlap="circle"
+					variant="dot"
 					onClick={() => history.push('/notifications')}
 				>
 					<NotificationsNoneIcon id="notification-logo" />
-				</button>
-				{/* TODO: username 인자 전달 다시 확인 요망 */}
-				<button
-					id="mypage-button"
-					type="button"
-					onClick={() => history.push(`/@${user?.username}/info`)}
-				>
-					MY PAGE
-				</button>
-				<button id="logout-button" type="button" onClick={() => history.push('/logout')}>
-					LOGOUT
-				</button>
+				</Badge>
+				<div id="navigation-buttons">
+					<button
+						id="mypage-button"
+						type="button"
+						onClick={() => history.push(`/@${user?.username}/info`)}
+					>
+						MY PAGE
+					</button>
+					<button
+						id="logout-button"
+						type="button"
+						onClick={() => history.push('/logout')}
+					>
+						LOGOUT
+					</button>
+				</div>
 			</div>
 		</div>
 	);

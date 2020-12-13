@@ -1,17 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
 div#today-star {
+  //height: 5%;
 
   #today-star-header {
     text-align: left;
     font-family: 'Jua', sans-serif;
+    font-size: 115%;
   }
 
   #profile-cards {
-    float: left;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     justify-content: center;
     width: 100%;
-    gap:10%;
+    column-gap: 7%;
+  }
+
+  #profile-card-header {
+    padding-top: 5% !important;
   }
 }

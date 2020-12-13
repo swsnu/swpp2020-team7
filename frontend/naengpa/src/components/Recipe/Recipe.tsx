@@ -25,8 +25,8 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 	const [recipeLike, setRecipeLike] = useState(recipe.recipeLike);
 
 	// Cook-Time Unit set for minute and hour
-	let cookTime = `${recipe.cookTime}M`;
-	if (recipe.cookTime >= 60) cookTime = `${Math.round(recipe.cookTime / 60)}H`;
+	let cookTime = `${recipe.cookTime}분`;
+	if (recipe.cookTime >= 60) cookTime = `${Math.round(recipe.cookTime / 60)}시간`;
 
 	const onClickRecipe = async () => {
 		await dispatch(getRecipe(recipe.id!));
@@ -55,9 +55,9 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 						src={
 							(recipe.profileImage as string)
 								? (recipe.profileImage as string)
-								: '/icons/star.png'
+								: '/icons/account_circle.png'
 						}
-						alt="/icons/star.png"
+						alt="/icons/account_circle.png"
 					/>
 				}
 				// action={
