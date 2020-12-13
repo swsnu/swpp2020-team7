@@ -4,7 +4,13 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 
-import { getArticleList, getIngredientList, getTodayRecipeList, getUserList, login } from '../../../store/actions/index';
+import {
+	getArticleList,
+	getIngredientList,
+	getTodayRecipeList,
+	getUserList,
+	login,
+} from '../../../store/actions/index';
 import './Login.scss';
 
 interface LoginProps {

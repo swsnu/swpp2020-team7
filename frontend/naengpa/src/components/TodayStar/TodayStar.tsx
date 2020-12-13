@@ -5,7 +5,6 @@ import { getUserList } from '../../store/actions/index';
 import Profile from '../Profile/Profile';
 import './TodayStar.scss';
 
-
 const TodayStar: React.FC = () => {
 	const userList = useSelector((state: AppState) => state.user.userList);
 	const dispatch = useDispatch();

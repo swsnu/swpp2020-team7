@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import { History } from 'history';
 import { useDispatch, useSelector } from 'react-redux';
 import { createStyles, List, ListItem, ListItemText, makeStyles, Theme } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import Tab from '../../../components/Tab/Tab';
 import { AppState } from '../../../store/store';
 import { NotificationEntity } from '../../../model/user';
 import './UserNotification.scss';
 import { getUser } from '../../../store/actions';
 import { readNotification } from '../../../store/actions/user';
-import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -40,7 +40,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 		dispatch(getUser(user!));
 	};
 
-	const notifications = user?.notifications?.length ? 
+	const notifications = user?.notifications?.length ? (
 		user?.notifications?.map((item: NotificationEntity) => (
 			<ListItem button divider onClick={() => onClickNotification(item.id)}>
 				<ListItemText
@@ -49,13 +49,16 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 					primary={item.content}
 					secondary={item.createdAt}
 				/>
-			</ListItem>)) :
-		(<ListItem button onClick={() => toast.info('🐬 행복한 연말되세요!')}>
+			</ListItem>
+		))
+	) : (
+		<ListItem button onClick={() => toast.info('🐬 행복한 연말되세요!')}>
 			<ListItemText
 				primary="🐬 알림이 없어요"
 				secondary="작성한 레시피와 댓글에 좋아요, 댓글이 달리거나 메시지가 올 때 알림이 생겨요"
 			/>
-		</ListItem>);
+		</ListItem>
+	);
 
 	return (
 		<div id="mypage">
