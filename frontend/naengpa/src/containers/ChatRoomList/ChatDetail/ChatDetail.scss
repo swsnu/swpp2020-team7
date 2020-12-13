@@ -18,7 +18,7 @@
 
       #chat-member-username {
         color: #408bf9;
-        margin-left: 400%;
+        margin-left: 100%;
         align-items: center;
       }
     }
@@ -63,7 +63,7 @@
       flex-direction: row;
       justify-content: space-between;
       right: 0;
-      margin: 0 !important;
+      margin-left: 15%;
 
       #chat-input-field {
        border: none;

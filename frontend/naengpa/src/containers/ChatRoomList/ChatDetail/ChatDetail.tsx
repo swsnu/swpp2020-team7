@@ -9,7 +9,6 @@ import { AppState } from '../../../store/store';
 import Tab from '../../../components/Tab/Tab';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { MessageEntity } from '../../../model/chat';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface ChatDetailProps {
 	history: History;
@@ -20,7 +19,6 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const [chatMessageList, setChatMessageList] = useState<MessageEntity[]>([]);
 	const [content, setContent] = useState('');
 	const [index, setIndex] = useState(1);
-	const [lastTime, setLastTime] = useState('');
 	
 	const chatScroll = useRef<HTMLDivElement>(null);
 	const chatMessage = (user && user.chatRoom) ? (
@@ -92,7 +90,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					</Button>
 					<div id="member-info-box">
 						<div id="chat-member-image" />
-						<div id="chat-member-username">{user.chatRoom!.member}</div>{' '}
+						<div id="chat-member-username">{user.chatRoom?.member}</div>{' '}
 					</div>
 				</Typography>
 				<Divider />
