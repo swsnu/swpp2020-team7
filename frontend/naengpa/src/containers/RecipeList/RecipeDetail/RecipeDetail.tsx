@@ -82,7 +82,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 
 	const onClickArticle = (id: number) => async () => {
 		dispatch(getArticle(id));
-		history.push(`/articles/:${id}`);
+		history.push(`/articles/${id}`);
 	};
 
 	const [alert, setAlert] = useState(false);
@@ -125,7 +125,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const articleFiltered = articleList.filter((item) => notInFridgeNames.includes(item.item.name));
 
 	const article = articleFiltered.map((item: any) => {
-		return <Article key={item.id} article={item} onClick={onClickArticle(item.id)} />;
+		return <Article key={item.id} article={item} history={history} />;
 	});
 
 	const comments = commentList?.length
