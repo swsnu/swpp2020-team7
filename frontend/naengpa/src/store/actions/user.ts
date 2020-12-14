@@ -116,15 +116,12 @@ export const editUser_ = (user: UserEntity) => ({ type: actionTypes.EDIT_USER, u
 export const editUser = (user: EditUserInputDTO) => {
 	return async (dispatch: any) => {
 		try {
-			let response;
+			const bodyFormData = new FormData();
+			bodyFormData.append('user', JSON.stringify(user));
 			if (user.profileImage) {
-				const bodyFormData = new FormData();
-				bodyFormData.append('user', JSON.stringify(user));
 				bodyFormData.append('image', user.profileImage);
-				response = await axios.put(`/api/users/${user.id}/`, bodyFormData);
-			} else {
-				response = await axios.put(`/api/users/${user.id}/`, user);
 			}
+			const response = await axios.put(`/api/users/${user.id}/`, bodyFormData);
 			const currentUser: UserEntity = response.data;
 			await dispatch(editUser_(currentUser));
 			dispatch(push(`/@${currentUser.username}/info`));
