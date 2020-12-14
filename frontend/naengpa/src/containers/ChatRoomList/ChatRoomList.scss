@@ -1,34 +1,48 @@
 #mypage {
-  #info {
+  #chatroom-list {
+    background-color: #ffffff;
+    margin-top: 4em;
+    margin-bottom: 250px;
+    width: 700px;
+    height: 500px;
+
+    #chatroom-header {
+      font-weight: bold;
+      color: #000000; 
+      font-size: 21.5px;
+      margin-left: 49px; 
+      margin-top: 38px;
+      background-color: #ffffff;
+    }
+  }
+
+  #scrollabelDiv {
+    background-color: #ffffff;
+    margin-bottom: 200px;
+    width: 700px;
     left: 0;
     right: 0;
     
-    #chatroom-header {
-      font-weight: bold;
-      color: #6b6b6b; 
-      font-size: 130%;
-      margin-left: 5%; 
-      margin-top: 2%;
-      background-color: #ffffff;
-    }
-
     #chatroom {
-      display: flex;
-      flex-direction: row; 
+      //display: flex;
+      //flex-direction: row; 
+      align-items: flex-start, stretch;
       justify-content: space-between;
-      align-items: flex-end;
+      //justify-content: space-around;
+      text-align: left;
       background-color: #ffffff;
       border: none;
       width: 100%;
-      font-size: 120%;
+      font-size: 20px;
       padding: 3%;
-      //overflow: scroll;
       :focus {
         outline: 0 !important;
       }
       #chat-member {
         color: #408bf9;
         font-weight: bold;
+        align-content: flex-start;
+        text-align: left;
       } 
 
       #chat-message {
