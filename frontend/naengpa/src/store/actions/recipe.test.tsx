@@ -349,7 +349,7 @@ describe('ActionCreators', () => {
 		const actions = mockStore.getActions();
 		const expectedPayload = {
 			type: actionTypes.TOGGLE_RECIPE,
-			target_id: 2,
+			targetId: 2,
 			info: null,
 		};
 		expect(actions[0]).toEqual(expectedPayload);

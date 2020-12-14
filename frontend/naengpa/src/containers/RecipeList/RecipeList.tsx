@@ -3,8 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 import { toast } from 'react-toastify';
 import Pagination from '@material-ui/lab/Pagination';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
 import InputBase from '@material-ui/core/InputBase';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
