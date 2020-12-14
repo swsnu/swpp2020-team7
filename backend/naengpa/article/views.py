@@ -17,9 +17,6 @@ from utils.gis_utils import get_nearest_places_ids_from_region, get_nearest_plac
 from utils.auth import login_required_401
 from .models import Article, Image
 
-from django.contrib.auth import get_user_model
-User = get_user_model()
-
 
 class InvalidOptionsGivenError(Exception):
     pass
