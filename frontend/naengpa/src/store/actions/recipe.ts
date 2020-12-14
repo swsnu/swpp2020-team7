@@ -88,7 +88,7 @@ export function getUserRecipes(id: string) {
 
 		dispatch(getUserRecipes_(response.data));
 	};
-};
+}
 
 export const createRecipe_ = (recipe: RecipeEntity) => ({
 	type: actionTypes.CREATE_RECIPE,

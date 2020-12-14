@@ -42,7 +42,7 @@ function recipeReducer(
 		/* GET USERT RECIPE */
 		case actionTypes.GET_USER_RECIPES:
 			return { ...state, userRecipes: action.recipes };
-		
+
 		/* CREATE RECIPE */
 		case actionTypes.CREATE_RECIPE: {
 			return {

@@ -94,15 +94,13 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	}, [page, query, forSale, forExchange, forShare]);
 
 	const loadingFeeds = () => {
-		const feedCount=9;
+		const feedCount = 9;
 		const feeds = [];
-		for(let i = 0; i<feedCount; i++) {
-			feeds.push(
-				<FeedLoading attribute="cardList"/>
-			)
+		for (let i = 0; i < feedCount; i+=1) {
+			feeds.push(<FeedLoading attribute="cardList" />);
 		}
 		return feeds;
-	}
+	};
 
 	const articles = currentPage.map((item) => (
 		<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
@@ -174,9 +172,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 					</div>
 				</div>
 			</div>
-			<div id="article-cards">
-				{loading ? loadingFeeds() : <>{articles}</>}
-			</div>
+			<div id="article-cards">{loading ? loadingFeeds() : <>{articles}</>}</div>
 			{!loading &&
 				(articleList?.length ? (
 					<Pagination

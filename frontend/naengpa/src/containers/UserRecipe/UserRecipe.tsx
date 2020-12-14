@@ -4,12 +4,12 @@ import { History } from 'history';
 
 import '../Mypage/UserInfo/UserInfo.scss';
 import './UserRecipe.scss';
+import { ListItem, ListItemText } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import Tab from '../../components/Tab/Tab';
 import Recipe from '../../components/Recipe/Recipe';
 import { AppState } from '../../store/store';
 import { getUserRecipes } from '../../store/actions/index';
-import { ListItem, ListItemText } from '@material-ui/core';
-import { toast } from 'react-toastify';
 import FeedLoading from '../../components/FeedLoading/FeedLoading';
 
 interface UserRecipeProps {
@@ -22,7 +22,6 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 	const [loading, setLoading] = useState(true);
 	const dispatch = useDispatch();
 
-
 	const recipes = recipeList?.map((item: any) => {
 		return (
 			<Recipe key={item.id} recipe={item} attribute="recipe-list-child" history={history} />
@@ -30,22 +29,20 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 	});
 
 	const loadingFeeds = () => {
-		const feedCount=2;
+		const feedCount = 2;
 		const feeds = [];
-		for(let i = 0; i<feedCount; i++) {
-			feeds.push(
-				<FeedLoading attribute="card"/>
-			)
+		for (let i = 0; i < feedCount; i+=1) {
+			feeds.push(<FeedLoading attribute="card" />);
 		}
 		return feeds;
-	}
+	};
 
 	const loadRecipe = useCallback(async () => {
-		if(loading && user) {
+		if (loading && user) {
 			await dispatch(getUserRecipes(user?.id));
 			setLoading(false);
 		}
-	}, [recipeList])
+	}, [recipeList]);
 
 	useEffect(() => {
 		loadRecipe();
@@ -55,23 +52,35 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 		<div id="mypage">
 			<Tab history={history} />
 			<div id="info">
-				<div id="my-recipe-title" style={{fontWeight:"bold", margin: "30px"}}>나의 레시피
+				<div id="my-recipe-title" style={{ fontWeight: 'bold', margin: '30px' }}>
+					나의 레시피
 				</div>
-				<div style={{display:"flex", flexDirection:"row", justifyContent:"center", overflow:"scroll"}}> 
-					{loading ? loadingFeeds()
-					: ((!recipeList || !recipeList.length) &&
-							<ListItem button onClick={() => toast.info('🐬 행복한 연말되세요!')}>
-								<ListItemText
-									primary="🐬 작성한 레시피가 없어요"
-									secondary="레시피를 등록해 보세요!"
-								/>
-							</ListItem>
-					)}
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'row',
+						justifyContent: 'center',
+						overflow: 'scroll',
+					}}
+				>
+					{loading
+						? loadingFeeds()
+						: (!recipeList || !recipeList.length) && (
+								<ListItem
+									button
+									onClick={() => toast.info('🐬 행복한 연말되세요!')}
+								>
+									<ListItemText
+										primary="🐬 작성한 레시피가 없어요"
+										secondary="레시피를 등록해 보세요!"
+									/>
+								</ListItem>
+						  )}
 					{!loading && recipes}
 				</div>
 			</div>
 		</div>
-	)
+	);
 };
 
 export default UserRecipe;

@@ -30,7 +30,7 @@ export {
 	getRecipeList,
 	getTodayRecipeList,
 	getRecipe,
-	getUserRecipes, 
+	getUserRecipes,
 	createRecipe,
 	extractMLFeatureFromRecipe,
 	deleteRecipe,
