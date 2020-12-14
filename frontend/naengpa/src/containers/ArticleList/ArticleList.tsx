@@ -122,7 +122,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 								}}
 								onKeyDown={onClickSearch}
 							/>
-							<SearchIcon id="article-list-search-icon" onKeyDown={onClickSearch}/>
+							<SearchIcon id="article-list-search-icon" onKeyDown={onClickSearch} />
 						</div>
 						<div id="article-list-options-filter">
 							<button
@@ -164,9 +164,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 				</div>
 			</div>
 			<div id={`article-cards-${loading}`}>
-				{loading ? (
-						<CircularProgress id="loading-bar" color="inherit" />
-				) : <>{articles}</>}
+				{loading ? <CircularProgress id="loading-bar" color="inherit" /> : <>{articles}</>}
 			</div>
 			{!loading &&
 				(articleList?.length ? (

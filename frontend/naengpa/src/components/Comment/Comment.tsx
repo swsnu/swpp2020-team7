@@ -39,11 +39,11 @@ interface CommentProps {
 
 const Comment: React.FC<CommentProps> = ({ comment }) => {
 	const dispatch = useDispatch();
-	const user = useSelector((state: AppState) => state.user.user);
+	const user = useSelector((state: AppState) => state.user?.user);
 	const [alert, setAlert] = useState(false);
 	const [commentLike, setCommentLike] = useState(0);
 	const [userLike, setUserLike] = useState(0);
-	const [content, setContent] = useState(comment.content);
+	const [content, setContent] = useState(comment?.content);
 	const [editMode, setEditMode] = useState(false);
 	const classes = useStyles();
 
@@ -120,7 +120,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 										)}
 									</Grid>
 								</Grid>
-								{user!.username === comment?.author && (
+								{user?.username === comment?.author && (
 									<Grid>
 										<IconButton
 											id="comment-setting-button"

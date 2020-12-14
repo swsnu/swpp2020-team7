@@ -90,7 +90,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 				<Grid container alignItems="center">
 					<Grid item>
 						<Typography gutterBottom variant="h3">
-							{article.title}
+							{article?.title}
 						</Typography>
 					</Grid>
 					<Grid item xs>
