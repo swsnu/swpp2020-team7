@@ -2,7 +2,7 @@
 import json
 from operator import itemgetter
 from django.http import JsonResponse, HttpResponseBadRequest,  HttpResponseNotFound
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db import transaction
@@ -17,9 +17,48 @@ from utils.gis_utils import get_nearest_places_ids_from_region, get_nearest_plac
 from utils.auth import login_required_401
 from .models import Article, Image
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 
 class InvalidOptionsGivenError(Exception):
     pass
+
+
+def _get_cache_or_set_article_by_id(id):
+    article_data = cache.get('article:{}'.format(id))
+    if not article_data:
+        try:
+            article = Article.objects.select_related(
+                'author', 'author__region', 'item', 'item__category'
+            ).prefetch_related('images').get(pk=id)
+        except Article.DoesNotExist:
+            return HttpResponseNotFound()
+        article_data = {
+            "id": article.id,
+            "authorId": article.author.id,
+            "author": article.author.username,
+            "region": article.author.region.name,
+            "profileImage": article.author.profile_image,
+            "title": article.title,
+            "content": article.content,
+            "item": {
+                "id": article.item.id,
+                "name": article.item.name,
+                "category": article.item.category.name,
+            },
+            "price": article.price,
+            "views": article.views,
+            "options": {
+                "isForSale": article.is_for_sale,
+                "isForExchange": article.is_for_exchange,
+                "isForShare": article.is_for_share,
+            },
+            "images": list(article.images.values('id', 'file_path')),
+            "createdAt": article.created_at.strftime("%Y년 %m월 %d일 %H:%M")
+        }
+        cache.set('article:{}'.format(id), article_data)
+    return article_data
 
 
 def article_list_get(request):
@@ -30,14 +69,11 @@ def article_list_get(request):
     is_for_share = request.GET.get('fh')
     page = request.GET.get('p', 1)
 
-    included_region_ids = request.user.region.neighborhoodregion_set.filter(
-        region_range=request.user.region_range).values_list('neighborhood_id', flat=True)
+    test_user = User.objects.get(name='임은성')
+    included_region_ids = test_user.region.neighborhoodregion_set.filter(
+        region_range=test_user.region_range).values_list('neighborhood_id', flat=True)
 
-    filtered_list = Article.objects.select_related(
-        'author', 'author__region', 'item'
-    ).prefetch_related(
-        'images',
-    ).exclude(
+    filtered_list = Article.objects.exclude(
         done=True
     ).filter(
         author__region__id__in=included_region_ids
@@ -66,28 +102,8 @@ def article_list_get(request):
     paginator = Paginator(sorted_list, 9)
     paged_list = paginator.get_page(page)
 
-    article_collection = [{
-        "id": article.id,
-        "authorId": article.author.id,
-        "author": article.author.username,
-        "region": article.author.region.name,
-        "title": article.title,
-        "content": article.content,
-        "item": {
-            "id": article.item.id,
-            "name": article.item.name,
-            "category": article.item.category.name,
-        },
-        "price": article.price,
-        "views": article.views,
-        "options": {
-            "isForSale": article.is_for_sale,
-            "isForExchange": article.is_for_exchange,
-            "isForShare": article.is_for_share,
-        },
-        "images": list(article.images.values('id', 'file_path')),
-        "createdAt": article.created_at.strftime("%Y.%m.%d")
-    } for article in paged_list]
+    article_collection = [_get_cache_or_set_article_by_id(
+        aid) for aid in paged_list.object_list.values_list('id', flat=True)]
 
     return JsonResponse({
         "articleList": article_collection,
@@ -95,7 +111,6 @@ def article_list_get(request):
     }, safe=False)
 
 
-@login_required_401
 def article_list_post(request):
     """ POST /api/articles/ post new article """
     try:
@@ -130,33 +145,13 @@ def article_list_post(request):
         Image.objects.create(author_id=author_id,
                              file_path=path, article_id=article.id)
 
-    return JsonResponse(data={
-        "id": article.id,
-        "authorId": author_id,
-        "author": article.author.username,
-        "region": article.author.region.name,
-        "title": article.title,
-        "content": article.content,
-        "item": {
-            "id": article.item.id,
-            "name": article.item.name,
-            "category": article.item.category.name,
-        },
-        "price": article.price,
-        "views": article.views,
-        "options": {
-            "isForSale": article.is_for_sale,
-            "isForExchange": article.is_for_exchange,
-            "isForShare": article.is_for_share
-        },
-        "images": list(article.images.values('id', 'file_path')),
-        "createdAt": article.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
-    }, status=201)
+    return JsonResponse(_get_cache_or_set_article_by_id(article.id), status=201)
 
 
-@ensure_csrf_cookie
-@api_view(['GET', 'POST'])
-@login_required_401
+# @ensure_csrf_cookie
+# @api_view(['GET', 'POST'])
+# @login_required_401
+@csrf_exempt
 def article_list(request):
     """get article list or create an article"""
     if request.method == 'GET':
@@ -173,40 +168,13 @@ def article_info(request, aid):
     '''process article of given id'''
     if request.method == 'GET':
         ''' GET /api/articles/:aid/ get article of given id '''
-        try:
-            article = Article.objects.select_related(
-                'author', 'author__region', 'item').get(id=aid)
-        except Article.DoesNotExist:
-            return HttpResponseNotFound()
-
-        return JsonResponse(data={
-            "id": article.id,
-            "authorId": article.author.id,
-            "author": article.author.username,
-            "region": article.author.region.name,
-            "title": article.title,
-            "content": article.content,
-            "item": {
-                "id": article.item.id,
-                "name": article.item.name,
-                "category": article.item.category.name,
-            },
-            "price": article.price,
-            "views": article.views,
-            "options": {
-                "isForSale": article.is_for_sale,
-                "isForExchange": article.is_for_exchange,
-                "isForShare": article.is_for_share
-            },
-            "images": list(article.images.values('id', 'file_path')),
-            "createdAt": article.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
-        }, status=200)
+        return JsonResponse(_get_cache_or_set_article_by_id(aid))
 
     elif request.method == 'DELETE':
         ''' DELETE /api/articles/:aid/ delete article of given id '''
         try:
             article = Article.objects.select_related(
-                'author', 'author__region', 'item').get(id=aid)
+                'author', 'author__region', 'item').get(pk=aid)
         except Article.DoesNotExist:
             return HttpResponseNotFound()
 
