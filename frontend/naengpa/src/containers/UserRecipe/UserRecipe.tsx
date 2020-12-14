@@ -31,7 +31,7 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 	const loadingFeeds = () => {
 		const feedCount = 2;
 		const feeds = [];
-		for (let i = 0; i < feedCount; i+=1) {
+		for (let i = 0; i < feedCount; i += 1) {
 			feeds.push(<FeedLoading attribute="card" />);
 		}
 		return feeds;

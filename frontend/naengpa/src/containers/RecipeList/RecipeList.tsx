@@ -53,7 +53,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const loadingFeeds = () => {
 		const feedCount = 9;
 		const feeds = [];
-		for (let i = 0; i < feedCount; i+=1) {
+		for (let i = 0; i < feedCount; i += 1) {
 			feeds.push(<FeedLoading attribute="cardList" />);
 		}
 		return feeds;
