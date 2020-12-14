@@ -91,8 +91,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				key={`#${value}`}
 				src={value.file_path}
 				alt="/api/images"
-				width="200px"
-				height="200px"
+				width="250px"
+				height="250px"
 			/>
 		);
 	});

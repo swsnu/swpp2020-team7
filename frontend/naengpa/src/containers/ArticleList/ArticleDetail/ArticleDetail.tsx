@@ -56,8 +56,8 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 				key={`#${value}`}
 				src={value.file_path}
 				alt="/api/images"
-				width="200px"
-				height="200px"
+				width="250px"
+				height="250px"
 			/>
 		);
 	});
@@ -86,7 +86,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 				>
 					<ArrowBackIosIcon />
 				</IconButton>
-				{image || <Skeleton variant="rect" width={200} height={200} />}
+				{image || <Skeleton variant="rect" width={250} height={250} />}
 				<IconButton
 					id="next-image"
 					onClick={(e) => onClickPage(e, page + 1)}
