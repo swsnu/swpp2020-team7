@@ -45,25 +45,24 @@
     }
 
     #edit-info-profile {
-<<<<<<< HEAD
-        margin-top: 0.3%;
-        margin-left: -3%;
-=======
-        margin-top: 30px;
-        margin-left: -50px;
->>>>>>> a8ea753a1a3ec097d2fc93685f25b0cb915a28a0
+        //margin-top: 1px;
+        margin-left: -17px;
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
+    #myinfo-profile-username {
+        font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+    }
+
     #edit-profile-picture {
         border-radius: 100%;
-        margin: 5%;
+        //margin: 5%;
         left: 0;
         width: 128px;
         height: 128px;
-        margin-top: 17%;
+        //margin-top: 17%;
         color: #bdbdbd;
     }
 
@@ -86,8 +85,8 @@
     }
 
     #edit-info-list {
-        margin-top: 12px;
-        margin-left: 30px;
+        margin-top: 15px;
+        margin-left: 45px;
         width:350px;
     }
 
@@ -95,6 +94,7 @@
         padding: 3%;
         display: flex;
         flex-direction: row;
+        margin-bottom: 7px;
         .info-head {
             width: 30%;
         }
