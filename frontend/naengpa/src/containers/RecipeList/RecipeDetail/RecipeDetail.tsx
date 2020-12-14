@@ -46,7 +46,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const currentPath = window.location.pathname.split('/');
 	const recipeId = parseInt(currentPath[currentPath.length-1]);
 	const [userLike, setUserLike] = useState(recipe?.userLike);
-	const [recipeLike, setRecipeLike] = useState(recipe?.recipeLike);
+	const [recipeLike, setRecipeLike] = useState(recipe ? recipe.recipeLike : 0);
 	const dispatch = useDispatch();
 
 	const onClickPage = (e: React.ChangeEvent<unknown>, value: number): void => {
@@ -157,6 +157,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 			dispatch(getRecipe(recipeId));
 		}
 	}, [dispatch, recipeId])
+
+	useEffect(() => {
+		setRecipeLike(recipe?.recipeLike)
+	}, [recipe]);
 
 	return (
 		<div id="recipe-detail">
