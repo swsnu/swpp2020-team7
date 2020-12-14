@@ -1,6 +1,6 @@
 #article-list {
-  margin: 4% 8%;
-  padding: 1% 5%;
+  margin: 30px 0;
+  padding: 10px 150px;
   min-width: 800px;
   background-color: #ffffff;
 
@@ -162,8 +162,7 @@
     }
   }
 
-  #article-cards-false {
-    min-height: 400px;
+  #article-cards {
     display: flex;
     flex-flow: wrap;
     justify-content: space-between;
@@ -175,11 +174,6 @@
     display: flex;
     justify-content: center !important;
     margin: 0 !important;
-  }
-
-  #article-cards-true {
-    display: flex;
-    justify-content: center;
   }
 
   div#article-list-create-article {

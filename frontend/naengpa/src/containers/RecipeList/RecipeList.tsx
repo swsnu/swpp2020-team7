@@ -13,6 +13,7 @@ import { AppState } from '../../store/store';
 import { getRecipeList } from '../../store/actions/index';
 
 import './RecipeList.scss';
+import FeedLoading from '../../components/FeedLoading/FeedLoading';
 
 interface RecipeListProps {
 	history: History;
@@ -38,14 +39,25 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 			await dispatch(getRecipeList(query, sortBy, searchCategory, page));
 			if (!recipeState.recipeList || !recipeState.recipeList.length) {
 				if (sortBy === 'ingredient') {
-					toast.info('🐬 냉장고 속 재료와 오늘의 재료로 추천된 레시피가 없습니다!');
-					setSortBy(() => 'created_at');
+					toast.info('🐬 냉장고 속 재료와 오늘의 재료로 추천된 레시피가 없습니다! 인기 레시피를 확인해 보세요!');
+					setSortBy(() => 'likes');
 				}
 			}
 			setMaxPageIndex(recipeState.lastPageIndex);
 			setLoading(false);
 		}
 	}, [recipeState.lastPageIndex, loading, query, page, sortBy, searchCategory]);
+
+	const loadingFeeds = () => {
+		const feedCount=9;
+		const feeds = [];
+		for(let i = 0; i<feedCount; i++) {
+			feeds.push(
+				<FeedLoading attribute="cardList"/>
+			)
+		}
+		return feeds;
+	}
 
 	useEffect(() => {
 		onLoadPage();
@@ -170,7 +182,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 			</div>
 			<div id="recipe-cards">
 				{loading ? (
-					<CircularProgress id="loading-bar" color="inherit" />
+					loadingFeeds()
 				) : (
 					recipeState.recipeList?.map((item: any) => (
 						<Recipe
