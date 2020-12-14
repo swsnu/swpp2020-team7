@@ -24,29 +24,31 @@
     right: 0;
     
     #chatroom {
-      //display: flex;
-      //flex-direction: row; 
       align-items: flex-start, stretch;
       justify-content: space-between;
-      //justify-content: space-around;
       text-align: left;
       background-color: #ffffff;
       border: none;
-      width: 100%;
+      width: 700px;
       font-size: 20px;
-      padding: 3%;
+      padding-right: 50px;
       :focus {
         outline: 0 !important;
       }
       #chat-member {
         color: #408bf9;
         font-weight: bold;
-        align-content: flex-start;
-        text-align: left;
+        width: 130px;
+        text-align: inherit;
+        padding-left: 0 !important;
+        margin-left: 0 !important;
       } 
 
       #chat-message {
         color: #6b6b6b;
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+        width: 250px;
       }
 
       #chat-count {
@@ -54,11 +56,12 @@
         border-radius: 100%;
         font-size: 90%;
         padding: {
-          left: 2.4%;
-          right: 2.4%;
+          left: 11px;
+          right: 11px;
           top: 0;
           bottom: 0;
         }
+        width: 10px;
         font-weight: bold;
         color: #ffffff;
         background-color:#fd6767;
