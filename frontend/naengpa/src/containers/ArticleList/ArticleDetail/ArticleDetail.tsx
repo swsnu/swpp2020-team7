@@ -109,12 +109,15 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 				<Grid container alignItems="center">
 					<Grid container spacing={1}>
 						<Grid item>
-							<Avatar aria-label="user-image" src={
-								(article.profileImage as string)
-									? (article.profileImage as string)
-									: '/icons/account_circle.png'
-							}
-								alt="/icons/account_circle.png" />
+							<Avatar
+								aria-label="user-image"
+								src={
+									(article.profileImage as string)
+										? (article.profileImage as string)
+										: '/icons/account_circle.png'
+								}
+								alt="/icons/account_circle.png"
+							/>
 						</Grid>
 						<Grid item id="profile-box">
 							<Typography gutterBottom id="profile-title" variant="h5">

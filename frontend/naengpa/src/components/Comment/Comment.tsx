@@ -111,12 +111,12 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 												onClick={() => onClickCommentLike()}
 											/>
 										) : (
-												<FavoriteBorderIcon
-													id="comment-like-count-icon"
-													fontSize="small"
-													onClick={() => onClickCommentLike()}
-												/>
-											)}
+											<FavoriteBorderIcon
+												id="comment-like-count-icon"
+												fontSize="small"
+												onClick={() => onClickCommentLike()}
+											/>
+										)}
 										{commentLike}
 									</Grid>
 								</Grid>
@@ -178,8 +178,8 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 								</Button>
 							</div>
 						) : (
-								<p style={{ textAlign: 'left', margin: 0 }}>{comment?.content}</p>
-							)}
+							<p style={{ textAlign: 'left', margin: 0 }}>{comment?.content}</p>
+						)}
 					</Grid>
 				</Grid>
 			</Grid>

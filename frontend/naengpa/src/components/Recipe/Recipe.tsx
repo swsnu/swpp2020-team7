@@ -79,8 +79,8 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 					}}
 				/>
 			) : (
-					<></>
-				)}
+				<></>
+			)}
 			<div id="recipe-card-footer">
 				<CardContent
 					id="recipe-content"
@@ -105,12 +105,12 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 								onClick={() => onClickRecipeLike()}
 							/>
 						) : (
-								<FavoriteBorderIcon
-									id="recipe-like-count-icon"
-									fontSize={fontSize}
-									onClick={() => onClickRecipeLike()}
-								/>
-							)}
+							<FavoriteBorderIcon
+								id="recipe-like-count-icon"
+								fontSize={fontSize}
+								onClick={() => onClickRecipeLike()}
+							/>
+						)}
 						{recipeLike}
 					</div>
 				</div>

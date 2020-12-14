@@ -135,8 +135,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				{userIngredientNames.includes(item.name) ? (
 					<Button id="ingredient-yes-button">{item.name}</Button>
 				) : (
-						<Button id="ingredient-no-button">{item.name}</Button>
-					)}
+					<Button id="ingredient-no-button">{item.name}</Button>
+				)}
 			</div>
 		);
 	});
@@ -196,12 +196,15 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<Grid container alignItems="center">
 					<Grid container spacing={1}>
 						<Grid item id="profile-image">
-							<Avatar aria-label="user-image" src={
-								(recipe.profileImage as string)
-									? (recipe.profileImage as string)
-									: '/icons/account_circle.png'
-							}
-								alt="/icons/account_circle.png" />
+							<Avatar
+								aria-label="user-image"
+								src={
+									(recipe.profileImage as string)
+										? (recipe.profileImage as string)
+										: '/icons/account_circle.png'
+								}
+								alt="/icons/account_circle.png"
+							/>
 						</Grid>
 						<Grid item id="profile-box">
 							<Typography id="profile-title" gutterBottom variant="h5">
@@ -232,12 +235,12 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 										onClick={() => onClickRecipeLike()}
 									/>
 								) : (
-										<FavoriteBorderIcon
-											id="recipe-like-count-icon"
-											fontSize="large"
-											onClick={() => onClickRecipeLike()}
-										/>
-									)}
+									<FavoriteBorderIcon
+										id="recipe-like-count-icon"
+										fontSize="large"
+										onClick={() => onClickRecipeLike()}
+									/>
+								)}
 								{recipeLike}
 							</div>
 						</Grid>
