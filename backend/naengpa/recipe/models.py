@@ -101,7 +101,9 @@ class RecipeLike(models.Model):
             self.user.save(update_fields=['naengpa_score'])
             Notification.objects.create(
                 recipient=self.recipe.author,
-                content=f"{self.user.name}님이 '{self.recipe.food_name}' 레시피에 좋아요를 눌렀어요"
+                content=f"{self.user.name}님이 '{self.recipe.food_name}' 레시피에 좋아요를 눌렀어요",
+                category="RecipeLike",
+                target_id=self.recipe.id,
             )
         super().save(*args, **kwargs)
 

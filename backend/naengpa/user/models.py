@@ -111,6 +111,8 @@ class Notification(models.Model):
     recipient = models.ForeignKey(
         User, related_name="notifications", on_delete=models.CASCADE)
     content = models.CharField(max_length=50)
+    category = models.CharField(max_length=16, null=True)
+    target_id = models.PositiveIntegerField(null=True)
     created_at = models.DateTimeField(default=timezone.now)
     deleted = models.BooleanField(default=False, db_index=True)
 
