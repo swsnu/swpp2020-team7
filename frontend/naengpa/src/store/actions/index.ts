@@ -12,7 +12,6 @@ export {
 	getChatRoom,
 	createChatRoom,
 	sendChat,
-	getMessages,
 	deleteChatRoom, // should be deleted
 } from './user';
 export { getRegionList } from './region';

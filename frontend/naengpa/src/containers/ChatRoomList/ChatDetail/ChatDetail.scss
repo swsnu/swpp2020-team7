@@ -1,10 +1,16 @@
 #mypage {
-  #info {
+  #chatroom-info {
+    background-color: #ffffff;
+    margin-top: 4em;
+    margin-bottom: 200px;
+    width: 700px;
+    padding: 15px;
+
     #chatroom-header {
       display: flex; 
       flex-direction: row;
-      align-items:center;
       justify-content: space-between;
+      align-items:center !important;
       background-color: white;
 
       #go-to-chatroom-list-button {
@@ -21,22 +27,57 @@
         color: white;
       }
 
+      #profile-picture {
+        min-width: 40px;
+        min-height: 40px;
+        color: #bdbdbd;
+      }
+
       #chat-member-username {
         color: #408bf9;
-        //margin-left: 150px;
+        font-family: 'Jua', sans-serif;
+        margin-left: 10px;
         align-items: center;
-        font-size: 35px;
+        font-size: 25px;
+      }
+
+      #member-info-box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
       }
     }
 
     #chat-message-box {
+      height: 500px;
+      overflow: scroll;
+
+      .skeleton {
+        height: 60px;
+        // width: 300px;
+        border-radius: 30px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+      }
+
+      .skeleton2 {
+        height: 70px;
+        // width: 300px;
+        border-radius: 30px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+      }
+
       #user-message {
         display: flex;
         flex-direction: row; 
         justify-content: flex-end;
         text-align: right;
-        margin-top: 2%;
+        margin-top: 10px;
       }
+
       #member-message {
         display: flex;
         flex-direction: row;
@@ -68,15 +109,18 @@
       flex-direction: row;
       justify-content: space-between;
       right: 0;
-      margin-left: 100px;
-
+      margin: {
+        top: 10px;
+        left:50px;
+        right: 50px;
+      }
       #chat-input-field {
        border: none;
       }
 
       #send-chat-button {
         padding: 0;
-        margin-left: 30px;
+        margin: 30px;
         right: 0 !important;
         margin: 0;
         width: 100px;

@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import './ChatRoomList.scss';
 import '../Mypage/UserInfo/UserInfo.scss';
 import { Button, Divider, Typography } from '@material-ui/core';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
 import Tab from '../../components/Tab/Tab';
 import { getChatRoomList, getChatRoom } from '../../store/actions/index';
 import { AppState } from '../../store/store';
+import { Skeleton } from '@material-ui/lab';
+import { ListItem, ListItemText } from '@material-ui/core';
+import { toast } from 'react-toastify';
 
 interface ChatRoomListProps {
 	history: History;
@@ -16,9 +20,18 @@ interface ChatRoomListProps {
 const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user);
+	const [loading, setLoading] = useState(true);
+
+	const loaderTemplate = 
+		Array.from(Array(8)).map((idx) => {
+				return <Skeleton className="skeleton"/>
+		})
 
 	useEffect(() => {
-		if (user) dispatch(getChatRoomList());
+		if (user) {
+			dispatch(getChatRoomList());
+			setLoading(false);
+		} 
 	}, [dispatch]);
 
 	const chatRoomCollection = user.chatRoomList?.map((chatRoom: any) => {
@@ -34,6 +47,12 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 				}}
 			>
 				<Divider variant="middle" />
+				<div id="chat-member-image">
+					{!chatRoom.memberImage && <AccountCircleIcon id="profile-picture" />}
+					{chatRoom.memberImage && (
+						<Avatar id="profile-picture" src={chatRoom.memberImage as string} />
+					)}
+				</div>
 				<div id="chat-member">{chatRoom.member}</div>
 				<div id="chat-message">{chatRoom.lastChat}</div>
 				<div id="chat-updated-time">{chatRoom.updatedAt}</div>
@@ -45,7 +64,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	return (
 		<div id="mypage">
 			<Tab history={history} />
-			<div id="chatroom-list">
+			<Typography id="chatroom-list">
 				<Typography id="chatroom-header" gutterBottom>
 					쪽지함
 				</Typography>
@@ -53,23 +72,26 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 					id="scrollabelDiv"
 					style={{
 						height: 500,
-						overflow: 'auto',
+						overflow: 'scroll',
 						display: 'flex',
 						flexDirection: 'column',
 					}}
 				>
-					<InfiniteScroll
-						dataLength={user.chatRoomList?.length}
-						style={{ display: 'flex', flexDirection: 'column' }}
-						next={() => dispatch(getChatRoomList())}
-						hasMore={false}
-						loader={<h4>Loading...</h4>}
-					>
-						<div>{chatRoomCollection}</div>
-					</InfiniteScroll>
+					{loading ? loaderTemplate :
+						(!chatRoomCollection ? (
+						<ListItem
+							button
+							onClick={() => toast.info('🐬 행복한 연말되세요!')}
+						>
+							<ListItemText
+								primary="🐬 채팅방이 존재하지 않습니다."
+								secondary="채팅을 시작해 보세요!"
+							/>
+						</ListItem>
+						) : chatRoomCollection )}
 				</div>
-			</div>
-		</div>
+			</Typography>
+	</div>
 	);
 };
 

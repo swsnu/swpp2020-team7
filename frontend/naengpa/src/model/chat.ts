@@ -3,6 +3,7 @@ export interface ChatEntity {
 	messages?: MessageEntity[];
 	lastChat: string;
 	member: string;
+	memberImage?: string;
 	updatedAt: string;
 	chatCount: number;
 }
