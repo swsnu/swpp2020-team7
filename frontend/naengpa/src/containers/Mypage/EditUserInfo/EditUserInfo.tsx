@@ -55,7 +55,9 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 		}
 	};
 
-	const onClickAddImage = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+	const onClickAddImage = async (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
 		const target = e.target as HTMLInputElement;
 		const image: File = (target.files as FileList)[0];
 		await compressImage(image).then((result) => {

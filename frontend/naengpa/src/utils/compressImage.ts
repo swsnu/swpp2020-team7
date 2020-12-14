@@ -1,5 +1,7 @@
-/* Compress Image using Canvas and img*/
-const compressImage  = async (file:File) => {
+/* eslint-disable no-unused-expressions */
+
+/* Compress Image using Canvas and img */
+const compressImage = async (file: File) => {
 	return new Promise<File>((resolve, reject) => {
 		const image = document.createElement('img');
 		image.src = URL.createObjectURL(file);
@@ -11,16 +13,17 @@ const compressImage  = async (file:File) => {
 			const context = canvas.getContext('2d');
 			context?.drawImage(image, 0, 0, 200, 200);
 			context?.canvas.toBlob(
-					(newImageBlob) => {
-						if (newImageBlob) {
-								resolve(new File([newImageBlob], file.name) as File);
-						} else {
-								resolve(file);
-						}
-					},
-					'images/jpg',
-					0.5,
+				(newImageBlob) => {
+					if (newImageBlob) {
+						resolve(new File([newImageBlob], file.name) as File);
+					} else {
+						resolve(file);
+					}
+				},
+				'images/jpg',
+				0.5,
 			);
-	}})
-}
+		};
+	});
+};
 export default compressImage;
