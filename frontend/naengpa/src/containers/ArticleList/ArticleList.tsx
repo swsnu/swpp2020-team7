@@ -6,9 +6,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import CreateIcon from '@material-ui/icons/Create';
-import { ArticleEntity, ArticleOptions } from '../../model/article';
+import { ArticleEntity } from '../../model/article';
 import Article from '../../components/Article/Article';
-import { getArticle, getArticleList } from '../../store/actions/index';
+import { getArticleList } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 import './ArticleList.scss';
 
@@ -19,17 +19,28 @@ interface ArticleListProps {
 const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user.user);
 	const articleList = useSelector((state: AppState) => state.article.articleList);
+	const lastPageIndex = useSelector((state: AppState) => state.article.lastPageIndex);
 	const dispatch = useDispatch();
 
 	const [page, setPage] = useState(1);
-	const [currentList, setCurrentList] = useState<ArticleEntity[]>(articleList);
-	const [currentPage, setCurrentPage] = useState<ArticleEntity[]>([]);
-	const [maxPageIndex, setMaxPageIndex] = useState(1);
-	const [forSale, setForSale] = useState<boolean>(true);
-	const [forExchange, setForExchange] = useState<boolean>(true);
-	const [forShare, setForShare] = useState<boolean>(true);
-	const [loading, setLoading] = useState<boolean>(true);
+	const [maxPageIndex, setMaxPageIndex] = useState(lastPageIndex);
+	const [isForSale, setForSale] = useState(true);
+	const [isForExchange, setForExchange] = useState(true);
+	const [isForShare, setForShare] = useState(true);
+	const [loading, setLoading] = useState(true);
 	const [query, setQuery] = useState('');
+
+	const onLoadPage = useCallback(async () => {
+		if (loading) {
+			await dispatch(getArticleList(query, {isForSale, isForExchange, isForShare}, page));
+			setMaxPageIndex(lastPageIndex);
+			setLoading(false);
+		}
+	}, [lastPageIndex, loading, page, query, isForExchange, isForExchange, isForShare]);
+
+	useEffect(() => {
+		onLoadPage();
+	}, [onLoadPage]);
 
 	const onClickOptions = (target: string) => {
 		switch (target) {
@@ -47,8 +58,11 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		setLoading(true);
 	};
 
-	const onClickSearch = async (e: React.KeyboardEvent) => {
+	const onClickSearch = (e: any) => {
 		if (e.key === 'Enter') {
+			e.preventDefault();
+			setQuery(e.target.value);
+			setPage(1);
 			setLoading(true);
 		}
 	};
@@ -64,42 +78,9 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		history.push('/articles/create');
 	};
 
-	const onClickArticle = (id: number) => async () => {
-		await dispatch(getArticle(id));
-		history.push(`/articles/:${id}`);
-	};
-
-	const onLoadPage = useCallback(async () => {
-		if (loading) {
-			await dispatch(
-				getArticleList(query, {
-					isForExchange: forExchange,
-					isForSale: forSale,
-					isForShare: forShare,
-				}),
-			);
-			setCurrentList(
-				forShare || forSale || forExchange
-					? articleList.filter(
-							(a) =>
-								(forShare && a.options.isForShare) ||
-								(forSale && a.options.isForSale) ||
-								(forExchange && a.options.isForExchange),
-					  )
-					: articleList,
-			);
-			setCurrentPage(currentList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-			setLoading(false);
-		}
-	}, [page, query, forSale, forExchange, forShare]);
-
-	const articles = currentPage.map((item) => (
-		<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
+	const articles = articleList?.map((item: ArticleEntity) => (
+		<Article key={item.id} article={item} history={history} />
 	));
-
-	useEffect(() => {
-		onLoadPage();
-	}, [onLoadPage]);
 
 	return (
 		<div id="article-list">
@@ -116,18 +97,14 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 								placeholder="찾고싶은 재료명을 검색해보세요!"
 								fullWidth
 								inputProps={{ 'aria-label': 'search' }}
-								onChange={(e) => {
-									setQuery(e.target.value);
-									setLoading(true);
-								}}
 								onKeyDown={onClickSearch}
 							/>
-							<SearchIcon id="article-list-search-icon" onKeyDown={onClickSearch} />
+							<SearchIcon id="article-list-search-icon" />
 						</div>
 						<div id="article-list-options-filter">
 							<button
 								id="most-recent-filter"
-								className={forSale ? 'selected' : ''}
+								className={isForSale ? 'selected' : ''}
 								type="button"
 								onClick={() => onClickOptions('sale')}
 							>
@@ -135,7 +112,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 							</button>
 							<button
 								id="most-popular-filter"
-								className={forExchange ? 'selected' : ''}
+								className={isForExchange ? 'selected' : ''}
 								type="button"
 								onClick={() => onClickOptions('exchange')}
 							>
@@ -143,7 +120,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 							</button>
 							<button
 								id="most-recommended-filter"
-								className={forShare ? 'selected' : ''}
+								className={isForShare ? 'selected' : ''}
 								type="button"
 								onClick={() => onClickOptions('share')}
 							>
@@ -176,7 +153,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 						onChange={onChangePage}
 					/>
 				) : (
-					<div id="vacant-article"> 해당 조건의 게시글이 존재하지 않습니다!</div>
+					<div id="vacant-article"> 해당 조건의 게시글이 존재하지 않아요!</div>
 				))}
 		</div>
 	);

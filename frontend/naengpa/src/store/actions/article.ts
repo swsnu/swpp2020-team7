@@ -3,22 +3,32 @@ import { push } from 'connected-react-router';
 import { Dispatch } from 'redux';
 import * as actionTypes from './actionTypes';
 import { ArticleEntity, ArticleOptions, CreateArticleEntity } from '../../model/article';
+import { toast } from 'react-toastify';
 
 /* GET ARTICLE LIST */
-export const getArticleList_ = (articles: ArticleEntity[]) => ({
+export const getArticleList_ = (articleList: ArticleEntity[], lastPageIndex: number) => ({
 	type: actionTypes.GET_ARTICLE_LIST,
-	payload: articles,
+	articleList,
+	lastPageIndex,
 });
 
-export const getArticleList = (query?: string, options?: ArticleOptions) => {
+export const getArticleList = (query?: string, options?: ArticleOptions, page?: number) => {
 	return async (dispatch: Dispatch<any>) => {
-		const response = await axios.get('/api/articles/', {
-			params: {
-				q: query,
-			},
-		});
-
-		dispatch(getArticleList_(response.data));
+		try {
+			const response = await axios.get('/api/articles/', {
+				params: {
+					q: query,
+					fs: options?.isForSale,
+					fe: options?.isForExchange,
+					fh: options?.isForShare,
+					p: page,
+				},
+			}); 
+			const { articleList, lastPageIndex } = response.data;
+			dispatch(getArticleList_(articleList, lastPageIndex));
+		} catch {
+			toast.error('🦄 장터 게시글을 가져오지 못했습니다! 다시 시도해주세요!');
+		}
 	};
 };
 
