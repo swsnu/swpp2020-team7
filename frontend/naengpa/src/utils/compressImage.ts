@@ -1,35 +1,26 @@
-/* eslint consistent-return: 0 */
-
-/* Compress Image */
-const compressImage = (file: File) => {
-	const compressedImage = file;
-
-	const image = document.createElement('img');
-	image.src = URL.createObjectURL(file);
-	image.onload = () => {
-		URL.revokeObjectURL(image.src);
-		const canvas = document.createElement('canvas');
-		canvas.width = 200;
-		canvas.height = 200;
-		const context = canvas.getContext('2d');
-		const draw = () => context?.drawImage(image, 0, 0, 200, 200);
-		draw();
-		const getBlob = () =>
+/* Compress Image using Canvas and img*/
+const compressImage  = async (file:File) => {
+	return new Promise<File>((resolve, reject) => {
+		const image = document.createElement('img');
+		image.src = URL.createObjectURL(file);
+		image.onload = () => {
+			URL.revokeObjectURL(image.src);
+			const canvas = document.createElement('canvas');
+			canvas.width = 200;
+			canvas.height = 200;
+			const context = canvas.getContext('2d');
+			context?.drawImage(image, 0, 0, 200, 200);
 			context?.canvas.toBlob(
-				(newImageBlob) => {
-					if (newImageBlob) {
-						const func = () => {
-							return new File([newImageBlob], file.name);
-						};
-						return func();
-					}
-				},
-				'images/jpg',
-				0.5,
+					(newImageBlob) => {
+						if (newImageBlob) {
+								resolve(new File([newImageBlob], file.name) as File);
+						} else {
+								resolve(file);
+						}
+					},
+					'images/jpg',
+					0.5,
 			);
-		getBlob();
-	};
-	return compressedImage;
-};
-
+	}})
+}
 export default compressImage;

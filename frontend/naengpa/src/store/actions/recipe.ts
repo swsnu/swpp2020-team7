@@ -139,6 +139,10 @@ export const extractMLFeatureFromRecipe = (recipe: BaseRecipeEntity) => {
 			);
 			dispatch(extractMLFeatureFromRecipe_({ ...response.data, ...recipe }));
 		} catch (e) {
+			window.sessionStorage.setItem(
+				'createdRecipe',
+				JSON.stringify({ ...recipe, foodImageFiles: [] }),
+			);
 			if (e?.response && e.response.data.code === 715) {
 				toast.error(`🦄 이미지 파일의 용량이 너무 커요!`);
 			} else if (e?.response && e.response.data.code === 711) {

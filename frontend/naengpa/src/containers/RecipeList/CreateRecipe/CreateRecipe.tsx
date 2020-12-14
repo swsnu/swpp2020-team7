@@ -51,9 +51,10 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		const images = target.files as FileList;
 		// convert FileList iterable
 		const imageArray = Array.from(images);
-		imageArray.forEach((file) => {
-			const compressedImage = compressImage(file);
-			if (compressedImage) setFoodImageFiles((state) => [...state, compressedImage]);
+		imageArray.forEach(async (file) => {
+			await compressImage(file).then((result) => {
+				setFoodImageFiles((state) => [...state, result]);
+			});
 		});
 	};
 
@@ -64,7 +65,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 
 	// TODO: need to alert that the content could be lost
 	const onClickBackToRecipeList = () => {
-		sessionStorage.clear();
+		sessionStorage.removeItem('createdRecipe');
 		history.push('/recipes');
 	};
 
@@ -111,7 +112,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		? []
 		: foodImageFiles.map((item, idx) => {
 				return (
-					<div key={`#${item}`} id="delete-image-icon-box">
+					<div key={`#${item}-${idx+1}`} id="delete-image-icon-box">
 						{!alert && (
 							<CancelIcon
 								key={URL.createObjectURL(item)}
