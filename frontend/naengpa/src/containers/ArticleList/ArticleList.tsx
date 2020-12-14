@@ -1,23 +1,23 @@
 import React, { useEffect, MouseEvent, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import CreateIcon from '@material-ui/icons/Create';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { Skeleton } from '@material-ui/lab';
+import { Card, CardContent, CardHeader, createStyles, makeStyles, Theme } from '@material-ui/core';
 import { ArticleEntity } from '../../model/article';
 import Article from '../../components/Article/Article';
 import { getArticleList, getPageArticleList } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 import './ArticleList.scss';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { Skeleton } from '@material-ui/lab';
-import { Card, CardContent, CardHeader, createStyles, makeStyles, Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		card: {
-			minWidth: 250,
+			minWidth: 260,
+			width: '30%',
 			margin: theme.spacing(1),
 			minHeight: 400,
 			display: 'flex',
@@ -27,10 +27,10 @@ const useStyles = makeStyles((theme: Theme) =>
 			padding: 0,
 		},
 		media: {
-			width: 250,
-			height: 200,
+			width: '100%',
+			height: 300,
 		},
-  }),
+	}),
 );
 interface ArticleListProps {
 	history: History;
@@ -53,9 +53,11 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	const onLoadPage = useCallback(async () => {
 		if (loading) {
 			if (page === 1) {
-				await dispatch(getArticleList(query, {isForSale, isForExchange, isForShare}));
+				await dispatch(getArticleList(query, { isForSale, isForExchange, isForShare }));
 			} else {
-				await dispatch(getPageArticleList(query, {isForSale, isForExchange, isForShare}, page));
+				await dispatch(
+					getPageArticleList(query, { isForSale, isForExchange, isForShare }, page),
+				);
 			}
 			setLoading(false);
 		}
@@ -100,26 +102,30 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		let totalSkeletons = 0;
 		if (!articleList || !articleList.length) {
 			totalSkeletons = 6;
-		} else if (0 < lastPageIndex - articleList.length && lastPageIndex - articleList.length < 9) {
-			totalSkeletons = lastPageIndex - articleList.length
+		} else if (
+			lastPageIndex - articleList.length > 0 &&
+			lastPageIndex - articleList.length < 9
+		) {
+			totalSkeletons = lastPageIndex - articleList.length;
 		} else {
 			totalSkeletons = 6;
 		}
 		return Array.from(Array(totalSkeletons)).map((_) => (
-		<Card className={classes.card}>
-			<CardHeader
-				avatar={<Skeleton animation="wave" variant="circle" width={40} height={40} />}
-				title={<Skeleton animation="wave" height={10} width="80%" />}
-			/>
-			<Skeleton animation="wave" variant="rect" className={classes.media} />
-			<CardContent>
-        		<React.Fragment>
-					<Skeleton animation="wave" height={30} style={{ marginBottom: 6 }} />
-					<Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
-					<Skeleton animation="wave" height={10} width="80%" />
-          		</React.Fragment>
-	      	</CardContent>
-		</Card>));
+			<Card className={classes.card}>
+				<CardHeader
+					avatar={<Skeleton animation="wave" variant="circle" width={40} height={40} />}
+					title={<Skeleton animation="wave" height={25} width="40%" />}
+				/>
+				<Skeleton animation="wave" variant="rect" className={classes.media} />
+				<CardContent>
+					<>
+						<Skeleton animation="wave" height={30} style={{ marginBottom: 6 }} />
+						<Skeleton animation="wave" height={15} style={{ marginBottom: 6 }} />
+						<Skeleton animation="wave" height={15} width="80%" />
+					</>
+				</CardContent>
+			</Card>
+		));
 	};
 
 	const articles = articleList?.map((item: ArticleEntity) => (
@@ -187,7 +193,6 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 			<div id={`article-cards-${loading}`}>
 				<InfiniteScroll
 					dataLength={articleList.length}
-					children={articles}
 					next={() => {
 						if (!loading) {
 							setPage(page + 1);
@@ -197,20 +202,13 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 					hasMore={articleList.length < lastPageIndex}
 					loader={loaderTemplate()}
 					endMessage={
-					<p style={{ textAlign: 'center' }}>
-						<h4>더 이상 게시물이 없어요!</h4>
-					</p>
+						<p style={{ textAlign: 'center' }}>
+							<h4>더 이상 게시물이 없어요!</h4>
+						</p>
 					}
-					refreshFunction={() => {
-						setPage(1);
-						setLoading(true);
-					}}
-					pullDownToRefresh
-					pullDownToRefreshThreshold={50}
-					pullDownToRefreshContent={
-					  <h3 style={{ textAlign: 'center' }}>&#8595; 아래로 당기면 새로고침됩니다</h3>
-					}
-				/>
+				>
+					{articles}
+				</InfiniteScroll>
 			</div>
 		</div>
 	);
