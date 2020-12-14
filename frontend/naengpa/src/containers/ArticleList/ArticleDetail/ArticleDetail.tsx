@@ -9,9 +9,10 @@ import Alert from '@material-ui/lab/Alert';
 import EmailIcon from '@material-ui/icons/Email';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import { createChatRoom, deleteArticle, editArticle } from '../../../store/actions/index';
+import { createChatRoom, deleteArticle, editArticle, getArticle } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import { ArticleEntity, ArticleImage } from '../../../model/article';
+import { Skeleton } from '@material-ui/lab';
 
 interface ArticleDetailProps {
 	history: History;
@@ -25,6 +26,8 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
 	const [alert, setAlert] = useState(false);
 	const images = article?.images;
+	const currentPath = window.location.pathname.split('/');
+	const articleId = parseInt(currentPath[currentPath.length - 1], 10);
 	const dispatch = useDispatch();
 
 	const onClickPage = (e: React.ChangeEvent<unknown>, value: number): void => {
@@ -53,8 +56,8 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 				key={`#${value}`}
 				src={value.file_path}
 				alt="/api/images"
-				width="200px"
-				height="200px"
+				width="250px"
+				height="250px"
 			/>
 		);
 	});
@@ -67,6 +70,12 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 		func();
 	}, [dispatch, images, page]);
 
+	useEffect(() => {
+		if (!article) {
+			dispatch(getArticle(articleId));
+		}
+	}, [dispatch, articleId]);
+
 	return (
 		<div id="article-detail">
 			<div id="article-header">
@@ -77,7 +86,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 				>
 					<ArrowBackIosIcon />
 				</IconButton>
-				{image}
+				{image || <Skeleton variant="rect" width={250} height={250} />}
 				<IconButton
 					id="next-image"
 					onClick={(e) => onClickPage(e, page + 1)}
@@ -88,19 +97,19 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 			</div>
 			<div id="article-section0">
 				<Typography gutterBottom variant="h6" align="left">
-					{article.item?.category} - {article.item?.name}
+					{article ? `${article.item?.category} - ${article.item?.name}` : <Skeleton />}
 				</Typography>
 			</div>
 			<div id="article-section1">
 				<Grid container alignItems="center">
 					<Grid item xs>
 						<Typography id="article-title" gutterBottom variant="h4">
-							{article?.title}
+							{article ? article.title : <Skeleton />}
 						</Typography>
 					</Grid>
 					<Grid item>
 						<Typography gutterBottom variant="h6" align="right">
-							{article.createdAt}
+							{article ? article.createdAt : <Skeleton />}
 						</Typography>
 					</Grid>
 				</Grid>
@@ -109,21 +118,23 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 				<Grid container alignItems="center">
 					<Grid container spacing={1}>
 						<Grid item>
-							<Avatar
-								aria-label="user-image"
-								src={
-									(article.profileImage as string)
-										? (article.profileImage as string)
-										: '/icons/account_circle.png'
-								}
-								alt="/icons/account_circle.png"
-							/>
+							{article ? (
+								<Avatar
+									aria-label="user-image"
+									src={
+										(article.profileImage as string)
+											? (article.profileImage as string)
+											: '/icons/account_circle.png'
+									}
+									alt="/icons/account_circle.png"
+								/>)
+								: <Skeleton><Avatar /></Skeleton>}
 						</Grid>
 						<Grid item id="profile-box">
 							<Typography gutterBottom id="profile-title" variant="h5">
-								{article.author}
+								{article ? article.author : <Skeleton />}
 							</Typography>
-							{user!.id !== article.authorId && (
+							{user!.id !== article?.authorId && (
 								<button
 									id="chatting-icon"
 									type="button"
@@ -135,17 +146,17 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 						</Grid>
 						<Grid item xs>
 							<div id="article-options">
-								{article.options?.isForSale && (
+								{article?.options?.isForSale && (
 									<Button type="button" id="article-options-sale">
 										거래
 									</Button>
 								)}
-								{article.options?.isForExchange && (
+								{article?.options?.isForExchange && (
 									<Button type="button" id="article-options-exchange">
 										교환
 									</Button>
 								)}
-								{article.options?.isForShare && (
+								{article?.options?.isForShare && (
 									<Button type="button" id="article-options-share">
 										나눔
 									</Button>
@@ -186,7 +197,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 			<Divider variant="middle" />
 			<div id="article-section3">
 				<Typography gutterBottom variant="h6">
-					{article.content}
+					{article ? article.content : <Skeleton />}
 				</Typography>
 			</div>
 		</div>

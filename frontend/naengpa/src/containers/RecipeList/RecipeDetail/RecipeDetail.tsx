@@ -80,11 +80,6 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		dispatch(toggleRecipe(recipe?.id as number));
 	};
 
-	const onClickArticle = (id: number) => async () => {
-		dispatch(getArticle(id));
-		history.push(`/articles/${id}`);
-	};
-
 	const [alert, setAlert] = useState(false);
 
 	let cookTime = `${recipe?.cookTime}M`;
@@ -96,8 +91,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				key={`#${value}`}
 				src={value.file_path}
 				alt="/api/images"
-				width="200px"
-				height="200px"
+				width="250px"
+				height="250px"
 			/>
 		);
 	});

@@ -66,11 +66,15 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         cache.delete('users')
         cache.delete_many(
+            [f'article:{id}' for id in self.articles.values_list('id', flat=True)])
+        cache.delete_many(
             [f'recipe:{id}' for id in self.recipes.values_list('id', flat=True)])
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         cache.delete('users')
+        cache.delete_many(
+            [f'article:{id}' for id in self.articles.values_list('id', flat=True)])
         cache.delete_many(
             [f'recipe:{id}' for id in self.recipes.values_list('id', flat=True)])
         super().delete(*args, **kwargs)

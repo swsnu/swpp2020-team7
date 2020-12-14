@@ -10,7 +10,8 @@ User = get_user_model()
 
 class Article(models.Model):
     """Article model"""
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='articles')
     title = models.CharField(max_length=100)
     content = models.TextField()
     item = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
@@ -28,11 +29,11 @@ class Article(models.Model):
         return f'[{self.id}] {self.title} by {self.author}'
 
     def save(self, *args, **kwargs):
-        cache.delete('articles')
+        cache.delete('article:{}'.format(self.id))
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete('articles')
+        cache.delete('article:{}'.format(self.id))
         super().delete(*args, **kwargs)
 
 
@@ -49,9 +50,9 @@ class Image(models.Model):
         return f'[{self.id}] of {self.article}'
 
     def save(self, *args, **kwargs):
-        cache.delete('articles')
+        cache.delete('article:{}'.format(self.article.id))
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete('articles')
+        cache.delete('article:{}'.format(self.article.id))
         super().delete(*args, **kwargs)
