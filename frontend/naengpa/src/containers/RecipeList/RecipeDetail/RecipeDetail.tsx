@@ -18,6 +18,7 @@ import {
 	editRecipe,
 	toggleRecipe,
 	getArticle,
+	getRecipe,
 } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import Article from '../../../components/Article/Article';
@@ -25,6 +26,7 @@ import Comment from '../../../components/Comment/Comment';
 import CreateComment from '../../CreateComment/CreateComment';
 import { RecipeEntity, RecipeImage } from '../../../model/recipe';
 import { CommentEntity } from '../../../model/comment';
+import { Skeleton } from '@material-ui/lab';
 
 interface RecipeDetailProps {
 	history: History;
@@ -41,7 +43,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
 	const images = recipe?.foodImagePaths as RecipeImage[];
 	const ingredients = recipe?.ingredients ? recipe?.ingredients : [];
-	const recipeId = recipe?.id as number;
+	const currentPath = window.location.pathname.split('/');
+	const recipeId = parseInt(currentPath[currentPath.length-1]);
 	const [userLike, setUserLike] = useState(recipe?.userLike);
 	const [recipeLike, setRecipeLike] = useState(recipe?.recipeLike);
 	const dispatch = useDispatch();
@@ -54,7 +57,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 
 	const onClickEditRecipe = () => {
 		dispatch(editRecipe(recipe));
-		history.push(`/recipes/:${recipeId}/edit`);
+		history.push(`/recipes/${recipeId}/edit`);
 	};
 
 	const onClickDeleteRecipe = () => {
@@ -149,6 +152,12 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		func();
 	}, [dispatch, images, page]);
 
+	useEffect(() => {
+		if (!recipe) {
+			dispatch(getRecipe(recipeId));
+		}
+	}, [dispatch, recipeId])
+
 	return (
 		<div id="recipe-detail">
 			<div id="recipe-header">
@@ -164,7 +173,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				>
 					<ArrowBackIosIcon />
 				</IconButton>
-				{image}
+				{image ? image : <Skeleton variant="rect" width={250} height={250} />}
 				<IconButton
 					id="next-image"
 					onClick={(e) => onClickPage(e, page + 1)}
@@ -177,17 +186,17 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<Grid container alignItems="center">
 					<Grid item>
 						<Typography gutterBottom variant="h3">
-							{recipe?.foodName}
+							{recipe ? recipe.foodName : <Skeleton />}
 						</Typography>
 					</Grid>
 					<Grid item xs>
 						<Typography id="recipe-foodCategory" gutterBottom variant="h6" align="left">
-							{recipe?.foodCategory}
+							{recipe ? recipe.foodCategory : <Skeleton />}
 						</Typography>
 					</Grid>
 					<Grid item>
 						<Typography gutterBottom variant="h6" align="right">
-							{recipe?.createdAt}
+							{recipe ? recipe.createdAt : <Skeleton />}
 						</Typography>
 					</Grid>
 				</Grid>
@@ -196,11 +205,12 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<Grid container alignItems="center">
 					<Grid container spacing={1}>
 						<Grid item>
-							<Avatar aria-label="user-image" src="/icons/boy.png" />
+							{recipe ? <Avatar aria-label="user-image" src="/icons/boy.png" />
+								: <Skeleton><Avatar /></Skeleton>}
 						</Grid>
 						<Grid item id="profile-box">
 							<Typography id="profile-title" variant="h5">
-								{recipe?.author}
+								{recipe ? recipe.author : <Skeleton />}
 							</Typography>
 							{user!.id !== recipe?.authorId && (
 								<button
@@ -215,7 +225,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						<Grid item xs>
 							<div id="recipe-cook-time">
 								<AccessAlarmIcon id="recipe-cook-time-icon" fontSize="large" />
-								{cookTime}
+								{recipe && cookTime} 
 							</div>
 						</Grid>
 						<Grid item>
@@ -272,21 +282,21 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<div id="recipe-ingredient">{ingredientSetForRecipe}</div>
 				<div id="recipe-content">
 					<Typography gutterBottom variant="h6">
-						{recipe?.content}
+						{recipe ? recipe.content : <Skeleton />}
 					</Typography>
 				</div>
 			</div>
 			<Divider variant="middle" />
 			<div id="recipe-section4">
 				<Typography gutterBottom variant="h5">
-					{user!.name}님! 지금 {notInFridgeJoined} 주변 이웃과 거래해보세요!
+					{recipe ? `${user!.name}님! 지금 ${notInFridgeJoined} 주변 이웃과 거래해보세요!` : <Skeleton />}
 				</Typography>
 				{article}
 			</div>
 			<Divider variant="middle" />
 			<div id="recipe-section5">
 				<Typography gutterBottom variant="h5">
-					댓글
+					{recipe ? '댓글' : <Skeleton />}
 				</Typography>
 				{comments}
 				<CreateComment recipeId={recipe?.id!} />
