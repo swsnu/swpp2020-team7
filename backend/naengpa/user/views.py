@@ -122,7 +122,7 @@ def signin(request):
                 'region': get_region(user.region),
                 'regionRange': user.region_range,
                 'profileImage': user.profile_image,
-                'totalNotifications': user.total_notifications,
+                'totalNotifications': user.total_notifications[0],
             }, status=200)
         else:
             return HttpResponse(status=401)
@@ -171,7 +171,7 @@ def user(request, id):
                 'createdAt': item.created_string,
                 'deleted': item.deleted,
             } for item in user.notifications.all().order_by('-id')],
-            'totalNotifications': user.total_notifications,
+            'totalNotifications': user.total_notifications[0],
         }
         return JsonResponse(data=current_user, safe=False)
     elif request.method == 'PUT':
@@ -205,7 +205,7 @@ def user(request, id):
             'region': get_region(user.region),
             'regionRange': user.region_range,
             'profileImage': user.profile_image,
-            'totalNotifications': user.notifications.filter(deleted=False).count(),
+            'totalNotifications': user.total_notifications[0],
         }, status=201)
 
 
@@ -237,7 +237,7 @@ def change_password(request, id):
             'region': get_region(user.region),
             'regionRange': user.region_range,
             'profileImage': user.profile_image,
-            'totalNotifications': user.total_notifications,
+            'totalNotifications': user.total_notifications[0],
         }, status=201)
     return HttpResponseNotAllowed(['PUT'])
 
