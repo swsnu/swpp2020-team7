@@ -1,64 +1,83 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 
-import Pagination from '@material-ui/lab/Pagination';
-
 import '../Mypage/UserInfo/UserInfo.scss';
 import './UserRecipe.scss';
+import { ListItem, ListItemText } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import Tab from '../../components/Tab/Tab';
 import Recipe from '../../components/Recipe/Recipe';
 import { AppState } from '../../store/store';
-import { getRecipeList } from '../../store/actions/index';
-import { RecipeEntity } from '../../model/recipe';
+import { getUserRecipes } from '../../store/actions/index';
+import FeedLoading from '../../components/FeedLoading/FeedLoading';
 
 interface UserRecipeProps {
 	history: History;
 }
 
 const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
-	const recipeList = useSelector((state: AppState) => state.recipe.recipeList);
+	const recipeList = useSelector((state: AppState) => state.recipe.userRecipes);
 	const user = useSelector((state: AppState) => state.user.user);
-	const userRecipeList = recipeList?.filter((item: any) => item.authorId === user?.id);
-	const [currentList, setCurrentList] = useState<RecipeEntity[]>([]);
-
-	const [page, setPage] = useState(1);
-	const [maxPageIndex, setMaxPageIndex] = useState(1);
+	const [loading, setLoading] = useState(true);
 	const dispatch = useDispatch();
 
-	const onChangePage = (e: React.ChangeEvent<unknown>, value: number): void => {
-		e.preventDefault();
-		setPage(value);
-		setCurrentList(userRecipeList?.slice((value - 1) * 3, (value - 1) * 3 + 3));
-	};
-
-	const recipe = currentList?.map((item: any) => {
+	const recipes = recipeList?.map((item: any) => {
 		return (
 			<Recipe key={item.id} recipe={item} attribute="recipe-list-child" history={history} />
 		);
 	});
 
+	const loadingFeeds = () => {
+		const feedCount = 2;
+		const feeds = [];
+		for (let i = 0; i < feedCount; i += 1) {
+			feeds.push(<FeedLoading attribute="card" />);
+		}
+		return feeds;
+	};
+
+	const loadRecipe = useCallback(async () => {
+		if (loading && user) {
+			await dispatch(getUserRecipes(user?.id));
+			setLoading(false);
+		}
+	}, [recipeList]);
+
 	useEffect(() => {
-		const func = () => {
-			dispatch(getRecipeList(''));
-			setMaxPageIndex(Math.ceil(userRecipeList?.length / 3.0));
-			setCurrentList(userRecipeList?.slice((page - 1) * 3, (page - 1) * 3 + 3));
-		};
-		func();
-	}, [userRecipeList?.length]);
+		loadRecipe();
+	}, [loadRecipe]);
 
 	return (
 		<div id="mypage">
 			<Tab history={history} />
 			<div id="info">
-				<div id="user-recipes">{recipe}</div>
-				<Pagination
-					id="recipe-list-page"
-					page={page}
-					size="large"
-					count={maxPageIndex}
-					onChange={onChangePage}
-				/>
+				<div id="my-recipe-title" style={{ fontWeight: 'bold', margin: '30px' }}>
+					나의 레시피
+				</div>
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'row',
+						justifyContent: 'center',
+						overflow: 'scroll',
+					}}
+				>
+					{loading
+						? loadingFeeds()
+						: (!recipeList || !recipeList.length) && (
+								<ListItem
+									button
+									onClick={() => toast.info('🐬 행복한 연말되세요!')}
+								>
+									<ListItemText
+										primary="🐬 작성한 레시피가 없어요"
+										secondary="레시피를 등록해 보세요!"
+									/>
+								</ListItem>
+						  )}
+					{!loading && recipes}
+				</div>
 			</div>
 		</div>
 	);

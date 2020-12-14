@@ -2,15 +2,15 @@ import React, { useEffect, MouseEvent, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 import Pagination from '@material-ui/lab/Pagination';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import CreateIcon from '@material-ui/icons/Create';
-import { ArticleEntity, ArticleOptions } from '../../model/article';
+import { ArticleEntity } from '../../model/article';
 import Article from '../../components/Article/Article';
 import { getArticle, getArticleList } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 import './ArticleList.scss';
+import FeedLoading from '../../components/FeedLoading/FeedLoading';
 
 interface ArticleListProps {
 	history: History;
@@ -93,6 +93,15 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		}
 	}, [page, query, forSale, forExchange, forShare]);
 
+	const loadingFeeds = () => {
+		const feedCount = 9;
+		const feeds = [];
+		for (let i = 0; i < feedCount; i += 1) {
+			feeds.push(<FeedLoading attribute="cardList" />);
+		}
+		return feeds;
+	};
+
 	const articles = currentPage.map((item) => (
 		<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
 	));
@@ -163,9 +172,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 					</div>
 				</div>
 			</div>
-			<div id={`article-cards-${loading}`}>
-				{loading ? <CircularProgress id="loading-bar" color="inherit" /> : <>{articles}</>}
-			</div>
+			<div id="article-cards">{loading ? loadingFeeds() : <>{articles}</>}</div>
 			{!loading &&
 				(articleList?.length ? (
 					<Pagination

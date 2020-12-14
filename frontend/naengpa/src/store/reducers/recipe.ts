@@ -9,6 +9,7 @@ export type InitialState = {
 	recipe: RecipeEntity | null;
 	lastPageIndex: number;
 	createdRecipe: RecipeEntity | null;
+	userRecipes: RecipeEntity[];
 };
 
 const RecipeState: InitialState = {
@@ -17,6 +18,7 @@ const RecipeState: InitialState = {
 	recipe: JSON.parse(window.sessionStorage.getItem('recipe')!),
 	lastPageIndex: JSON.parse(window.sessionStorage.getItem('lastPageIndex')!),
 	createdRecipe: JSON.parse(window.sessionStorage.getItem('createdRecipe')!),
+	userRecipes: JSON.parse(window.sessionStorage.getItem('userRecipes')!),
 };
 
 function recipeReducer(
@@ -37,6 +39,10 @@ function recipeReducer(
 		case actionTypes.GET_RECIPE:
 			return { ...state, recipe: action.recipe };
 
+		/* GET USERT RECIPE */
+		case actionTypes.GET_USER_RECIPES:
+			return { ...state, userRecipes: action.recipes };
+
 		/* CREATE RECIPE */
 		case actionTypes.CREATE_RECIPE: {
 			return {
@@ -44,6 +50,7 @@ function recipeReducer(
 				recipeList: [...state.recipeList, action.recipe],
 				lastPageIndex: state.lastPageIndex + 1,
 				recipe: action.recipe,
+				userRecipes: [...state.userRecipes, action.recipe],
 				createdRecipe: null,
 			};
 		}
