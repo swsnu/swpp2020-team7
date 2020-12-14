@@ -45,7 +45,14 @@ export { getIngredientList } from './ingredient';
 export { getFoodCategoryList } from './foodCategory';
 
 /* Article actions */
-export { getArticleList, getArticle, createArticle, deleteArticle, editArticle } from './article';
+export {
+	getArticleList,
+	getPageArticleList,
+	getArticle,
+	createArticle,
+	deleteArticle,
+	editArticle,
+} from './article';
 
 /* Comment actions */
 export {

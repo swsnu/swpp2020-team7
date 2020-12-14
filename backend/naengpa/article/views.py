@@ -2,8 +2,9 @@
 import json
 from operator import itemgetter
 from django.http import JsonResponse, HttpResponseBadRequest,  HttpResponseNotFound
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.core.cache import cache
+from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models.functions import Concat
 from django.db.models import F, Q, Value, CharField
@@ -16,76 +17,29 @@ from utils.gis_utils import get_nearest_places_ids_from_region, get_nearest_plac
 from utils.auth import login_required_401
 from .models import Article, Image
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 
 class InvalidOptionsGivenError(Exception):
     pass
 
 
-def article_list_get(request):
-    ''' GET /api/articles/ get article list '''
-    query = request.GET.get('q')
-    if not query:
-        article_collection = cache.get('articles')
-        if not article_collection:
-            included_region_ids = NeighborhoodRegion.objects.filter(from_region_id=request.user.region.id,
-                                                                    region_range=request.user.region_range).values_list('neighborhood_id', flat=True)
-            sorted_list = Article.objects.select_related(
-                'author', 'author__region', 'item'
-            ).prefetch_related(
-                'images',
-            ).exclude(
-                done=True
-            ).filter(
-                author__region__id__in=included_region_ids
-            ).order_by('-created_at')
-            article_collection = [{
-                "id": article.id,
-                "authorId": article.author.id,
-                "author": article.author.username,
-                "region": article.author.region.name,
-                "title": article.title,
-                "content": article.content,
-                "item": {
-                    "id": article.item.id,
-                    "name": article.item.name,
-                    "category": article.item.category.name,
-                },
-                "price": article.price,
-                "views": article.views,
-                "options": {
-                    "isForSale": article.is_for_sale,
-                    "isForExchange": article.is_for_exchange,
-                    "isForShare": article.is_for_share,
-                },
-                "images": list(article.images.values('id', 'file_path')),
-                "profileImage": article.author.profile_image,
-                "createdAt": article.created_at.strftime("%Y.%m.%d")
-            } for article in sorted_list] if Article.objects.count() != 0 else []
-            cache.set('articles', article_collection)
-        else:
-            included_region_names = request.user.region.neighborhoodregion_set.filter(
-                region_range=request.user.region_range).distinct().annotate(name=Concat(F('neighborhood__gu_name'), Value(' '), F('neighborhood__dong_name'))).values_list('name', flat=True)
-            article_collection = list(
-                filter(lambda art: art['region'] in list(included_region_names), article_collection))
-    else:
-        included_region_ids = request.user.region.neighborhoodregion_set.filter(
-            region_range=request.user.region_range).values_list('neighborhood_id', flat=True)
-        q = Q(author__region__id__in=included_region_ids)
-        if query:
-            q |= Q(title__icontains=query) | Q(content__icontains=query) | Q(
-                querystring__icontains=F('item__name'))
-
-        sorted_list = Article.objects.select_related(
-            'author', 'author__region', 'item'
-        ).exclude(done=True).annotate(
-            querystring=Value(query, output_field=CharField())
-        ).filter(q).all().order_by('-created_at')
-
-        article_collection = [{
+def _get_cache_or_set_article_by_id(id):
+    article_data = cache.get('article:{}'.format(id))
+    if not article_data:
+        try:
+            article = Article.objects.select_related(
+                'author', 'author__region', 'item', 'item__category'
+            ).prefetch_related('images').get(pk=id)
+        except Article.DoesNotExist:
+            return HttpResponseNotFound()
+        article_data = {
             "id": article.id,
             "authorId": article.author.id,
             "author": article.author.username,
             "region": article.author.region.name,
+            "profileImage": article.author.profile_image,
             "title": article.title,
             "content": article.content,
             "item": {
@@ -101,13 +55,62 @@ def article_list_get(request):
                 "isForShare": article.is_for_share,
             },
             "images": list(article.images.values('id', 'file_path')),
-            "profileImage": article.author.profile_image,
-            "createdAt": article.created_at.strftime("%Y.%m.%d")
-        } for article in sorted_list] if Article.objects.count() != 0 else []
-    return JsonResponse(article_collection, safe=False)
+            "createdAt": article.created_at.strftime("%Y년 %m월 %d일 %H:%M")
+        }
+        cache.set('article:{}'.format(id), article_data)
+    return article_data
 
 
-@login_required_401
+def article_list_get(request):
+    ''' GET /api/articles/ get article list '''
+    query = request.GET.get('q')
+    is_for_sale = request.GET.get('fs')
+    is_for_exchange = request.GET.get('fe')
+    is_for_share = request.GET.get('fh')
+    page = request.GET.get('p', 1)
+
+    included_region_ids = request.user.region.neighborhoodregion_set.filter(
+        region_range=request.user.region_range).values_list('neighborhood_id', flat=True)
+
+    filtered_list = Article.objects.exclude(
+        done=True
+    ).filter(
+        author__region__id__in=included_region_ids
+    )
+
+    options = [is_for_sale, is_for_exchange, is_for_share]
+    if 'true' in options and 'false' in options:
+        q = Q()
+        if is_for_sale == 'true':
+            q |= Q(is_for_sale=True)
+        if is_for_exchange == 'true':
+            q |= Q(is_for_exchange=True)
+        if is_for_share == 'true':
+            q |= Q(is_for_share=True)
+        filtered_list = filtered_list.filter(q)
+
+    if query:
+        q = Q()
+        q |= Q(title__icontains=query) | Q(content__icontains=query) | Q(
+            querystring__icontains=F('item__name'))
+        filtered_list = filtered_list.annotate(
+            querystring=Value(query, output_field=CharField())
+        ).filter(q)
+
+    sorted_list = filtered_list.order_by('-created_at')
+    paginator = Paginator(sorted_list, 9)
+    paged_list = paginator.get_page(page)
+
+    article_collection = [_get_cache_or_set_article_by_id(
+        aid) for aid in paged_list.object_list.values_list('id', flat=True)]
+
+    return JsonResponse({
+        "articleList": article_collection,
+        "lastPageIndex": paginator.count,
+    }, safe=False)
+
+
+@transaction.atomic
 def article_list_post(request):
     """ POST /api/articles/ post new article """
     try:
@@ -142,29 +145,7 @@ def article_list_post(request):
         Image.objects.create(author_id=author_id,
                              file_path=path, article_id=article.id)
 
-    return JsonResponse(data={
-        "id": article.id,
-        "authorId": author_id,
-        "author": article.author.username,
-        "region": article.author.region.name,
-        "title": article.title,
-        "content": article.content,
-        "item": {
-            "id": article.item.id,
-            "name": article.item.name,
-            "category": article.item.category.name,
-        },
-        "price": article.price,
-        "views": article.views,
-        "options": {
-            "isForSale": article.is_for_sale,
-            "isForExchange": article.is_for_exchange,
-            "isForShare": article.is_for_share
-        },
-        "images": list(article.images.values('id', 'file_path')),
-        "profileImage": article.author.profile_image,
-        "createdAt": article.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
-    }, status=201)
+    return JsonResponse(_get_cache_or_set_article_by_id(article.id), status=201)
 
 
 @ensure_csrf_cookie
@@ -186,41 +167,13 @@ def article_info(request, aid):
     '''process article of given id'''
     if request.method == 'GET':
         ''' GET /api/articles/:aid/ get article of given id '''
-        try:
-            article = Article.objects.select_related(
-                'author', 'author__region', 'item').get(id=aid)
-        except Article.DoesNotExist:
-            return HttpResponseNotFound()
-
-        return JsonResponse(data={
-            "id": article.id,
-            "authorId": article.author.id,
-            "author": article.author.username,
-            "region": article.author.region.name,
-            "title": article.title,
-            "content": article.content,
-            "item": {
-                "id": article.item.id,
-                "name": article.item.name,
-                "category": article.item.category.name,
-            },
-            "price": article.price,
-            "views": article.views,
-            "options": {
-                "isForSale": article.is_for_sale,
-                "isForExchange": article.is_for_exchange,
-                "isForShare": article.is_for_share
-            },
-            "images": list(article.images.values('id', 'file_path')),
-            "profileImage": article.author.profile_image,
-            "createdAt": article.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
-        }, status=200)
+        return JsonResponse(_get_cache_or_set_article_by_id(aid))
 
     elif request.method == 'DELETE':
         ''' DELETE /api/articles/:aid/ delete article of given id '''
         try:
             article = Article.objects.select_related(
-                'author', 'author__region', 'item').get(id=aid)
+                'author', 'author__region', 'item').get(pk=aid)
         except Article.DoesNotExist:
             return HttpResponseNotFound()
 

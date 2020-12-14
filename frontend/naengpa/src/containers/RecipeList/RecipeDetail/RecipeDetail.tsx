@@ -12,12 +12,14 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { Button, IconButton, Divider, Collapse, Typography, Avatar, Grid } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
 
+import { Skeleton } from '@material-ui/lab';
 import {
 	createChatRoom,
 	deleteRecipe,
 	editRecipe,
 	toggleRecipe,
 	getArticle,
+	getRecipe,
 } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import Article from '../../../components/Article/Article';
@@ -41,9 +43,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
 	const images = recipe?.foodImagePaths as RecipeImage[];
 	const ingredients = recipe?.ingredients ? recipe?.ingredients : [];
-	const recipeId = recipe?.id as number;
+	const currentPath = window.location.pathname.split('/');
+	const recipeId = parseInt(currentPath[currentPath.length - 1], 10);
 	const [userLike, setUserLike] = useState(recipe?.userLike);
-	const [recipeLike, setRecipeLike] = useState(recipe?.recipeLike);
+	const [recipeLike, setRecipeLike] = useState(recipe ? recipe.recipeLike : 0);
 	const dispatch = useDispatch();
 
 	const onClickPage = (e: React.ChangeEvent<unknown>, value: number): void => {
@@ -54,7 +57,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 
 	const onClickEditRecipe = () => {
 		dispatch(editRecipe(recipe));
-		history.push(`/recipes/:${recipeId}/edit`);
+		history.push(`/recipes/${recipeId}/edit`);
 	};
 
 	const onClickDeleteRecipe = () => {
@@ -79,7 +82,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 
 	const onClickArticle = (id: number) => async () => {
 		dispatch(getArticle(id));
-		history.push(`/articles/:${id}`);
+		history.push(`/articles/${id}`);
 	};
 
 	const [alert, setAlert] = useState(false);
@@ -122,7 +125,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const articleFiltered = articleList.filter((item) => notInFridgeNames.includes(item.item.name));
 
 	const article = articleFiltered.map((item: any) => {
-		return <Article key={item.id} article={item} onClick={onClickArticle(item.id)} />;
+		return <Article key={item.id} article={item} history={history} />;
 	});
 
 	const comments = commentList?.length
@@ -149,6 +152,16 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		func();
 	}, [dispatch, images, page]);
 
+	useEffect(() => {
+		if (!recipe) {
+			dispatch(getRecipe(recipeId));
+		}
+	}, [dispatch, recipeId]);
+
+	useEffect(() => {
+		setRecipeLike(recipe?.recipeLike);
+	}, [recipe]);
+
 	return (
 		<div id="recipe-detail">
 			<div id="recipe-header">
@@ -164,7 +177,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				>
 					<ArrowBackIosIcon />
 				</IconButton>
-				{image}
+				{image || <Skeleton variant="rect" width={250} height={250} />}
 				<IconButton
 					id="next-image"
 					onClick={(e) => onClickPage(e, page + 1)}
@@ -177,17 +190,17 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<Grid container alignItems="center">
 					<Grid item>
 						<Typography id="recipe-foodName" gutterBottom variant="h3">
-							{recipe?.foodName}
+							{recipe ? recipe.foodName : <Skeleton />}
 						</Typography>
 					</Grid>
 					<Grid item xs>
 						<Typography id="recipe-foodCategory" gutterBottom variant="h6" align="left">
-							{recipe?.foodCategory}
+							{recipe ? recipe.foodCategory : <Skeleton />}
 						</Typography>
 					</Grid>
 					<Grid item>
 						<Typography id="recipe-createdAt" gutterBottom variant="h6" align="right">
-							{recipe?.createdAt}
+							{recipe ? recipe.createdAt : <Skeleton />}
 						</Typography>
 					</Grid>
 				</Grid>
@@ -196,19 +209,25 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<Grid container alignItems="center">
 					<Grid container spacing={1}>
 						<Grid item id="profile-image">
-							<Avatar
-								aria-label="user-image"
-								src={
-									(recipe.profileImage as string)
-										? (recipe.profileImage as string)
-										: '/icons/account_circle.png'
-								}
-								alt="/icons/account_circle.png"
-							/>
+							{recipe ? (
+								<Avatar
+									aria-label="user-image"
+									src={
+										(recipe.profileImage as string)
+											? (recipe.profileImage as string)
+											: '/icons/account_circle.png'
+									}
+									alt="/icons/account_circle.png"
+								/>
+							) : (
+								<Skeleton>
+									<Avatar />
+								</Skeleton>
+							)}
 						</Grid>
 						<Grid item id="profile-box">
 							<Typography id="profile-title" gutterBottom variant="h5">
-								{recipe?.author}
+								{recipe ? recipe.author : <Skeleton />}
 							</Typography>
 							{user!.id !== recipe?.authorId && (
 								<button
@@ -223,7 +242,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						<Grid item xs>
 							<div id="recipe-cook-time">
 								<AccessAlarmIcon id="recipe-cook-time-icon" fontSize="large" />
-								{cookTime}
+								{recipe && cookTime}
 							</div>
 						</Grid>
 						<Grid item>
@@ -280,21 +299,25 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<div id="recipe-ingredient">{ingredientSetForRecipe}</div>
 				<div id="recipe-content">
 					<Typography gutterBottom variant="h6">
-						{recipe?.content}
+						{recipe ? recipe.content : <Skeleton />}
 					</Typography>
 				</div>
 			</div>
 			<Divider variant="middle" />
 			<div id="recipe-section4">
 				<Typography id="recipe-section4-header" gutterBottom variant="h5">
-					{user!.name}님! 지금 {notInFridgeJoined} 주변 이웃과 거래해보세요!
+					{recipe ? (
+						`${user!.name}님! 지금 ${notInFridgeJoined} 주변 이웃과 거래해보세요!`
+					) : (
+						<Skeleton />
+					)}
 				</Typography>
 				{article}
 			</div>
 			<Divider variant="middle" />
 			<div id="recipe-section5">
 				<Typography id="recipe-section5-header" gutterBottom variant="h5">
-					댓글
+					{recipe ? '댓글' : <Skeleton />}
 				</Typography>
 				{comments}
 				<CreateComment recipeId={recipe?.id!} />

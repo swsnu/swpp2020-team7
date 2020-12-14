@@ -1,3 +1,5 @@
+import { LOCATION_CHANGE, RouterState } from 'connected-react-router';
+import { Action } from 'redux';
 import * as actionTypes from '../actions/actionTypes';
 import { RecipeAction } from '../actions/recipe';
 import { RecipeEntity } from '../../model/recipe';
@@ -15,15 +17,20 @@ export type InitialState = {
 const RecipeState: InitialState = {
 	recipeList: JSON.parse(window.sessionStorage.getItem('recipeList')!),
 	todayRecipeList: [],
-	recipe: JSON.parse(window.sessionStorage.getItem('recipe')!),
+	recipe: null,
 	lastPageIndex: JSON.parse(window.sessionStorage.getItem('lastPageIndex')!),
 	createdRecipe: JSON.parse(window.sessionStorage.getItem('createdRecipe')!),
 	userRecipes: JSON.parse(window.sessionStorage.getItem('userRecipes')!),
 };
 
+interface LocationChangeAction extends Action {
+	type: typeof LOCATION_CHANGE;
+	payload: RouterState;
+}
+
 function recipeReducer(
 	state: InitialState = RecipeState,
-	action: RecipeAction | DefaultAction = { type: 'default' },
+	action: RecipeAction | LocationChangeAction | DefaultAction = { type: 'default' },
 ): InitialState {
 	let recipeList: RecipeEntity[] = [];
 
@@ -96,6 +103,9 @@ function recipeReducer(
 			}
 			return { ...state, recipeList };
 		}
+
+		case LOCATION_CHANGE:
+			return { ...state, recipe: null };
 
 		default:
 			return state;

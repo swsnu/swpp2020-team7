@@ -50,6 +50,7 @@ export const GET_FOOD_CATEGORY_LIST = 'GET_FOOD_CATEGORY_LIST' as const;
 
 // ARTICLE related ACTIONS
 export const GET_ARTICLE_LIST = 'GET_ARTICLE_LIST' as const;
+export const GET_PAGE_ARTICLE_LIST = 'GET_PAGE_ARTICLE_LIST' as const;
 export const GET_ARTICLE = 'GET_ARTICLE' as const;
 export const CREATE_ARTICLE = 'CREATE_ARTICLE' as const;
 export const DELETE_ARTICLE = 'DELETE_ARTICLE' as const;

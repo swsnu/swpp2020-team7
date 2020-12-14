@@ -13,6 +13,7 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user.user);
+
 	return (
 		<div id="navigation">
 			<button id="naengpa-logo-button" type="button" onClick={() => history.push('/fridge')}>
@@ -27,6 +28,7 @@ const Navigation: React.FC<NavigationProps> = ({ history }) => {
 					color="secondary"
 					overlap="circle"
 					variant="dot"
+					invisible={!user || !user?.totalNotifications}
 					onClick={() => history.push('/notifications')}
 				>
 					<NotificationsNoneIcon id="notification-logo" />

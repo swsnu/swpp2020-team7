@@ -162,7 +162,8 @@
     }
   }
 
-  #article-cards {
+  div.infinite-scroll-component {
+    min-height: 400px;
     display: flex;
     flex-flow: wrap;
     justify-content: space-between;

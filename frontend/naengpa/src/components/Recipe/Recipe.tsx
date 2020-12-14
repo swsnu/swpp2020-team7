@@ -28,9 +28,8 @@ const Recipe: React.FC<RecipeProps> = ({ recipe, attribute, history }) => {
 	let cookTime = `${recipe.cookTime}M`;
 	if (recipe.cookTime >= 60) cookTime = `${Math.round(recipe.cookTime / 60)}H`;
 
-	const onClickRecipe = async () => {
-		await dispatch(getRecipe(recipe.id!));
-		history.push(`/recipes/:${recipe.id}`);
+	const onClickRecipe = () => {
+		history.push(`/recipes/${recipe.id}`);
 	};
 
 	const onClickRecipeLike = () => {

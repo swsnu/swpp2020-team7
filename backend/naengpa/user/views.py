@@ -2,7 +2,7 @@
 import json
 from operator import itemgetter
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound, HttpResponseNotAllowed, JsonResponse
-from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.contrib.auth import get_user_model, authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.hashers import check_password
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -122,7 +122,7 @@ def signin(request):
                 'region': get_region(user.region),
                 'regionRange': user.region_range,
                 'profileImage': user.profile_image,
-                'totalNotifications': user.total_notifications,
+                'totalNotifications': user.total_notifications[0],
             }, status=200)
         else:
             return HttpResponse(status=401)
@@ -168,10 +168,12 @@ def user(request, id):
             'notifications': [{
                 'id': item.id,
                 'content': item.content,
+                'category': item.category,
+                'targetId': item.target_id,
                 'createdAt': item.created_string,
                 'deleted': item.deleted,
             } for item in user.notifications.all().order_by('-id')],
-            'totalNotifications': user.total_notifications,
+            'totalNotifications': user.total_notifications[0],
         }
         return JsonResponse(data=current_user, safe=False)
     elif request.method == 'PUT':
@@ -179,9 +181,9 @@ def user(request, id):
             return HttpResponseForbidden()
         user = get_object_or_404(User, pk=id)
         try:
-            req_data = json.loads(request.data['user'])
+            user_data = json.loads(request.data.get('user'))
             edit_name, edit_date_of_birth, edit_email, password_to_check = itemgetter(
-                'name', 'dateOfBirth', 'email', 'password')(req_data)
+                'name', 'dateOfBirth', 'email', 'password')(user_data)
             profile_image = request.FILES.getlist('image')
             if profile_image:
                 uploaded_path = upload_profile_image(profile_image[0], id)
@@ -205,7 +207,7 @@ def user(request, id):
             'region': get_region(user.region),
             'regionRange': user.region_range,
             'profileImage': user.profile_image,
-            'totalNotifications': user.notifications.filter(deleted=False).count(),
+            'totalNotifications': user.total_notifications[0],
         }, status=201)
 
 
@@ -224,6 +226,7 @@ def change_password(request, id):
         if check_password(current_password, request.user.password):
             user.set_password(new_password)
             user.save()
+            update_session_auth_hash(request, user)
         else:
             return HttpResponse(status=401)
         # user.save()
@@ -237,7 +240,7 @@ def change_password(request, id):
             'region': get_region(user.region),
             'regionRange': user.region_range,
             'profileImage': user.profile_image,
-            'totalNotifications': user.total_notifications,
+            'totalNotifications': user.total_notifications[0],
         }, status=201)
     return HttpResponseNotAllowed(['PUT'])
 

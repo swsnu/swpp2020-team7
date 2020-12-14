@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { History } from 'history';
+import { useLocation } from 'react-router';
 import './Header.scss';
 
 interface NavigationProps {
@@ -7,27 +8,7 @@ interface NavigationProps {
 }
 
 const Header: React.FC<NavigationProps> = ({ history }) => {
-	const [currentBranchPath, setCurrentBranchPath] = useState('/fridge');
-
-	const unlisten = history.listen((location, action) => {
-		switch (location.pathname) {
-			case '/fridge':
-				setCurrentBranchPath('/fridge');
-				break;
-			case '/recipes':
-				setCurrentBranchPath('/recipes');
-				break;
-			case '/articles':
-				setCurrentBranchPath('/articles');
-				break;
-			default:
-				break;
-		}
-	});
-
-	useEffect(() => {
-		history.push(currentBranchPath);
-	}, [currentBranchPath]);
+	const location = useLocation();
 
 	return (
 		<div id="header">
@@ -35,9 +16,9 @@ const Header: React.FC<NavigationProps> = ({ history }) => {
 				id="header-tab"
 				type="button"
 				style={{
-					color: currentBranchPath === '/fridge' ? '#ff8a3d' : '#696464',
+					color: location.pathname === '/fridge' ? '#ff8a3d' : '#696464',
 				}}
-				onClick={() => setCurrentBranchPath('/fridge')}
+				onClick={() => history.push('/fridge')}
 			>
 				나의 냉장고
 			</button>
@@ -45,9 +26,9 @@ const Header: React.FC<NavigationProps> = ({ history }) => {
 				id="header-tab"
 				type="button"
 				style={{
-					color: currentBranchPath === '/recipes' ? '#ff8a3d' : '#696464',
+					color: location.pathname === '/recipes' ? '#ff8a3d' : '#696464',
 				}}
-				onClick={() => setCurrentBranchPath('/recipes')}
+				onClick={() => history.push('/recipes')}
 			>
 				레시피 찾기
 			</button>
@@ -55,9 +36,9 @@ const Header: React.FC<NavigationProps> = ({ history }) => {
 				id="header-tab"
 				type="button"
 				style={{
-					color: currentBranchPath === '/articles' ? '#ff8a3d' : '#696464',
+					color: location.pathname === '/articles' ? '#ff8a3d' : '#696464',
 				}}
-				onClick={() => setCurrentBranchPath('/articles')}
+				onClick={() => history.push('/articles')}
 			>
 				우리동네 장터
 			</button>

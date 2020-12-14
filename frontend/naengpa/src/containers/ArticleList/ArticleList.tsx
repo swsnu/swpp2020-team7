@@ -1,37 +1,74 @@
 import React, { useEffect, MouseEvent, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
-import Pagination from '@material-ui/lab/Pagination';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import CreateIcon from '@material-ui/icons/Create';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { Skeleton } from '@material-ui/lab';
+import { Card, CardContent, CardHeader, createStyles, makeStyles, Theme } from '@material-ui/core';
 import { ArticleEntity } from '../../model/article';
 import Article from '../../components/Article/Article';
-import { getArticle, getArticleList } from '../../store/actions/index';
+import { getArticleList, getPageArticleList } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 import './ArticleList.scss';
-import FeedLoading from '../../components/FeedLoading/FeedLoading';
 
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		card: {
+			minWidth: 260,
+			width: '30%',
+			margin: theme.spacing(1),
+			minHeight: 400,
+			display: 'flex',
+			flexDirection: 'column',
+			flexFlow: 'wrap',
+			justifyContent: 'space-between',
+			padding: 0,
+		},
+		media: {
+			width: '100%',
+			height: 300,
+		},
+	}),
+);
 interface ArticleListProps {
 	history: History;
 }
 
 const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
+	const classes = useStyles();
 	const user = useSelector((state: AppState) => state.user.user);
 	const articleList = useSelector((state: AppState) => state.article.articleList);
+	const lastPageIndex = useSelector((state: AppState) => state.article.lastPageIndex);
 	const dispatch = useDispatch();
 
 	const [page, setPage] = useState(1);
-	const [currentList, setCurrentList] = useState<ArticleEntity[]>(articleList);
-	const [currentPage, setCurrentPage] = useState<ArticleEntity[]>([]);
-	const [maxPageIndex, setMaxPageIndex] = useState(1);
-	const [forSale, setForSale] = useState<boolean>(true);
-	const [forExchange, setForExchange] = useState<boolean>(true);
-	const [forShare, setForShare] = useState<boolean>(true);
-	const [loading, setLoading] = useState<boolean>(true);
+	const [isForSale, setForSale] = useState(true);
+	const [isForExchange, setForExchange] = useState(true);
+	const [isForShare, setForShare] = useState(true);
+	const [loading, setLoading] = useState(true);
 	const [query, setQuery] = useState('');
 
+	const onLoadPage = useCallback(async () => {
+		if (loading) {
+			if (page === 1) {
+				await dispatch(getArticleList(query, { isForSale, isForExchange, isForShare }));
+			} else {
+				await dispatch(
+					getPageArticleList(query, { isForSale, isForExchange, isForShare }, page),
+				);
+			}
+			setLoading(false);
+		}
+	}, [loading]);
+
+	useEffect(() => {
+		onLoadPage();
+	}, [onLoadPage]);
+
 	const onClickOptions = (target: string) => {
+		setPage(1);
 		switch (target) {
 			case 'sale':
 				setForSale((state) => !state);
@@ -47,16 +84,13 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		setLoading(true);
 	};
 
-	const onClickSearch = async (e: React.KeyboardEvent) => {
+	const onClickSearch = (e: any) => {
 		if (e.key === 'Enter') {
+			e.preventDefault();
+			setQuery(e.target.value);
+			setPage(1);
 			setLoading(true);
 		}
-	};
-
-	const onChangePage = (e: React.ChangeEvent<unknown>, value: number): void => {
-		e.preventDefault();
-		setPage(value);
-		setLoading(true);
 	};
 
 	const onClickCreateArticle = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -64,51 +98,39 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		history.push('/articles/create');
 	};
 
-	const onClickArticle = (id: number) => async () => {
-		await dispatch(getArticle(id));
-		history.push(`/articles/:${id}`);
+	const loaderTemplate = () => {
+		let totalSkeletons = 0;
+		if (!articleList || !articleList.length) {
+			totalSkeletons = 6;
+		} else if (
+			lastPageIndex - articleList.length > 0 &&
+			lastPageIndex - articleList.length < 9
+		) {
+			totalSkeletons = lastPageIndex - articleList.length;
+		} else {
+			totalSkeletons = 6;
+		}
+		return Array.from(Array(totalSkeletons)).map((_) => (
+			<Card className={classes.card}>
+				<CardHeader
+					avatar={<Skeleton animation="wave" variant="circle" width={40} height={40} />}
+					title={<Skeleton animation="wave" height={25} width="40%" />}
+				/>
+				<Skeleton animation="wave" variant="rect" className={classes.media} />
+				<CardContent>
+					<>
+						<Skeleton animation="wave" height={30} style={{ marginBottom: 6 }} />
+						<Skeleton animation="wave" height={15} style={{ marginBottom: 6 }} />
+						<Skeleton animation="wave" height={15} width="80%" />
+					</>
+				</CardContent>
+			</Card>
+		));
 	};
 
-	const onLoadPage = useCallback(async () => {
-		if (loading) {
-			await dispatch(
-				getArticleList(query, {
-					isForExchange: forExchange,
-					isForSale: forSale,
-					isForShare: forShare,
-				}),
-			);
-			setCurrentList(
-				forShare || forSale || forExchange
-					? articleList.filter(
-							(a) =>
-								(forShare && a.options.isForShare) ||
-								(forSale && a.options.isForSale) ||
-								(forExchange && a.options.isForExchange),
-					  )
-					: articleList,
-			);
-			setCurrentPage(currentList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-			setLoading(false);
-		}
-	}, [page, query, forSale, forExchange, forShare]);
-
-	const loadingFeeds = () => {
-		const feedCount = 9;
-		const feeds = [];
-		for (let i = 0; i < feedCount; i += 1) {
-			feeds.push(<FeedLoading attribute="cardList" />);
-		}
-		return feeds;
-	};
-
-	const articles = currentPage.map((item) => (
-		<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
+	const articles = articleList?.map((item: ArticleEntity) => (
+		<Article key={item.id} article={item} history={history} />
 	));
-
-	useEffect(() => {
-		onLoadPage();
-	}, [onLoadPage]);
 
 	return (
 		<div id="article-list">
@@ -125,18 +147,14 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 								placeholder="찾고싶은 재료명을 검색해보세요!"
 								fullWidth
 								inputProps={{ 'aria-label': 'search' }}
-								onChange={(e) => {
-									setQuery(e.target.value);
-									setLoading(true);
-								}}
 								onKeyDown={onClickSearch}
 							/>
-							<SearchIcon id="article-list-search-icon" onKeyDown={onClickSearch} />
+							<SearchIcon id="article-list-search-icon" />
 						</div>
 						<div id="article-list-options-filter">
 							<button
 								id="most-recent-filter"
-								className={forSale ? 'selected' : ''}
+								className={isForSale ? 'selected' : ''}
 								type="button"
 								onClick={() => onClickOptions('sale')}
 							>
@@ -144,7 +162,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 							</button>
 							<button
 								id="most-popular-filter"
-								className={forExchange ? 'selected' : ''}
+								className={isForExchange ? 'selected' : ''}
 								type="button"
 								onClick={() => onClickOptions('exchange')}
 							>
@@ -152,7 +170,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 							</button>
 							<button
 								id="most-recommended-filter"
-								className={forShare ? 'selected' : ''}
+								className={isForShare ? 'selected' : ''}
 								type="button"
 								onClick={() => onClickOptions('share')}
 							>
@@ -172,19 +190,26 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 					</div>
 				</div>
 			</div>
-			<div id="article-cards">{loading ? loadingFeeds() : <>{articles}</>}</div>
-			{!loading &&
-				(articleList?.length ? (
-					<Pagination
-						id="article-list-page"
-						page={page}
-						size="large"
-						count={Math.ceil(maxPageIndex / 9.0)}
-						onChange={onChangePage}
-					/>
-				) : (
-					<div id="vacant-article"> 해당 조건의 게시글이 존재하지 않습니다!</div>
-				))}
+			<div id={`article-cards-${loading}`}>
+				<InfiniteScroll
+					dataLength={articleList.length}
+					next={() => {
+						if (!loading) {
+							setPage(page + 1);
+							setLoading(true);
+						}
+					}}
+					hasMore={articleList.length < lastPageIndex}
+					loader={loaderTemplate()}
+					endMessage={
+						<p style={{ textAlign: 'center' }}>
+							<h4>더 이상 게시물이 없어요!</h4>
+						</p>
+					}
+				>
+					{articles}
+				</InfiniteScroll>
+			</div>
 		</div>
 	);
 };

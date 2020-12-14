@@ -57,6 +57,8 @@ export interface LocationEntity {
 export interface NotificationEntity {
 	id: number;
 	content: string;
+	category: string | null;
+	targetId: number | null;
 	createdAt: string;
 	deleted: boolean;
 }

@@ -162,7 +162,7 @@ describe('RecipeDetail', () => {
 		const component = mount(recipeDetail);
 		const wrapper = component.find('#recipe-edit');
 		wrapper.find('button').at(0).simulate('click');
-		expect(spyHistoryPush).toBeCalledWith('/recipes/:1/edit');
+		expect(spyHistoryPush).toBeCalledWith('/recipes/1/edit');
 	});
 
 	// it('should check if pagination works', async () => {

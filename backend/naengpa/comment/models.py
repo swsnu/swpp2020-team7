@@ -48,7 +48,9 @@ class Comment(models.Model):
             self.author.save(update_fields=['naengpa_score'])
             Notification.objects.create(
                 recipient=self.recipe.author,
-                content=f"{self.author.name}님이 '{self.recipe.food_name}' 레시피에 댓글을 달았어요"
+                content=f"{self.author.name}님이 '{self.recipe.food_name}' 레시피에 댓글을 달았어요",
+                category="RecipeComment",
+                target_id=self.recipe.id,
             )
         super().save(*args, **kwargs)
 
@@ -77,7 +79,9 @@ class CommentLike(models.Model):
         if not self.pk:
             Notification.objects.create(
                 recipient=self.comment.author,
-                content=f"{self.user.name}님이 회원님이 작성하신 '{self.comment.recipe.food_name}' 레시피 댓글에 좋아요를 눌렀어요"
+                content=f"{self.user.name}님이 회원님이 작성하신 '{self.comment.recipe.food_name}' 레시피 댓글에 좋아요를 눌렀어요",
+                category="CommentLike",
+                target_id=self.comment.recipe.id,
             )
         super().save(*args, **kwargs)
 

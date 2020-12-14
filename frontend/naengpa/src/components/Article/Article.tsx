@@ -1,4 +1,5 @@
 import React from 'react';
+import { History } from 'history';
 import { Card, CardHeader, Avatar, IconButton, CardMedia, CardContent } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { ArticleEntity, ArticleImage } from '../../model/article';
@@ -8,10 +9,10 @@ import './Article.scss';
 
 interface ArticleProps {
 	article: ArticleEntity;
-	onClick: () => Promise<void>;
+	history: History;
 }
 
-const Article: React.FC<ArticleProps> = ({ article, onClick }) => {
+const Article: React.FC<ArticleProps> = ({ article, history }) => {
 	const thumbnail: ArticleImage = article.images[0];
 	const foodCategory: Dictionary<string> = {
 		과일류: 'fruit.png',
@@ -32,7 +33,7 @@ const Article: React.FC<ArticleProps> = ({ article, onClick }) => {
 	const path = `foodCategory/${foodCategory[article.item.category]}`;
 
 	return (
-		<Card id="article-card" onClick={onClick}>
+		<Card id="article-card" onClick={() => history.push(`/articles/${article.id}`)}>
 			<CardHeader
 				id="article-card-header"
 				avatar={<Avatar src={path} variant="rounded" aria-label="article" />}

@@ -5,11 +5,13 @@ import { DefaultAction } from '../actions/index';
 
 export type ArticleState = {
 	articleList: ArticleEntity[];
+	lastPageIndex: number;
 	article: ArticleEntity | null;
 };
 
 const initialState: ArticleState = {
 	articleList: [],
+	lastPageIndex: 1,
 	article: null,
 };
 
@@ -20,7 +22,19 @@ function articleReducer(
 	switch (action.type) {
 		/* GET ARTICLE LIST */
 		case actionTypes.GET_ARTICLE_LIST:
-			return { ...state, articleList: action.payload };
+			return {
+				...state,
+				articleList: action.articleList,
+				lastPageIndex: action.lastPageIndex,
+			};
+
+		/* GET ARTICLE LIST PAGE */
+		case actionTypes.GET_PAGE_ARTICLE_LIST:
+			return {
+				...state,
+				articleList: [...state.articleList, ...action.pageArticleList],
+				lastPageIndex: action.lastPageIndex,
+			};
 
 		/* GET ARTICLE */
 		case actionTypes.GET_ARTICLE:

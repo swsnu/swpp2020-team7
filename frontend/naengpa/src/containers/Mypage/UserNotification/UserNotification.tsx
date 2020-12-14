@@ -1,7 +1,23 @@
 import React, { useEffect } from 'react';
 import { History } from 'history';
 import { useDispatch, useSelector } from 'react-redux';
-import { createStyles, List, ListItem, ListItemText, makeStyles, Theme } from '@material-ui/core';
+import {
+	Avatar,
+	Checkbox,
+	createStyles,
+	List,
+	ListItem,
+	ListItemAvatar,
+	ListItemSecondaryAction,
+	ListItemText,
+	makeStyles,
+	Theme,
+} from '@material-ui/core';
+import MessageIcon from '@material-ui/icons/Message';
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import AnnouncementIcon from '@material-ui/icons/Announcement';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 import { toast } from 'react-toastify';
 import Tab from '../../../components/Tab/Tab';
 import { AppState } from '../../../store/store';
@@ -35,20 +51,62 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 		dispatch(getUser(user!));
 	}, []);
 
-	const onClickNotification = async (id: number) => {
-		await readNotification(id);
-		dispatch(getUser(user!));
+	const onClickCheck = async (id: number, deleted: boolean) => {
+		if (!deleted) {
+			await readNotification(id);
+			dispatch(getUser(user!));
+		}
+	};
+
+	const onClickNotification = async (category: string | null, targetId: number | null) => {
+		if (category && targetId) {
+			if (category.startsWith('Recipe')) {
+				history.push(`/recipes/${targetId}`);
+			} else {
+				history.push(`/chatrooms/${targetId}`);
+			}
+		}
+	};
+
+	const categoryIcon = (category: string | null) => {
+		switch (category) {
+			case 'ChatMessage':
+				return <ChatBubbleIcon />;
+			case 'RecipeComment':
+				return <MessageIcon />;
+			case 'RecipeLike':
+			case 'CommentLike':
+				return <FavoriteIcon />;
+			case 'Announcement':
+				return <AnnouncementIcon />;
+			default:
+				return <NotificationsIcon />;
+		}
 	};
 
 	const notifications = user?.notifications?.length ? (
 		user?.notifications?.map((item: NotificationEntity) => (
-			<ListItem button divider onClick={() => onClickNotification(item.id)}>
+			<ListItem
+				button
+				divider
+				onClick={() => onClickNotification(item.category, item.targetId)}
+			>
+				<ListItemAvatar>
+					<Avatar>{categoryIcon(item.category)}</Avatar>
+				</ListItemAvatar>
 				<ListItemText
 					key={item.id}
 					className={item.deleted ? classes.deleted : ''}
 					primary={item.content}
 					secondary={item.createdAt}
 				/>
+				<ListItemSecondaryAction>
+					<Checkbox
+						edge="end"
+						onClick={() => onClickCheck(item.id, item.deleted)}
+						checked={item.deleted}
+					/>
+				</ListItemSecondaryAction>
 			</ListItem>
 		))
 	) : (
@@ -68,7 +126,12 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 					<p id="notifications-title">게시글 알림</p>
 				</div>
 				<div id="notifications-info">
-					<List component="nav" className={classes.root} aria-label="mailbox folders">
+					<List
+						component="nav"
+						className={classes.root}
+						style={{ maxHeight: '350px', overflow: 'auto' }}
+						aria-label="notifications"
+					>
 						{notifications}
 					</List>
 				</div>
