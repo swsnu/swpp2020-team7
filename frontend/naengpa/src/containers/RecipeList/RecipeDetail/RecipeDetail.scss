@@ -3,7 +3,7 @@
 #recipe-detail {
   margin: 5% 10% 10% 15%;
   width: 70%;
-  min-width: 400px;
+  min-width: 1024px;
   height: 80%;
   border: solid 1px #dcdcdc;
   align-items: center;
@@ -13,18 +13,24 @@
     align-items: center;
     justify-content: center;
     display: flex;
-    overflow: scroll;
+    //overflow: scroll;
   }
 
   #recipe-section1 {
-    font: {
-        stretch: normal;
-        style: normal;
-    }
     margin: 5% 5% 0% 5%;
+
+    #recipe-foodName {
+      font-family: 'Jua', sans-serif;
+    }
 
     #recipe-foodCategory {
       margin-left: 5px;
+      font-family: 'Jua', sans-serif;
+    }
+
+    #recipe-createdAt {
+      font-family: 'Jua', sans-serif;
+      font-weight: normal;
     }
   }
 
@@ -76,29 +82,33 @@
       margin-bottom: 2%;
   
       #ingredient-yes-button{
-        font: {
-          weight: bold;
-        }
+        font-family: 'Jua', sans-serif;
+        // font: {
+        //   weight: bold;
+        // }
+        font-size: medium;
         letter-spacing: normal;
         text-align: left;
         border-radius: 25px;
         align-self: right;
         color: #ffffff;  
         background-color: #69e88e;  
-        margin-right: 5px;
+        margin-right: 6px;
       }
 
       #ingredient-no-button{
-        font: {
-          weight: bold;
-        }
+        font-family: 'Jua', sans-serif;
+        // font: {
+        //   weight: bold;
+        // }
+        font-size: medium;
         letter-spacing: normal;
         text-align: left;
         border-radius: 25px;
         align-self: right;
         color: #ffffff;  
         background-color: #ff6767;  
-        margin-right: 5px;
+        margin-right: 6px;
       }
     }
     #recipe-content {
@@ -108,21 +118,40 @@
 
   #recipe-section4 {
     margin: 2% 5% 2% 5%;
+
+    #recipe-section4-header {
+      font-family: 'Jua', sans-serif;
+      padding-bottom: 1%;
+    }
   }
 
   #recipe-section5 {
     margin: 2% 5% 2% 5%;
+
+    #recipe-section5-header {
+      font-family: 'Jua', sans-serif;
+      padding-bottom: 1%;
+    }
+  }
+
+  #profile-image {
+    display: flex;
+    align-items: center;
   }
 
   #profile-box {
     display: flex; 
     flex-direction: row;
     align-items: center;
+
+    // #profile-title {
+    //   font-family: 'Jua', sans-serif;
+    // }
   }
 
   #chatting-icon {
     background-color: #ffffff;
+    color: #ff8a3d;
     border: none; 
-    margin-top: 2%;
   }
 }

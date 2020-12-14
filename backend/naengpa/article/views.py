@@ -58,6 +58,7 @@ def article_list_get(request):
                     "isForShare": article.is_for_share,
                 },
                 "images": list(article.images.values('id', 'file_path')),
+                "profileImage": article.author.profile_image,
                 "createdAt": article.created_at.strftime("%Y.%m.%d")
             } for article in sorted_list] if Article.objects.count() != 0 else []
             cache.set('articles', article_collection)
@@ -100,6 +101,7 @@ def article_list_get(request):
                 "isForShare": article.is_for_share,
             },
             "images": list(article.images.values('id', 'file_path')),
+            "profileImage": article.author.profile_image,
             "createdAt": article.created_at.strftime("%Y.%m.%d")
         } for article in sorted_list] if Article.objects.count() != 0 else []
     return JsonResponse(article_collection, safe=False)
@@ -160,6 +162,7 @@ def article_list_post(request):
             "isForShare": article.is_for_share
         },
         "images": list(article.images.values('id', 'file_path')),
+        "profileImage": article.author.profile_image,
         "createdAt": article.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
     }, status=201)
 
@@ -209,6 +212,7 @@ def article_info(request, aid):
                 "isForShare": article.is_for_share
             },
             "images": list(article.images.values('id', 'file_path')),
+            "profileImage": article.author.profile_image,
             "createdAt": article.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
         }, status=200)
 
@@ -240,6 +244,7 @@ def article_info(request, aid):
                 "isForShare": article.is_for_share
             },
             "images": list(article.images.values('id', 'file_path')),
+            "profileImage": article.author.profile_image,
             "createdAt": article.created_at,
         }
         article.delete()

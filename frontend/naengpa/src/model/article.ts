@@ -29,6 +29,7 @@ export interface ArticleEntity {
 	options: ArticleOptions;
 	createdAt: string;
 	images: ArticleImage[];
+	profileImage?: string;
 }
 
 export interface ArticleImage {

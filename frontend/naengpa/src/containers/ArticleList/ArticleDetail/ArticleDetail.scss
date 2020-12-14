@@ -4,6 +4,7 @@
     margin: 5% 10% 10% 15%;
     width: 70%;
     height: 80%;
+    min-width: 1024px;
     border: solid 1px #dcdcdc;
     align-items: center;
   
@@ -13,37 +14,71 @@
       justify-content: center;
       display: flex;
     }
-  
+
+    #article-section0 {
+      font: {
+          stretch: normal;
+          style: normal;
+      }
+      margin: 5% 0% 0% 5%;
+      .MuiTypography-h6 {
+        font-family: 'Jua', sans-serif;
+      }
+    }
+
     #article-section1 {
       font: {
           stretch: normal;
           style: normal;
       }
-      margin: 5% 5% 0% 5%;
+      .MuiTypography-h4 {
+        font-family: 'Jua', sans-serif;
+      }
+      .MuiTypography-h6 {
+        font-family: 'Jua', sans-serif;
+      }
+      margin: 0% 5% 0% 5%;
     }
 
     #article-section2 {
-        margin: 0% 5% 2% 5%;
+        margin: 2% 5% 2% 5%;
+        //align-items: center;
+
+        #profile-image {
+          display: flex;
+          align-items: center;
+        }
+      
+        #profile-box {
+          display: flex; 
+          flex-direction: row;
+          align-items: center;
+      
+          // #profile-title {
+          //   font-family: 'Jua', sans-serif;
+          // }
+        }
 
         #chatting-icon {
             outline: none;
             border: none;
-            margin-top: 4px;
             background-color: white;
+            color: #ff8a3d;
         }
 
         #article-options {
+          float: right;
           font: {
             weight: bold;
           }
           letter-spacing: normal;
-          text-align: left;
+          //text-align: left;
           border-radius: 25px;
-          align-self: right;
+          //align-self: right;
 
           Button {
             padding: 0;
-            margin-top: 8px;
+            //margin-top: 8px;
             border-radius: 11px;
             border: solid 1px #f7f7f7;
     

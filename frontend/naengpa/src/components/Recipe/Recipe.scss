@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
 #recipe-list-child {
   border-radius: 5px;
-  border: solid 1px #707070;
+  border: solid 1px #b6b6b6;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -13,12 +15,33 @@
     height: 0;
     padding-top: 80%;
   }
+
+  #recipe-food-name {
+    //font-weight: bold;
+    letter-spacing: 1.5px;
+    font-size: larger;
+    font-family: 'Jua', sans-serif;
+  }
+  #recipe-food-category {
+    //font-weight: bold;
+    font-family: 'Jua', sans-serif;
+    letter-spacing: 1px;
+  }
+  #recipe-card-header {
+    .MuiCardHeader-title {
+      font-family: 'Jua', sans-serif;
+      font-size: medium;
+    }
+    .MuiCardHeader-subheader {
+      font-family: 'Jua', sans-serif;
+    }
+  }
 }
   
 
 #todays-recipe-child {
   border-radius: 5px;
-  border: solid 1px #707070;
+  border: solid 1px #b6b6b6;
   background-color: #ffffff;
   display: flex;
   width: 100%;
@@ -38,21 +61,29 @@
       left: 5%;
       bottom: 5%;
     }
+    .MuiCardHeader-title {
+      font-family: 'Jua', sans-serif;
+    }
   }
   
   #recipe-card-footer {
     margin: -5%;
     margin-right: 2%;
   }
+
+  #recipe-food-name {
+    font-weight: normal;
+    font-family: 'Jua', sans-serif;
+  }
+  #recipe-food-category {
+    font-size: smaller;
+    font-family: 'Jua', sans-serif;
+  }
 }
 
 #recipe-content {
   display: flex;
   flex-direction: column;
-
-  #recipe-food-name {
-    font-weight: bold;
-  }
 }
 
 #recipe-card-footer {
