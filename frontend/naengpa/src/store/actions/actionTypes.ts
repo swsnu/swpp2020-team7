@@ -31,6 +31,7 @@ export const TOGGLE_TODAY_INGREDIENT = 'TOGGLE_TODAY_INGREDIENT' as const;
 export const GET_RECIPE_LIST = 'GET_RECIPE_LIST' as const;
 export const GET_TODAY_RECIPE_LIST = 'GET_TODAY_RECIPE_LIST' as const;
 export const GET_RECIPE = 'GET_RECIPE' as const;
+export const GET_USER_RECIPES = 'GET_USER_RECIPES' as const;
 export const CREATE_RECIPE = 'CREATE_RECIPE' as const;
 export const EXTRACT_ML_FEATURE_FROM_RECIPE = 'EXTRACT_ML_FEATURE_FROM_RECIPE' as const;
 export const DELETE_RECIPE = 'DELETE_RECIPE' as const;

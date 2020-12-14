@@ -5,10 +5,9 @@ export {
 	login,
 	logout,
 	getUserList,
-	getUser, // should be deleted
+	getUser,
 	editUser,
 	changePassword,
-	deleteUser, // should be deleted
 	getChatRoomList,
 	getChatRoom,
 	createChatRoom,
@@ -31,6 +30,7 @@ export {
 	getRecipeList,
 	getTodayRecipeList,
 	getRecipe,
+	getUserRecipes, 
 	createRecipe,
 	extractMLFeatureFromRecipe,
 	deleteRecipe,
