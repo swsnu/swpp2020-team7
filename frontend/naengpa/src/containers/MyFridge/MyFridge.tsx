@@ -8,7 +8,7 @@ import TodayRecipe from '../../components/TodayRecipe/TodayRecipe';
 import TodayStar from '../../components/TodayStar/TodayStar';
 import Fridge from '../Fridge/Fridge';
 import Footer from '../../components/Footer/Footer';
-import { getRecipeList, getFoodCategoryList } from '../../store/actions/index';
+import { getFoodCategoryList } from '../../store/actions/index';
 import './MyFridge.scss';
 
 interface MyFridgeProps {

@@ -80,11 +80,6 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		dispatch(toggleRecipe(recipe?.id as number));
 	};
 
-	const onClickArticle = (id: number) => async () => {
-		dispatch(getArticle(id));
-		history.push(`/articles/${id}`);
-	};
-
 	const [alert, setAlert] = useState(false);
 
 	let cookTime = `${recipe?.cookTime}M`;
