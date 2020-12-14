@@ -68,8 +68,8 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
-	const onClickDeleteImage = (target_id: number) => {
-		setImages(images.filter((_, i) => i !== target_id));
+	const onClickDeleteImage = (targetId number) => {
+		setImages(images.filter((_, i) => i !== targetId);
 	};
 
 	const onClickOptions = (target: string) => {

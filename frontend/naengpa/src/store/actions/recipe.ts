@@ -153,9 +153,9 @@ export const extractMLFeatureFromRecipe = (recipe: BaseRecipeEntity) => {
 	};
 };
 
-export const deleteRecipe_ = (target_id: number) => ({
+export const deleteRecipe_ = (targetId: number) => ({
 	type: actionTypes.DELETE_RECIPE,
-	target_id,
+	targetId,
 });
 
 /* DELETE RECIPE */
@@ -187,9 +187,9 @@ export const editRecipe = (recipe: RecipeEntity) => {
 	};
 };
 
-export const toggleRecipe_ = (target_id: number, info: RecipeLike) => ({
+export const toggleRecipe_ = (targetId: number, info: RecipeLike) => ({
 	type: actionTypes.TOGGLE_RECIPE,
-	target_id,
+	targetId,
 	info,
 });
 

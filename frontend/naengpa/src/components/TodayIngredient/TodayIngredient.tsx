@@ -24,8 +24,8 @@ const TodayIngredient: React.FC = () => {
 	}, [user]);
 
 	// onClickDeleteTodayIngredient();
-	const onClickDeleteTodayIngredient = (target_id: number) => {
-		dispatch(toggleTodayIngredient(user!.id, target_id));
+	const onClickDeleteTodayIngredient = (targetId: number) => {
+		dispatch(toggleTodayIngredient(user!.id, targetId));
 	};
 
 	const todays_ingredient_contents = todays_ingredient.map((ingredient) => {

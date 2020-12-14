@@ -107,8 +107,8 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
-	const onClickDeleteImage = (target_id: number) => {
-		return setFoodImageFiles(foodImageFiles.filter((item, idx) => idx !== target_id));
+	const onClickDeleteImage = (targetId: number) => {
+		return setFoodImageFiles(foodImageFiles.filter((item, idx) => idx !== targetId));
 	};
 
 	// TODO: need to be modified for checking the lost of date!
