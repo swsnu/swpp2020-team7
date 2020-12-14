@@ -49,12 +49,16 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	}, [recipeState.lastPageIndex, loading, query, page, sortBy, searchCategory]);
 
 	const loadingFeeds = () => {
-		const feedCount = 9;
-		const feeds = [];
-		for (let i = 0; i < feedCount; i += 1) {
-			feeds.push(<FeedLoading attribute="cardList" />);
+		let totalSkeletons = 0;
+		let recipeList = recipeState.recipeList; 
+		if(!recipeList || !recipeList.length) {
+			totalSkeletons = 6; 
+		} else {
+			totalSkeletons = recipeList.length;
 		}
-		return feeds;
+		return Array.from(Array(totalSkeletons)).map((_) => (
+			<FeedLoading attribute="cardList"/>
+		));
 	};
 
 	useEffect(() => {
@@ -134,16 +138,16 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 				</div>
 				<div id="recipe-list-buttons">
 					<button
-						id={`filter-button-${sortBy === 'created_at'}`}
+						id={`filter-button-${sortBy === 'ingredient'}`}
 						type="button"
 						onClick={(e) => {
 							e.preventDefault();
 							setPage(1);
-							setSortBy('created_at');
 							setLoading(true);
+							setSortBy('ingredient');
 						}}
 					>
-						최신
+						추천
 					</button>
 					<button
 						id={`filter-button-${sortBy === 'likes'}`}
@@ -158,16 +162,16 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 						인기
 					</button>
 					<button
-						id={`filter-button-${sortBy === 'ingredient'}`}
+						id={`filter-button-${sortBy === 'created_at'}`}
 						type="button"
 						onClick={(e) => {
 							e.preventDefault();
 							setPage(1);
+							setSortBy('created_at');
 							setLoading(true);
-							setSortBy('ingredient');
 						}}
 					>
-						추천
+						최신
 					</button>
 					<button
 						id="create-recipe-button"
