@@ -20,7 +20,6 @@ const MyFridge: React.FC<MyFridgeProps> = ({ history }) => {
 
 	useEffect(() => {
 		dispatch(getFoodCategoryList());
-		dispatch(getRecipeList('', 'created_at', '전체', 1));
 	}, []);
 
 	return (

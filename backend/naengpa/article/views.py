@@ -62,12 +62,12 @@ def article_list_get(request):
             } for article in sorted_list] if Article.objects.count() != 0 else []
             cache.set('articles', article_collection)
         else:
-            included_region_names = NeighborhoodRegion.objects.filter(from_region_id=request.user.region.id,
-                                                                      region_range=request.user.region_range).annotate(name=Concat(F('neighborhood__gu_name'), Value(' '), F('neighborhood__dong_name'))).values_list('name', flat=True)
+            included_region_names = request.user.region.neighborhoodregion_set.filter(
+                region_range=request.user.region_range).distinct().annotate(name=Concat(F('neighborhood__gu_name'), Value(' '), F('neighborhood__dong_name'))).values_list('name', flat=True)
             article_collection = list(
                 filter(lambda art: art['region'] in list(included_region_names), article_collection))
     else:
-        included_region_ids = request.user.region.neighborhood.objects.filter(
+        included_region_ids = request.user.region.neighborhoodregion_set.filter(
             region_range=request.user.region_range).values_list('neighborhood_id', flat=True)
         q = Q(author__region__id__in=included_region_ids)
         if query:

@@ -23,6 +23,7 @@ const Navigation: React.FC<NavigationProps> = ({ history }) => {
 				<Badge
 					badgeContent={user?.totalNotifications}
 					max={9}
+					id="user-notification-button"
 					color="secondary"
 					overlap="circle"
 					variant="dot"

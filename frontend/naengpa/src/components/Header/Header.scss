@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
 div#header {
-  width: 100%;
+  min-width: 1024px;
   height: 70px;
   border: solid 1px #e3e3e3;
   background-color: #efefef;
@@ -14,10 +14,8 @@ div#header {
   border: none;
   outline: 0;
   font-family: 'Jua', sans-serif;
-  //color: #696464;
 }
 
 #header-tab:focus{
   outline: 0 !important;
-  //color: #ff8a3d !important;
 }
