@@ -1,7 +1,6 @@
 import React, { useEffect, MouseEvent, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
-import Pagination from '@material-ui/lab/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
@@ -11,6 +10,7 @@ import Article from '../../components/Article/Article';
 import { getArticleList } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 import './ArticleList.scss';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 interface ArticleListProps {
 	history: History;
@@ -23,7 +23,6 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	const dispatch = useDispatch();
 
 	const [page, setPage] = useState(1);
-	const [maxPageIndex, setMaxPageIndex] = useState(lastPageIndex);
 	const [isForSale, setForSale] = useState(true);
 	const [isForExchange, setForExchange] = useState(true);
 	const [isForShare, setForShare] = useState(true);
@@ -33,10 +32,9 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	const onLoadPage = useCallback(async () => {
 		if (loading) {
 			await dispatch(getArticleList(query, {isForSale, isForExchange, isForShare}, page));
-			setMaxPageIndex(lastPageIndex);
 			setLoading(false);
 		}
-	}, [lastPageIndex, loading, page, query, isForExchange, isForExchange, isForShare]);
+	}, [loading, page, query, isForExchange, isForExchange, isForShare]);
 
 	useEffect(() => {
 		onLoadPage();
@@ -65,12 +63,6 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 			setPage(1);
 			setLoading(true);
 		}
-	};
-
-	const onChangePage = (e: React.ChangeEvent<unknown>, value: number): void => {
-		e.preventDefault();
-		setPage(value);
-		setLoading(true);
 	};
 
 	const onClickCreateArticle = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -141,20 +133,23 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 				</div>
 			</div>
 			<div id={`article-cards-${loading}`}>
-				{loading ? <CircularProgress id="loading-bar" color="inherit" /> : <>{articles}</>}
+				<InfiniteScroll
+					dataLength={articleList.length}
+					next={() => {
+						setPage(page + 1);
+						setLoading(true);
+					}}
+					hasMore={page < Math.ceil(lastPageIndex / 9.0)}
+					loader={<CircularProgress id="loading-bar" color="inherit" />}
+					endMessage={
+					<p style={{ textAlign: 'center' }}>
+						<b>Yay! You have seen it all</b>
+					</p>
+					}
+				>
+					{articles}
+				</InfiniteScroll>
 			</div>
-			{!loading &&
-				(articleList?.length ? (
-					<Pagination
-						id="article-list-page"
-						page={page}
-						size="large"
-						count={Math.ceil(maxPageIndex / 9.0)}
-						onChange={onChangePage}
-					/>
-				) : (
-					<div id="vacant-article"> 해당 조건의 게시글이 존재하지 않아요!</div>
-				))}
 		</div>
 	);
 };

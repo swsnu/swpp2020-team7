@@ -6,9 +6,9 @@ import { ArticleEntity, ArticleOptions, CreateArticleEntity } from '../../model/
 import { toast } from 'react-toastify';
 
 /* GET ARTICLE LIST */
-export const getArticleList_ = (articleList: ArticleEntity[], lastPageIndex: number) => ({
+export const getArticleList_ = (pageArticleList: ArticleEntity[], lastPageIndex: number) => ({
 	type: actionTypes.GET_ARTICLE_LIST,
-	articleList,
+	pageArticleList,
 	lastPageIndex,
 });
 
