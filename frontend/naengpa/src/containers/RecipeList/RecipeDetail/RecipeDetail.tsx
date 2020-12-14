@@ -96,8 +96,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				key={`#${value}`}
 				src={value.file_path}
 				alt="/api/images"
-				width="250px"
-				height="250px"
+				width="200px"
+				height="200px"
 			/>
 		);
 	});
@@ -189,7 +189,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 			<div id="recipe-section1">
 				<Grid container alignItems="center">
 					<Grid item>
-						<Typography gutterBottom variant="h3">
+						<Typography id="recipe-foodName" gutterBottom variant="h3">
 							{recipe ? recipe.foodName : <Skeleton />}
 						</Typography>
 					</Grid>
@@ -199,7 +199,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						</Typography>
 					</Grid>
 					<Grid item>
-						<Typography gutterBottom variant="h6" align="right">
+						<Typography id="recipe-createdAt" gutterBottom variant="h6" align="right">
 							{recipe ? recipe.createdAt : <Skeleton />}
 						</Typography>
 					</Grid>
@@ -208,12 +208,17 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 			<div id="recipe-section2">
 				<Grid container alignItems="center">
 					<Grid container spacing={1}>
-						<Grid item>
-							{recipe ? <Avatar aria-label="user-image" src="/icons/boy.png" />
+						<Grid item id="profile-image">
+								src={
+									(recipe.profileImage as string)
+										? (recipe.profileImage as string)
+										: '/icons/account_circle.png'
+								}
+								alt="/icons/account_circle.png"
 								: <Skeleton><Avatar /></Skeleton>}
 						</Grid>
 						<Grid item id="profile-box">
-							<Typography id="profile-title" variant="h5">
+							<Typography id="profile-title" gutterBottom variant="h5">
 								{recipe ? recipe.author : <Skeleton />}
 							</Typography>
 							{user!.id !== recipe?.authorId && (
@@ -251,7 +256,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 							</div>
 						</Grid>
 						<Grid item>
-							{user!.id !== recipe?.authorId && (
+							{user!.id === recipe?.authorId && (
 								<>
 									<IconButton
 										id="recipe-setting-button"
@@ -292,14 +297,14 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 			</div>
 			<Divider variant="middle" />
 			<div id="recipe-section4">
-				<Typography gutterBottom variant="h5">
+				<Typography id="recipe-section4-header" gutterBottom variant="h5">
 					{recipe ? `${user!.name}님! 지금 ${notInFridgeJoined} 주변 이웃과 거래해보세요!` : <Skeleton />}
 				</Typography>
 				{article}
 			</div>
 			<Divider variant="middle" />
 			<div id="recipe-section5">
-				<Typography gutterBottom variant="h5">
+				<Typography id="recipe-section5-header" gutterBottom variant="h5">
 					{recipe ? '댓글' : <Skeleton />}
 				</Typography>
 				{comments}

@@ -16,12 +16,14 @@ div#comment {
     }
     #comment-info-box {
         display: flex;
+        align-items: center;
         flex-direction: row;
     }
 
     #comment-edit-box {
       display: flex !important;
       flex-direction: row !important;
+      align-items: center;
     }
 
     #comment-like {

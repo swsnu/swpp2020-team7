@@ -88,6 +88,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 						<div id="chat-member-image" />
 						<div id="chat-member-username">{user.chatRoom?.member}</div>{' '}
 					</div>
+					<p id="space">자리채움</p>
 				</Typography>
 				<Divider />
 				<div

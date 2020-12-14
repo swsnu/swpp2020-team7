@@ -76,6 +76,19 @@ export const getRecipe = (id: number) => {
 	};
 };
 
+export const getUserRecipes_ = (recipes: RecipeEntity[]) => ({
+	type: actionTypes.GET_USER_RECIPES,
+	recipes,
+});
+
+export function getUserRecipes(id: string) {
+	return async (dispatch: any) => {
+		const response: any = await axios.get(`/api/users/${id}/recipes`);
+
+		dispatch(getUserRecipes_(response.data));
+	};
+}
+
 export const createRecipe_ = (recipe: RecipeEntity) => ({
 	type: actionTypes.CREATE_RECIPE,
 	recipe,
@@ -196,6 +209,7 @@ export type RecipeAction =
 	| ReturnType<typeof getRecipeList_>
 	| ReturnType<typeof getTodayRecipeList_>
 	| ReturnType<typeof getRecipe_>
+	| ReturnType<typeof getUserRecipes_>
 	| ReturnType<typeof createRecipe_>
 	| ReturnType<typeof extractMLFeatureFromRecipe_>
 	| ReturnType<typeof deleteRecipe_>

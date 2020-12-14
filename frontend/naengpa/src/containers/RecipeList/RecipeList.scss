@@ -1,10 +1,9 @@
 #recipe-list {
-  min-width: 1024px !important;
-  margin:  {
-    bottom: 100px; 
-    left: 50px;
-    right: 100px;
-  }
+  margin: 30px 0;
+  padding: 10px 150px;
+  min-width: 800px;
+  background-color: #ffffff;
+
   #create-recipe-button {
     display: flex;
     justify-content: flex-end;
@@ -45,9 +44,9 @@
   #recipe-cards {
     display: flex;
     flex-flow: wrap;
-    justify-content: center;
-    margin: 3% 5%;
-    padding: 10px;
+    justify-content: space-between;
+    margin: 3% 0;
+    padding: 0;
   }
 
   button {

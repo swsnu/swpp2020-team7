@@ -53,8 +53,8 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 				key={`#${value}`}
 				src={value.file_path}
 				alt="/api/images"
-				width="250px"
-				height="250px"
+				width="200px"
+				height="200px"
 			/>
 		);
 	});
@@ -86,16 +86,16 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 					<ArrowForwardIosIcon />
 				</IconButton>
 			</div>
+			<div id="article-section0">
+				<Typography gutterBottom variant="h6" align="left">
+					{article.item?.category} - {article.item?.name}
+				</Typography>
+			</div>
 			<div id="article-section1">
 				<Grid container alignItems="center">
-					<Grid item>
-						<Typography gutterBottom variant="h3">
-							{article?.title}
-						</Typography>
-					</Grid>
 					<Grid item xs>
-						<Typography gutterBottom variant="h6" align="left">
-							{article.item?.category} - {article.item?.name}
+						<Typography id="article-title" gutterBottom variant="h4">
+							{article?.title}
 						</Typography>
 					</Grid>
 					<Grid item>
@@ -109,14 +109,20 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 				<Grid container alignItems="center">
 					<Grid container spacing={1}>
 						<Grid item>
-							<Avatar aria-label="user-image" src="/icons/boy.png" />
+							<Avatar
+								aria-label="user-image"
+								src={
+									(article.profileImage as string)
+										? (article.profileImage as string)
+										: '/icons/account_circle.png'
+								}
+								alt="/icons/account_circle.png"
+							/>
 						</Grid>
 						<Grid item id="profile-box">
 							<Typography gutterBottom id="profile-title" variant="h5">
 								{article.author}
 							</Typography>
-						</Grid>
-						<Grid item id="chatting" xs>
 							{user!.id !== article.authorId && (
 								<button
 									id="chatting-icon"
@@ -127,7 +133,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 								</button>
 							)}
 						</Grid>
-						<Grid item>
+						<Grid item xs>
 							<div id="article-options">
 								{article.options?.isForSale && (
 									<Button type="button" id="article-options-sale">
@@ -147,26 +153,32 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 							</div>
 						</Grid>
 						<Grid item>
-							<IconButton
-								id="article-setting-button"
-								onClick={() => setAlert(!alert)}
-								disabled={user!.id !== article.authorId}
-							>
-								<MoreVertIcon />
-							</IconButton>
-							<Collapse in={alert}>
-								<Alert id="article-setting-alert" icon={false}>
-									<Button id="article-edit" onClick={() => onClickEditArticle()}>
-										수정
-									</Button>
-									<Button
-										id="article-delete"
-										onClick={() => onClickDeleteArticle()}
+							{user!.id === article?.authorId && (
+								<>
+									<IconButton
+										id="recipe-setting-button"
+										onClick={() => setAlert(!alert)}
 									>
-										삭제
-									</Button>
-								</Alert>
-							</Collapse>
+										<MoreVertIcon />
+									</IconButton>
+									<Collapse in={alert}>
+										<Alert id="recipe-setting-alert" icon={false}>
+											<Button
+												id="recipe-edit"
+												onClick={() => onClickEditArticle()}
+											>
+												수정
+											</Button>
+											<Button
+												id="recipe-delete"
+												onClick={() => onClickDeleteArticle()}
+											>
+												삭제
+											</Button>
+										</Alert>
+									</Collapse>
+								</>
+							)}
 						</Grid>
 					</Grid>
 				</Grid>

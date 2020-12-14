@@ -198,6 +198,7 @@ def article_info(request, aid):
                 "isForShare": article.is_for_share
             },
             "images": list(article.images.values('id', 'file_path')),
+            "profileImage": article.author.profile_image,
             "createdAt": article.created_at,
         }
         article.delete()

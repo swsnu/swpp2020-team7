@@ -45,7 +45,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	return (
 		<div id="mypage">
 			<Tab history={history} />
-			<div id="info">
+			<div id="chatroom-list">
 				<Typography id="chatroom-header" gutterBottom>
 					쪽지함
 				</Typography>

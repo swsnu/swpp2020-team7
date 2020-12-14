@@ -36,12 +36,7 @@ const Article: React.FC<ArticleProps> = ({ article, history }) => {
 		<Card id="article-card" onClick={() => history.push(`/articles/${article.id}`)}>
 			<CardHeader
 				id="article-card-header"
-				avatar={<Avatar src={path} aria-label="article" />}
-				action={
-					<IconButton aria-label="settings">
-						<MoreVertIcon />
-					</IconButton>
-				}
+				avatar={<Avatar src={path} variant="rounded" aria-label="article" />}
 				disableTypography
 				title={article.item.name}
 			/>
