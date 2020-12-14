@@ -25,7 +25,7 @@ class ChatRoom(models.Model):
             time = timezone.now().date() - self.updated_at.date()
             return str(time.days) + '일 전'
         else:
-            return self.created_at.strftime("%y.%m.%d")
+            return self.updated_at.strftime("%y.%m.%d")
 
     def __str__(self):
         return f'[{self.id}] by {self.chat_members} - {self.updated_at}]'
