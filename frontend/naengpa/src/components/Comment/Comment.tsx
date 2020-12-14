@@ -104,23 +104,23 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 							<Grid id="comment-info-box">
 								<Grid item>
 									<Grid id="comment-like">
-										{commentLike}
 										{userLike > 0 ? (
 											<FavoriteIcon
 												id="comment-like-count-icon"
-												fontSize="large"
+												fontSize="small"
 												onClick={() => onClickCommentLike()}
 											/>
 										) : (
 											<FavoriteBorderIcon
 												id="comment-like-count-icon"
-												fontSize="large"
+												fontSize="small"
 												onClick={() => onClickCommentLike()}
 											/>
 										)}
+										{commentLike}
 									</Grid>
 								</Grid>
-								{user?.username === comment?.author && (
+								{user?.name === comment?.author && (
 									<Grid>
 										<IconButton
 											id="comment-setting-button"
