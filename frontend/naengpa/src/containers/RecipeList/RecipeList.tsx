@@ -25,7 +25,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const [maxPageIndex, setMaxPageIndex] = useState(recipeState.lastPageIndex);
 	const [searchCategory, setSearchCategory] = useState('전체');
 	const [sortBy, setSortBy] = useState('ingredient');
-	const [loading, setLoading] = useState<boolean>(true);
+	const [loading, setLoading] = useState(true);
 	const [query, setQuery] = useState('');
 	const dispatch = useDispatch();
 
