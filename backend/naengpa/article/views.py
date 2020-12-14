@@ -69,9 +69,8 @@ def article_list_get(request):
     is_for_share = request.GET.get('fh')
     page = request.GET.get('p', 1)
 
-    test_user = User.objects.get(name='임은성')
-    included_region_ids = test_user.region.neighborhoodregion_set.filter(
-        region_range=test_user.region_range).values_list('neighborhood_id', flat=True)
+    included_region_ids = request.user.region.neighborhoodregion_set.filter(
+        region_range=request.user.region_range).values_list('neighborhood_id', flat=True)
 
     filtered_list = Article.objects.exclude(
         done=True
@@ -111,6 +110,7 @@ def article_list_get(request):
     }, safe=False)
 
 
+@transaction.atomic
 def article_list_post(request):
     """ POST /api/articles/ post new article """
     try:
@@ -148,10 +148,9 @@ def article_list_post(request):
     return JsonResponse(_get_cache_or_set_article_by_id(article.id), status=201)
 
 
-# @ensure_csrf_cookie
-# @api_view(['GET', 'POST'])
-# @login_required_401
-@csrf_exempt
+@ensure_csrf_cookie
+@api_view(['GET', 'POST'])
+@login_required_401
 def article_list(request):
     """get article list or create an article"""
     if request.method == 'GET':
