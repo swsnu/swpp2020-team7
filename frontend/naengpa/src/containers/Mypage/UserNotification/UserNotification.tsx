@@ -14,7 +14,6 @@ import { NotificationEntity } from '../../../model/user';
 import './UserNotification.scss';
 import { getUser } from '../../../store/actions';
 import { readNotification } from '../../../store/actions/user';
-import { Announcement } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -114,7 +113,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 					<p id="notifications-title">게시글 알림</p>
 				</div>
 				<div id="notifications-info">
-					<List component="nav" className={classes.root} aria-label="mailbox folders">
+					<List component="nav" className={classes.root} style={{maxHeight: '350px', overflow: 'auto'}} aria-label="notifications">
 						{notifications}
 					</List>
 				</div>
