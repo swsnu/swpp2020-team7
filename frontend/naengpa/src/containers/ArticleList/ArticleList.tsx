@@ -192,14 +192,14 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 			</div>
 			<div id={`article-cards-${loading}`}>
 				<InfiniteScroll
-					dataLength={articleList.length}
+					dataLength={articleList?.length}
 					next={() => {
 						if (!loading) {
 							setPage(page + 1);
 							setLoading(true);
 						}
 					}}
-					hasMore={articleList.length < lastPageIndex}
+					hasMore={articleList?.length < lastPageIndex}
 					loader={loaderTemplate()}
 					endMessage={
 						<p style={{ textAlign: 'center' }}>
