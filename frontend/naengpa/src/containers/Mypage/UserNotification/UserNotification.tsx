@@ -1,7 +1,18 @@
 import React, { useEffect } from 'react';
 import { History } from 'history';
 import { useDispatch, useSelector } from 'react-redux';
-import { Avatar, Checkbox, createStyles, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, makeStyles, Theme } from '@material-ui/core';
+import {
+	Avatar,
+	Checkbox,
+	createStyles,
+	List,
+	ListItem,
+	ListItemAvatar,
+	ListItemSecondaryAction,
+	ListItemText,
+	makeStyles,
+	Theme,
+} from '@material-ui/core';
 import MessageIcon from '@material-ui/icons/Message';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -49,7 +60,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 
 	const onClickNotification = async (category: string | null, targetId: number | null) => {
 		if (category && targetId) {
-			if (category.startsWith('Recipe') ) {
+			if (category.startsWith('Recipe')) {
 				history.push(`/recipes/${targetId}`);
 			} else {
 				history.push(`/chatrooms/${targetId}`);
@@ -60,26 +71,28 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 	const categoryIcon = (category: string | null) => {
 		switch (category) {
 			case 'ChatMessage':
-				return <ChatBubbleIcon />
+				return <ChatBubbleIcon />;
 			case 'RecipeComment':
-				return <MessageIcon />
+				return <MessageIcon />;
 			case 'RecipeLike':
 			case 'CommentLike':
-				return <FavoriteIcon />
+				return <FavoriteIcon />;
 			case 'Announcement':
-				return <AnnouncementIcon />
+				return <AnnouncementIcon />;
 			default:
-				return <NotificationsIcon />
+				return <NotificationsIcon />;
 		}
 	};
 
 	const notifications = user?.notifications?.length ? (
 		user?.notifications?.map((item: NotificationEntity) => (
-			<ListItem button divider onClick={() => onClickNotification(item.category, item.targetId)}>
+			<ListItem
+				button
+				divider
+				onClick={() => onClickNotification(item.category, item.targetId)}
+			>
 				<ListItemAvatar>
-        			<Avatar>
-						{categoryIcon(item.category)}
-					</Avatar>
+					<Avatar>{categoryIcon(item.category)}</Avatar>
 				</ListItemAvatar>
 				<ListItemText
 					key={item.id}
@@ -113,7 +126,12 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 					<p id="notifications-title">게시글 알림</p>
 				</div>
 				<div id="notifications-info">
-					<List component="nav" className={classes.root} style={{maxHeight: '350px', overflow: 'auto'}} aria-label="notifications">
+					<List
+						component="nav"
+						className={classes.root}
+						style={{ maxHeight: '350px', overflow: 'auto' }}
+						aria-label="notifications"
+					>
 						{notifications}
 					</List>
 				</div>

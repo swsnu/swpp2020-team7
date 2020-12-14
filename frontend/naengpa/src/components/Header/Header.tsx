@@ -9,7 +9,7 @@ interface NavigationProps {
 
 const Header: React.FC<NavigationProps> = ({ history }) => {
 	const location = useLocation();
-	
+
 	return (
 		<div id="header">
 			<button

@@ -12,6 +12,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { Button, IconButton, Divider, Collapse, Typography, Avatar, Grid } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
 
+import { Skeleton } from '@material-ui/lab';
 import {
 	createChatRoom,
 	deleteRecipe,
@@ -26,7 +27,6 @@ import Comment from '../../../components/Comment/Comment';
 import CreateComment from '../../CreateComment/CreateComment';
 import { RecipeEntity, RecipeImage } from '../../../model/recipe';
 import { CommentEntity } from '../../../model/comment';
-import { Skeleton } from '@material-ui/lab';
 
 interface RecipeDetailProps {
 	history: History;
@@ -44,7 +44,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const images = recipe?.foodImagePaths as RecipeImage[];
 	const ingredients = recipe?.ingredients ? recipe?.ingredients : [];
 	const currentPath = window.location.pathname.split('/');
-	const recipeId = parseInt(currentPath[currentPath.length-1]);
+	const recipeId = parseInt(currentPath[currentPath.length - 1], 10);
 	const [userLike, setUserLike] = useState(recipe?.userLike);
 	const [recipeLike, setRecipeLike] = useState(recipe ? recipe.recipeLike : 0);
 	const dispatch = useDispatch();
@@ -156,10 +156,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		if (!recipe) {
 			dispatch(getRecipe(recipeId));
 		}
-	}, [dispatch, recipeId])
+	}, [dispatch, recipeId]);
 
 	useEffect(() => {
-		setRecipeLike(recipe?.recipeLike)
+		setRecipeLike(recipe?.recipeLike);
 	}, [recipe]);
 
 	return (
@@ -177,7 +177,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				>
 					<ArrowBackIosIcon />
 				</IconButton>
-				{image ? image : <Skeleton variant="rect" width={250} height={250} />}
+				{image || <Skeleton variant="rect" width={250} height={250} />}
 				<IconButton
 					id="next-image"
 					onClick={(e) => onClickPage(e, page + 1)}
@@ -209,13 +209,21 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				<Grid container alignItems="center">
 					<Grid container spacing={1}>
 						<Grid item id="profile-image">
-								src={
-									(recipe.profileImage as string)
-										? (recipe.profileImage as string)
-										: '/icons/account_circle.png'
-								}
-								alt="/icons/account_circle.png"
-								: <Skeleton><Avatar /></Skeleton>}
+							{recipe ? (
+								<Avatar
+									aria-label="user-image"
+									src={
+										(recipe.profileImage as string)
+											? (recipe.profileImage as string)
+											: '/icons/account_circle.png'
+									}
+									alt="/icons/account_circle.png"
+								/>
+							) : (
+								<Skeleton>
+									<Avatar />
+								</Skeleton>
+							)}
 						</Grid>
 						<Grid item id="profile-box">
 							<Typography id="profile-title" gutterBottom variant="h5">
@@ -234,7 +242,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						<Grid item xs>
 							<div id="recipe-cook-time">
 								<AccessAlarmIcon id="recipe-cook-time-icon" fontSize="large" />
-								{recipe && cookTime} 
+								{recipe && cookTime}
 							</div>
 						</Grid>
 						<Grid item>
@@ -298,7 +306,11 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 			<Divider variant="middle" />
 			<div id="recipe-section4">
 				<Typography id="recipe-section4-header" gutterBottom variant="h5">
-					{recipe ? `${user!.name}님! 지금 ${notInFridgeJoined} 주변 이웃과 거래해보세요!` : <Skeleton />}
+					{recipe ? (
+						`${user!.name}님! 지금 ${notInFridgeJoined} 주변 이웃과 거래해보세요!`
+					) : (
+						<Skeleton />
+					)}
 				</Typography>
 				{article}
 			</div>

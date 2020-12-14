@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
 import { Dispatch } from 'redux';
+import { toast } from 'react-toastify';
 import * as actionTypes from './actionTypes';
 import { ArticleEntity, ArticleOptions, CreateArticleEntity } from '../../model/article';
-import { toast } from 'react-toastify';
 
 /* GET ARTICLE LIST for the first time */
 export const getArticleList_ = (articleList: ArticleEntity[], lastPageIndex: number) => ({
@@ -23,7 +23,7 @@ export const getArticleList = (query?: string, options?: ArticleOptions) => {
 					fh: options?.isForShare,
 					p: 1,
 				},
-			}); 
+			});
 			const { articleList, lastPageIndex } = response.data;
 			dispatch(getArticleList_(articleList, lastPageIndex));
 		} catch {
@@ -31,7 +31,6 @@ export const getArticleList = (query?: string, options?: ArticleOptions) => {
 		}
 	};
 };
-
 
 /* GET ARTICLE LIST for a certain page */
 export const getPageArticleList_ = (pageArticleList: ArticleEntity[], lastPageIndex: number) => ({
@@ -51,7 +50,7 @@ export const getPageArticleList = (query?: string, options?: ArticleOptions, pag
 					fh: options?.isForShare,
 					p: page,
 				},
-			}); 
+			});
 			const { articleList, lastPageIndex } = response.data;
 			dispatch(getPageArticleList_(articleList, lastPageIndex));
 		} catch {
