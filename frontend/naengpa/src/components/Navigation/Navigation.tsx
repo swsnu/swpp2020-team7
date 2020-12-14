@@ -13,7 +13,7 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user.user);
-	console.log(user?.totalNotifications)
+
 	return (
 		<div id="navigation">
 			<button id="naengpa-logo-button" type="button" onClick={() => history.push('/fridge')}>
