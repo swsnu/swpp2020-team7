@@ -22,6 +22,10 @@ function articleReducer(
 	switch (action.type) {
 		/* GET ARTICLE LIST */
 		case actionTypes.GET_ARTICLE_LIST:
+			return { ...state, articleList: action.articleList, lastPageIndex: action.lastPageIndex };
+
+		/* GET ARTICLE LIST PAGE */
+		case actionTypes.GET_PAGE_ARTICLE_LIST:
 			return { ...state, articleList: [...state.articleList, ...action.pageArticleList], lastPageIndex: action.lastPageIndex };
 
 		/* GET ARTICLE */

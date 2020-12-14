@@ -5,14 +5,42 @@ import * as actionTypes from './actionTypes';
 import { ArticleEntity, ArticleOptions, CreateArticleEntity } from '../../model/article';
 import { toast } from 'react-toastify';
 
-/* GET ARTICLE LIST */
-export const getArticleList_ = (pageArticleList: ArticleEntity[], lastPageIndex: number) => ({
+/* GET ARTICLE LIST for the first time */
+export const getArticleList_ = (articleList: ArticleEntity[], lastPageIndex: number) => ({
 	type: actionTypes.GET_ARTICLE_LIST,
+	articleList,
+	lastPageIndex,
+});
+
+export const getArticleList = (query?: string, options?: ArticleOptions) => {
+	return async (dispatch: Dispatch<any>) => {
+		try {
+			const response = await axios.get('/api/articles/', {
+				params: {
+					q: query,
+					fs: options?.isForSale,
+					fe: options?.isForExchange,
+					fh: options?.isForShare,
+					p: 1,
+				},
+			}); 
+			const { articleList, lastPageIndex } = response.data;
+			dispatch(getArticleList_(articleList, lastPageIndex));
+		} catch {
+			toast.error('🦄 장터 게시글을 가져오지 못했습니다! 다시 시도해주세요!');
+		}
+	};
+};
+
+
+/* GET ARTICLE LIST for a certain page */
+export const getPageArticleList_ = (pageArticleList: ArticleEntity[], lastPageIndex: number) => ({
+	type: actionTypes.GET_PAGE_ARTICLE_LIST,
 	pageArticleList,
 	lastPageIndex,
 });
 
-export const getArticleList = (query?: string, options?: ArticleOptions, page?: number) => {
+export const getPageArticleList = (query?: string, options?: ArticleOptions, page?: number) => {
 	return async (dispatch: Dispatch<any>) => {
 		try {
 			const response = await axios.get('/api/articles/', {
@@ -25,7 +53,7 @@ export const getArticleList = (query?: string, options?: ArticleOptions, page?: 
 				},
 			}); 
 			const { articleList, lastPageIndex } = response.data;
-			dispatch(getArticleList_(articleList, lastPageIndex));
+			dispatch(getPageArticleList_(articleList, lastPageIndex));
 		} catch {
 			toast.error('🦄 장터 게시글을 가져오지 못했습니다! 다시 시도해주세요!');
 		}
@@ -95,6 +123,7 @@ export const deleteArticle = (id: number) => {
 
 export type ArticleAction =
 	| ReturnType<typeof getArticleList_>
+	| ReturnType<typeof getPageArticleList_>
 	| ReturnType<typeof getArticle_>
 	| ReturnType<typeof createArticle_>
 	| ReturnType<typeof editArticle_>
