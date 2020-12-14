@@ -5,10 +5,12 @@ from django.http import JsonResponse, HttpResponseBadRequest,  HttpResponseNotFo
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
 from django.db import transaction
+from django.db.models.functions import Concat
 from django.db.models import F, Q, Value, CharField
 from rest_framework.decorators import api_view
 
 from ingredient.models import Ingredient
+from user.models import NeighborhoodRegion
 from utils.aws_utils import upload_images
 from utils.gis_utils import get_nearest_places_ids_from_region, get_nearest_places_names_from_region
 from utils.auth import login_required_401
@@ -25,8 +27,8 @@ def article_list_get(request):
     if not query:
         article_collection = cache.get('articles')
         if not article_collection:
-            included_region_ids = get_nearest_places_ids_from_region(
-                request.user.region.id, max_distance=request.user.region_range)
+            included_region_ids = NeighborhoodRegion.objects.filter(from_region_id=request.user.region.id,
+                                                                    region_range=request.user.region_range).values_list('neighborhood_id', flat=True)
             sorted_list = Article.objects.select_related(
                 'author', 'author__region', 'item'
             ).prefetch_related(
@@ -60,13 +62,13 @@ def article_list_get(request):
             } for article in sorted_list] if Article.objects.count() != 0 else []
             cache.set('articles', article_collection)
         else:
-            included_region_names = get_nearest_places_names_from_region(
-                request.user.region.id, max_distance=request.user.region_range)
+            included_region_names = request.user.region.neighborhoodregion_set.filter(
+                region_range=request.user.region_range).distinct().annotate(name=Concat(F('neighborhood__gu_name'), Value(' '), F('neighborhood__dong_name'))).values_list('name', flat=True)
             article_collection = list(
-                filter(lambda art: art.region in included_region_names, article_collection))
+                filter(lambda art: art['region'] in list(included_region_names), article_collection))
     else:
-        included_region_ids = get_nearest_places_ids_from_region(
-            request.user.region.id, max_distance=request.user.region_range)
+        included_region_ids = request.user.region.neighborhoodregion_set.filter(
+            region_range=request.user.region_range).values_list('neighborhood_id', flat=True)
         q = Q(author__region__id__in=included_region_ids)
         if query:
             q |= Q(title__icontains=query) | Q(content__icontains=query) | Q(
@@ -158,12 +160,13 @@ def article_list_post(request):
             "isForShare": article.is_for_share
         },
         "images": list(article.images.values('id', 'file_path')),
-        "createdAt": article.created_at,
+        "createdAt": article.created_at.strftime("%Y년 %m월 %d일 %H:%M"),
     }, status=201)
 
 
 @ensure_csrf_cookie
 @api_view(['GET', 'POST'])
+@login_required_401
 def article_list(request):
     """get article list or create an article"""
     if request.method == 'GET':

@@ -161,8 +161,8 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 							key={`#${img}`}
 							id="delete-image-icon"
 							src={URL.createObjectURL(img)}
-							height="150px"
-							width="150px"
+							height="200px"
+							width="200px"
 							alt="/api/images"
 						/>
 					</div>

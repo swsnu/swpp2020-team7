@@ -1,7 +1,11 @@
 #mypage {
     font-size: 130%;
+    #info {
+        height: 450px !important;
+    }
 
     #myinfo-header {
+        margin-left: 40px;
         display: flex;
         flex-direction: row;
         font-weight: bold;
@@ -14,8 +18,6 @@
     border: none;
     outline: none;
     text-align: right !important;
-    width: 15% !important;
-    width: 81% !important;
     padding: {
         top: 0 !important;
         bottom: 0 !important;
@@ -43,8 +45,13 @@
     }
 
     #edit-info-profile {
+<<<<<<< HEAD
         margin-top: 0.3%;
         margin-left: -3%;
+=======
+        margin-top: 30px;
+        margin-left: -50px;
+>>>>>>> a8ea753a1a3ec097d2fc93685f25b0cb915a28a0
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -81,7 +88,7 @@
     #edit-info-list {
         margin-top: 12px;
         margin-left: 30px;
-        width:100%;
+        width:350px;
     }
 
     #name-part, #date-of-birth-part, #email-part, #region-part, #password-part {

@@ -14,19 +14,20 @@ interface ArticleProps {
 const Article: React.FC<ArticleProps> = ({ article, onClick }) => {
 	const thumbnail: ArticleImage = article.images[0];
 	const foodCategory: Dictionary<string> = {
-		과일: 'fruit.png',
-		채소: 'vegetable.png',
-		고기: 'meat.png',
+		과일류: 'fruit.png',
+		채소류: 'vegetable.png',
+		고기류: 'meat.png',
 		'수산물/건해산': 'seafood.png',
 		'우유/유제품': 'milk.png',
 		'계란/알류': 'egg.png',
 		가공육: 'ham.png',
 		'두부/콩류': 'tofu.png',
-		'라면/면류': 'noodles.png',
+		'면/만두/떡류': 'noodles.png',
 		'즉석식품/통조림': 'can.png',
 		'소스/잼류': 'sauces.png',
 		'김치/장류': 'kimchi.png',
 		양념류: 'spices.png',
+		곡류: 'rice.png',
 	};
 	const path = `foodCategory/${foodCategory[article.item.category]}`;
 
@@ -43,7 +44,7 @@ const Article: React.FC<ArticleProps> = ({ article, onClick }) => {
 				disableTypography
 				title={article.item.name}
 			/>
-			<CardMedia id="article-image" image={thumbnail.path} />
+			<CardMedia id="article-image" image={thumbnail.file_path} />
 			<div id="article-card-content">
 				<CardContent id="article-title">{article.title}</CardContent>
 				<CardContent id="article-region">{article.region}</CardContent>

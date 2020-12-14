@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
  div#navigation {
-  width: 100%;
+  min-width: 1024px;
   height: 70px;
   background-color: #ffffff;
   display: flex;
@@ -42,7 +42,14 @@
 
   #right-navigation-buttons {
     display: flex;
-    margin-right: 5%;
+    margin-right: 6%;
+    gap: 10%;
+  }
+
+  #navigation-buttons {
+    display: flex;
+    margin-right: 10%;
+    gap: 3%;
   }
 
   #user-notice-button {
@@ -62,6 +69,7 @@
 
   #mypage-button {
     font-size: 100%;
+    min-width: 80px;
     color: #707070;
     border: none;
     outline: 0;

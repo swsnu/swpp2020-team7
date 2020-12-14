@@ -1,4 +1,4 @@
-import React, { useEffect, MouseEvent, useState } from 'react';
+import React, { useEffect, MouseEvent, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
 import Pagination from '@material-ui/lab/Pagination';
@@ -10,7 +10,6 @@ import { ArticleEntity, ArticleOptions } from '../../model/article';
 import Article from '../../components/Article/Article';
 import { getArticle, getArticleList } from '../../store/actions/index';
 import { AppState } from '../../store/store';
-
 import './ArticleList.scss';
 
 interface ArticleListProps {
@@ -23,71 +22,41 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	const dispatch = useDispatch();
 
 	const [page, setPage] = useState(1);
-	const [currentList, setCurrentList] = useState<ArticleEntity[]>([]);
+	const [currentList, setCurrentList] = useState<ArticleEntity[]>(articleList);
 	const [currentPage, setCurrentPage] = useState<ArticleEntity[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
-	const [optionsFilter, setOptionsFilter] = useState<ArticleOptions>({
-		isForSale: false,
-		isForExchange: false,
-		isForShare: false,
-	});
+	const [forSale, setForSale] = useState<boolean>(true);
+	const [forExchange, setForExchange] = useState<boolean>(true);
+	const [forShare, setForShare] = useState<boolean>(true);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [query, setQuery] = useState('');
-
-	useEffect(() => {
-		if (!articleList) {
-			setLoading(true);
-			dispatch(getArticleList(query, optionsFilter));
-		}
-	});
-
-	useEffect(() => {
-		setLoading(true);
-		setCurrentList(
-			optionsFilter.isForShare || optionsFilter.isForSale || optionsFilter.isForExchange
-				? articleList.filter(
-						(a) =>
-							(optionsFilter.isForShare && a.options.isForShare) ||
-							(optionsFilter.isForSale && a.options.isForSale) ||
-							(optionsFilter.isForExchange && a.options.isForExchange),
-				  )
-				: articleList,
-		);
-		setMaxPageIndex(Math.ceil(currentList.length / 9.0));
-		setCurrentPage(currentList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-		setLoading(false);
-	}, [
-		articleList,
-		optionsFilter.isForSale,
-		optionsFilter.isForExchange,
-		optionsFilter.isForShare,
-	]);
 
 	const onClickOptions = (target: string) => {
 		switch (target) {
 			case 'sale':
-				setOptionsFilter({ ...optionsFilter, isForSale: !optionsFilter.isForSale });
+				setForSale((state) => !state);
 				break;
 			case 'exchange':
-				setOptionsFilter({ ...optionsFilter, isForExchange: !optionsFilter.isForExchange });
+				setForExchange((state) => !state);
 				break;
 			case 'share':
-				setOptionsFilter({ ...optionsFilter, isForShare: !optionsFilter.isForShare });
+				setForShare((state) => !state);
 				break;
 			default:
 		}
+		setLoading(true);
 	};
-	const onClickSearch = (e: React.KeyboardEvent) => {
+
+	const onClickSearch = async (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter') {
 			setLoading(true);
-			dispatch(getArticleList(query));
 		}
 	};
 
 	const onChangePage = (e: React.ChangeEvent<unknown>, value: number): void => {
 		e.preventDefault();
 		setPage(value);
-		setCurrentPage(currentList.slice((value - 1) * 9, (value - 1) * 9 + 9));
+		setLoading(true);
 	};
 
 	const onClickCreateArticle = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -96,13 +65,41 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	};
 
 	const onClickArticle = (id: number) => async () => {
-		dispatch(getArticle(id));
+		await dispatch(getArticle(id));
 		history.push(`/articles/:${id}`);
 	};
+
+	const onLoadPage = useCallback(async () => {
+		if (loading) {
+			await dispatch(
+				getArticleList(query, {
+					isForExchange: forExchange,
+					isForSale: forSale,
+					isForShare: forShare,
+				}),
+			);
+			setCurrentList(
+				forShare || forSale || forExchange
+					? articleList.filter(
+							(a) =>
+								(forShare && a.options.isForShare) ||
+								(forSale && a.options.isForSale) ||
+								(forExchange && a.options.isForExchange),
+					  )
+					: articleList,
+			);
+			setCurrentPage(currentList.slice((page - 1) * 9, (page - 1) * 9 + 9));
+			setLoading(false);
+		}
+	}, [page, query, forSale, forExchange, forShare]);
 
 	const articles = currentPage.map((item) => (
 		<Article key={item.id} article={item} onClick={onClickArticle(item.id)} />
 	));
+
+	useEffect(() => {
+		onLoadPage();
+	}, [onLoadPage]);
 
 	return (
 		<div id="article-list">
@@ -117,16 +114,20 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 							<InputBase
 								id="article-search-input"
 								placeholder="찾고싶은 재료명을 검색해보세요!"
+								fullWidth
 								inputProps={{ 'aria-label': 'search' }}
-								onChange={(e) => setQuery(e.target.value)}
+								onChange={(e) => {
+									setQuery(e.target.value);
+									setLoading(true);
+								}}
 								onKeyDown={onClickSearch}
 							/>
-							<SearchIcon id="article-list-search-icon" />
+							<SearchIcon id="article-list-search-icon" onKeyDown={onClickSearch} />
 						</div>
 						<div id="article-list-options-filter">
 							<button
 								id="most-recent-filter"
-								className={optionsFilter.isForSale ? 'selected' : ''}
+								className={forSale ? 'selected' : ''}
 								type="button"
 								onClick={() => onClickOptions('sale')}
 							>
@@ -134,7 +135,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 							</button>
 							<button
 								id="most-popular-filter"
-								className={optionsFilter.isForExchange ? 'selected' : ''}
+								className={forExchange ? 'selected' : ''}
 								type="button"
 								onClick={() => onClickOptions('exchange')}
 							>
@@ -142,7 +143,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 							</button>
 							<button
 								id="most-recommended-filter"
-								className={optionsFilter.isForShare ? 'selected' : ''}
+								className={forShare ? 'selected' : ''}
 								type="button"
 								onClick={() => onClickOptions('share')}
 							>
@@ -162,19 +163,21 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 					</div>
 				</div>
 			</div>
-			{!loading && <div id="article-cards">{articles}</div>}
-			{loading && (
-				<div id="article-cards">
-					<CircularProgress color="inherit" />
-				</div>
-			)}
-			<Pagination
-				id="article-list-page"
-				page={page}
-				size="large"
-				count={maxPageIndex}
-				onChange={onChangePage}
-			/>
+			<div id={`article-cards-${loading}`}>
+				{loading ? <CircularProgress id="loading-bar" color="inherit" /> : <>{articles}</>}
+			</div>
+			{!loading &&
+				(articleList?.length ? (
+					<Pagination
+						id="article-list-page"
+						page={page}
+						size="large"
+						count={Math.ceil(maxPageIndex / 9.0)}
+						onChange={onChangePage}
+					/>
+				) : (
+					<div id="vacant-article"> 해당 조건의 게시글이 존재하지 않습니다!</div>
+				))}
 		</div>
 	);
 };

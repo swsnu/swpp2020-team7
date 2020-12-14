@@ -41,5 +41,11 @@ class MlTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # bad request method
+        response = self.client.get('/api/extract/')
+        self.assertEqual(response.status_code, 405)
+
         response = self.client.put('/api/extract/')
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.delete('/api/extract/')
         self.assertEqual(response.status_code, 405)

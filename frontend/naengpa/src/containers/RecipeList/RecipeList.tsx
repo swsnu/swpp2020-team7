@@ -24,20 +24,10 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const [page, setPage] = useState(1);
 	const [maxPageIndex, setMaxPageIndex] = useState(recipeState.lastPageIndex);
 	const [searchCategory, setSearchCategory] = useState('전체');
-	const [sortBy, setSortBy] = useState('created_at');
+	const [sortBy, setSortBy] = useState('ingredient');
 	const [loading, setLoading] = useState<boolean>(true);
 	const [query, setQuery] = useState('');
 	const dispatch = useDispatch();
-
-	useEffect(() => {
-		if (sortBy !== 'ingredient') {
-			toast.info(
-				'🦄 추천 버튼을 눌러서 오늘의 재료와 냉장고 속 재료로 추천된 레시피를 확인해 보세요!!!',
-			);
-		} else {
-			toast.info('🦄 오늘의 재료와 냉장고 속 재료로 추천된 레시피를 확인해 보세요!!!');
-		}
-	}, [sortBy]);
 
 	useEffect(() => {
 		if (!recipeState.recipeList) setLoading(true);
@@ -46,6 +36,12 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const onLoadPage = useCallback(async () => {
 		if (loading) {
 			await dispatch(getRecipeList(query, sortBy, searchCategory, page));
+			if (!recipeState.recipeList || !recipeState.recipeList.length) {
+				if (sortBy === 'ingredient') {
+					toast.info('🐬 냉장고 속 재료와 오늘의 재료로 추천된 레시피가 없습니다!');
+					setSortBy(() => 'created_at');
+				}
+			}
 			setMaxPageIndex(recipeState.lastPageIndex);
 			setLoading(false);
 		}
@@ -128,7 +124,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 				</div>
 				<div id="recipe-list-buttons">
 					<button
-						id="most-recent-filter"
+						id={`filter-button-${sortBy === 'created_at'}`}
 						type="button"
 						onClick={(e) => {
 							e.preventDefault();
@@ -140,7 +136,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 						최신
 					</button>
 					<button
-						id="most-popular-filter"
+						id={`filter-button-${sortBy === 'likes'}`}
 						type="button"
 						onClick={(e) => {
 							e.preventDefault();
@@ -152,7 +148,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 						인기
 					</button>
 					<button
-						id="most-recommended-filter"
+						id={`filter-button-${sortBy === 'ingredient'}`}
 						type="button"
 						onClick={(e) => {
 							e.preventDefault();
@@ -202,4 +198,4 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	);
 };
 
-export default RecipeList;
+export default React.memo(RecipeList);

@@ -1,12 +1,37 @@
 #prev-fridge {
   position: relative;
   top: 35vh;
-
 }
 
 #next-fridge {
   position: relative;
   top: 35vh;
+}
+
+#recommend-recipe-button {
+  border-radius: 25px;
+  background-color:#e3e3e3;
+  margin-left: 10%;
+  margin-bottom: 15px;
+  font-family: 'Jua', sans-serif;
+}
+
+#help-recommend-recipe {
+  position: absolute;
+  margin-top: 1%;
+  color: #ff8a3d;
+}
+
+#help-recommend-recipe-alert {
+  position: absolute;
+  max-width: 250px;
+  margin-top: 3%;
+  padding: 1%;
+  z-index: 1;
+  background-color: #ffffff;
+  border: solid 0.5px #707070; 
+  text-align: left;
+  line-height: 150%;
 }
 
 #fridge {

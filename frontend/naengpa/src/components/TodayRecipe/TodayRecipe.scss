@@ -10,7 +10,7 @@ div#today-recipe {
 
   div#today-recipe-list {
     display: grid;
-    grid-template-columns: 5fr 5fr;
+    grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
     font-weight: bold;
     justify-content: center;

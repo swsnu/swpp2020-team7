@@ -20,7 +20,6 @@ const MyFridge: React.FC<MyFridgeProps> = ({ history }) => {
 
 	useEffect(() => {
 		dispatch(getFoodCategoryList());
-		dispatch(getRecipeList('', 'created_at', '전체', 1));
 	}, []);
 
 	return (
@@ -34,7 +33,7 @@ const MyFridge: React.FC<MyFridgeProps> = ({ history }) => {
 					<Fridge history={history} />
 				</Grid>
 				<Grid id="fridge-right-part" item xs={12} sm={3}>
-					<TodayStar history={history} />
+					<TodayStar />
 					<TodayRecipe history={history} />
 				</Grid>
 				<Grid id="fridge-footer" item xs={12} sm={12}>

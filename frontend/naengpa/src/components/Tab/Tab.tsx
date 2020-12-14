@@ -10,8 +10,6 @@ interface TabProps {
 
 const Tab: React.FC<TabProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user.user);
-	console.log(window.location.pathname);
-	console.log(window.location.pathname === '/notifications');
 
 	return (
 		<div id="button-list">

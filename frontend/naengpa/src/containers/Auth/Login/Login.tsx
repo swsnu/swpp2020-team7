@@ -4,7 +4,13 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 
-import { getArticleList, getIngredientList, login } from '../../../store/actions/index';
+import {
+	getArticleList,
+	getIngredientList,
+	getTodayRecipeList,
+	getUserList,
+	login,
+} from '../../../store/actions/index';
 import './Login.scss';
 
 interface LoginProps {
@@ -18,7 +24,8 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 
 	useEffect(() => {
 		dispatch(getIngredientList());
-		dispatch(getArticleList());
+		dispatch(getTodayRecipeList());
+		dispatch(getUserList());
 	}, [dispatch]);
 
 	const onClickLogin = () => {

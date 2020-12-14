@@ -38,7 +38,7 @@ def recipe_list_get(request):
         ''' FOOD CATEGORY condition '''
         sorted_list = sorted_list.filter(
             food_category__name=food_category) if food_category != '전체' else sorted_list
-        sorted_list = sorted_list.order_by('-id').distinct('-id')
+        sorted_list = sorted_list.order_by('-id').distinct('id')
     else:
         ''' FOOD CATEGORY condition '''
         sorted_list = Recipe.objects.select_related(
@@ -177,7 +177,6 @@ def recipe_list(request):
 
 @ensure_csrf_cookie
 @api_view(['GET'])
-@login_required_401
 @transaction.atomic
 def today_recipe_list(request):
     """ get Today recipe list """

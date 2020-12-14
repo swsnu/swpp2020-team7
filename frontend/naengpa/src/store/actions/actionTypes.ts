@@ -8,6 +8,7 @@ export const GET_USER = 'GET_USER' as const;
 export const DELETE_USER = 'DELETE_USER' as const;
 export const EDIT_USER = 'EDIT_USER' as const;
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD' as const;
+export const GET_CHAT_MESSAGES = 'GET_CHAT_MESSAGES' as const;
 
 // CHATROOM related ACTIONS
 export const GET_CHATROOM_LIST = 'GET_CHATROOM_LIST' as const;

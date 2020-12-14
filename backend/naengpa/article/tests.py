@@ -39,10 +39,6 @@ class ArticleTestCase(TestCase):
         )
 
     def test_article_list(self):
-        # user is not defined
-        response = self.client.get('/api/articles/', follow=True)
-        self.assertEqual(response.status_code, 200)
-
         # with authorization
         self.client.login(username='test', password='test')
 
@@ -60,6 +56,9 @@ class ArticleTestCase(TestCase):
 
         # bad request method
         response = self.client.put('/api/articles/')
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.delete('/api/articles/')
         self.assertEqual(response.status_code, 405)
 
     def test_article(self):
@@ -80,4 +79,7 @@ class ArticleTestCase(TestCase):
 
         # bad request method
         response = self.client.post('/api/articles/1/')
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.put('/api/articles/1/')
         self.assertEqual(response.status_code, 405)
