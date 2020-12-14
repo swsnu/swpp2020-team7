@@ -73,7 +73,7 @@ function recipeReducer(
 		/* DELETE RECIPE */
 		case actionTypes.DELETE_RECIPE: {
 			recipeList = state.recipeList.filter((recipe) => {
-				return (recipe.id as number) !== action.target_id;
+				return (recipe.id as number) !== action.targetId;
 			});
 
 			return {
@@ -93,7 +93,7 @@ function recipeReducer(
 			recipeList = [];
 			if (state.recipeList.length) {
 				recipeList = state.recipeList.map((recipe) => {
-					if ((recipe.id as number) === action.target_id) {
+					if ((recipe.id as number) === action.targetId) {
 						recipe.userLike = action.info.userLike;
 						recipe.recipeLike = action.info.recipeLike;
 						return recipe;

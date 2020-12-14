@@ -61,15 +61,16 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 		const images = target.files as FileList;
 		// convert FileList iterable
 		const imageArray = Array.from(images);
-		imageArray.forEach((file) => {
-			const compressedImage = compressImage(file);
-			if (compressedImage) setImages((state) => [...state, compressedImage]);
+		imageArray.forEach(async (file) => {
+			await compressImage(file).then((result) => {
+				setImages((state) => [...state, result]);
+			});
 		});
 	};
 
 	/* CLICK EVENT - DELETE IMAGE */
-	const onClickDeleteImage = (target_id: number) => {
-		setImages(images.filter((_, i) => i !== target_id));
+	const onClickDeleteImage = (targetId: number) => {
+		setImages(images.filter((_, i) => i !== targetId));
 	};
 
 	const onClickOptions = (target: string) => {

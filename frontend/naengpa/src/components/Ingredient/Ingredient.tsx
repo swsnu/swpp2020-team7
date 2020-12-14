@@ -56,14 +56,14 @@ const Ingredient: React.FC<IngredientProps> = ({ ingredient }) => {
 	};
 	/* CLICK EVENT - DELETE IMAGE */
 	const onClickDeleteIngredient = () => {
-		const target_id: number = ingredient.id;
-		dispatch(deleteIngredientFromFridge(user!.id, target_id));
+		const targetId: number = ingredient.id;
+		dispatch(deleteIngredientFromFridge(user!.id, targetId));
 	};
 
 	const onClickToggleTodayIngredient = () => {
-		const target_id: number = ingredient.id;
+		const targetId: number = ingredient.id;
 		setIsTodayIngredient(!isTodayIngredient);
-		dispatch(toggleTodayIngredient(user!.id, target_id));
+		dispatch(toggleTodayIngredient(user!.id, targetId));
 	};
 
 	useEffect(() => {

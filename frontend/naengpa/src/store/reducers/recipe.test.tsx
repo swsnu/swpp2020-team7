@@ -114,7 +114,7 @@ describe('Recipe Reducer', () => {
 			{ ...RecipeState, recipeList: mockRecipeList },
 			{
 				type: actionTypes.TOGGLE_RECIPE,
-				target_id: 2,
+				targetId: 2,
 				info: {
 					recipeLike: 0,
 					userLike: 0,
@@ -130,7 +130,7 @@ describe('Recipe Reducer', () => {
 	it('should check if it can toggle recipe with no recipeList correctly', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.TOGGLE_RECIPE,
-			target_id: 2,
+			targetId: 2,
 			info: {
 				recipeLike: 0,
 				userLike: 0,
@@ -146,7 +146,7 @@ describe('Recipe Reducer', () => {
 			{ ...RecipeState, recipeList: mockRecipeList, lastPageIndex: 2 },
 			{
 				type: actionTypes.TOGGLE_RECIPE,
-				target_id: 3,
+				targetId: 3,
 				info: {
 					recipeLike: 1,
 					userLike: 1,
@@ -176,7 +176,7 @@ describe('Recipe Reducer', () => {
 			{ ...RecipeState, recipeList: mockRecipeList, lastPageIndex: 2 },
 			{
 				type: actionTypes.DELETE_RECIPE,
-				target_id: 3,
+				targetId: 3,
 			},
 		);
 		expect(newState).toEqual({
