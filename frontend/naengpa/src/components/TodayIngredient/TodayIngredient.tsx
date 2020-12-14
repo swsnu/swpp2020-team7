@@ -21,7 +21,7 @@ const TodayIngredient: React.FC = () => {
 
 	useEffect(() => {
 		dispatch(getFridge(user!.id));
-	}, [dispatch, user]);
+	}, [user]);
 
 	// onClickDeleteTodayIngredient();
 	const onClickDeleteTodayIngredient = (target_id: number) => {

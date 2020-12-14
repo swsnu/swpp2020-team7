@@ -3,7 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { History } from 'history';
-import { Box, IconButton, Grid } from '@material-ui/core';
+import { Box, IconButton, Grid, Button, Collapse } from '@material-ui/core';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import Alert from '@material-ui/lab/Alert';
 import Ingredient from '../../components/Ingredient/Ingredient';
 import { AppState } from '../../store/store';
 import { getFridge } from '../../store/actions/index';
@@ -20,11 +22,16 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 	const [page, setPage] = useState(1);
 	const [currentList, setCurrentList] = useState<IngredientEntity[]>([]);
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
+	const [alert, setAlert] = useState(false);
 
 	const onClickPage = (e: React.ChangeEvent<unknown>, value: number): void => {
 		e.preventDefault();
 		setPage(value);
 		setCurrentList(ingredientList.slice((value - 1) * 9, (value - 1) * 9 + 9));
+	};
+
+	const onClickRecommendRecipe = () => {
+		history.push('/api/recipes/');
 	};
 
 	const ingredients = currentList.map((ingredient: any) => {
@@ -42,6 +49,23 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 
 	return (
 		<div id="fridge-page">
+			<div style={{ display: 'flex' }}>
+				<HelpOutlineIcon
+					id="help-recommend-recipe"
+					onMouseOver={() => setAlert(true)}
+					onMouseLeave={() => setAlert(false)}
+					onFocus={() => setAlert(true)}
+				/>
+				<Collapse in={alert}>
+					<Alert id="help-recommend-recipe-alert" icon={false}>
+						오늘의 재료, 그리고 냉장고에 추가한 재료를 기반으로 레시피를 추천해드립니다!
+						버튼을 눌러서 레시피를 확인해 보세요!!
+					</Alert>
+				</Collapse>
+				<Button id="recommend-recipe-button" onClick={onClickRecommendRecipe}>
+					레시피 추천 받기
+				</Button>
+			</div>
 			<Grid container direction="row">
 				<Grid item>
 					<IconButton

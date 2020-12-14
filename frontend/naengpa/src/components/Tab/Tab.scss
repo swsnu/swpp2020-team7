@@ -5,16 +5,14 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
-
+    min-width: 1024px;
 
     #info {
         background-color: #ffffff;
         margin-top: 4em;
         margin-bottom: 200px;
-        min-width: 500px;
-        min-height: 400px;
         width: 600px;
-        padding: 5%;
+        padding: 15px;
         padding-top: 2%;
     }
 
@@ -25,14 +23,14 @@
     }
 
     button {
-        width: 60%;
-        padding: 6%;
+        width: 100px;
+        padding: 15px;
         right: 0;
     }
 
     #button-list {
         margin-left: 0px;
-        margin-right: 100px;
+        margin-right: 60px;
         margin-top: 4em;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
         font-weight: bold;
@@ -50,6 +48,8 @@
         min-width: 310px;
         width: 100%;
         font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        color: #707070;
         font-size: 20px;
         font-variant-position: left;
         background-color: #ffffff;

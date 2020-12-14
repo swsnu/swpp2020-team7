@@ -283,7 +283,7 @@ describe('User Reducer', () => {
 		);
 		expect(newState).toEqual({
 			...userState,
-			chatRoomList: [mockChatRoom],
+			chatRoomList: [...mockChatRoomList, mockChatRoom],
 			chatRoom: mockChatRoom,
 		});
 	});
