@@ -45,7 +45,7 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 		dispatch(getFridge(user!.id));
 		setMaxPageIndex(Math.ceil(ingredientList.length / 9.0));
 		setCurrentList(ingredientList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-	}, [user, ingredientList.length, ingredientList]);
+	}, [user, ingredientList.length, dispatch]);
 
 	return (
 		<div id="fridge-page">
@@ -63,7 +63,7 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 					</Alert>
 				</Collapse>
 				<Button id="recommend-recipe-button" onClick={onClickRecommendRecipe}>
-					레시피 추천 받기
+					냉장고 파먹기!
 				</Button>
 			</div>
 			<Grid container direction="row">

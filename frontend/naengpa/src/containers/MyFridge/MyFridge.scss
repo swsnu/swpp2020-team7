@@ -10,15 +10,16 @@ div#my-fridge {
     #fridge-left-part {
         display: grid;
         gap: 5%;
-        grid-template-rows: 4fr 6fr;
+        //grid-template-rows: 4fr 6fr;
     }
 
     #fridge-right-part {
         display: grid;
-        margin-bottom: 10%;
+        margin-bottom: 15%;
         //grid-template-rows: 2.5fr 7.5fr;
         border: solid 2px #e3e3e3;
         background-color: #fffefe;
+        //min-width: 500px;
     }
 }
 

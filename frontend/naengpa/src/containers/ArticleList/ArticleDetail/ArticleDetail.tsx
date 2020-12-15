@@ -9,10 +9,15 @@ import Alert from '@material-ui/lab/Alert';
 import EmailIcon from '@material-ui/icons/Email';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import { createChatRoom, deleteArticle, editArticle, getArticle } from '../../../store/actions/index';
+import { Skeleton } from '@material-ui/lab';
+import {
+	createChatRoom,
+	deleteArticle,
+	editArticle,
+	getArticle,
+} from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import { ArticleEntity, ArticleImage } from '../../../model/article';
-import { Skeleton } from '@material-ui/lab';
 
 interface ArticleDetailProps {
 	history: History;
@@ -127,8 +132,12 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 											: '/icons/account_circle.png'
 									}
 									alt="/icons/account_circle.png"
-								/>)
-								: <Skeleton><Avatar /></Skeleton>}
+								/>
+							) : (
+								<Skeleton>
+									<Avatar />
+								</Skeleton>
+							)}
 						</Grid>
 						<Grid item id="profile-box">
 							<Typography gutterBottom id="profile-title" variant="h5">

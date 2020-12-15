@@ -10,10 +10,13 @@
 
 #recommend-recipe-button {
   border-radius: 25px;
-  background-color:#e3e3e3;
+  background-color:#fff3eb;
   margin-left: 10%;
   margin-bottom: 15px;
   font-family: 'Jua', sans-serif;
+  font-size: 2vh;
+  color: #ff8a3d;
+  border: solid 2px #ff8a3d;
 }
 
 #help-recommend-recipe {
@@ -37,6 +40,7 @@
 #fridge {
   background: url('/icons/fridge.png') top center / contain no-repeat;
   height: 800px;
+  //min-width: 400px;
   flex-direction: row;
   padding: 20%;
   padding-left: 0;

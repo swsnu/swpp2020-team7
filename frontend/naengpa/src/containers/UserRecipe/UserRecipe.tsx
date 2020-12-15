@@ -24,7 +24,7 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 
 	const recipes = recipeList?.map((item: any) => {
 		return (
-			<Recipe key={item.id} recipe={item} attribute="recipe-list-child" history={history} />
+			<Recipe key={item.id} recipe={item} attribute="todays-recipe-child" history={history} />
 		);
 	});
 
@@ -59,7 +59,7 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 					style={{
 						display: 'flex',
 						flexDirection: 'row',
-						justifyContent: 'center',
+						// justifyContent: 'center',
 						overflow: 'scroll',
 					}}
 				>

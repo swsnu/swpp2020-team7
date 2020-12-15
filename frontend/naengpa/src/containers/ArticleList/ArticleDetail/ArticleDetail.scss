@@ -105,5 +105,9 @@
 
     #article-section3 {
         margin: 2% 5% 2% 5%;
+        line-height: 180%;
+        .MuiTypography-h6 {
+            font-family: HelveticaNeue, sans-serif;
+        }
     }
 }
