@@ -314,7 +314,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						<Skeleton />
 					)}
 				</Typography>
-				<div id="articles">{article}</div>
+				{recipe ? <div id="articles">{article}</div> : <Skeleton />}
 			</div>
 			<Divider variant="middle" />
 			<div id="recipe-section5">
