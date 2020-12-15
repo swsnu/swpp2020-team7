@@ -39,10 +39,10 @@
 
 #fridge {
   background: url('/icons/fridge.png') top center / contain no-repeat;
-  height: 800px;
-  //min-width: 400px;
+  height: 900px;
+  min-width: 300px;
+  max-width: 400px;
   flex-direction: row;
-  padding: 20%;
   padding-left: 0;
   align-items: center;
 

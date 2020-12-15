@@ -52,12 +52,7 @@ const TodayIngredient: React.FC = () => {
 				flexWrap: 'wrap',
 				justifyContent: 'start',
 				overflow: 'hidden',
-				// backgroundColor: theme.palette.background.paper,
 			},
-			// gridList: {
-			// 	width: 250,
-			// 	height: 180,
-			// },
 		}),
 	);
 
