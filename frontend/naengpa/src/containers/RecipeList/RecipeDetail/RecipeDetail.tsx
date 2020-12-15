@@ -129,7 +129,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				: `${notInFridgeJoined}를`;
 	}
 
-	const article = relatedArticles.map((item: ArticleEntity) => {
+	const article = relatedArticles?.map((item: ArticleEntity) => {
 		return <Article key={item.id} article={item} history={history} />;
 	});
 
