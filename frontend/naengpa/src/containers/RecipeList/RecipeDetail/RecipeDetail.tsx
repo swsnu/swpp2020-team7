@@ -80,6 +80,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		dispatch(toggleRecipe(recipe?.id as number));
 	};
 
+	// con st
+
 	const [alert, setAlert] = useState(false);
 
 	let cookTime = `${recipe?.cookTime}M`;
@@ -131,7 +133,14 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		return (
 			<div id="ingredient-button-box" key={`${item.name}`}>
 				{userIngredientNames.includes(item.name) ? (
-					<Button id="ingredient-yes-button">{item.name}</Button>
+					<Button
+						id="ingredient-yes-button"
+						onMouseOver={() => setAlert(true)}
+						onMouseLeave={() => setAlert(false)}
+						onFocus={() => setAlert(true)}
+					>
+						{item.name}
+					</Button>
 				) : (
 					<Button id="ingredient-no-button">{item.name}</Button>
 				)}
@@ -307,7 +316,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						<Skeleton />
 					)}
 				</Typography>
-				{article}
+				<div id="articles">{article}</div>
 			</div>
 			<Divider variant="middle" />
 			<div id="recipe-section5">

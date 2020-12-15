@@ -176,13 +176,13 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 							{user!.id === article?.authorId && (
 								<>
 									<IconButton
-										id="recipe-setting-button"
+										id="article-setting-button"
 										onClick={() => setAlert(!alert)}
 									>
 										<MoreVertIcon />
 									</IconButton>
 									<Collapse in={alert}>
-										<Alert id="recipe-setting-alert" icon={false}>
+										<Alert id="article-setting-alert" icon={false}>
 											<Button
 												id="recipe-edit"
 												onClick={() => onClickEditArticle()}
