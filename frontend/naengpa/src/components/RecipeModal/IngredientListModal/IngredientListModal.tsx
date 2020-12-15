@@ -100,7 +100,8 @@ const IngredientListModal: React.FC<IngredientListModalProps> = ({
 					<div id="modal-header">
 						<div id="modal-title">재료</div>
 						<div id="modal-subtitle">
-							필요한 재료를 선택하고 수량을 수정하거나 추가해주세요. 똑같은 재료는 추가할 수 없습니다.
+							필요한 재료를 선택하고 수량을 수정하거나 추가해주세요. 똑같은 재료는
+							추가할 수 없습니다.
 						</div>
 					</div>
 					<CancelIcon id="close-modal-button" onClick={onClickCloseModal} />
