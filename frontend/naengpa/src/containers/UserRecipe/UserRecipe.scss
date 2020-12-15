@@ -1,20 +1,24 @@
 
-#my-page {
     #info {
         min-width: 600px !important;
         display: flex !important;
-        flex-direction: column !important;
-        overflow: scroll;
+        flex-direction: column;
+        overflow-x: visible !important;
 
         #my-recipe-title {
             font-family: "Arial Rounded MT Bold", Arial, Helvetica, sans-serif;
             font-weight: bold;
-            color: #707070;
-            font-size: 20px;    
-            margin: 50px;    
+            color: #000000;
+            margin-top: 21px;
+            margin-left: 40px;
+            margin-bottom: 20px;
         }
-        #user-recipes {
-            min-width: 500px !important;
+
+        div#user-recipes {
+            margin-top: 20px;
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 20px;
+            align-self: flex-start;
         }
     }
-}
