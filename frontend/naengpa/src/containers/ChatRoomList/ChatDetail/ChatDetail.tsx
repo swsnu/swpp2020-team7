@@ -17,6 +17,8 @@ interface ChatDetailProps {
 const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user);
+	const currentPath = window.location.pathname.split('/');
+	const chatRoomId = parseInt(currentPath[currentPath.length - 1], 10);
 	const [content, setContent] = useState('');
 
 	const chatMessage =
@@ -59,7 +61,8 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		if (e.key === 'Enter' && content !== '') {
 			e.preventDefault();
 			e.stopPropagation();
-			dispatch(sendChat(user.chatRoom!.id, content));
+			if(typeof chatRoomId === 'number')
+				dispatch(sendChat(chatRoomId, content));
 			setContent('');
 		}
 	};
@@ -67,15 +70,15 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const onClickSendMessage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		if (content !== '') {
 			e.preventDefault();
-			dispatch(sendChat(user.chatRoom!.id, content));
+			dispatch(sendChat(chatRoomId, content));
 			setContent('');
 		}
 	};
 
 	useEffect(() => {
-		if (user && !user.chatRoom && window.sessionStorage.getItem('chatRoom'))
+		if (user)
 			setTimeout(
-				dispatch(getChatRoom(JSON.parse(window.sessionStorage.getItem('chatRoom')!))),
+				dispatch(getChatRoom(chatRoomId)),
 				1000,
 			);
 	}, [user.chatRoom]);
@@ -111,6 +114,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 						placeholder="내용을 입력해 주세요."
 						inputProps={{ 'aria-label': 'search' }}
 						value={content}
+						fullWidth
 						onChange={(e) => setContent(e.target.value)}
 						onKeyPress={(e) => onEnterSendMessage(e)}
 					/>
