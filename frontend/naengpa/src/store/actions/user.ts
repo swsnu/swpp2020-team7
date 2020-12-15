@@ -9,7 +9,7 @@ import {
 	EditUserInputDTO,
 	ChangePasswordInputDTO,
 } from '../../model/user';
-import { ChatEntity, MessageEntity } from '../../model/chat';
+import { ChatEntity } from '../../model/chat';
 import { getCurrentTimeGreet } from '../../utils/time';
 
 /* SAVE TEMP USER */
@@ -166,10 +166,8 @@ export const getChatRoomList_ = (chatRoomList: ChatEntity[]) => ({
 export const getChatRoomList = () => {
 	return async (dispatch: any) => {
 		try {
-			window.sessionStorage.removeItem('chatRoomList');
 			const response = await axios.get(`/api/chatrooms/`);
 			dispatch(getChatRoomList_(response.data));
-			window.sessionStorage.setItem('chatRoomList', JSON.stringify(response.data));
 		} catch (e) {
 			toast.error('🦄 채팅방 정보를 얻지 못했습니다! 다시 시도해주세요.');
 		}
@@ -181,12 +179,11 @@ export const getChatRoom_ = (chatRoom: ChatEntity) => ({
 	type: actionTypes.GET_CHATROOM,
 	chatRoom,
 });
-export const getChatRoom = (chatRoom: ChatEntity) => {
+export const getChatRoom = (id: number) => {
 	return async (dispatch: any) => {
 		try {
-			const response = await axios.get(`/api/chatrooms/${chatRoom.id}/`);
+			const response = await axios.get(`/api/chatrooms/${id}/`);
 			dispatch(getChatRoom_(response.data));
-			window.sessionStorage.setItem('chatRoom', JSON.stringify(response.data));
 		} catch (e) {
 			dispatch(push('/chatrooms'));
 			toast.error('🦄 채팅방에 입장하지 못했습니다! 다시 시도해주세요.');
@@ -203,11 +200,8 @@ export const createChatRoom = (id: string) => {
 	return async (dispatch: any) => {
 		try {
 			const response = await axios.post(`/api/chatrooms/`, { friend_id: id });
-			window.sessionStorage.removeItem('chatRoomList');
-			window.sessionStorage.removeItem('chatRoom');
 			dispatch(createChatRoom_(response.data));
 			dispatch(push(`/chatrooms/${response.data.id}`));
-			window.sessionStorage.setItem('chatRoom', response.data);
 		} catch (e) {
 			console.log(e);
 			toast.error('🦄 채팅방을 만들지 못했습니다! 다시 시도해주세요.');
@@ -220,7 +214,7 @@ export const sendChat_ = (chatRoom: ChatEntity) => ({
 	type: actionTypes.SEND_CHAT,
 	chatRoom,
 });
-export const sendChat = (chatRoom_id: string, chat: string) => {
+export const sendChat = (chatRoom_id: number, chat: string) => {
 	return async (dispatch: any) => {
 		try {
 			const response = await axios.put(`/api/chatrooms/${chatRoom_id}/`, { content: chat });
@@ -232,12 +226,12 @@ export const sendChat = (chatRoom_id: string, chat: string) => {
 };
 
 /* Delete ChatRoom */
-export const deleteChatRoom_ = (id: string) => ({
+export const deleteChatRoom_ = (id: number) => ({
 	type: actionTypes.DELETE_CHATROOM,
 	id,
 });
 
-export const deleteChatRoom = (chatRoom_id: string) => {
+export const deleteChatRoom = (chatRoom_id: number) => {
 	return async (dispatch: any) => {
 		try {
 			await axios.delete(`/api/chatrooms/${chatRoom_id}/`);
