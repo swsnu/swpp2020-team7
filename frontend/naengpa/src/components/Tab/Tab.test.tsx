@@ -49,6 +49,7 @@ describe('Tab', () => {
 	});
 
 	it('myinfo-tab should be clicked correctly', () => {
+		// window.location.pathname === '/@test/info';
 		const component = mount(tab);
 		const ingredientContentsWrapper = component.find('button#myinfo-tab');
 		ingredientContentsWrapper.simulate('click');
