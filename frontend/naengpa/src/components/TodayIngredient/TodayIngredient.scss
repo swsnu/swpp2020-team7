@@ -3,28 +3,49 @@
 
 div#today-ingredient {
     background: url('/icons/memo.png') top center / contain no-repeat;
-    width: 300px !important;
-    height: 250px !important;
+    width: 370px !important;
+    height: 370px !important;
     margin-top: 0;
     padding-top: 0;
 
     #today-ingredient-container {
       #today-ingredient-header {
         font-family: 'Jua', sans-serif;
-        font-size: 3vh;
+        font-size: 20px;
+        margin-top: 95px;
+        margin-left: 40px;
+        padding-bottom: 3%;
       }
 
       #today-ingredient-contents {
-        min-height: 6vh;
-        padding-left: 25%;
+        //min-height: 6vh;
+        //padding-left: 25%;
+        margin-left: 35px;
         font-family: 'Nanum Pen Script', cursive;
+        flex-direction: row;
+        flex-wrap: wrap;
+        display: flex;
+        overflow: scroll;
+        overflow-x: hidden;
+        max-height: 170px;
+        width: 370px;
+        &::-webkit-scrollbar { 
+          display: none !important; // 윈도우 크롬 등
+        }
+        //width: 300px;
+        //height: 150px;
+        padding-left: 25%;
+        //margin-left: 40px;
         
         #today-ingredient-content-each {
-          font-size: 3vh;
-          padding-bottom: 0;
-          margin-bottom: 0;
+          //font-size: 3vh;
+          //padding-bottom: 0;
+          //margin-bottom: 0;
+          //width: 
+          font-size: 20px;
           #today-ingredient-delete {
-            font-size: 3vh;
+            font-size: 20px;
+            padding: 0;
             font-family: 'Nanum Pen Script', cursive;
           }
         }
@@ -37,7 +58,7 @@ div#today-ingredient {
     #help-today-ingredient-alert {
       position: absolute;
       max-width: 250px;
-      padding-left: 30%;
+      //padding-left: 30%;
       padding: 1%;
       z-index: 1;
       background-color: #ffffff;

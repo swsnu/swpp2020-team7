@@ -3,13 +3,15 @@
 div#ingredient {
   width: 30%;
   height: auto;
-  margin-left: 3%;
+  //margin-left: 3%;
   img#ingredient-image {
-    width: 90%;
-    height: 90%;
+    width: 95%;
+    height: 95%;
     align-self: bottom;
   }
-  padding-bottom: 28%;
+  padding-top: 22%;
+  padding-bottom: 3%;
+  padding-right: 1.5%;
   #ingredient-image-box {
     border: none;
     background: none;
