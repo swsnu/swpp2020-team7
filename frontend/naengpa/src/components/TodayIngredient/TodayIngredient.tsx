@@ -70,7 +70,7 @@ const TodayIngredient: React.FC = () => {
 				</Grid>
 				<Grid item xs className={classes.root}>
 					{/* <Box id="today-ingredient-contents">{todays_ingredient_contents}</Box> */}
-					<GridList id="today-ingredient-contents" cellHeight={35} cols={1}>
+					<GridList id="today-ingredient-contents" cellHeight={40}>
 						{todays_ingredient_contents}
 					</GridList>
 					<div>

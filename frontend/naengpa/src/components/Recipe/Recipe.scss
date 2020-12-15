@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   height: auto;
-  width:30%;
+  width: 30%;
   margin: 1%;
 
   #recipe-image {
@@ -46,20 +46,20 @@
   display: flex;
   width: 100%;
   flex-direction: column;
-  min-width: 110px;
-  font-size: 4%;
+  min-width: 200px;
+  //font-size: 4%;
 
   #recipe-image {
     width: 100%;
     height: 0;
-    padding-top: 70%;  
+    padding-top: 150px;  
   }
 
   #recipe-card-header {
     padding: {
-      top: 5%;
-      left: 5%;
-      bottom: 5%;
+      top: 10px;
+      left: 7px;
+      bottom: 10px;
     }
     .MuiCardHeader-title {
       font-family: 'Jua', sans-serif;
@@ -67,16 +67,18 @@
   }
   
   #recipe-card-footer {
-    margin: -5%;
-    margin-right: 2%;
+    margin: -10px;
+    margin-right: 5px;
   }
 
   #recipe-food-name {
     font-weight: normal;
     font-family: 'Jua', sans-serif;
+    font-size: 20px;
   }
   #recipe-food-category {
-    font-size: smaller;
+    font-size: 10px;
+    font-weight: normal;
     font-family: 'Jua', sans-serif;
   }
 }
