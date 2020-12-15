@@ -39,7 +39,6 @@ interface ExtractMLFeatureProps {
 // this component is for the "EDIT RECIPE" and "EXTRACT INGREDIENT"
 const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const createdRecipe = useSelector((state: AppState) => state.recipe.createdRecipe);
-	const foodCategoryList = useSelector((state: AppState) => state.foodCategory.foodCategoryList);
 	const [loading, setLoading] = useState(false);
 	const [foodName, setFoodName] = useState('');
 	const [content, setContent] = useState('');

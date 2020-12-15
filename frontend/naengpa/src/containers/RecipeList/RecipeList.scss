@@ -43,6 +43,7 @@
   }
 
   #recipe-cards {
+    min-height: 400px;
     display: flex;
     flex-flow: wrap;
     justify-content: space-between;
