@@ -32,7 +32,7 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 	const ingredientList = useSelector((state: AppState) => state.ingredient.ingredientNames);
 	const [newIngredient, setNewIngredient] = useState('');
 	const [newIngredientQuantity, setNewIngredientQuantity] = useState('');
-
+	const [defaultValue, setDefaultValue] = useState({id: 0, name: '', category: '전체'});
 	const duplicateIngredient = (ingredient: IngredientEntity) => {
 		const duplicateList = modifiedIngredients?.filter((item) => {
 			return item.name.includes(ingredient.name);
@@ -40,12 +40,6 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 		if (duplicateList?.length !== 0) return true;
 		return false;
 	};
-
-	const [filteredIngredients, setFilteredIngredients] = useState(
-		ingredientList?.filter((item) => {
-			return !duplicateIngredient(item);
-		}),
-	);
 
 	useEffect(() => {
 		if (!ingredientList || !ingredientList.length) {
@@ -62,24 +56,23 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 				checked: true,
 			},
 		]);
-		setNewIngredient('');
 		setNewIngredientQuantity('');
-		setFilteredIngredients((state) =>
-			ingredientList?.filter((newIngredient) => {
-				return !duplicateIngredient(newIngredient);
-			}),
-		);
+		setNewIngredient('');
+		setDefaultValue({id:0, name:'', category:''});
 	};
 
 	const onChangeIngredient = (e: React.ChangeEvent<{}>, ingredient: IngredientEntity | null) => {
 		e.preventDefault();
 		if (ingredient) {
+			setDefaultValue(ingredient);
 			setNewIngredient(ingredient.name);
 		}
 	};
 
 	const defaultIngredients = {
-		options: filteredIngredients && filteredIngredients.length ? filteredIngredients : [],
+		options: ingredientList?.filter((item) => {
+			return !duplicateIngredient(item);
+		}),
 		getOptionLabel: (option: IngredientEntity) => option.name,
 	};
 
@@ -115,11 +108,15 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 				<Autocomplete
 					{...defaultIngredients}
 					id="ingredient-search-input"
-					onChange={(event, value) => onChangeIngredient(event, value)}
+					value={defaultValue}
+					onChange={(event, value) => {
+						onChangeIngredient(event, value);
+					}}
 					renderInput={(params) => (
 						<TextField
 							required
 							autoFocus
+							value={newIngredient}
 							placeholder="재료: "
 							{...params}
 							margin="normal"

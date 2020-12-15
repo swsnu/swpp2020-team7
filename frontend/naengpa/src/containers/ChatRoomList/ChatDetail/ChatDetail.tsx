@@ -22,7 +22,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const chatMessage =
 		user && user.chatRoom ? (
 			user.chatRoom!.messages!.map((message, idx) => {
-				if (message.author === user?.user?.username) {
+				if (message.author === user?.user?.name) {
 					return (
 						<Typography
 							key={`${message.createdAt}-${message.author}-${idx + 1}`}

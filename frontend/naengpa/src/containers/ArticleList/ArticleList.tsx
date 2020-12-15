@@ -165,11 +165,6 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 					}}
 					hasMore={articleList?.length < lastPageIndex}
 					loader={loaderTemplate()}
-					endMessage={
-						<p style={{ textAlign: 'center' }}>
-							<h4>더 이상 게시물이 없어요!</h4>
-						</p>
-					}
 				>
 					{articles}
 				</InfiniteScroll>
