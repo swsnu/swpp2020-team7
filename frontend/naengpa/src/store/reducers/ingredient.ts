@@ -18,10 +18,7 @@ function ingredient_reducer(
 	action: IngredientAction | DefaultAction = { type: 'default' },
 ): IngredientState {
 	if (action.type === actionTypes.GET_INGREDIENT_LIST) {
-		return { ...state, ingredientList: action.payload };
-	}
-	if (action.type === actionTypes.GET_INGREDIENT_NAMES) {
-		return { ...state, ingredientNames: action.payload };
+		return { ...state, ingredientList: action.ingredientList, ingredientNames: action.ingredientNames};
 	}
 	return state;
 }

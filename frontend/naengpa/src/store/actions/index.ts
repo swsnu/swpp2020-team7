@@ -38,7 +38,7 @@ export {
 } from './recipe';
 
 /* Ingredient actions */
-export { getIngredientList, getIngredientNames } from './ingredient';
+export { getIngredientList } from './ingredient';
 
 /* FoodCategory actions */
 export { getFoodCategoryList } from './foodCategory';
