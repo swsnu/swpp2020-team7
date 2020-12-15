@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -15,6 +17,7 @@ import { RecipeIngredient } from '../../../model/recipe';
 import { getIngredientNames } from '../../../store/actions/index';
 import { IngredientEntity } from '../../../model/ingredient';
 import { AppState } from '../../../store/store';
+import './NewIngredient.scss';
 
 interface NewIngredientProps {
 	modifiedIngredients: RecipeIngredient[];
@@ -29,6 +32,20 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 	const ingredientList = useSelector((state: AppState) => state.ingredient.ingredientNames);
 	const [newIngredient, setNewIngredient] = useState('');
 	const [newIngredientQuantity, setNewIngredientQuantity] = useState('');
+
+	const duplicateIngredient = (ingredient: IngredientEntity) => {
+		const duplicateList = modifiedIngredients?.filter((item) => {
+			return item.name.includes(ingredient.name);
+		});
+		if (duplicateList?.length !== 0) return true;
+		return false;
+	};
+
+	const [filteredIngredients, setFilteredIngredients] = useState(
+		ingredientList?.filter((item) => {
+			return !duplicateIngredient(item);
+		}),
+	);
 
 	useEffect(() => {
 		if (!ingredientList || !ingredientList.length) {
@@ -47,6 +64,11 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 		]);
 		setNewIngredient('');
 		setNewIngredientQuantity('');
+		setFilteredIngredients((state) =>
+			ingredientList?.filter((newIngredient) => {
+				return !duplicateIngredient(newIngredient);
+			}),
+		);
 	};
 
 	const onChangeIngredient = (e: React.ChangeEvent<{}>, ingredient: IngredientEntity | null) => {
@@ -56,20 +78,8 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 		}
 	};
 
-	const duplicateIngredient = (ingredient: IngredientEntity) => {
-		const duplicateList = modifiedIngredients?.filter((item) => {
-			return item.name.includes(ingredient.name);
-		});
-		if (duplicateList?.length !== 0) return true;
-		return false;
-	};
-
-	const filteredIngredient = ingredientList?.filter((item) => {
-		return !duplicateIngredient(item);
-	});
-
 	const defaultIngredients = {
-		options: filteredIngredient && filteredIngredient.length ? filteredIngredient : [],
+		options: filteredIngredients && filteredIngredients.length ? filteredIngredients : [],
 		getOptionLabel: (option: IngredientEntity) => option.name,
 	};
 
@@ -87,12 +97,16 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 						borderBottom: 'none',
 					},
 				},
+				root: {
+					margin: '-13px',
+					display: 'flex',
+				},
 			},
 		},
 	});
 
 	return (
-		<div id="ingredient-element">
+		<div id="new-ingredient-element">
 			<FormControlLabel
 				control={<Checkbox checkedIcon={<CheckBoxOutlineBlankIcon id="checkbox" />} />}
 				label=""
@@ -114,7 +128,7 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 				/>
 			</MuiThemeProvider>
 			{newIngredient && (
-				<Input
+				<input
 					id="ingredient-quantity"
 					placeholder="수량: "
 					value={newIngredientQuantity}

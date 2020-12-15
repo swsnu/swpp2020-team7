@@ -66,8 +66,9 @@ const IngredientListModal: React.FC<IngredientListModalProps> = ({
 					}
 					key={`${item.name}-`}
 					label={item.name}
+					id="ingredient-name"
 				/>
-				<Input
+				<input
 					id="ingredient-quantity"
 					placeholder="수량: "
 					value={item.quantity as string}
