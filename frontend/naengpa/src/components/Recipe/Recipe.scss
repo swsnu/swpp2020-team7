@@ -47,7 +47,7 @@
   flex-direction: column;
   //min-width: 210px;
   max-height: 310px;
-  width: 160px;
+  width: 170px;
 
   #recipe-image {
     width: 100%;
@@ -75,10 +75,10 @@
   #recipe-food-name {
     font-weight: normal;
     font-family: 'Jua', sans-serif;
-    font-size: 15px;
+    font-size: 14px !important;
   }
   #recipe-food-category {
-    font-size: 12px !important;
+    font-size: 11px !important;
     font-weight: normal;
     font-family: 'Jua', sans-serif;
   }

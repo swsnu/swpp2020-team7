@@ -126,6 +126,11 @@
       font-family: 'Jua', sans-serif;
       padding-bottom: 1%;
     }
+
+    #articles {
+      display: flex;
+      flex-direction: row;
+    }
   }
 
   #recipe-section5 {

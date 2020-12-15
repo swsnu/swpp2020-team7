@@ -31,7 +31,7 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 	};
 
 	const onClickRecommendRecipe = () => {
-		history.push('/api/recipes/');
+		history.push('/recipes/');
 	};
 
 	const ingredients = currentList.map((ingredient: any) => {
@@ -49,23 +49,6 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 
 	return (
 		<div id="fridge-page">
-			<div style={{ display: 'flex' }}>
-				<HelpOutlineIcon
-					id="help-recommend-recipe"
-					onMouseOver={() => setAlert(true)}
-					onMouseLeave={() => setAlert(false)}
-					onFocus={() => setAlert(true)}
-				/>
-				<Collapse in={alert}>
-					<Alert id="help-recommend-recipe-alert" icon={false}>
-						오늘의 재료, 그리고 냉장고에 추가한 재료를 기반으로 레시피를 추천해드립니다!
-						버튼을 눌러서 레시피를 확인해 보세요!!
-					</Alert>
-				</Collapse>
-				<Button id="recommend-recipe-button" onClick={onClickRecommendRecipe}>
-					냉장고 파먹기!
-				</Button>
-			</div>
 			<Grid container direction="row">
 				<Grid item>
 					<IconButton
@@ -91,6 +74,24 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 					</IconButton>
 				</Grid>
 			</Grid>
+			<div id="fridge-help" style={{ display: 'flex' }}>
+				<HelpOutlineIcon
+					id="help-recommend-recipe"
+					onMouseOver={() => setAlert(true)}
+					onMouseLeave={() => setAlert(false)}
+					onFocus={() => setAlert(true)}
+				/>
+				<Collapse in={alert}>
+					<Alert id="help-recommend-recipe-alert" icon={false}>
+						🧸냉장고 속 재료를 클릭하여 오늘의 재료에 추가해보세요! 오늘의 재료, 그리고
+						냉장고에 추가한 재료를 기반으로 레시피를 추천해드립니다! 버튼을 눌러서
+						레시피를 확인해 보세요!!🧁
+					</Alert>
+				</Collapse>
+				<Button id="recommend-recipe-button" onClick={onClickRecommendRecipe}>
+					냉장고 파먹기!
+				</Button>
+			</div>
 		</div>
 	);
 };
