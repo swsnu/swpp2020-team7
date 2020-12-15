@@ -82,11 +82,9 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 			const checkedIngredients = createdRecipe?.ingredients?.map((item: any) => {
 				return { ...item, checked: true, quantity: '' };
 			});
-			console.log(checkedIngredients, "뭐지????ㅠㅠㅠ");
 			setIngredients(() => checkedIngredients as RecipeIngredient[]);
 			setModifiedIngredients(() => checkedIngredients as RecipeIngredient[]);
 			setLoading(() => false);
-			console.log(ingredients, "뭐야....");
 		}
 	}, [createdRecipe, dispatch]);
 
