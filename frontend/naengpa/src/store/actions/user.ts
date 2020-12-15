@@ -185,7 +185,6 @@ export const getChatRoom = (chatRoom: ChatEntity) => {
 	return async (dispatch: any) => {
 		try {
 			const response = await axios.get(`/api/chatrooms/${chatRoom.id}/`);
-
 			dispatch(getChatRoom_(response.data));
 			window.sessionStorage.setItem('chatRoom', JSON.stringify(response.data));
 		} catch (e) {
@@ -232,28 +231,6 @@ export const sendChat = (chatRoom_id: string, chat: string) => {
 	};
 };
 
-/* get Chat Messages */
-export const getMessages_ = (messages: MessageEntity[]) => ({
-	type: actionTypes.GET_CHAT_MESSAGES,
-	messages,
-});
-
-export const getMessages = (index: number) => {
-	return async (dispatch: any) => {
-		try {
-			const chatRoom = JSON.parse(window.localStorage.getItem('chatroom') as string);
-			if (chatRoom) {
-				const response = await axios.put(`/api/chatrooms/${chatRoom?.id}/`, {
-					page: index,
-				});
-				dispatch(getMessages_(response.data));
-			}
-		} catch (e) {
-			toast.error('🦄 받지 못했습니다! 다시 시도해주세요.');
-		}
-	};
-};
-
 /* Delete ChatRoom */
 export const deleteChatRoom_ = (id: string) => ({
 	type: actionTypes.DELETE_CHATROOM,
@@ -290,7 +267,6 @@ export type UserAction =
 	| ReturnType<typeof changePassword_>
 	| ReturnType<typeof getChatRoomList_>
 	| ReturnType<typeof getChatRoom_>
-	| ReturnType<typeof getMessages_>
 	| ReturnType<typeof createChatRoom_>
 	| ReturnType<typeof sendChat_>
 	| ReturnType<typeof deleteChatRoom_>;

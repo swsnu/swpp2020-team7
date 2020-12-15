@@ -4,19 +4,23 @@ div#my-fridge {
     gap: 3%;
     margin: {
         top: 30px;
-        left: 3%;
+        //left: 3%;
     }
+    justify-content: center;
 
     #fridge-left-part {
-        display: grid;
-        gap: 5%;
-        grid-template-rows: 4fr 6fr;
+        display: flex;
+        flex-direction: column;
+        gap: 0%;
+        min-width: 350px;
     }
 
     #fridge-right-part {
-        display: grid;
-        margin-bottom: 10%;
-        //grid-template-rows: 2.5fr 7.5fr;
+        display: flex;
+        padding: 20px;
+        flex-direction: column;
+        min-width: 350px;
+        max-height: 640px;
         border: solid 2px #e3e3e3;
         background-color: #fffefe;
     }

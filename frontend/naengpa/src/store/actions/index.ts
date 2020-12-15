@@ -12,7 +12,6 @@ export {
 	getChatRoom,
 	createChatRoom,
 	sendChat,
-	getMessages,
 	deleteChatRoom, // should be deleted
 } from './user';
 export { getRegionList } from './region';
@@ -39,7 +38,7 @@ export {
 } from './recipe';
 
 /* Ingredient actions */
-export { getIngredientList } from './ingredient';
+export { getIngredientList, getIngredientNames } from './ingredient';
 
 /* FoodCategory actions */
 export { getFoodCategoryList } from './foodCategory';

@@ -72,6 +72,7 @@
             weight: bold;
           }
           letter-spacing: normal;
+          margin-top: 7px;
           //text-align: left;
           border-radius: 25px;
           //align-self: right;
@@ -105,5 +106,9 @@
 
     #article-section3 {
         margin: 2% 5% 2% 5%;
+        line-height: 180%;
+        .MuiTypography-h6 {
+            font-family: HelveticaNeue, sans-serif;
+        }
     }
 }

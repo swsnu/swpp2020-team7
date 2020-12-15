@@ -68,7 +68,7 @@ const Ingredient: React.FC<IngredientProps> = ({ ingredient }) => {
 
 	useEffect(() => {
 		setIsTodayIngredient(ingredient.isTodayIngredient);
-	}, [ingredient.isTodayIngredient]);
+	}, [ingredient, dispatch]);
 
 	return (
 		<div id="ingredient">

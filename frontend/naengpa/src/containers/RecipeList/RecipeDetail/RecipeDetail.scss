@@ -113,6 +113,9 @@
     }
     #recipe-content {
         line-height: 180%;
+        .MuiTypography-h6 {
+          font-family: HelveticaNeue, sans-serif;
+        }
     }
   }
 
@@ -122,6 +125,11 @@
     #recipe-section4-header {
       font-family: 'Jua', sans-serif;
       padding-bottom: 1%;
+    }
+
+    #articles {
+      display: flex;
+      flex-direction: row;
     }
   }
 

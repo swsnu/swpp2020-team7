@@ -10,20 +10,17 @@ export type InitialState = {
 	userList: UserEntity[];
 	chatRoomList: ChatEntity[];
 	chatRoom: ChatEntity | null;
-	messages: MessageEntity[];
 };
 
 const UserState: InitialState = {
 	user: JSON.parse(window.localStorage.getItem('userInfo')!),
 	saved_user: JSON.parse(window.localStorage.getItem('savedUser')!),
 	userList: [],
-	chatRoomList: JSON.parse(window.sessionStorage.getItem('chatRoomList')!),
-	chatRoom: JSON.parse(window.sessionStorage.getItem('chatRoom')!),
-	messages: [],
+	chatRoomList: [],
+	chatRoom: null,
 };
 
 let filteredChatRoomList = null;
-
 function userReducer(
 	state: InitialState = UserState,
 	action: UserAction | DefaultAction = { type: 'default' },
@@ -76,9 +73,6 @@ function userReducer(
 		/* GET CHATROOM */
 		case actionTypes.GET_CHATROOM:
 			return { ...state, chatRoom: action.chatRoom };
-
-		case actionTypes.GET_CHAT_MESSAGES:
-			return { ...state, messages: [...state.messages, ...action.messages] };
 
 		/* GET CHATROOM LIST */
 		case actionTypes.GET_CHATROOM_LIST:

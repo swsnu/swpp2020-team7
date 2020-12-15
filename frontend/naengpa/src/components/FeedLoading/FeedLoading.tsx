@@ -8,9 +8,15 @@ import Skeleton from '@material-ui/lab/Skeleton';
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		cardList: {
-			minWidth: 300,
-			height: 330,
-			margin: theme.spacing(2),
+			minWidth: 260,
+			width: '30%',
+			margin: theme.spacing(1),
+			minHeight: 400,
+			display: 'flex',
+			flexDirection: 'column',
+			flexFlow: 'wrap',
+			justifyContent: 'space-between',
+			padding: 0,
 		},
 		card: {
 			minWidth: 200,
@@ -18,7 +24,8 @@ const useStyles = makeStyles((theme: Theme) =>
 			margin: theme.spacing(2),
 		},
 		media: {
-			height: 160,
+			width: '100%',
+			height: 300,
 		},
 	}),
 );

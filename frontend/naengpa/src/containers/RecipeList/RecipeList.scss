@@ -11,6 +11,7 @@
     -webkit-backdrop-filter: blur(30px);
     backdrop-filter: blur(30px);
     background-color: #ff8a3d;
+    margin-left: 20px;
 
     font: {
       size: 15px;
@@ -42,6 +43,7 @@
   }
 
   #recipe-cards {
+    min-height: 400px;
     display: flex;
     flex-flow: wrap;
     justify-content: space-between;
@@ -82,8 +84,6 @@
   flex-direction: row;
   margin: {
     top: 50px;
-    left: 80px;
-    right: 100px;
   }
 }
 

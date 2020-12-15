@@ -5,39 +5,18 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import CreateIcon from '@material-ui/icons/Create';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Skeleton } from '@material-ui/lab';
-import { Card, CardContent, CardHeader, createStyles, makeStyles, Theme } from '@material-ui/core';
 import { ArticleEntity } from '../../model/article';
 import Article from '../../components/Article/Article';
 import { getArticleList, getPageArticleList } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 import './ArticleList.scss';
+import FeedLoading from '../../components/FeedLoading/FeedLoading';
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		card: {
-			minWidth: 260,
-			width: '30%',
-			margin: theme.spacing(1),
-			minHeight: 400,
-			display: 'flex',
-			flexDirection: 'column',
-			flexFlow: 'wrap',
-			justifyContent: 'space-between',
-			padding: 0,
-		},
-		media: {
-			width: '100%',
-			height: 300,
-		},
-	}),
-);
 interface ArticleListProps {
 	history: History;
 }
 
 const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
-	const classes = useStyles();
 	const user = useSelector((state: AppState) => state.user.user);
 	const articleList = useSelector((state: AppState) => state.article.articleList);
 	const lastPageIndex = useSelector((state: AppState) => state.article.lastPageIndex);
@@ -110,22 +89,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		} else {
 			totalSkeletons = 6;
 		}
-		return Array.from(Array(totalSkeletons)).map((_) => (
-			<Card className={classes.card}>
-				<CardHeader
-					avatar={<Skeleton animation="wave" variant="circle" width={40} height={40} />}
-					title={<Skeleton animation="wave" height={25} width="40%" />}
-				/>
-				<Skeleton animation="wave" variant="rect" className={classes.media} />
-				<CardContent>
-					<>
-						<Skeleton animation="wave" height={30} style={{ marginBottom: 6 }} />
-						<Skeleton animation="wave" height={15} style={{ marginBottom: 6 }} />
-						<Skeleton animation="wave" height={15} width="80%" />
-					</>
-				</CardContent>
-			</Card>
-		));
+		return Array.from(Array(totalSkeletons)).map((_) => <FeedLoading attribute="cardList" />);
 	};
 
 	const articles = articleList?.map((item: ArticleEntity) => (
@@ -201,11 +165,6 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 					}}
 					hasMore={articleList?.length < lastPageIndex}
 					loader={loaderTemplate()}
-					endMessage={
-						<p style={{ textAlign: 'center' }}>
-							<h4>더 이상 게시물이 없어요!</h4>
-						</p>
-					}
 				>
 					{articles}
 				</InfiniteScroll>

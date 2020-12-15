@@ -3,6 +3,7 @@
 #container {
   margin: 0% 10% 10% 15%;
   width: 70%;
+  min-width: 800px;
   height: 80%;
   border: solid 1px #dcdcdc;
   align-items: center;
@@ -30,6 +31,13 @@
 
   #food-name {
     font-size: 120%;
+  }
+
+  #food-name-content {
+    border: none;
+    outline: 0 !important;
+    font-size: 17px;
+    margin-left: 10px;
   }
 
   #cook-time-box {
@@ -116,6 +124,7 @@
     display: flex;
     justify-content: flex-end;
     margin-top:15%;
+   
     #confirm-alert-button {
       font: {
         size: 90%;
@@ -298,6 +307,7 @@
 
 #recipe-content {
   font-size: 18px;
+  margin: 20px;
 }
 
 #recipe-row-box {
@@ -374,11 +384,15 @@
   font-size: 100%;
   background-color: #ffffff;
   border: solid 1px #707070; 
-  width: 25%;
+  width: 280px;
 
   #food-category-list {
     padding: 2%;
-    
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
     #food-category-button{
       font: {
         weight: bold;
@@ -387,7 +401,8 @@
       text-align: left;
       border-radius: 25px;
       align-self: right;
-      color: #ffffff;     
+      color: #ffffff;   
+      margin: 1px;  
     }
     .food-category-false {
       background-color:  #b4b4b4; 
@@ -411,22 +426,33 @@
   font-size: 100%;
   background-color: #ffffff;
   border: solid 1px #707070; 
-  width: 25%;
+  width: 400px;
 
   #ingredient-list {
     padding: 2%;
+    display: flex;
+    flex-direction: column;
 
     #checkbox {
       color: #ff8a3d; 
     }
     #ingredient-element {
+      width: 400px;
+      margin-left: 4px;
       font: {
         weight: bold;
       }
       #ingredient-name {
         left: 0;
         margin-left: -15px;
-        width:40%;
+        width: 135px;
+      }
+      #ingredient-quantity {
+        border: none;
+        margin-left: -15px;
+        width: 150px !important;
+        outline: 0 !important;
+        font-size: 16px;
       }
       left: 0;
       font-weight: bold;
@@ -440,7 +466,7 @@
 }
 
 #ingredient-list {
-  padding: 2%;
+  padding: 15px;
   flex-wrap: wrap;
   display: flex;
   flex-direction: row;

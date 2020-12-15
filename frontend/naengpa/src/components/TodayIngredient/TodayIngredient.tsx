@@ -30,18 +30,18 @@ const TodayIngredient: React.FC = () => {
 
 	const todays_ingredient_contents = todays_ingredient.map((ingredient) => {
 		return (
-			<GridListTile key={ingredient.id} id="today-ingredient-content-each" cols={1}>
-				<div>
-					{ingredient.name}
-					<Button
-						key={ingredient.id}
-						id="today-ingredient-delete"
-						onClick={() => onClickDeleteTodayIngredient(ingredient.id)}
-					>
-						X
-					</Button>
-				</div>
-			</GridListTile>
+			// <GridListTile key={ingredient.id} id="today-ingredient-content-each" cols={1}>
+			<div key={ingredient.id} id="today-ingredient-content-each">
+				{ingredient.name}
+				<Button
+					key={ingredient.id}
+					id="today-ingredient-delete"
+					onClick={() => onClickDeleteTodayIngredient(ingredient.id)}
+				>
+					X
+				</Button>
+			</div>
+			// </GridListTile>
 		);
 	});
 
@@ -51,13 +51,8 @@ const TodayIngredient: React.FC = () => {
 				display: 'flex',
 				flexWrap: 'wrap',
 				justifyContent: 'start',
-				overflow: 'hidden',
-				// backgroundColor: theme.palette.background.paper,
+				// overflow: 'hidden',
 			},
-			// gridList: {
-			// 	width: 250,
-			// 	height: 180,
-			// },
 		}),
 	);
 
@@ -69,11 +64,11 @@ const TodayIngredient: React.FC = () => {
 					-오늘의 재료-
 				</Grid>
 				<Grid item xs className={classes.root}>
-					{/* <Box id="today-ingredient-contents">{todays_ingredient_contents}</Box> */}
-					<GridList id="today-ingredient-contents" cellHeight={35} cols={1}>
+					<Box id="today-ingredient-contents">{todays_ingredient_contents}</Box>
+					{/* <GridList id="today-ingredient-contents" cellHeight={30}>
 						{todays_ingredient_contents}
-					</GridList>
-					<div>
+					</GridList> */}
+					{/* <div>
 						<HelpOutlineIcon
 							id="help-today-ingredient"
 							onMouseOver={() => setAlert(true)}
@@ -86,7 +81,7 @@ const TodayIngredient: React.FC = () => {
 								기반으로 레시피를 추천해드립니다.
 							</Alert>
 						</Collapse>
-					</div>
+					</div> */}
 				</Grid>
 			</Grid>
 		</div>

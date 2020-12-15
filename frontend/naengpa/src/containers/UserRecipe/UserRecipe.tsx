@@ -24,12 +24,12 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 
 	const recipes = recipeList?.map((item: any) => {
 		return (
-			<Recipe key={item.id} recipe={item} attribute="recipe-list-child" history={history} />
+			<Recipe key={item.id} recipe={item} attribute="todays-recipe-child" history={history} />
 		);
 	});
 
 	const loadingFeeds = () => {
-		const feedCount = 2;
+		const feedCount = 3;
 		const feeds = [];
 		for (let i = 0; i < feedCount; i += 1) {
 			feeds.push(<FeedLoading attribute="card" />);
@@ -52,15 +52,15 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 		<div id="mypage">
 			<Tab history={history} />
 			<div id="info">
-				<div id="my-recipe-title" style={{ fontWeight: 'bold', margin: '30px' }}>
+				<div id="my-recipe-title" style={{ fontWeight: 'bold' }}>
 					나의 레시피
 				</div>
 				<div
 					style={{
 						display: 'flex',
 						flexDirection: 'row',
-						justifyContent: 'center',
-						overflow: 'scroll',
+						// justifyContent: 'center',
+						overflowX: 'scroll',
 					}}
 				>
 					{loading
@@ -76,7 +76,7 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 									/>
 								</ListItem>
 						  )}
-					{!loading && recipes}
+					<div id="user-recipes">{!loading && recipes}</div>
 				</div>
 			</div>
 		</div>

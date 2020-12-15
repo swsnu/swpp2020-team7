@@ -19,7 +19,9 @@ const Tab: React.FC<TabProps> = ({ history }) => {
 					type="button"
 					style={{
 						backgroundColor:
-							window.location.pathname === `/@${user!.username}/info`
+							window.location.pathname === `/@${user!.username}/info` ||
+							window.location.pathname === `/@${user!.username}/edit` ||
+							window.location.pathname === `/@${user!.username}/password`
 								? 'lightgrey'
 								: 'white',
 					}}
