@@ -40,10 +40,7 @@ export const TOGGLE_RECIPE = 'TOGGLE_RECIPE' as const;
 
 // INGREDIENT related ACTIONS
 export const GET_INGREDIENT_LIST = 'GET_INGREDIENT_LIST' as const;
-export const GET_INGREDIENT = 'GET_INGREDIENT' as const;
-export const ADD_INGREDIENT = 'ADD_INGREDIENT' as const;
-export const DELETE_INGREDIENT = 'DELETE_INGREDIENT' as const;
-export const EDIT_INGREDIENT = 'EDIT_INGREDIENT' as const;
+export const GET_INGREDIENT_NAMES = 'GET_INGREDIENT_NAMES' as const;
 
 // FOODCATEGORY related ACTIONS
 export const GET_FOOD_CATEGORY_LIST = 'GET_FOOD_CATEGORY_LIST' as const;

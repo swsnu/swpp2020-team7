@@ -44,10 +44,9 @@
   border: solid 1px #b6b6b6;
   background-color: #ffffff;
   display: flex;
-  width: 100%;
   flex-direction: column;
-  min-width: 200px;
-  //font-size: 4%;
+  min-width: 210px;
+  max-height: 310px;
 
   #recipe-image {
     width: 100%;

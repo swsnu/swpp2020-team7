@@ -27,6 +27,7 @@ import Loading from '../../../components/Loading/Loading';
 import { BaseRecipeEntity } from '../../../model/recipe';
 import { extractMLFeatureFromRecipe } from '../../../store/actions/index';
 import compressImage from '../../../utils/compressImage';
+import CreateRecipeAlert from '../../../components/RecipeModal/CreateRecipeAlert/CreateRecipeAlert';
 
 interface CreateRecipeProps {
 	history: History;
@@ -70,7 +71,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 	};
 
 	useEffect(() => {
-		toast.info('🐬 레시피를 등록해 보세요!');
 		if (sessionStorage.getItem('createdRecipe')) {
 			const storedRecipe = JSON.parse(sessionStorage.getItem('createdRecipe')!)!;
 			setFoodName(storedRecipe.foodName);
@@ -147,33 +147,11 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 			{loading && <Loading />}
 			{!loading && (
 				<>
-					<Collapse className="collapse" in={alert}>
-						<Alert id="create-recipe-alert" icon={false}>
-							<div id="naengpa-logo-box">
-								<div id="naengpa-logo">
-									<LocalDiningIcon id="naengpa-logo-image" />
-									냉파
-								</div>
-								<CancelIcon
-									id="close-alert-button"
-									onClick={() => {
-										setAlert(false);
-									}}
-								/>
-							</div>
-							<div id="alert-content">{alertContent}</div>
-							<div id="confirm-alert-button-box">
-								<Button
-									id="confirm-alert-button"
-									onClick={() => {
-										setAlert(false);
-									}}
-								>
-									확인
-								</Button>
-							</div>
-						</Alert>
-					</Collapse>
+					<CreateRecipeAlert
+						alert={alert}
+						alertContent={alertContent}
+						onClickOffAlert={() => setAlert(false)}
+					/>
 					<div id="create-recipe-mention">
 						**요리 카테고리, 필수재료는 재료등록 단계에서 자동으로 추출됩니다.
 					</div>

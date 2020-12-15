@@ -8,18 +8,20 @@ div#my-fridge {
     }
 
     #fridge-left-part {
-        display: grid;
+        display: flex;
+        flex-direction: column;
         gap: 5%;
-        //grid-template-rows: 4fr 6fr;
+        min-width: 350px;
     }
 
     #fridge-right-part {
-        display: grid;
-        margin-bottom: 15%;
-        //grid-template-rows: 2.5fr 7.5fr;
+        display: flex;
+        padding: 20px;
+        flex-direction: column;
+        min-width: 350px;
+        max-height: 1000px;
         border: solid 2px #e3e3e3;
         background-color: #fffefe;
-        //min-width: 500px;
     }
 }
 

@@ -30,11 +30,12 @@ def get_chatroom_list(request):
             "id": chatroom.id,
             "messages": [{
                 "content": message.content,
-                "author": message.author.username,
+                "author": message.author.name,
                 "createdAt": message.created_string,
             } for message in chatroom.message_set.select_related('author')],
             "lastChat": chatroom.message_set.all().last().content if chatroom.message_set.count() != 0 else LETS_CHAT_MESSAGE,
-            "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.username,
+            "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.name,
+            "memberImage": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.profile_image,
             "updatedAt": chatroom.updated_string,
             "chatCount": ChatMember.objects.get(Q(chatroom_id=chatroom.id) & Q(member_id=user.id)).notice,
         } for chatroom in chatrooms]
@@ -75,11 +76,12 @@ def make_chatroom(request):
         "id": chatroom.id,
         "messages": [{
             "content": message.content,
-            "author": message.author.username,
+            "author": message.author.name,
             "createdAt": message.created_string,
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
-        "member": friend.username,
+        "member": friend.name,
+        "memberImage": friend.profile_image,
         "updatedAt":  chatroom.updated_string,
         "chatCount": 0,
     }, safe=False, status=201)
@@ -110,16 +112,19 @@ def get_chatroom(request, id):
     except (ChatRoom.DoesNotExist, Message.DoesNotExist):
         return HttpResponseBadRequest()
 
+    friend = ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(
+        member_id=user.id).first().member
     chatroom_collection = {
         "id": chatroom.id,
         "messages": [{
             "content": message.content,
-            "author": message.author.username,
+            "author": message.author.name,
             "createdAt": message.created_string,
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
-        "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.username,
-        "updatedAt":  chatroom.updated_string,
+        "member": friend.name,
+        "memberImage": friend.profile_image,
+        "updatedAt": chatroom.updated_string,
         "chatCount": 0,
     }
     return JsonResponse(chatroom_collection, safe=False)
@@ -151,11 +156,12 @@ def send_message(request, id):
         "id": target_chatroom.id,
         "messages": [{
             "content": message.content,
-            "author": message.author.username,
+            "author": message.author.name,
             "createdAt": message.created_string,
         } for message in messages],
         "lastChat": messages.last().content if messages.count() != 0 else LETS_CHAT_MESSAGE,
-        "member": chat_member.member.username,
+        "member": chat_member.member.name,
+        "memberImage": chat_member.member.profile_image,
         "updatedAt": target_chatroom.updated_string,
         "chatCount": 0,
     }, status=201, safe=False)

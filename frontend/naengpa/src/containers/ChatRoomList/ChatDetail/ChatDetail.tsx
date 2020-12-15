@@ -4,11 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import './ChatDetail.scss';
 import { Button, Divider, Typography } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { sendChat, getMessages } from '../../../store/actions/index';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
+import { Skeleton } from '@material-ui/lab';
+import { sendChat, getChatRoom } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import Tab from '../../../components/Tab/Tab';
-import { MessageEntity } from '../../../model/chat';
 
 interface ChatDetailProps {
 	history: History;
@@ -16,9 +17,7 @@ interface ChatDetailProps {
 const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user);
-	const [chatMessageList, setChatMessageList] = useState<MessageEntity[]>([]);
 	const [content, setContent] = useState('');
-	const [index, setIndex] = useState(1);
 
 	const chatMessage =
 		user && user.chatRoom ? (
@@ -46,6 +45,11 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 			<></>
 		);
 
+	const loaderTemplate = Array.from(Array(8)).map((idx) => {
+		if (idx % 2) return <Skeleton className="skeleton" />;
+		return <Skeleton className="skeleton2" />;
+	});
+
 	const onClickGoBackToChatRoomList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 		history.push('/chatrooms');
@@ -69,14 +73,17 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	};
 
 	useEffect(() => {
-		if (user?.chatRoom && user!.chatRoom?.messages)
-			setChatMessageList((state) => [...state, ...user.messages]);
+		if (user && !user.chatRoom && window.sessionStorage.getItem('chatRoom'))
+			setTimeout(
+				dispatch(getChatRoom(JSON.parse(window.sessionStorage.getItem('chatRoom')!))),
+				1000,
+			);
 	}, [user.chatRoom]);
 
 	return (
 		<div id="mypage">
 			<Tab history={history} />
-			<div id="info">
+			<div id="chatroom-info">
 				<Typography id="chatroom-header" gutterBottom variant="h3">
 					<Button
 						id="go-to-chatroom-list-button"
@@ -85,32 +92,19 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 						돌아가기
 					</Button>
 					<div id="member-info-box">
-						<div id="chat-member-image" />
-						<div id="chat-member-username">{user.chatRoom?.member}</div>{' '}
+						{!user?.chatRoom?.memberImage && <AccountCircleIcon id="profile-picture" />}
+						{user?.chatRoom?.memberImage && (
+							<Avatar
+								id="profile-picture"
+								src={user?.chatRoom?.memberImage as string}
+							/>
+						)}
+						<div id="chat-member-username">{user.chatRoom?.member}</div>
 					</div>
-					<p id="space">자리채움</p>
+					<p id="space">채팅정보</p>
 				</Typography>
 				<Divider />
-				<div
-					id="scrollabelDiv"
-					style={{
-						height: 400,
-						overflow: 'auto',
-						display: 'flex',
-						flexDirection: 'column-reverse',
-					}}
-				>
-					<InfiniteScroll
-						dataLength={chatMessageList?.length}
-						style={{ display: 'flex', flexDirection: 'column-reverse' }}
-						next={() => dispatch(getMessages(index))}
-						inverse
-						hasMore={false}
-						loader={<h4>Loading...</h4>}
-					>
-						<div id="chat-message-box">{chatMessage}</div>
-					</InfiniteScroll>
-				</div>
+				<div id="chat-message-box">{user?.chatRoom ? chatMessage : loaderTemplate}</div>
 				<div id="chat-input-box">
 					<InputBase
 						id="chat-input-field"

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IngredientCategoryCollection } from '../../model/ingredient';
+import { IngredientCategoryCollection, IngredientEntity } from '../../model/ingredient';
 import * as actionTypes from './actionTypes';
 
 export const getIngredientList_ = (ingredients: IngredientCategoryCollection) => ({
@@ -17,4 +17,23 @@ export const getIngredientList = () => {
 	};
 };
 
-export type IngredientAction = ReturnType<typeof getIngredientList_>;
+export const getIngredientNames_ = (ingredients: IngredientEntity[]) => ({
+	type: actionTypes.GET_INGREDIENT_NAMES,
+	payload: ingredients,
+});
+
+export const getIngredientNames = () => {
+	return async (dispatch: any) => {
+		if (!window.localStorage.getItem('ingredientNames')) {
+			const response = await axios.get('/api/ingredients/name');
+			const ingredientList: IngredientEntity[] = response.data;
+			dispatch(getIngredientNames_(ingredientList));
+			console.log(ingredientList, '잘 오 ');
+			window.localStorage.setItem('ingredientNames', JSON.stringify(ingredientList));
+		}
+	};
+};
+
+export type IngredientAction =
+	| ReturnType<typeof getIngredientList_>
+	| ReturnType<typeof getIngredientNames_>;
