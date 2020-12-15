@@ -5,6 +5,7 @@ import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 import { BaseRecipeEntity, RecipeEntity, RecipeLike } from '../../model/recipe';
 import { getCommentList_ } from './comment';
+import { ArticleEntity } from '../../model/article';
 
 export const getRecipeList_ = (recipeList: RecipeEntity[], lastPageIndex: number) => ({
 	type: actionTypes.GET_RECIPE_LIST,
@@ -57,9 +58,10 @@ export const getTodayRecipeList = () => {
 	};
 };
 
-export const getRecipe_ = (recipe: RecipeEntity) => ({
+export const getRecipe_ = (recipe: RecipeEntity, relatedArticles: ArticleEntity[]) => ({
 	type: actionTypes.GET_RECIPE,
 	recipe,
+	relatedArticles,
 });
 
 /* GET RECIPE */
@@ -67,7 +69,8 @@ export const getRecipe = (id: number) => {
 	return async (dispatch: any) => {
 		try {
 			const response = await axios.get(`/api/recipes/${id}/`);
-			dispatch(getRecipe_(response.data));
+			const { recipe, relatedArticles } = response.data;
+			dispatch(getRecipe_(recipe, relatedArticles));
 			dispatch(getCommentList_(response.data.comments));
 		} catch {
 			dispatch(push('/recipes'));

@@ -4,11 +4,13 @@ import * as actionTypes from '../actions/actionTypes';
 import { RecipeAction } from '../actions/recipe';
 import { RecipeEntity } from '../../model/recipe';
 import { DefaultAction } from '../actions/index';
+import { ArticleEntity } from '../../model/article';
 
 export type InitialState = {
 	recipeList: RecipeEntity[];
 	todayRecipeList: RecipeEntity[];
 	recipe: RecipeEntity | null;
+	relatedArticles: ArticleEntity[];
 	lastPageIndex: number;
 	createdRecipe: RecipeEntity | null;
 	userRecipes: RecipeEntity[];
@@ -18,6 +20,7 @@ const RecipeState: InitialState = {
 	recipeList: JSON.parse(window.sessionStorage.getItem('recipeList')!),
 	todayRecipeList: [],
 	recipe: null,
+	relatedArticles: [],
 	lastPageIndex: JSON.parse(window.sessionStorage.getItem('lastPageIndex')!),
 	createdRecipe: JSON.parse(window.sessionStorage.getItem('createdRecipe')!),
 	userRecipes: JSON.parse(window.sessionStorage.getItem('userRecipes')!),
@@ -44,7 +47,7 @@ function recipeReducer(
 
 		/* GET RECIPE */
 		case actionTypes.GET_RECIPE:
-			return { ...state, recipe: action.recipe };
+			return { ...state, recipe: action.recipe, relatedArticles: action.relatedArticles };
 
 		/* GET USERT RECIPE */
 		case actionTypes.GET_USER_RECIPES:

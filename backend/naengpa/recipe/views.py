@@ -13,6 +13,8 @@ from utils.aws_utils import upload_images
 from utils.auth import login_required_401
 from food_category.models import FoodCategory
 from ingredient.models import Ingredient
+from article.models import Article
+from article.views import _get_cache_or_set_article_by_id
 from user.models import FridgeIngredient
 from .models import Recipe, Image, RecipeIngredient, RecipeLike
 
@@ -261,7 +263,29 @@ def recipe_info(request, id):
                 } for item in recipe.comments.all()]
             }
             cache.set('recipe:{}'.format(id), recipe_response)
-        return JsonResponse(data=recipe_response, safe=False)
+
+        user_ingredient_ids = set(FridgeIngredient.objects.filter(
+            fridge=request.user.fridge).values_list('ingredient__id', flat=True))
+        recipe_ingredient_ids = set(RecipeIngredient.objects.filter(
+            recipe_id=id).values_list('ingredient__id', flat=True))
+        missing_ingredient_ids = recipe_ingredient_ids - user_ingredient_ids
+
+        included_region_ids = request.user.region.neighborhoodregion_set.filter(
+            region_range=request.user.region_range).values_list('neighborhood_id', flat=True)
+
+        related_article_ids = Article.objects.exclude(
+            done=True
+        ).filter(
+            Q(author__region__id__in=included_region_ids) &
+            Q(item__id__in=missing_ingredient_ids)
+        ).values_list('id', flat=True)
+
+        related_articles = [_get_cache_or_set_article_by_id(
+            aid) for aid in related_article_ids]
+        return JsonResponse(data={
+            "recipe": recipe_response,
+            "relatedArticles": related_articles
+        }, safe=False)
     elif request.method == 'DELETE':
         Recipe.objects.filter(id=id).delete()
         return HttpResponse(status=204)
