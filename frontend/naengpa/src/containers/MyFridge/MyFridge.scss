@@ -1,7 +1,7 @@
 div#my-fridge {
     min-width: 1024px;
     text-align: center;
-    gap: 3%;
+    gap: 1%;
     margin: {
         top: 30px;
         //left: 3%;
@@ -19,7 +19,7 @@ div#my-fridge {
         display: flex;
         padding: 20px;
         flex-direction: column;
-        min-width: 350px;
+        min-width: 300px;
         max-height: 640px;
         border: solid 2px #e3e3e3;
         background-color: #fffefe;

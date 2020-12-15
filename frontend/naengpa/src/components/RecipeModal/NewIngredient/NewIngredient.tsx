@@ -6,7 +6,6 @@ import {
 	Checkbox,
 	createMuiTheme,
 	FormControlLabel,
-	Input,
 	MuiThemeProvider,
 	TextField,
 } from '@material-ui/core';
@@ -14,7 +13,7 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { RecipeIngredient } from '../../../model/recipe';
-import { getIngredientNames } from '../../../store/actions/index';
+import { getIngredientList } from '../../../store/actions/index';
 import { IngredientEntity } from '../../../model/ingredient';
 import { AppState } from '../../../store/store';
 import './NewIngredient.scss';
@@ -32,7 +31,7 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 	const ingredientList = useSelector((state: AppState) => state.ingredient.ingredientNames);
 	const [newIngredient, setNewIngredient] = useState('');
 	const [newIngredientQuantity, setNewIngredientQuantity] = useState('');
-	const [defaultValue, setDefaultValue] = useState({id: 0, name: '', category: '전체'});
+	const [defaultValue, setDefaultValue] = useState({ id: 0, name: '', category: '전체' });
 	const duplicateIngredient = (ingredient: IngredientEntity) => {
 		const duplicateList = modifiedIngredients?.filter((item) => {
 			return item.name.includes(ingredient.name);
@@ -43,7 +42,7 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 
 	useEffect(() => {
 		if (!ingredientList || !ingredientList.length) {
-			dispatch(getIngredientNames());
+			dispatch(getIngredientList());
 		}
 	}, [ingredientList]);
 
@@ -58,7 +57,7 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 		]);
 		setNewIngredientQuantity('');
 		setNewIngredient('');
-		setDefaultValue({id:0, name:'', category:''});
+		setDefaultValue({ id: 0, name: '', category: '' });
 	};
 
 	const onChangeIngredient = (e: React.ChangeEvent<{}>, ingredient: IngredientEntity | null) => {

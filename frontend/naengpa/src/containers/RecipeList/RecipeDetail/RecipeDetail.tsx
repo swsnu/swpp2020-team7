@@ -80,7 +80,17 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		dispatch(toggleRecipe(recipe?.id as number));
 	};
 
-	// con st
+	const onShowQuantity = (item: any, bool: boolean) => {
+		return (
+			<div>
+				<Collapse in={bool}>
+					<Alert id="help-recommend-recipe-alert" icon={false}>
+						`수량: {item.quantity}`
+					</Alert>
+				</Collapse>
+			</div>
+		);
+	};
 
 	const [alert, setAlert] = useState(false);
 
@@ -133,9 +143,9 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				{userIngredientNames.includes(item.name) ? (
 					<Button
 						id="ingredient-yes-button"
-						onMouseOver={() => setAlert(true)}
-						onMouseLeave={() => setAlert(false)}
-						onFocus={() => setAlert(true)}
+						onMouseOver={() => onShowQuantity(item, true)}
+						onMouseLeave={() => onShowQuantity(item, false)}
+						onFocus={() => onShowQuantity(item, true)}
 					>
 						{item.name}
 					</Button>

@@ -1,5 +1,5 @@
 export interface ChatEntity {
-	id: string;
+	id: number;
 	messages?: MessageEntity[];
 	lastChat: string;
 	member: string;
