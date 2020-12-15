@@ -70,7 +70,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 					id="scrollabelDiv"
 					style={{
 						height: 500,
-						overflow: 'scroll',
+						overflowY: 'scroll',
 						display: 'flex',
 						flexDirection: 'column',
 					}}

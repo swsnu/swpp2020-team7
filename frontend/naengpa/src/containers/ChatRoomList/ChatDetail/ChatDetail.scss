@@ -50,7 +50,7 @@
 
     #chat-message-box {
       height: 500px;
-      overflow: scroll;
+      overflow-y: scroll;
 
       .skeleton {
         height: 60px;

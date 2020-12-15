@@ -30,16 +30,18 @@ const TodayIngredient: React.FC = () => {
 
 	const todays_ingredient_contents = todays_ingredient.map((ingredient) => {
 		return (
-			//<GridListTile key={ingredient.id} id="today-ingredient-content-each" cols={1}>
+			// <GridListTile key={ingredient.id} id="today-ingredient-content-each" cols={1}>
 			<div key={ingredient.id} id="today-ingredient-content-each">
 				{ingredient.name}
 				<Button
 					key={ingredient.id}
 					id="today-ingredient-delete"
 					onClick={() => onClickDeleteTodayIngredient(ingredient.id)}
-				>X</Button>
+				>
+					X
+				</Button>
 			</div>
-			//</GridListTile>
+			// </GridListTile>
 		);
 	});
 
@@ -49,7 +51,7 @@ const TodayIngredient: React.FC = () => {
 				display: 'flex',
 				flexWrap: 'wrap',
 				justifyContent: 'start',
-				//overflow: 'hidden',
+				// overflow: 'hidden',
 			},
 		}),
 	);
