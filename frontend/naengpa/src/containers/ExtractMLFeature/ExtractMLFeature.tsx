@@ -52,28 +52,26 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		'요리 카테고리와 필요한 재료들이 요리명, 등록된 사진들 그리고 레시피를 기반으로 추천되었습니다. 해당 부분을 수정하거나 레시피등록 버튼을 눌러주세요. 첫번째로 업로드한 사진이 썸네일이 됩니다!',
 	);
 
-
-// if the value is false => then each modal pops off.
-const [showCategoryModal, setShowCategoryModal] = useState(false);
-const [modifiedCategory, setModifiedCategory] = useState('');
-const [showIngredientModal, setShowIngredientModal] = useState(false);
-const [modifiedIngredients, setModifiedIngredients] = useState<RecipeIngredient[]>([]);
-const [goBackButton, setGoBackButton] = useState(false);
-const dispatch = useDispatch();
+	// if the value is false => then each modal pops off.
+	const [showCategoryModal, setShowCategoryModal] = useState(false);
+	const [modifiedCategory, setModifiedCategory] = useState('');
+	const [showIngredientModal, setShowIngredientModal] = useState(false);
+	const [modifiedIngredients, setModifiedIngredients] = useState<RecipeIngredient[]>([]);
+	const [goBackButton, setGoBackButton] = useState(false);
+	const dispatch = useDispatch();
 
 	// each field should have the value from the previous page.
 	useEffect(() => {
 		dispatch(getFoodCategoryList());
 		let recipe = null;
-		if(sessionStorage.getItem('createdRecipe')) {
+		if (sessionStorage.getItem('createdRecipe')) {
 			recipe = JSON.parse(sessionStorage.getItem('createdRecipe')!);
 		} else {
 			recipe = createdRecipe;
 		}
-		if(!recipe.content) {
+		if (!recipe.content) {
 			setLoading(() => true);
-		}
-		else {
+		} else {
 			setAlert(true);
 			setLoading(() => false);
 			setFoodName(createdRecipe?.foodName as string);
@@ -82,7 +80,7 @@ const dispatch = useDispatch();
 			setFoodImageFiles(createdRecipe?.foodImageFiles as File[]);
 			setFoodCategory(createdRecipe?.foodCategory as string);
 			setModifiedCategory(createdRecipe?.foodCategory as string);
-			const checkedIngredients = createdRecipe?.ingredients?.map((item:any) => {
+			const checkedIngredients = createdRecipe?.ingredients?.map((item: any) => {
 				return { ...item, checked: true, quantity: '' };
 			});
 			setIngredients(checkedIngredients as RecipeIngredient[]);
