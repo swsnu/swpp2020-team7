@@ -40,7 +40,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 				onClick={(e) => {
 					e.preventDefault();
 					e.stopPropagation();
-					history.push(`chatrooms/${chatRoom.id}/`);
+					dispatch(getChatRoom(chatRoom.id));
 				}}
 			>
 				<Divider variant="middle" />

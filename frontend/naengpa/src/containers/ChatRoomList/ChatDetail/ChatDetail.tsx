@@ -19,7 +19,6 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user);
 	const currentPath = window.location.pathname.split('/');
 	const chatRoomId = parseInt(currentPath[currentPath.length - 1], 10);
-	console.log(chatRoomId);
 	const [content, setContent] = useState('');
 
 	const chatMessage =
@@ -62,7 +61,8 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		if (e.key === 'Enter' && content !== '') {
 			e.preventDefault();
 			e.stopPropagation();
-			dispatch(sendChat(chatRoomId, content));
+			if(typeof chatRoomId === 'number')
+				dispatch(sendChat(chatRoomId, content));
 			setContent('');
 		}
 	};

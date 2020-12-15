@@ -184,6 +184,7 @@ export const getChatRoom = (id: number) => {
 		try {
 			const response = await axios.get(`/api/chatrooms/${id}/`);
 			dispatch(getChatRoom_(response.data));
+			dispatch(push(`/chatrooms/${id}`));
 		} catch (e) {
 			dispatch(push('/chatrooms'));
 			toast.error('🦄 채팅방에 입장하지 못했습니다! 다시 시도해주세요.');
