@@ -303,7 +303,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 							<TableBody>
 								<TableRow>
 									<TableCell id="food-field">
-										<div id="food-name">요리명: {foodName}</div>
+										<div id="food-name">요리명:<input id="food-name-content" value={foodName} onChange={(e) => setFoodName(e.target.value)}/></div>
 										{!alert && (
 											<Button
 												id="food-category"
