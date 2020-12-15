@@ -80,7 +80,16 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		dispatch(toggleRecipe(recipe?.id as number));
 	};
 
-	// con st
+	const onShowQuantity = (item: any, bool: boolean) => {
+		return (
+			<div>
+				<Collapse in={bool}>
+					<Alert id="help-recommend-recipe-alert" icon={false}>
+						`수량: {item.quantity}`
+					</Alert>
+				</Collapse>
+			</div>);
+	};
 
 	const [alert, setAlert] = useState(false);
 
@@ -135,15 +144,15 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				{userIngredientNames.includes(item.name) ? (
 					<Button
 						id="ingredient-yes-button"
-						onMouseOver={() => setAlert(true)}
-						onMouseLeave={() => setAlert(false)}
-						onFocus={() => setAlert(true)}
+						onMouseOver={() => onShowQuantity(item, true)}
+						onMouseLeave={() => onShowQuantity(item, false)}
+						onFocus={() => onShowQuantity(item, true)}
 					>
 						{item.name}
 					</Button>
 				) : (
-					<Button id="ingredient-no-button">{item.name}</Button>
-				)}
+						<Button id="ingredient-no-button">{item.name}</Button>
+					)}
 			</div>
 		);
 	});
@@ -224,10 +233,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 									alt="/icons/account_circle.png"
 								/>
 							) : (
-								<Skeleton>
-									<Avatar />
-								</Skeleton>
-							)}
+									<Skeleton>
+										<Avatar />
+									</Skeleton>
+								)}
 						</Grid>
 						<Grid item id="profile-box">
 							<Typography id="profile-title" gutterBottom variant="h5">
@@ -258,12 +267,12 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 										onClick={() => onClickRecipeLike()}
 									/>
 								) : (
-									<FavoriteBorderIcon
-										id="recipe-like-count-icon"
-										fontSize="large"
-										onClick={() => onClickRecipeLike()}
-									/>
-								)}
+										<FavoriteBorderIcon
+											id="recipe-like-count-icon"
+											fontSize="large"
+											onClick={() => onClickRecipeLike()}
+										/>
+									)}
 								{recipeLike}
 							</div>
 						</Grid>
@@ -313,8 +322,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 					{recipe ? (
 						`${user!.name}님! 지금 ${notInFridgeJoined} 주변 이웃과 거래해보세요!`
 					) : (
-						<Skeleton />
-					)}
+							<Skeleton />
+						)}
 				</Typography>
 				<div id="articles">{article}</div>
 			</div>

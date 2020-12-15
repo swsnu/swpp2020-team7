@@ -3,8 +3,9 @@
 
 div#today-ingredient {
     background: url('/icons/memo.png') top center / contain no-repeat;
-    width: 370px !important;
-    height: 370px !important;
+    width: 350px !important;
+    min-width: 300px;
+    height: 350px !important;
     margin-top: 0;
     padding-top: 0;
 

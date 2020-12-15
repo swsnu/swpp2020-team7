@@ -43,8 +43,8 @@
 #fridge {
   background: url('/icons/fridge.png') top center / contain no-repeat;
   height: 580px;
-  min-width: 300px;
-  max-width: 400px;
+  width: 400px;
+  //max-width: 400px;
   flex-direction: row;
   padding-left: 0;
   //margin-bottom: 20px;
