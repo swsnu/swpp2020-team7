@@ -28,6 +28,7 @@ import { BaseRecipeEntity } from '../../../model/recipe';
 import { extractMLFeatureFromRecipe } from '../../../store/actions/index';
 import compressImage from '../../../utils/compressImage';
 import CreateRecipeAlert from '../../../components/RecipeModal/CreateRecipeAlert/CreateRecipeAlert';
+
 interface CreateRecipeProps {
 	history: History;
 }
@@ -146,7 +147,11 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 			{loading && <Loading />}
 			{!loading && (
 				<>
-					<CreateRecipeAlert alert={alert} alertContent={alertContent} onClickOffAlert={() => setAlert(false)}/>
+					<CreateRecipeAlert
+						alert={alert}
+						alertContent={alertContent}
+						onClickOffAlert={() => setAlert(false)}
+					/>
 					<div id="create-recipe-mention">
 						**요리 카테고리, 필수재료는 재료등록 단계에서 자동으로 추출됩니다.
 					</div>

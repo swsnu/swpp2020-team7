@@ -4,12 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import './ChatDetail.scss';
 import { Button, Divider, Typography } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
-import { sendChat, getChatRoom } from '../../../store/actions/index';
-import { AppState } from '../../../store/store';
-import Tab from '../../../components/Tab/Tab';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
 import { Skeleton } from '@material-ui/lab';
+import { sendChat, getChatRoom } from '../../../store/actions/index';
+import { AppState } from '../../../store/store';
+import Tab from '../../../components/Tab/Tab';
 
 interface ChatDetailProps {
 	history: History;
@@ -45,13 +45,10 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 			<></>
 		);
 
-	const loaderTemplate = 
-		Array.from(Array(8)).map((idx) => {
-			if(idx % 2)
-				return <Skeleton className="skeleton"/>
-			else
-				return <Skeleton className="skeleton2"/>	
-		})
+	const loaderTemplate = Array.from(Array(8)).map((idx) => {
+		if (idx % 2) return <Skeleton className="skeleton" />;
+		return <Skeleton className="skeleton2" />;
+	});
 
 	const onClickGoBackToChatRoomList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
@@ -76,8 +73,11 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	};
 
 	useEffect(() => {
-		if(user && !user.chatRoom && window.sessionStorage.getItem('chatRoom'))
-			setTimeout(dispatch(getChatRoom(JSON.parse(window.sessionStorage.getItem('chatRoom')!))), 1000);
+		if (user && !user.chatRoom && window.sessionStorage.getItem('chatRoom'))
+			setTimeout(
+				dispatch(getChatRoom(JSON.parse(window.sessionStorage.getItem('chatRoom')!))),
+				1000,
+			);
 	}, [user.chatRoom]);
 
 	return (
@@ -93,17 +93,18 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					</Button>
 					<div id="member-info-box">
 						{!user?.chatRoom?.memberImage && <AccountCircleIcon id="profile-picture" />}
-							{user?.chatRoom?.memberImage && (
-						<Avatar id="profile-picture" src={user?.chatRoom?.memberImage as string} />
-						)}					
+						{user?.chatRoom?.memberImage && (
+							<Avatar
+								id="profile-picture"
+								src={user?.chatRoom?.memberImage as string}
+							/>
+						)}
 						<div id="chat-member-username">{user.chatRoom?.member}</div>
 					</div>
 					<p id="space">채팅정보</p>
 				</Typography>
 				<Divider />
-				<div id="chat-message-box">
-					{user?.chatRoom ? chatMessage : loaderTemplate}
-				</div>
+				<div id="chat-message-box">{user?.chatRoom ? chatMessage : loaderTemplate}</div>
 				<div id="chat-input-box">
 					<InputBase
 						id="chat-input-field"
@@ -116,7 +117,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					<Button id="send-chat-button" onClick={(e) => onClickSendMessage(e)}>
 						보내기
 					</Button>
-				</div>			
+				</div>
 			</div>
 		</div>
 	);

@@ -42,13 +42,18 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const [loading, setLoading] = useState(false);
 	const [foodName, setFoodName] = useState(createdRecipe?.foodName as string);
 	const [content, setContent] = useState(createdRecipe?.content as string);
-	const [foodImageFiles, setFoodImageFiles] = useState<File[]>(createdRecipe?.foodImageFiles as File[]);
+	const [foodImageFiles, setFoodImageFiles] = useState<File[]>(
+		createdRecipe?.foodImageFiles as File[],
+	);
 	const [cookTime, setCookTime] = useState(createdRecipe?.cookTime as number);
 	const [foodCategory, setFoodCategory] = useState(createdRecipe?.foodCategory as string);
 	const [ingredients, setIngredients] = useState<RecipeIngredient[]>(
-		(createdRecipe?.ingredients ? createdRecipe?.ingredients?.map((item: any) => {
-			return { ...item, checked: true, quantity: '' };
-		}) : []));
+		createdRecipe?.ingredients
+			? createdRecipe?.ingredients?.map((item: any) => {
+					return { ...item, checked: true, quantity: '' };
+			  })
+			: [],
+	);
 	// alert state is true if alert is necessary, otherwise false.
 	const [alert, setAlert] = useState(false);
 	const [alertContent, setAlertContent] = useState(
@@ -57,12 +62,15 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	// if the value is false => then each modal pops off.
 	const [showCategoryModal, setShowCategoryModal] = useState(false);
-  const [modifiedCategory, setModifiedCategory] = useState(createdRecipe?.foodCategory as string);
+	const [modifiedCategory, setModifiedCategory] = useState(createdRecipe?.foodCategory as string);
 	const [showIngredientModal, setShowIngredientModal] = useState(false);
 	const [modifiedIngredients, setModifiedIngredients] = useState<RecipeIngredient[]>(
-		(createdRecipe?.ingredients ? createdRecipe?.ingredients?.map((item: any) => {
-			return { ...item, checked: true, quantity: '' };
-		}) : []));
+		createdRecipe?.ingredients
+			? createdRecipe?.ingredients?.map((item: any) => {
+					return { ...item, checked: true, quantity: '' };
+			  })
+			: [],
+	);
 	const [goBackButton, setGoBackButton] = useState(false);
 	const dispatch = useDispatch();
 
@@ -92,7 +100,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
 		const images = target.files as FileList;
-		// compress images 
+		// compress images
 		const imageArray = Array.from(images);
 		imageArray.forEach(async (file) => {
 			await compressImage(file).then((result) => {
@@ -118,7 +126,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const onClickCancelAlert = () => {
 		setAlert(false);
 		setGoBackButton(false);
-	}
+	};
 
 	// need to be directed to recipe detail page, current => recipelist
 	const onClickRegisterRecipe = () => {
@@ -132,9 +140,11 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 			} else if (!content) {
 				toast.error('🦄 레시피를 입력해주세요!');
 			} else {
-				const newIngredientList: RecipeIngredient[] = ingredients ? ingredients?.map((item, idx) => {
-					return { name: item.name, quantity: item.quantity };
-				}) : [];
+				const newIngredientList: RecipeIngredient[] = ingredients
+					? ingredients?.map((item, idx) => {
+							return { name: item.name, quantity: item.quantity };
+					  })
+					: [];
 
 				const newRecipe: RecipeEntity = {
 					foodName,
@@ -200,20 +210,18 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				);
 		  });
 
-
 	/* ingredient list for Recipe Form */
-	const ingredientSetForRecipe =
-			ingredients?.map((item, i) => {
-				return (
-					<div id="ingredient-button-box" key={`${item.name}`}>
-						{item.checked && (
-							<Button key={`${item.name}-${i}`} id="ingredient-button">
-								{item.name}
-							</Button>
-						)}
-					</div>
-				);
-			})
+	const ingredientSetForRecipe = ingredients?.map((item, i) => {
+		return (
+			<div id="ingredient-button-box" key={`${item.name}`}>
+				{item.checked && (
+					<Button key={`${item.name}-${i}`} id="ingredient-button">
+						{item.name}
+					</Button>
+				)}
+			</div>
+		);
+	});
 
 	const useStyles = makeStyles({
 		underline: {
@@ -227,17 +235,34 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	return (
 		<div id="extract-ml-feature">
 			{/* Alert Modal for go back to Recipe List & Register Recipe */}
-			<MLFeatureAlert history={history} alert={alert} alertContent={alertContent} onClickOffAlert={(e) => setAlert(false)}
-				goBack={goBackButton} onClickCancelAlert={onClickCancelAlert}
+			<MLFeatureAlert
+				history={history}
+				alert={alert}
+				alertContent={alertContent}
+				onClickOffAlert={(e) => setAlert(false)}
+				goBack={goBackButton}
+				onClickCancelAlert={onClickCancelAlert}
 			/>
 			{loading && <Loading />}
 			{!loading && (
 				<>
 					{/* Modal for food category & ingredients */}
-				<FoodCategoryModal modifiedCategory={modifiedCategory} setModifiedCategory={setModifiedCategory} showCategoryModal={showCategoryModal}
-				 setShowCategoryModal={setShowCategoryModal} foodCategory={foodCategory} setFoodCategory={setFoodCategory} />
-				<IngredientListModal modifiedIngredients={modifiedIngredients} setModifiedIngredients={setModifiedIngredients}
-					ingredients={ingredients} setIngredients={setIngredients} showIngredientModal={showIngredientModal} setShowIngredientModal={setShowIngredientModal} />
+					<FoodCategoryModal
+						modifiedCategory={modifiedCategory}
+						setModifiedCategory={setModifiedCategory}
+						showCategoryModal={showCategoryModal}
+						setShowCategoryModal={setShowCategoryModal}
+						foodCategory={foodCategory}
+						setFoodCategory={setFoodCategory}
+					/>
+					<IngredientListModal
+						modifiedIngredients={modifiedIngredients}
+						setModifiedIngredients={setModifiedIngredients}
+						ingredients={ingredients}
+						setIngredients={setIngredients}
+						showIngredientModal={showIngredientModal}
+						setShowIngredientModal={setShowIngredientModal}
+					/>
 
 					<div id="create-recipe-mention">
 						**요리 카테고리, 필수재료를 다시 추천받고 싶으시다면 추천 다시하기 버튼을
@@ -280,7 +305,8 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 									<TableCell id="food-field">
 										<div id="food-name">요리명: {foodName}</div>
 										{!alert && (
-											<Button id="food-category"
+											<Button
+												id="food-category"
 												onClick={() => {
 													setShowCategoryModal(true && !alert);
 												}}
@@ -293,7 +319,9 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 												onFocus={() => {
 													setShowCategoryModal(true && !alert);
 												}}
-											>{foodCategory}</Button>
+											>
+												{foodCategory}
+											</Button>
 										)}
 									</TableCell>
 								</TableRow>

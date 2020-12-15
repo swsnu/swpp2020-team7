@@ -3,15 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import './ChatRoomList.scss';
 import '../Mypage/UserInfo/UserInfo.scss';
-import { Button, Divider, Typography } from '@material-ui/core';
+import { Button, Divider, Typography, ListItem, ListItemText } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
+import { Skeleton } from '@material-ui/lab';
+import { toast } from 'react-toastify';
 import Tab from '../../components/Tab/Tab';
 import { getChatRoomList, getChatRoom } from '../../store/actions/index';
 import { AppState } from '../../store/store';
-import { Skeleton } from '@material-ui/lab';
-import { ListItem, ListItemText } from '@material-ui/core';
-import { toast } from 'react-toastify';
 
 interface ChatRoomListProps {
 	history: History;
@@ -22,16 +21,15 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user);
 	const [loading, setLoading] = useState(true);
 
-	const loaderTemplate = 
-		Array.from(Array(8)).map((idx) => {
-				return <Skeleton className="skeleton"/>
-		})
+	const loaderTemplate = Array.from(Array(8)).map((idx) => {
+		return <Skeleton className="skeleton" />;
+	});
 
 	useEffect(() => {
 		if (user) {
 			dispatch(getChatRoomList());
 			setLoading(false);
-		} 
+		}
 	}, [dispatch]);
 
 	const chatRoomCollection = user.chatRoomList?.map((chatRoom: any) => {
@@ -77,21 +75,21 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 						flexDirection: 'column',
 					}}
 				>
-					{loading ? loaderTemplate :
-						(!chatRoomCollection ? (
-						<ListItem
-							button
-							onClick={() => toast.info('🐬 행복한 연말되세요!')}
-						>
+					{loading ? (
+						loaderTemplate
+					) : !chatRoomCollection ? (
+						<ListItem button onClick={() => toast.info('🐬 행복한 연말되세요!')}>
 							<ListItemText
 								primary="🐬 채팅방이 존재하지 않습니다."
 								secondary="채팅을 시작해 보세요!"
 							/>
 						</ListItem>
-						) : chatRoomCollection )}
+					) : (
+						chatRoomCollection
+					)}
 				</div>
 			</Typography>
-	</div>
+		</div>
 	);
 };
 

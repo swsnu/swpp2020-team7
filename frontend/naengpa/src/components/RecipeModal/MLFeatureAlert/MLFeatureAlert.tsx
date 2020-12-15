@@ -6,16 +6,27 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 
 interface MLFeatureAlertProps {
-  history: History;
-  alert: boolean;
-  alertContent: String;
-  onClickOffAlert: (e: React.MouseEvent<SVGSVGElement, MouseEvent>|React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  goBack: boolean;
-  onClickCancelAlert: (e: React.MouseEvent<HTMLButtonElement>) => void; 
+	history: History;
+	alert: boolean;
+	alertContent: string;
+	onClickOffAlert: (
+		e:
+			| React.MouseEvent<SVGSVGElement, MouseEvent>
+			| React.MouseEvent<HTMLButtonElement, MouseEvent>,
+	) => void;
+	goBack: boolean;
+	onClickCancelAlert: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const MLFeatureAlert: React.FC<MLFeatureAlertProps> = ({ history, alert, alertContent, onClickOffAlert,  goBack, onClickCancelAlert}) => {
-  return (
+const MLFeatureAlert: React.FC<MLFeatureAlertProps> = ({
+	history,
+	alert,
+	alertContent,
+	onClickOffAlert,
+	goBack,
+	onClickCancelAlert,
+}) => {
+	return (
 		<Collapse className="collapse" in={alert}>
 			<Alert id="extract-ml-feature-alert" icon={false}>
 				<div id="naengpa-logo-box">
@@ -23,18 +34,12 @@ const MLFeatureAlert: React.FC<MLFeatureAlertProps> = ({ history, alert, alertCo
 						<LocalDiningIcon id="naengpa-logo-image" />
 						냉파
 					</div>
-					<CancelIcon
-						id="close-alert-button"
-						onClick={onClickOffAlert}
-					/>
+					<CancelIcon id="close-alert-button" onClick={onClickOffAlert} />
 				</div>
 				<div id="alert-content">{alertContent}</div>
 				<div id="confirm-alert-button-box">
 					{!goBack && (
-						<Button
-							id="confirm-alert-button"
-							onClick={onClickOffAlert}
-						>
+						<Button id="confirm-alert-button" onClick={onClickOffAlert}>
 							확인
 						</Button>
 					)}
@@ -48,10 +53,7 @@ const MLFeatureAlert: React.FC<MLFeatureAlertProps> = ({ history, alert, alertCo
 							>
 								확인
 							</Button>
-							<Button
-								id="cancel-alert-button"
-								onClick={onClickCancelAlert}
-							>
+							<Button id="cancel-alert-button" onClick={onClickCancelAlert}>
 								취소
 							</Button>
 						</>
@@ -60,6 +62,6 @@ const MLFeatureAlert: React.FC<MLFeatureAlertProps> = ({ history, alert, alertCo
 			</Alert>
 		</Collapse>
 	);
-}
+};
 
 export default MLFeatureAlert;

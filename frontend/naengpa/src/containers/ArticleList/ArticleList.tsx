@@ -12,7 +12,6 @@ import { AppState } from '../../store/store';
 import './ArticleList.scss';
 import FeedLoading from '../../components/FeedLoading/FeedLoading';
 
-
 interface ArticleListProps {
 	history: History;
 }
@@ -90,9 +89,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		} else {
 			totalSkeletons = 6;
 		}
-		return Array.from(Array(totalSkeletons)).map((_) => (
-			<FeedLoading attribute="cardList"/>
-		));
+		return Array.from(Array(totalSkeletons)).map((_) => <FeedLoading attribute="cardList" />);
 	};
 
 	const articles = articleList?.map((item: ArticleEntity) => (

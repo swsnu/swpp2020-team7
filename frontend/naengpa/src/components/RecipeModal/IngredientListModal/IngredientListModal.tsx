@@ -4,28 +4,34 @@ import { Collapse, Button, Checkbox, FormControlLabel, Input, Divider } from '@m
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { RecipeIngredient } from '../../../model/recipe';
-import NewIngredient from '../../RecipeModal/NewIngredient/NewIngredient';
+import NewIngredient from '../NewIngredient/NewIngredient';
 
 interface IngredientListModalProps {
-  modifiedIngredients: RecipeIngredient[];
-  setModifiedIngredients: (modifiedIngredients:RecipeIngredient[]) => void;
-  ingredients: RecipeIngredient[];
-  setIngredients: (ingredients:RecipeIngredient[]) => void;
-  showIngredientModal: boolean;
-  setShowIngredientModal: (showIngredient:boolean) => void;
+	modifiedIngredients: RecipeIngredient[];
+	setModifiedIngredients: (modifiedIngredients: RecipeIngredient[]) => void;
+	ingredients: RecipeIngredient[];
+	setIngredients: (ingredients: RecipeIngredient[]) => void;
+	showIngredientModal: boolean;
+	setShowIngredientModal: (showIngredient: boolean) => void;
 }
 
-
-const IngredientListModal: React.FC<IngredientListModalProps> = ({ modifiedIngredients, setModifiedIngredients, ingredients, setIngredients, showIngredientModal, setShowIngredientModal }) => {
-  const onChangeIngredientCheck = (ingredient: string, checked: boolean) => {
+const IngredientListModal: React.FC<IngredientListModalProps> = ({
+	modifiedIngredients,
+	setModifiedIngredients,
+	ingredients,
+	setIngredients,
+	showIngredientModal,
+	setShowIngredientModal,
+}) => {
+	const onChangeIngredientCheck = (ingredient: string, checked: boolean) => {
 		const newIngredientList = modifiedIngredients?.map((item) => {
 			if (item.name === ingredient) return { ...item, checked };
 			return item;
 		});
 		setModifiedIngredients(newIngredientList);
-  };
+	};
 
-  const onChangeIngredientQuantity = (ingredient: string, quantity: string) => {
+	const onChangeIngredientQuantity = (ingredient: string, quantity: string) => {
 		const newIngredientList = modifiedIngredients?.map((item) => {
 			if (item.name === ingredient) return { ...item, quantity };
 			return item;
@@ -33,7 +39,7 @@ const IngredientListModal: React.FC<IngredientListModalProps> = ({ modifiedIngre
 		setModifiedIngredients(newIngredientList);
 	};
 
-  const onClickConfirmModal = () => {
+	const onClickConfirmModal = () => {
 		setShowIngredientModal(false);
 		setIngredients(modifiedIngredients);
 	};
@@ -41,9 +47,9 @@ const IngredientListModal: React.FC<IngredientListModalProps> = ({ modifiedIngre
 	const onClickCloseModal = () => {
 		setShowIngredientModal(false);
 		setModifiedIngredients(ingredients);
-  };
-  
-  /* ingredient list for Ingredient Modal */
+	};
+
+	/* ingredient list for Ingredient Modal */
 	const ingredientSet = modifiedIngredients?.map((item, i) => {
 		return (
 			<div id="ingredient-element" key={item.name}>
@@ -73,10 +79,10 @@ const IngredientListModal: React.FC<IngredientListModalProps> = ({ modifiedIngre
 				/>
 			</div>
 		);
-  });
- 
-  return (
-    <Collapse className="collapse" in={showIngredientModal}>
+	});
+
+	return (
+		<Collapse className="collapse" in={showIngredientModal}>
 			<Alert
 				id="ingredient-modal"
 				onMouseOver={() => {
@@ -94,7 +100,7 @@ const IngredientListModal: React.FC<IngredientListModalProps> = ({ modifiedIngre
 					<div id="modal-header">
 						<div id="modal-title">재료</div>
 						<div id="modal-subtitle">
-							필요한 재료를 선택하고 수량을 수정하거나 추가해주세요.
+							필요한 재료를 선택하고 수량을 수정하거나 추가해주세요. 똑같은 재료는 추가할 수 없습니다.
 						</div>
 					</div>
 					<CancelIcon id="close-modal-button" onClick={onClickCloseModal} />
@@ -104,7 +110,10 @@ const IngredientListModal: React.FC<IngredientListModalProps> = ({ modifiedIngre
 					{/* Ingredient List  */}
 					{ingredientSet}
 					{/* New Ingredient */}
-					<NewIngredient modifiedIngredients={modifiedIngredients} setModifiedIngredients={setModifiedIngredients}/>
+					<NewIngredient
+						modifiedIngredients={modifiedIngredients}
+						setModifiedIngredients={setModifiedIngredients}
+					/>
 				</div>
 				<div id="confirm-modal-button-box">
 					<Button id="confirm-modal-button" onClick={onClickConfirmModal}>
@@ -113,7 +122,7 @@ const IngredientListModal: React.FC<IngredientListModalProps> = ({ modifiedIngre
 				</div>
 			</Alert>
 		</Collapse>
-);
-}
+	);
+};
 
 export default IngredientListModal;

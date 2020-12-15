@@ -50,15 +50,13 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 
 	const loadingFeeds = () => {
 		let totalSkeletons = 0;
-		let recipeList = recipeState.recipeList; 
-		if(!recipeList || !recipeList.length) {
-			totalSkeletons = 6; 
+		const { recipeList } = recipeState;
+		if (!recipeList || !recipeList.length) {
+			totalSkeletons = 6;
 		} else {
 			totalSkeletons = recipeList.length;
 		}
-		return Array.from(Array(totalSkeletons)).map((_) => (
-			<FeedLoading attribute="cardList"/>
-		));
+		return Array.from(Array(totalSkeletons)).map((_) => <FeedLoading attribute="cardList" />);
 	};
 
 	useEffect(() => {
