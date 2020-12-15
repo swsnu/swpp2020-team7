@@ -1,11 +1,11 @@
 #prev-fridge {
   position: relative;
-  top: 35vh;
+  top: 30vh;
 }
 
 #next-fridge {
   position: relative;
-  top: 35vh;
+  top: 30vh;
 }
 
 #recommend-recipe-button {
@@ -45,11 +45,12 @@
   flex-direction: row;
   padding-left: 0;
   align-items: center;
+  margin-top: 10px;
 
   div#ingredients {
     padding:10%;
-    padding-right:12%;
-    padding-bottom: 48%;
+    padding-right:23%;
+    //padding-bottom: 40%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
