@@ -19,7 +19,7 @@ def get_chatroom_list(request):
     try:
         user = request.user
         chatrooms = ChatRoom.objects.filter(
-            chat_members=user).distinct().order_by('-updated_at')
+            chat_members=user).order_by('-updated_at')
     except ChatRoom.DoesNotExist:
         return JsonResponse([], safe=False)
 
