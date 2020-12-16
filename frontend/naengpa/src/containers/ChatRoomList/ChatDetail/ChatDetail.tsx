@@ -17,10 +17,8 @@ interface ChatDetailProps {
 const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user);
-	const chatRoom = useSelector((state: AppState) => state.user.chatRoom);
+	const chatRoom = useSelector((state: AppState) => state.user?.chatRoom);
 	const chatMessages = useSelector((state: AppState) => state.user?.chatRoom?.messages);
-	const currentPath = window.location.pathname.split('/');
-	const chatRoomId = parseInt(currentPath[currentPath.length - 1], 10);
 	const [content, setContent] = useState('');
 	const [loading, setLoading] = useState(true);
 	const [sending, setSending] = useState(false);
@@ -66,39 +64,37 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	};
 
 	const onEnterSendMessage = async (e: React.KeyboardEvent<HTMLDivElement>) => {
-		if (e.key === 'Enter' && content !== '' && !Number.isNaN(chatRoomId)) {
+		if (e.key === 'Enter' && content !== '' && chatRoom?.id) {
 			e.preventDefault();
 			e.stopPropagation();
 			setSending(true);
-			await dispatch(sendChat(chatRoomId, content));
+			await dispatch(sendChat(chatRoom?.id, content));
 			setContent('');
 			setSending(false);
 		}
 	};
 
 	const onClickSendMessage = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		if (content !== '' && !Number.isNaN(chatRoomId)) {
+		if (content !== '' && chatRoom) {
 			e.preventDefault();
 			e.stopPropagation();
 			setSending(true);
-			await dispatch(sendChat(chatRoomId, content));
+			await dispatch(sendChat(chatRoom?.id, content));
 			setContent('');
 			setSending(false);
 		}
 	};
 
-	const loadChatRoom = useCallback(() => {
-		setTimeout(async () => {
-			if (user && !Number.isNaN(chatRoomId)) {
-				await dispatch(getChatRoom(chatRoomId));
-			}
-		}, 1000);
-		setLoading(false);
-	}, [user]);
+	const loadChatRoom = useCallback(async() => {
+		if (user) {
+			if(chatRoom)
+				await dispatch(getChatRoom(chatRoom?.id));
+			setLoading(false);
+		}
+	}, [dispatch]);
 
 	useEffect(() => {
 		loadChatRoom();
-		return loadChatRoom();
 	}, [loadChatRoom]);
 
 	return (

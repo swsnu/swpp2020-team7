@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import './ChatRoomList.scss';
 import '../Mypage/UserInfo/UserInfo.scss';
-import { Button, Divider, Typography, ListItem, ListItemText } from '@material-ui/core';
+import { Button, Divider, Typography, Link, ListItem, ListItemText } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
 import { Skeleton } from '@material-ui/lab';
 import Tab from '../../components/Tab/Tab';
-import { getChatRoomList } from '../../store/actions/index';
+import { getChatRoomList, getChatRoom } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 
 interface ChatRoomListProps {
@@ -25,14 +25,12 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 		return <Skeleton key={`skeleton-${idx}`} className="skeleton" />;
 	});
 
-	const loadChatRoom = useCallback(() => {
-		setTimeout(async () => {
-			if (user) {
-				await dispatch(getChatRoomList());
-				setLoading(false);
-			}
-		}, 1000);
-	}, [user]);
+	const loadChatRoom = useCallback(async () => {
+		if (user) {
+			await dispatch(getChatRoomList());
+			setLoading(false);
+		}
+	}, [user, dispatch]);
 
 	useEffect(() => {
 		loadChatRoom();
@@ -46,7 +44,8 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 				onClick={(e) => {
 					e.preventDefault();
 					e.stopPropagation();
-					history.push(`/chatrooms/${chatRoom?.id}`);
+					dispatch(getChatRoom(chatRoom?.id));
+					setLoading(true);
 				}}
 			>
 				<Divider variant="middle" />
