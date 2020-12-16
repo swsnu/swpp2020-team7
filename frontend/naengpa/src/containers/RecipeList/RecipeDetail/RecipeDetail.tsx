@@ -165,7 +165,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	}, [dispatch, images, page]);
 
 	useEffect(() => {
-		if (!recipe) {
+		if (!recipe && !Number.isNaN(recipeId)) {
 			dispatch(getRecipe(recipeId));
 		}
 	}, [dispatch, recipe, recipeId]);

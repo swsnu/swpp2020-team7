@@ -56,8 +56,8 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if(!loading && !isNaN(articleId)) {
-			if (!article || (article.id !== articleId)) {
+		if (!loading && !Number.isNaN(articleId)) {
+			if (!article || article.id !== articleId) {
 				setLoading(true);
 				dispatch(getArticle(articleId));
 			}
@@ -65,16 +65,15 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 	}, [dispatch, loading, article, articleId]);
 
 	useEffect(() => {
-		if (loading && article && !isNaN(articleId) && (article.id === articleId)) {
+		if (loading && article && !Number.isNaN(articleId) && article.id === articleId) {
 			setLoading(false);
 			setTitle(article.title);
 			setContent(article.content);
 			setPrice(article.price);
 			setOptions(article.options);
-			setImages(article.images)
+			setImages(article.images);
 		}
 	}, [loading, article, articleId]);
-
 
 	const onClickOptions = (target: string) => {
 		switch (target) {
@@ -188,11 +187,8 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 		</Collapse>
 	);
 
-	const itemSet = ( loading ||
-		<Button
-			id='edit-article-items'
-			className='selected'
-		>
+	const itemSet = loading || (
+		<Button id="edit-article-items" className="selected">
 			{article?.item.name}
 		</Button>
 	);
@@ -273,7 +269,7 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 									value={loading ? '' : price}
 									id="price-input"
 									inputProps={{ min: '0', step: '100' }}
-									onChange={(e) => setPrice(parseInt(e.target.value))}
+									onChange={(e) => setPrice(parseInt(e.target.value), 10)}
 								/>
 							</TableCell>
 						</TableRow>
@@ -324,7 +320,7 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 // const createFile = async (url: string) => {
 // 	const response = await fetch(url);
 // 	const data = await response.blob();
-// 	const filename = new String(url).substring(url.lastIndexOf('/') + 1); 
+// 	const filename = new String(url).substring(url.lastIndexOf('/') + 1);
 // 	const ext = filename.substring(filename.lastIndexOf(".") + 1);
 // 	const metadata = {
 // 	  type: ext === 'png' ? 'image/png' : 'image/jpeg',
