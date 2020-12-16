@@ -6,6 +6,7 @@ export interface UserEntity {
 	dateOfBirth: string;
 	email: string;
 	region: RegionEntity;
+	naengpaScore?: number;
 	regionRange?: number;
 	profileImage?: File | string;
 	notifications?: NotificationEntity[];
