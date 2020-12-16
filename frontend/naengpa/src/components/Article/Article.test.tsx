@@ -2,6 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import { createMemoryHistory } from 'history';
 import thunk from 'redux-thunk';
 import { Card, CardContent } from '@material-ui/core';
 import Article from './Article';
@@ -34,7 +35,7 @@ const mockArticle: ArticleEntity = {
 	images: [
 		{
 			id: 2,
-			path: 'path',
+			file_path: 'path',
 		},
 	],
 };
@@ -65,12 +66,13 @@ const stubInitialState: { article: ArticleState } = {
 				images: [
 					{
 						id: 2,
-						path: 'path',
+						file_path: 'path',
 					},
 				],
 			},
 		],
 		article: mockArticle,
+		lastPageIndex: 2,
 	},
 };
 const mockStore = store(stubInitialState);
@@ -78,15 +80,19 @@ const mockStore = store(stubInitialState);
 describe('Article', () => {
 	let article: any;
 	let mockClick: any;
+	let spyHistoryPush: any;
 
 	beforeEach(() => {
-		mockClick = jest.fn();
+		const history = createMemoryHistory({ initialEntries: ['/'] });
 
 		article = (
 			<Provider store={mockStore}>
-				<Article article={mockArticle} onClick={mockClick} />
+				<Article article={mockArticle} history={history} />
 			</Provider>
 		);
+
+		mockClick = jest.fn();
+		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -111,6 +117,6 @@ describe('Article', () => {
 		const component = mount(article);
 		component.find(Card).simulate('click');
 
-		expect(mockClick).toBeCalledTimes(1);
+		expect(spyHistoryPush).toBeCalledTimes(1);
 	});
 });

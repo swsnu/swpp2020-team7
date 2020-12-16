@@ -172,7 +172,7 @@ describe('ActionCreators', () => {
 			recipe: { comments: null },
 			relatedArticles: [],
 		};
-		const expectedCommentPayload = { type: actionTypes.GET_COMMENT_LIST, comments: null };
+		const expectedCommentPayload = { type: actionTypes.GET_COMMENT_LIST, payload: null };
 		expect(actions[0]).toEqual(expectedRecipePayload);
 		expect(actions[1]).toEqual(expectedCommentPayload);
 	});
@@ -195,7 +195,7 @@ describe('ActionCreators', () => {
 			return new Promise((resolve, reject) => {
 				const result = {
 					status: 200,
-					data: null,
+					data: [],
 				};
 				resolve(result);
 			});
@@ -234,6 +234,60 @@ describe('ActionCreators', () => {
 		const actions = mockStore.getActions();
 		const expectedPayload = { type: actionTypes.CREATE_RECIPE, recipe: { id: 1 } };
 		expect(actions[0]).toEqual(expectedPayload);
+	});
+
+	it('should return error 715 for create Recipe action correctly', async () => {
+		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				reject({
+					response: {
+						data: {
+							code: 715,
+						},
+					},
+				});
+			});
+		});
+		const mockData = {
+			foodName: 'foodName',
+			cookTime: 100,
+			content: 'content',
+			foodImageFiles: [(image as unknown) as File],
+			recipeLike: 1,
+			userLike: 0,
+		};
+		await mockStore.dispatch<any>(actionCreators.createRecipe(mockData));
+		expect(spy).toBeCalledTimes(1);
+
+		const actions = mockStore.getActions();
+		expect(actions.length).toBe(0);
+	});
+
+	it('should return error 711 for create Recipe action correctly', async () => {
+		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				reject({
+					response: {
+						data: {
+							code: 711,
+						},
+					},
+				});
+			});
+		});
+		const mockData = {
+			foodName: 'foodName',
+			cookTime: 100,
+			content: 'content',
+			foodImageFiles: [(image as unknown) as File],
+			recipeLike: 1,
+			userLike: 0,
+		};
+		await mockStore.dispatch<any>(actionCreators.createRecipe(mockData));
+		expect(spy).toBeCalledTimes(1);
+
+		const actions = mockStore.getActions();
+		expect(actions.length).toBe(0);
 	});
 
 	it('should return error for create Recipe action correctly', async () => {

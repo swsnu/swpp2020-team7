@@ -36,11 +36,13 @@ const MLFeatureAlert: React.FC<MLFeatureAlertProps> = ({
 						<LocalDiningIcon id="naengpa-logo-image" />
 						냉파
 					</div>
-					{!createLoading && <CancelIcon id="close-alert-button" onClick={onClickOffAlert} />}
+					{!createLoading && (
+						<CancelIcon id="close-alert-button" onClick={onClickOffAlert} />
+					)}
 				</div>
 				<div id="alert-content">{alertContent}</div>
 				<div id="confirm-alert-button-box">
-					{!goBack && !createLoading &&(
+					{!goBack && !createLoading && (
 						<Button id="confirm-alert-button" onClick={onClickOffAlert}>
 							확인
 						</Button>

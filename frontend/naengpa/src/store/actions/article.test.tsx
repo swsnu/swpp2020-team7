@@ -1,7 +1,7 @@
 import axios from 'axios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { ArticleEntity, CreateArticleEntity } from '../../model/article';
+import { ArticleEntity, CreateArticleEntity, EditArticleEntity } from '../../model/article';
 import { ArticleState } from '../reducers/article';
 import * as actionTypes from './actionTypes';
 import * as actionCreators from './article';
@@ -225,28 +225,28 @@ describe('ActionCreators', () => {
 				new Promise((resolve, reject) => {
 					const result = {
 						status: 200,
-						data: null,
+						data: {
+							id: 2,
+						},
 					};
 					resolve(result);
 				}),
 		);
 
-		const mockData: CreateArticleEntity = {
+		const mockData: EditArticleEntity = {
 			title: 'test title',
 			content: 'test content',
-			item: 'test item',
-			price: '0',
+			price: 0,
 			options: { isForSale: true, isForExchange: false, isForShare: false },
 			images: [(testImage as unknown) as File],
 		};
 
 		await actionCreators.editArticle(2, mockData)(mockStore.dispatch);
 		expect(spy).toBeCalled();
-		expect(spy).toBeCalledWith('/api/articles/2/', mockData);
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.EDIT_ARTICLE, payload: null };
-		expect(actions).toEqual([expectedPayload]);
+		const expectedPayload = { type: actionTypes.EDIT_ARTICLE, payload: { id: 2 } };
+		expect(actions[0]).toEqual(expectedPayload);
 	});
 
 	it('should return deleteArticle action correctly', async () => {

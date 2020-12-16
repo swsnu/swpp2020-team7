@@ -209,29 +209,31 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 								<TableRow id="recipe-row-box">
 									<TableCell id="image-box">
 										{image_list}
-										{foodImageFiles.length < 5 && <Box id="add-image-icon-box">
-											<label
-												aria-label="food-image-label"
-												htmlFor="food-image"
-											>
-												<AddCircleIcon
-													id="add-image-button"
-													type="button"
-												/>
-												<input
-													type="file"
-													id="food-image"
-													accept="image/*"
-													multiple
-													required
-													disabled={alert}
-													onChange={(e: ChangeEvent<HTMLInputElement>) =>
-														onClickAddImage(e)
-													}
-												/>
-											</label>
-											<PhotoCameraIcon id="add-image-icon" />
-										</Box>}
+										{foodImageFiles.length < 5 && (
+											<Box id="add-image-icon-box">
+												<label
+													aria-label="food-image-label"
+													htmlFor="food-image"
+												>
+													<AddCircleIcon
+														id="add-image-button"
+														type="button"
+													/>
+													<input
+														type="file"
+														id="food-image"
+														accept="image/*"
+														multiple
+														required
+														disabled={alert}
+														onChange={(
+															e: ChangeEvent<HTMLInputElement>,
+														) => onClickAddImage(e)}
+													/>
+												</label>
+												<PhotoCameraIcon id="add-image-icon" />
+											</Box>
+										)}
 									</TableCell>
 									<TableCell>
 										<Divider orientation="vertical" />

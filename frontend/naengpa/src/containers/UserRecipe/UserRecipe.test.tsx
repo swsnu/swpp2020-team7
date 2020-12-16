@@ -142,7 +142,7 @@ describe('UserRecipe', () => {
 		);
 		const component = mount(userRecipe);
 		await waitForComponentToPaint(component);
-		
+
 		const wrapper = component.find('#info');
 		expect(wrapper.find(ListItem).length).toBe(1);
 		wrapper.find(ListItem).simulate('click');

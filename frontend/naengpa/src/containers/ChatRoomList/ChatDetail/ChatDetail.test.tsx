@@ -54,6 +54,6 @@ describe('ChatDetail', () => {
 
 	it('ChatDetail renders without crashing', () => {
 		const component = mount(chatDetail);
-		expect(component.find('ChatDetail').length).toBe(1);
+		expect(component.find('#chatroom-info').length).toBe(1);
 	});
 });

@@ -18,16 +18,6 @@ const mockComment = {
 	totalLikes: 0,
 	createdAt: 'test',
 };
-const mockSecondComment = {
-	id: 2,
-	author: 'string',
-	profileImage: 'string',
-	recipeId: 1,
-	content: 'string',
-	userLike: 0,
-	totalLikes: 0,
-	createdAt: 'test',
-};
 
 const stubInitialState = {};
 const mockStore = store(stubInitialState);
