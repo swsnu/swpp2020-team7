@@ -40,6 +40,8 @@ interface ExtractMLFeatureProps {
 const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const createdRecipe = useSelector((state: AppState) => state.recipe.createdRecipe);
 	const [loading, setLoading] = useState(false);
+	const [createLoading, setCreateLoading] = useState(false);
+
 	const [foodName, setFoodName] = useState('');
 	const [content, setContent] = useState('');
 	const [foodImageFiles, setFoodImageFiles] = useState<File[]>([]);
@@ -51,7 +53,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const [alertContent, setAlertContent] = useState(
 		'요리 카테고리와 필요한 재료들이 요리명, 등록된 사진들 그리고 레시피를 기반으로 추천되었습니다. 해당 부분을 수정하거나 레시피등록 버튼을 눌러주세요. 첫번째로 업로드한 사진이 썸네일이 됩니다!',
 	);
-
 	// if the value is false => then each modal pops off.
 	const [showCategoryModal, setShowCategoryModal] = useState(false);
 	const [modifiedCategory, setModifiedCategory] = useState('');
@@ -148,6 +149,9 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				ingredients: newIngredientList,
 			};
 			dispatch(createRecipe(newRecipe));
+			setCreateLoading(true);
+			setAlert(true);
+			setAlertContent("잠시만 기다려주세요! 레시피가 생성되고 있습니다.")
 		}
 	};
 
@@ -230,6 +234,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				onClickOffAlert={(e) => setAlert(false)}
 				goBack={goBackButton}
 				onClickCancelAlert={onClickCancelAlert}
+				createLoading={createLoading}
 			/>
 			{loading && <Loading />}
 			{!loading && (
