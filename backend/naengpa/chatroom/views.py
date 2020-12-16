@@ -65,7 +65,6 @@ def make_chatroom(request):
         chatroom = ChatRoom.objects.create()
         chatroom.chat_members.add(user, friend)
         chatroom.save()
-        pass
     except ChatMember.DoesNotExist:
         return HttpResponseBadRequest()
 

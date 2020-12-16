@@ -29,7 +29,7 @@ def comment_info(request, cid):
             comment.save(update_fields=['content'])
             user_like = CommentLike.objects.filter(
                 comment_id=cid, user_id=user_id).count()
-        except (KeyError, json.decoder.JSONDecodeError) as e:
+        except (KeyError, json.decoder.JSONDecodeError):
             return HttpResponseBadRequest()
         return JsonResponse(data={
             'id': comment.id,

@@ -5,6 +5,7 @@ from django.test import TestCase, Client
 from user.models import Region
 from ingredient.models import Ingredient, IngredientCategory
 from food_category.models import FoodCategory
+from user.models import Fridge
 from .models import Recipe, Image, RecipeIngredient, RecipeLike
 
 User = get_user_model()
@@ -25,6 +26,8 @@ class RecipeTestCase(TestCase):
             region_range=1,
         )
         test_user.save()
+        test_fridge = Fridge(user=test_user)
+        test_fridge.save()
 
         test_food_category = FoodCategory.objects.create(name="육류")
         self.mock_recipe = Recipe.objects.create(
