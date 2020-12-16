@@ -100,7 +100,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const image = currentList?.map((value) => {
 		return (
 			<img
-				key={`#${value}`}
+				key={`#${value.file_path}`}
 				src={value.file_path}
 				alt="/api/images"
 				width="250px"
