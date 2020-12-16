@@ -15,7 +15,7 @@ const compressImage = async (file: File) => {
 			context?.canvas.toBlob(
 				(newImageBlob) => {
 					if (newImageBlob) {
-						resolve(new File([newImageBlob], file.name) as File);
+						resolve(new File([newImageBlob], file.name));
 					} else {
 						resolve(file);
 					}

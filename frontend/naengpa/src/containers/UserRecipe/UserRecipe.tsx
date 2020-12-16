@@ -39,7 +39,7 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 
 	const loadRecipe = useCallback(async () => {
 		if (loading && user) {
-			await dispatch(getUserRecipes(user?.id));
+			dispatch(getUserRecipes(user?.id));
 			setLoading(false);
 		}
 	}, [dispatch, loading, user]);

@@ -32,9 +32,9 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 	const onLoadPage = useCallback(async () => {
 		if (loading) {
 			if (page === 1) {
-				await dispatch(getArticleList(query, { isForSale, isForExchange, isForShare }));
+				dispatch(getArticleList(query, { isForSale, isForExchange, isForShare }));
 			} else {
-				await dispatch(
+				dispatch(
 					getPageArticleList(query, { isForSale, isForExchange, isForShare }, page),
 				);
 			}

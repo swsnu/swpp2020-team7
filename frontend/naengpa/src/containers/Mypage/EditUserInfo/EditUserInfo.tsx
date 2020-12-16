@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { History } from 'history';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { Input, Box, Avatar } from '@material-ui/core';
+import { Box, Avatar } from '@material-ui/core';
 import Tab from '../../../components/Tab/Tab';
 import { AppState } from '../../../store/store';
 import { editUser } from '../../../store/actions/index';
