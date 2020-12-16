@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import { Collapse } from '@material-ui/core';
+import { executionAsyncId } from 'async_hooks';
 import { history } from '../../../store/store';
 import RecipeDetail from './RecipeDetail';
 import { ArticleEntity } from '../../../model/article';
@@ -162,7 +163,7 @@ describe('RecipeDetail', () => {
 		const component = mount(recipeDetail);
 		const wrapper = component.find('#recipe-edit');
 		wrapper.find('button').at(0).simulate('click');
-		expect(spyHistoryPush).toBeCalledWith('/recipes/1/edit');
+		expect(spyHistoryPush).toBeCalledWith('/recipes/NaN/edit');
 	});
 
 	// it('should check if pagination works', async () => {

@@ -57,7 +57,7 @@ describe('Navigation', () => {
 
 	it('user-notice-button should be clicked correctly', () => {
 		const component = mount(navigation);
-		const ingredientContentsWrapper = component.find('button#user-notification-button').at(0);
+		const ingredientContentsWrapper = component.find('#user-notification-button').at(0);
 		ingredientContentsWrapper.simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/notifications');
 	});

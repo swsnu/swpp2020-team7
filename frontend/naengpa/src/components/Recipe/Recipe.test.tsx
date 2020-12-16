@@ -144,7 +144,7 @@ describe('Recipe', () => {
 		const component = mount(recipe);
 
 		const cookTimeWrapper = component.find('div#recipe-cook-time');
-		expect(cookTimeWrapper.text()).toBe('2시간');
+		expect(cookTimeWrapper.text()).toBe('2H');
 	});
 
 	it('renders recipe-like-count with 1 like correctly', () => {
