@@ -18,14 +18,16 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user);
 	const chatRoom = useSelector((state: AppState) => state.user.chatRoom);
+	const chatMessages = useSelector((state: AppState) => state.user?.chatRoom?.messages);
 	const currentPath = window.location.pathname.split('/');
 	const chatRoomId = parseInt(currentPath[currentPath.length - 1], 10);
 	const [content, setContent] = useState('');
 	const [loading, setLoading] = useState(true);
+	const [sending, setSending] = useState(false);
 
 	const chatMessage =
 		user && chatRoom ? (
-			chatRoom?.messages!.map((message, idx) => {
+			chatMessages?.map((message, idx) => {
 				if (message.author === user?.user?.name) {
 					return (
 						<Typography
@@ -67,20 +69,21 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		if (e.key === 'Enter' && content !== '' && !Number.isNaN(chatRoomId)) {
 			e.preventDefault();
 			e.stopPropagation();
-			setLoading(true);
+			setSending(true);
 			await dispatch(sendChat(chatRoomId, content));
 			setContent('');
-			setLoading(false);
+			setSending(false);
 		}
 	};
 
 	const onClickSendMessage = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		if (content !== '' && !Number.isNaN(chatRoomId)) {
 			e.preventDefault();
-			setLoading(true);
+			e.stopPropagation();
+			setSending(true);
 			await dispatch(sendChat(chatRoomId, content));
 			setContent('');
-			setLoading(false);
+			setSending(false);
 		}
 	};
 
@@ -88,7 +91,6 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		setTimeout(async () => {
 			if(user && !Number.isNaN(chatRoomId)) {
 					await dispatch(getChatRoom(chatRoomId));
-					setLoading(false);
 			}
 		}, 1000);
 		setLoading(false);
@@ -119,8 +121,9 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					<p id="space">채팅정보</p>
 				</Typography>
 				<Divider />
-				<div id="chat-message-box">{!loading && chatRoom ? chatMessage : loaderTemplate}</div>
-				{!loading && <div id="chat-input-box">
+				<div id="chat-message-box">{(!loading && !sending && chatRoom) ? chatMessage : loaderTemplate}</div>
+				{(!loading && !sending && chatRoom) &&
+				 <div id="chat-input-box">
 					<InputBase
 						id="chat-input-field"
 						placeholder="내용을 입력해 주세요."
