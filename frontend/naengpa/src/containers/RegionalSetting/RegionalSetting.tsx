@@ -125,7 +125,7 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 		if (!regionList || !regionList.length) {
 			dispatch(getRegionList());
 		}
-	}, [regionList]);
+	}, [dispatch, regionList]);
 
 	useEffect(() => {
 		const container = document.getElementById('map');

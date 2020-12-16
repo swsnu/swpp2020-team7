@@ -44,7 +44,7 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 		if (!ingredientList || !ingredientList.length) {
 			dispatch(getIngredientList());
 		}
-	}, [ingredientList]);
+	}, [dispatch, ingredientList]);
 
 	const onClickAddIngredient = () => {
 		setModifiedIngredients([

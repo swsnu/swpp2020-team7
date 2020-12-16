@@ -13,7 +13,7 @@ const TodayStar: React.FC = () => {
 		if (!userList || !userList.length) {
 			dispatch(getUserList());
 		}
-	}, [dispatch]);
+	}, [dispatch, userList]);
 
 	const user = userList.map((item: any) => {
 		return <Profile key={item.id} profile={item} />;

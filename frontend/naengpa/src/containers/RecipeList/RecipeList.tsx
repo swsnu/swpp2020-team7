@@ -46,7 +46,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 			setMaxPageIndex(recipeState.lastPageIndex);
 			setLoading(false);
 		}
-	}, [recipeState.lastPageIndex, loading, query, page, sortBy, searchCategory]);
+	}, [dispatch, recipeState.lastPageIndex, loading, query, page, sortBy, searchCategory]);
 
 	const loadingFeeds = () => {
 		let totalSkeletons = 0;
@@ -56,7 +56,9 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		} else {
 			totalSkeletons = recipeList.length;
 		}
-		return Array.from(Array(totalSkeletons)).map((_) => <FeedLoading attribute="cardList" />);
+		return Array.from(Array(totalSkeletons)).map((_, idx) => (
+			<FeedLoading key={`loading-${idx}`} attribute="cardList" />
+		));
 	};
 
 	useEffect(() => {

@@ -11,6 +11,7 @@ from django.db import transaction
 from rest_framework.decorators import api_view
 
 from ingredient.models import Ingredient
+from article.views import _get_cache_or_set_article_by_id
 from utils.auth import login_required_401
 from utils.aws_utils import upload_profile_image
 from .models import Fridge, FridgeIngredient, Region, Notification
@@ -339,6 +340,21 @@ def user_ingredient(request, user_id, id):
 @ensure_csrf_cookie
 @api_view(['GET'])
 @login_required_401
+def user_articles(request, id):
+    """GET /api/users/:id/articles/ Get given user's article list"""
+    if request.method == 'GET':
+        try:
+            user = User.objects.get(id=id)
+            article_collection = [_get_cache_or_set_article_by_id(
+                aid) for aid in user.articles.values_list('id', flat=True)]
+        except User.DoesNotExist:
+            return HttpResponseNotFound()
+        return JsonResponse(article_collection, safe=False)
+
+
+@ensure_csrf_cookie
+@api_view(['GET'])
+@login_required_401
 def user_recipes(request, id):
     """GET /api/users/:id/recipes/ Get given user's recipe list"""
     if request.method == 'GET':
@@ -366,7 +382,7 @@ def user_recipes(request, id):
                 'author', 'food_category'
             ).prefetch_related('ingredients').all()]
         except User.DoesNotExist:
-            return HttpResponseBadRequest()
+            return HttpResponseNotFound()
         return JsonResponse(recipe_collection, safe=False)
 
 

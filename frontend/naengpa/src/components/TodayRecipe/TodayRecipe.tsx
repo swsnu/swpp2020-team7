@@ -18,7 +18,7 @@ const TodayRecipe: React.FC<TodayRecipeProps> = ({ history }) => {
 		if (!todayRecipeList || !todayRecipeList.length) {
 			dispatch(getTodayRecipeList());
 		}
-	}, [dispatch]);
+	}, [dispatch, todayRecipeList]);
 
 	const recipe = todayRecipeList?.length
 		? todayRecipeList?.map((item: any) => (

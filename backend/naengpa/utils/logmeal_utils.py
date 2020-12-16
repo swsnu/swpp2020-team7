@@ -2,6 +2,7 @@
 import io
 import requests
 from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from naengpa.settings.env import LOGMEAL_TOKEN
 
 LOGMEAL_API_URL = 'https://api.logmeal.es/v2/recognition/dish'
@@ -24,10 +25,16 @@ food_category_result = {
 
 
 def convert_png_to_jpeg(img_data):
-    png = Image.open(io.BytesIO(img_data))
+    png = Image.open(img_data)
     jpeg = Image.new('RGB', (png.width, png.height), color=(255, 255, 255))
-    jpeg.paste(png, png)
-    return jpeg
+    jpeg.paste(png, (0, 0), png)
+    jpeg.save('test.jpeg', 'jpeg')
+    saved_jpeg = Image.open('test.jpeg')
+    new_io = io.BytesIO()
+    saved_jpeg.save(new_io, format='JPEG')
+    test = open('test.jpeg', 'rb')
+    return InMemoryUploadedFile(test, None, 'test.jpg', 'image/jpeg',
+                                new_io.tell, None)
 
 
 class InvalidImageFileGiven(Exception):

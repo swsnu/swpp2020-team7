@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { History } from 'history';
 import './UserInfo.scss';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,9 +15,14 @@ interface UserInfoProps {
 const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user.user);
+	const [isUserLoaded, setIsUserLoaded] = useState(false);
+
 	useEffect(() => {
-		dispatch(getUser(user!));
-	}, [user]);
+		if (!isUserLoaded) {
+			dispatch(getUser(user!));
+			setIsUserLoaded(true);
+		}
+	});
 
 	return (
 		<div id="mypage">

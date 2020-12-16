@@ -20,7 +20,7 @@ const MyFridge: React.FC<MyFridgeProps> = ({ history }) => {
 
 	useEffect(() => {
 		dispatch(getFoodCategoryList());
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<div id="my-fridge-page">

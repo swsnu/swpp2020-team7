@@ -9,7 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { Skeleton } from '@material-ui/lab';
 import { toast } from 'react-toastify';
 import Tab from '../../components/Tab/Tab';
-import { getChatRoomList, getChatRoom } from '../../store/actions/index';
+import { getChatRoomList } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 
 interface ChatRoomListProps {
@@ -21,8 +21,8 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user);
 	const [loading, setLoading] = useState(true);
 
-	const loaderTemplate = Array.from(Array(8)).map((idx) => {
-		return <Skeleton className="skeleton" />;
+	const loaderTemplate = Array.from(Array(8)).map((_, idx) => {
+		return <Skeleton key={`skeleton-${idx}`} className="skeleton" />;
 	});
 
 	useEffect(() => {
@@ -30,7 +30,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 			dispatch(getChatRoomList());
 			setLoading(false);
 		}
-	}, [dispatch]);
+	}, [dispatch, user]);
 
 	const chatRoomCollection = user.chatRoomList?.map((chatRoom: any) => {
 		return (
@@ -61,7 +61,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	return (
 		<div id="mypage">
 			<Tab history={history} />
-			<Typography id="chatroom-list">
+			<div id="chatroom-list">
 				<Typography id="chatroom-header" gutterBottom>
 					쪽지함
 				</Typography>
@@ -87,7 +87,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 						chatRoomCollection
 					)}
 				</div>
-			</Typography>
+			</div>
 		</div>
 	);
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import Alert from '@material-ui/lab/Alert';
-import { Collapse, Button, Checkbox, FormControlLabel, Input, Divider } from '@material-ui/core';
+import { Collapse, Button, Checkbox, FormControlLabel, Divider } from '@material-ui/core';
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { RecipeIngredient } from '../../../model/recipe';

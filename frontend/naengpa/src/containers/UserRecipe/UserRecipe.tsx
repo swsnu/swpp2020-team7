@@ -32,7 +32,7 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 		const feedCount = 3;
 		const feeds = [];
 		for (let i = 0; i < feedCount; i += 1) {
-			feeds.push(<FeedLoading attribute="card" />);
+			feeds.push(<FeedLoading key={i} attribute="card" />);
 		}
 		return feeds;
 	};
@@ -42,7 +42,7 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 			await dispatch(getUserRecipes(user?.id));
 			setLoading(false);
 		}
-	}, [recipeList]);
+	}, [dispatch, loading, user]);
 
 	useEffect(() => {
 		loadRecipe();

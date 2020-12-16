@@ -18,13 +18,13 @@ import {
 	deleteRecipe,
 	editRecipe,
 	toggleRecipe,
-	getArticle,
 	getRecipe,
 } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import Article from '../../../components/Article/Article';
 import Comment from '../../../components/Comment/Comment';
 import CreateComment from '../../CreateComment/CreateComment';
+import { ArticleEntity } from '../../../model/article';
 import { RecipeEntity, RecipeImage } from '../../../model/recipe';
 import { CommentEntity } from '../../../model/comment';
 
@@ -34,7 +34,7 @@ interface RecipeDetailProps {
 
 const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const recipe = useSelector((state: AppState) => state.recipe?.recipe) as RecipeEntity;
-	const articleList = useSelector((state: AppState) => state.article.articleList);
+	const relatedArticles = useSelector((state: AppState) => state.recipe.relatedArticles);
 	const user = useSelector((state: AppState) => state.user.user);
 	const userIngredients = useSelector((state: AppState) => state.fridge.ingredientList);
 	const commentList = useSelector((state: AppState) => state.comment.commentList);
@@ -129,9 +129,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				: `${notInFridgeJoined}를`;
 	}
 
-	const articleFiltered = articleList.filter((item) => notInFridgeNames.includes(item.item.name));
-
-	const article = articleFiltered.map((item: any) => {
+	const article = relatedArticles?.map((item: ArticleEntity) => {
 		return <Article key={item.id} article={item} history={history} />;
 	});
 
@@ -167,10 +165,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	}, [dispatch, images, page]);
 
 	useEffect(() => {
-		if (!recipe) {
+		if (!recipe && !Number.isNaN(recipeId)) {
 			dispatch(getRecipe(recipeId));
 		}
-	}, [dispatch, recipeId]);
+	}, [dispatch, recipe, recipeId]);
 
 	useEffect(() => {
 		setRecipeLike(recipe?.recipeLike);
@@ -326,14 +324,14 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						<Skeleton />
 					)}
 				</Typography>
-				<div id="articles">{article}</div>
+				{recipe ? <div id="articles">{article}</div> : <Skeleton />}
 			</div>
 			<Divider variant="middle" />
 			<div id="recipe-section5">
 				<Typography id="recipe-section5-header" gutterBottom variant="h5">
 					{recipe ? '댓글' : <Skeleton />}
 				</Typography>
-				{comments}
+				{recipe ? comments : <Skeleton />}
 				<CreateComment recipeId={recipe?.id!} />
 			</div>
 		</div>

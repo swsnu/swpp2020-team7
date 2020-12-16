@@ -49,7 +49,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 
 	useEffect(() => {
 		dispatch(getUser(user!));
-	}, []);
+	}, [dispatch]);
 
 	const onClickCheck = async (id: number, deleted: boolean) => {
 		if (!deleted) {
@@ -87,6 +87,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 	const notifications = user?.notifications?.length ? (
 		user?.notifications?.map((item: NotificationEntity) => (
 			<ListItem
+				key={item.id}
 				button
 				divider
 				onClick={() => onClickNotification(item.category, item.targetId)}

@@ -20,7 +20,6 @@ import {
 	TableRow,
 	TextField,
 	Divider,
-	Typography,
 } from '@material-ui/core';
 import './CreateArticle.scss';
 import { toast } from 'react-toastify';
@@ -51,7 +50,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 	const [images, setImages] = useState<File[]>([]);
 
 	// alert state is true if alert is necessary, otherwise false.
-	const [alert, setAlert] = useState('거래품명, 제목, 내용, 가격 및 사진을 모두 입력해 주세요');
+	const alert = '거래품명, 제목, 내용, 가격 및 사진을 모두 입력해 주세요';
 	const [onAlert, setOnAlert] = useState(false);
 	const dispatch = useDispatch();
 

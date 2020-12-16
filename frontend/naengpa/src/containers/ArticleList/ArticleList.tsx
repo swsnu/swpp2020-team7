@@ -40,7 +40,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 			}
 			setLoading(false);
 		}
-	}, [loading]);
+	}, [dispatch, loading]);
 
 	useEffect(() => {
 		onLoadPage();

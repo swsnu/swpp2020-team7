@@ -1,10 +1,11 @@
 """views for article"""
 import json
 from operator import itemgetter
-from django.http import JsonResponse, HttpResponseBadRequest,  HttpResponseNotFound
+from django.http import JsonResponse, HttpResponseBadRequest,  HttpResponseForbidden, HttpResponseNotFound
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.core.cache import cache
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 from django.db import transaction
 from django.db.models.functions import Concat
 from django.db.models import F, Q, Value, CharField
@@ -16,9 +17,6 @@ from utils.aws_utils import upload_images
 from utils.gis_utils import get_nearest_places_ids_from_region, get_nearest_places_names_from_region
 from utils.auth import login_required_401
 from .models import Article, Image
-
-from django.contrib.auth import get_user_model
-User = get_user_model()
 
 
 class InvalidOptionsGivenError(Exception):
@@ -92,7 +90,7 @@ def article_list_get(request):
     if query:
         q = Q()
         q |= Q(title__icontains=query) | Q(content__icontains=query) | Q(
-            querystring__icontains=F('item__name') | Q(item__name__icontains=query))
+            querystring__icontains=F('item__name')) | Q(item__name__icontains=query)
         filtered_list = filtered_list.annotate(
             querystring=Value(query, output_field=CharField())
         ).filter(q)
@@ -160,7 +158,7 @@ def article_list(request):
 
 
 @ensure_csrf_cookie
-@api_view(['GET', 'DELETE'])
+@api_view(['GET', 'PUT', 'DELETE'])
 @login_required_401
 @transaction.atomic
 def article_info(request, aid):
@@ -169,6 +167,40 @@ def article_info(request, aid):
         ''' GET /api/articles/:aid/ get article of given id '''
         return JsonResponse(_get_cache_or_set_article_by_id(aid))
 
+    elif request.method == 'PUT':
+        ''' PUT /api/articles/:aid/ put article of given id '''
+        article = get_object_or_404(Article, pk=aid)
+        if request.user.id != article.author.id:
+            return HttpResponseForbidden()
+        try:
+            true, false = True, False
+            article_data = json.loads(request.data.get('article'))
+            title, content, price, options = itemgetter(
+                'title', 'content', 'price', 'options')(article_data)
+            if len(options) != 3 or True not in options.values():
+                raise InvalidOptionsGivenError
+
+            article.title = title
+            article.content = content
+            article.price = price
+            article.is_for_sale = options['isForSale']
+            article.is_for_exchange = options['isForExchange']
+            article.is_for_share = options['isForShare']
+            article.save()
+        except (KeyError, json.decoder.JSONDecodeError, InvalidOptionsGivenError):
+            return HttpResponseBadRequest()
+
+        images = request.FILES.getlist('image')
+        if images:
+            images_path = upload_images(
+                images, "article", aid)
+            Image.objects.filter(
+                author_id=request.user.id, article_id=aid).delete()
+            for path in images_path:
+                Image.objects.create(author_id=request.user.id,
+                                     file_path=path, article_id=aid)
+
+        return JsonResponse(_get_cache_or_set_article_by_id(aid), status=201)
     elif request.method == 'DELETE':
         ''' DELETE /api/articles/:aid/ delete article of given id '''
         try:

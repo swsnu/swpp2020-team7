@@ -10,12 +10,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import { Skeleton } from '@material-ui/lab';
-import {
-	createChatRoom,
-	deleteArticle,
-	editArticle,
-	getArticle,
-} from '../../../store/actions/index';
+import { createChatRoom, deleteArticle, getArticle } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';
 import { ArticleEntity, ArticleImage } from '../../../model/article';
 
@@ -46,7 +41,6 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 	};
 
 	const onClickEditArticle = () => {
-		dispatch(editArticle(article.id, article));
 		history.push(`/articles/${article.id}/edit`);
 	};
 
@@ -76,7 +70,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 	}, [dispatch, images, page]);
 
 	useEffect(() => {
-		if (!article) {
+		if (!article && !Number.isNaN(articleId)) {
 			dispatch(getArticle(articleId));
 		}
 	}, [dispatch, articleId]);

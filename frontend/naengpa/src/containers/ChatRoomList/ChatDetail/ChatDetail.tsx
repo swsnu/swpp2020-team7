@@ -37,7 +37,11 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					);
 				}
 				return (
-					<Typography id="member-message" gutterBottom>
+					<Typography
+						key={`${message.createdAt}-${message.author}-${idx + 1}`}
+						id="member-message"
+						gutterBottom
+					>
 						<span id="message-content">{message.content}</span>
 						<span id="message-created-time">{message.createdAt}</span>
 					</Typography>
@@ -47,9 +51,9 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 			<></>
 		);
 
-	const loaderTemplate = Array.from(Array(8)).map((idx) => {
-		if (idx % 2) return <Skeleton className="skeleton" />;
-		return <Skeleton className="skeleton2" />;
+	const loaderTemplate = Array.from(Array(8)).map((_, idx) => {
+		if (idx % 2) return <Skeleton key={`skeleton-${idx}`} className="skeleton" />;
+		return <Skeleton key={`skeleton-${idx}`} className="skeleton2" />;
 	});
 
 	const onClickGoBackToChatRoomList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -61,14 +65,13 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		if (e.key === 'Enter' && content !== '') {
 			e.preventDefault();
 			e.stopPropagation();
-			if(typeof chatRoomId === 'number')
-				dispatch(sendChat(chatRoomId, content));
+			if (!Number.isNaN(chatRoomId)) dispatch(sendChat(chatRoomId, content));
 			setContent('');
 		}
 	};
 
 	const onClickSendMessage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		if (content !== '') {
+		if (content !== '' && !Number.isNaN(chatRoomId)) {
 			e.preventDefault();
 			dispatch(sendChat(chatRoomId, content));
 			setContent('');
@@ -76,11 +79,11 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	};
 
 	useEffect(() => {
-		if (user)
-			setTimeout(
-				dispatch(getChatRoom(chatRoomId)),
-				1000,
-			);
+		if (user && !Number.isNaN(chatRoomId)) {
+			setTimeout(() => {
+				dispatch(getChatRoom(chatRoomId));
+			}, 1000);
+		}
 	}, [user.chatRoom]);
 
 	return (
