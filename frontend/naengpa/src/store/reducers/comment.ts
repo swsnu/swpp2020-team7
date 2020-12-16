@@ -8,7 +8,7 @@ export type CommentState = {
 };
 
 const initialState: CommentState = {
-	commentList: JSON.parse(window.sessionStorage.getItem('comments')!),
+	commentList: [],
 };
 
 let commentList = [];
@@ -25,19 +25,11 @@ function commentReducer(
 			return { ...state, commentList: action.payload };
 		/* CREATE COMMENT */
 		case actionTypes.ADD_COMMENT:
-			window.sessionStorage.setItem(
-				'comments',
-				JSON.stringify([...state.commentList, action.payload]),
-			);
 			return { ...state, commentList: [...state.commentList, action.payload] };
 		/* EDIT COMMENT */
 		case actionTypes.EDIT_COMMENT: {
 			const filtered = state.commentList.filter(
 				(com: CommentEntity) => com.id !== action.payload.id,
-			);
-			window.sessionStorage.setItem(
-				'comments',
-				JSON.stringify([...filtered, action.payload]),
 			);
 			return { ...state, commentList: [...filtered, action.payload] };
 		}
@@ -46,7 +38,6 @@ function commentReducer(
 			const deleted = state.commentList.filter(
 				(com: CommentEntity) => com.id !== action.targetId,
 			);
-			window.sessionStorage.setItem('comments', JSON.stringify(deleted));
 			return {
 				...state,
 				commentList: deleted,
@@ -65,7 +56,6 @@ function commentReducer(
 					return comment;
 				});
 			}
-			window.sessionStorage.setItem('comments', JSON.stringify(commentList));
 			return { ...state, commentList };
 		}
 		default:
