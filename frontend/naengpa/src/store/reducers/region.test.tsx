@@ -28,8 +28,8 @@ const RecipeState: RegionState = {
 
 describe('Recipe Reducer', () => {
 	it('should return default state', () => {
-		const newState = regionReducer(RecipeState);
-		expect(newState).toEqual(RecipeState);
+		const newState = regionReducer();
+		expect(newState).toEqual({ regionList: null });
 	});
 
 	it('should check if it can get region list correctly', () => {

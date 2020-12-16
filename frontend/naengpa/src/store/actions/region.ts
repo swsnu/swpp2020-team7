@@ -15,7 +15,7 @@ export const getRegionList = () => {
 				const response = await axios.get('/api/regions/');
 				const regionList: RegionEntity[] = response.data;
 				dispatch(getRegionList_(regionList));
-				window.localStorage.setItem('reigionList', JSON.stringify(regionList));
+				window.localStorage.setItem('regionList', JSON.stringify(regionList));
 			}
 		} catch (e) {
 			toast.error('😢 지역 정보를 가져오는데 실패했어요', e);

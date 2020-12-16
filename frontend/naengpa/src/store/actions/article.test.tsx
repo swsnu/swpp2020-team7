@@ -33,7 +33,7 @@ const mockArticle: ArticleEntity = {
 	images: [
 		{
 			id: 2,
-			path: 'path',
+			file_path: 'path',
 		},
 	],
 };
@@ -64,11 +64,12 @@ const stubInitialState: { article: ArticleState } = {
 				images: [
 					{
 						id: 2,
-						path: 'path',
+						file_path: 'path',
 					},
 				],
 			},
 		],
+		lastPageIndex: 1,
 		article: mockArticle,
 	},
 };
@@ -86,7 +87,10 @@ describe('ActionCreators', () => {
 				new Promise((resolve, reject) => {
 					const result = {
 						status: 200,
-						data: null,
+						data: {
+							articleList: [],
+							lastPageIndex: 0,
+						},
 					};
 					resolve(result);
 				}),
@@ -99,8 +103,69 @@ describe('ActionCreators', () => {
 		});
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.GET_ARTICLE_LIST, payload: null };
-		// expect(actions).toEqual([expectedPayload]);
+		const expectedPayload = {
+			type: actionTypes.GET_ARTICLE_LIST,
+			articleList: [],
+			lastPageIndex: 0,
+		};
+		expect(actions).toEqual([expectedPayload]);
+	});
+
+	it('should handle getArticleList error correctly', async () => {
+		const spy = jest.spyOn(axios, 'get').mockImplementation(
+			() =>
+				new Promise((resolve, reject) => {
+					reject();
+				}),
+		);
+
+		await actionCreators.getArticleList('query', undefined)(mockStore.dispatch);
+
+		const actions = mockStore.getActions();
+		expect(actions).toEqual([]);
+	});
+
+	it('should return getPageArticleList action correctly', async () => {
+		const spy = jest.spyOn(axios, 'get').mockImplementation(
+			() =>
+				new Promise((resolve, reject) => {
+					const result = {
+						status: 200,
+						data: {
+							articleList: [],
+							lastPageIndex: 0,
+						},
+					};
+					resolve(result);
+				}),
+		);
+
+		await actionCreators.getPageArticleList('query', undefined, 2)(mockStore.dispatch);
+		expect(spy).toBeCalledTimes(1);
+		expect(spy).toBeCalledWith('/api/articles/', {
+			params: { fe: undefined, fh: undefined, fs: undefined, p: 2, q: 'query' },
+		});
+
+		const actions = mockStore.getActions();
+		const expectedPayload = {
+			type: actionTypes.GET_PAGE_ARTICLE_LIST,
+			pageArticleList: [],
+			lastPageIndex: 0,
+		};
+		expect(actions).toEqual([expectedPayload]);
+	});
+
+	it('should handle getPageArticleList error correctly', async () => {
+		const spy = jest.spyOn(axios, 'get').mockImplementation(
+			() =>
+				new Promise((resolve, reject) => {
+					reject();
+				}),
+		);
+
+		await actionCreators.getPageArticleList('query', undefined, 2)(mockStore.dispatch);
+
+		const actions = mockStore.getActions();
 		expect(actions).toEqual([]);
 	});
 

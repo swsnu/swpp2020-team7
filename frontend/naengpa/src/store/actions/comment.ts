@@ -9,9 +9,9 @@ export const getCommentList_ = (comments: CommentEntity[]) => ({
 	payload: comments,
 });
 
-export const getComment = () => ({
+export const getComment_ = (comment: CommentEntity) => ({
 	type: actionTypes.GET_COMMENT,
-	payload: {},
+	payload: comment,
 });
 
 /* ADD COMMENT */
@@ -78,7 +78,7 @@ export const deleteComment = (id: number) => {
 
 export type CommentAction =
 	| ReturnType<typeof getCommentList_>
-	| ReturnType<typeof getComment>
+	| ReturnType<typeof getComment_>
 	| ReturnType<typeof addComment_>
 	| ReturnType<typeof editComment_>
 	| ReturnType<typeof toggleCommentLike_>

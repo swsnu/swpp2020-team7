@@ -40,7 +40,7 @@ const mockChatRoomList: ChatEntity[] = [mockChatRoom, mockChatRoom2];
 
 describe('User Reducer', () => {
 	it('should return default state', () => {
-		const newState = userReducer(userState);
+		const newState = userReducer();
 		expect(newState).toEqual(userState);
 	});
 

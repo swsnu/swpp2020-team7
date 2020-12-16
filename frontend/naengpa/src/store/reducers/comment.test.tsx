@@ -24,10 +24,10 @@ const mockSecondComment = {
 
 const stubInitialState: CommentState = {
 	commentList: [mockComment],
-}
+};
 const stubSecondInitialState: CommentState = {
 	commentList: [mockComment, mockSecondComment],
-}
+};
 const initialState: CommentState = {
 	commentList: [],
 };
@@ -99,7 +99,7 @@ describe('Comment Reducer', () => {
 			commentList: [mockComment],
 		});
 	});
-	
+
 	it('should check if it can toggle comment like from multiple comments correctly', () => {
 		const newState = commentReducer(stubSecondInitialState, {
 			type: actionTypes.TOGGLE_COMMENT_LIKE,

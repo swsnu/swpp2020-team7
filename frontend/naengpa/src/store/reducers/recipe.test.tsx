@@ -1,7 +1,7 @@
+import { LOCATION_CHANGE } from 'connected-react-router';
 import recipeReducer, { InitialState } from './recipe';
 import * as actionTypes from '../actions/actionTypes';
 import { RecipeEntity } from '../../model/recipe';
-import { LOCATION_CHANGE } from 'connected-react-router';
 
 const image = import('../../../public/icons/boy.png');
 const mockRecipeList: RecipeEntity[] = [
@@ -89,7 +89,7 @@ describe('Recipe Reducer', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.GET_RECIPE,
 			recipe: mockRecipeList[0],
-			relatedArticles: []
+			relatedArticles: [],
 		});
 		expect(newState).toEqual({
 			...RecipeState,
@@ -217,12 +217,13 @@ describe('Recipe Reducer', () => {
 	});
 
 	it('should check if recipe be null when location change', () => {
-		const newState = recipeReducer({...RecipeState, recipe: mockRecipeList[0]},
+		const newState = recipeReducer(
+			{ ...RecipeState, recipe: mockRecipeList[0] },
 			{
 				type: LOCATION_CHANGE,
 				payload: null,
 			},
 		);
-		expect(newState).toEqual({...RecipeState, recipe: null});
+		expect(newState).toEqual({ ...RecipeState, recipe: null });
 	});
 });

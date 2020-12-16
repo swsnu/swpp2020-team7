@@ -13,8 +13,8 @@ const initialState: FoodCategoryState = {
 
 describe('Ingredient Reducer', () => {
 	it('should return default state', () => {
-		const newState = foodCategoryReducer(initialState);
-		expect(newState).toEqual(initialState);
+		const newState = foodCategoryReducer();
+		expect(newState).toEqual({ foodCategoryList: null });
 	});
 
 	it('should check if it can get food category list correctly', () => {

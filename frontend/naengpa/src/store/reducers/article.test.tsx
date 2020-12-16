@@ -92,11 +92,14 @@ describe('Article Reducer', () => {
 	});
 
 	it('should get page article list correctly', () => {
-		const newState = articleReducer({...initialState, articleList: [mockArticleList[0]]}, {
-			type: actionTypes.GET_PAGE_ARTICLE_LIST,
-			pageArticleList: [mockArticleList[1]],
-			lastPageIndex: 2,
-		});
+		const newState = articleReducer(
+			{ ...initialState, articleList: [mockArticleList[0]] },
+			{
+				type: actionTypes.GET_PAGE_ARTICLE_LIST,
+				pageArticleList: [mockArticleList[1]],
+				lastPageIndex: 2,
+			},
+		);
 
 		expect(newState).toEqual({
 			...initialState,

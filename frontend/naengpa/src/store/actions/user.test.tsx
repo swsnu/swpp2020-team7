@@ -105,6 +105,46 @@ describe('ActionCreators', () => {
 		expect(spy).toBeCalled();
 	});
 
+	it('should handle login action error 404 correctly', async () => {
+		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				reject({
+					response: {
+						status: 404,
+					},
+				});
+			});
+		});
+		await mockStore.dispatch<any>(
+			actionCreators.login({
+				username: 'test',
+				password: 'test',
+			}),
+		);
+		const actions = mockStore.getActions();
+		expect(actions.length).toBe(0);
+	});
+
+	it('should handle login action error 401 correctly', async () => {
+		const spy = jest.spyOn(axios, 'post').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				reject({
+					response: {
+						status: 401,
+					},
+				});
+			});
+		});
+		await mockStore.dispatch<any>(
+			actionCreators.login({
+				username: 'test',
+				password: 'test',
+			}),
+		);
+		const actions = mockStore.getActions();
+		expect(actions.length).toBe(0);
+	});
+
 	it('should return logout action correctly, case 1', async () => {
 		const spy = jest.spyOn(axios, 'get').mockImplementation((url) => {
 			return new Promise((resolve, reject) => {
@@ -193,6 +233,7 @@ describe('ActionCreators', () => {
 				password: 'test',
 				dateOfBirth: '980515',
 				email: 'test@email.com',
+				profileImage: new File([new ArrayBuffer(1)], 'file.jpg'),
 			}),
 		);
 		expect(spy).toBeCalled();
@@ -464,11 +505,11 @@ describe('ActionCreators', () => {
 			});
 		});
 
-		await mockStore.dispatch<any>(actionCreators.deleteChatRoom('1'));
+		await mockStore.dispatch<any>(actionCreators.deleteChatRoom(1));
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
-		const expectedPayload = { type: actionTypes.DELETE_CHATROOM, id: '1' };
+		const expectedPayload = { type: actionTypes.DELETE_CHATROOM, id: 1 };
 		expect(actions[0]).toEqual(expectedPayload);
 	});
 
@@ -478,10 +519,60 @@ describe('ActionCreators', () => {
 				reject();
 			});
 		});
-		await mockStore.dispatch<any>(actionCreators.deleteChatRoom('1'));
+		await mockStore.dispatch<any>(actionCreators.deleteChatRoom(1));
 		expect(spy).toBeCalledTimes(1);
 
 		const actions = mockStore.getActions();
 		expect(actions.length).toEqual(0);
+	});
+
+	it('should return checkUsernameDuplicate action correctly', async () => {
+		const spy = jest.spyOn(axios, 'put').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: null,
+				};
+				resolve(result);
+			});
+		});
+
+		await actionCreators.checkUsernameDuplicate('test');
+		expect(spy).toBeCalledTimes(1);
+	});
+
+	it('should resolve checkUsernameDuplicate error correctly', async () => {
+		const spy = jest.spyOn(axios, 'put').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				reject();
+			});
+		});
+		actionCreators.checkUsernameDuplicate('test');
+		expect(spy).toBeCalledTimes(1);
+	});
+
+	it('should return readNotification action correctly', async () => {
+		const spy = jest.spyOn(axios, 'delete').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				const result = {
+					status: 200,
+					data: null,
+				};
+				resolve(result);
+			});
+		});
+
+		await actionCreators.readNotification(1);
+		expect(spy).toBeCalledTimes(1);
+	});
+
+	it('should resolve readNotification error correctly', async () => {
+		const spy = jest.spyOn(axios, 'delete').mockImplementation((url) => {
+			return new Promise((resolve, reject) => {
+				reject();
+			});
+		});
+		actionCreators.readNotification(1);
+		expect(spy).toBeCalledTimes(1);
 	});
 });
