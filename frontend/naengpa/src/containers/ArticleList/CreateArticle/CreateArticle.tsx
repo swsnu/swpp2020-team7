@@ -60,7 +60,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 		const fileImages = target.files as FileList;
 		// convert FileList iterable
 		const imageArray = Array.from(fileImages);
-		imageArray.forEach(async (file) => {
+		imageArray.slice(0, 5).forEach(async (file) => {
 			await compressImage(file).then((result) => {
 				setImages((state) => [...state, result]);
 			});
@@ -96,7 +96,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 	const onClickCreateArticle = async () => {
 		// if one of the input field is empty, then the alert modal shows itself
 		if (!images?.length) {
-			toast.error('🦄 사진을 입력해주세요!');
+			toast.error('🦄 사진을 입력해주세요! jpg, jpeg, png 파일 5개만 입력가능합니다. ');	
 		} else if (!item) {
 			toast.error('🦄 거래품목을 선택해주세요!');
 		} else if (!title) {
@@ -146,7 +146,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 
 	const image_list = !images.length
 		? []
-		: images.map((img, idx) => {
+		: images.slice(0, 5).map((img, idx) => {
 				return (
 					<div key={`#${img}`} id="delete-image-icon-box">
 						{!onAlert && (
@@ -303,7 +303,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 						<TableRow id="article-row-box">
 							<TableCell id="image-box">
 								{image_list}
-								<Box id="add-image-icon-box">
+								{images?.length < 5 && <Box id="add-image-icon-box">
 									<label aria-label="food-image-label" htmlFor="food-image">
 										<AddCircleIcon id="add-image-button" type="button" />
 										<input
@@ -319,7 +319,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 										/>
 									</label>
 									<PhotoCameraIcon id="add-image-icon" />
-								</Box>
+								</Box> }
 							</TableCell>
 							<TableCell>
 								<Divider orientation="vertical" />

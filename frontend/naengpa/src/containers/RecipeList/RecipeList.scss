@@ -3,6 +3,7 @@
   padding: 10px 150px;
   min-width: 800px;
   background-color: #ffffff;
+  justify-content: center;
 
   #create-recipe-button {
     display: flex;
@@ -30,6 +31,7 @@
   #recipe-list-buttons {
     display: flex;
     justify-content: flex-end;
+    margin-right: 3%;
   }
 
   #filter-button-true {
@@ -43,12 +45,11 @@
   }
 
   #recipe-cards {
-    min-height: 400px;
     display: flex;
     flex-flow: wrap;
-    justify-content: space-between;
     margin: 3% 0;
     padding: 0;
+    margin-left: 35px;
   }
 
   button {
@@ -92,6 +93,7 @@
   flex-direction: row;
   border: solid 1px #696464;
   padding: 2% 4%;
+  margin-left: 9%;
   min-width: 300px;
   align-items: center;
   border-radius: 15px;
@@ -108,16 +110,4 @@
   align-items: center;
 }
 
-#loading-bar {
-  margin-top: 150px;
-  font-size: 150%;
-}
 
-#vacant-recipe {
-  display: flex;
-  margin-top: 30%;
-  font-size: 100%;
-  color: #707070;
-  font-family: 'Jua', sans-serif;
-  justify-content: center;
-}

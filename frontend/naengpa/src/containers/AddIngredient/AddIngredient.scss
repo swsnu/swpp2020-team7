@@ -20,7 +20,7 @@ div#add-ingredient {
     display: flex;
     flex-direction: column;
     height: 370px;
-    width: 370px;
+    width: 350px;
     min-width: 300px;
     margin: 0;
     padding: 0;
@@ -53,7 +53,7 @@ div#add-ingredient {
 }
 
 button#add-ingredient-tag {
-    width: 100%;
+    width: 105px;
     height: 100%;
     border: solid 2px #ffdda1;
     border-radius: 0;
@@ -92,8 +92,10 @@ div#add-ingredient-search {
     border-left: solid 1px #e3e3e3;
     border-bottom: solid 1px #e3e3e3;
 
+    #add-ingredient-search-input {
+        font-size: 14px;
+    }
     font-family: 'Jua', sans-serif;
-    font-size: 60%;
     font-weight: 100;
     font-stretch: condensed;
     letter-spacing: 1.2px;

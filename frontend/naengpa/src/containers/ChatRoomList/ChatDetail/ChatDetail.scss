@@ -51,23 +51,17 @@
     #chat-message-box {
       height: 500px;
       overflow-y: scroll;
+      display: flex !important;
+      flex-direction: column-reverse !important;
 
       .skeleton {
         height: 60px;
-        // width: 300px;
         border-radius: 30px;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
       }
 
       .skeleton2 {
         height: 70px;
-        // width: 300px;
         border-radius: 30px;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
       }
 
       #user-message {
@@ -98,6 +92,7 @@
         justify-content: center;   
       }
     }
+
     #chat-input-box {
       bottom: 5%;
       border: 1px solid #707070; 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { History } from 'history';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -25,6 +25,7 @@ import { NotificationEntity } from '../../../model/user';
 import './UserNotification.scss';
 import { getUser } from '../../../store/actions';
 import { readNotification } from '../../../store/actions/user';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -45,11 +46,23 @@ interface UserNotificationProps {
 const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user.user);
+	const [loading, setLoading] = useState(true);
 	const classes = useStyles();
 
+	const loaderTemplate = Array.from(Array(8)).map((_, idx) => {
+		return <Skeleton key={`skeleton-${idx}`} className="skeleton" />;
+	});
+
+	const loadNotification = useCallback(async () => {
+		if (user) {
+			await dispatch(getUser(user!));
+			setLoading(false);
+		}
+	}, [user]);
+
 	useEffect(() => {
-		dispatch(getUser(user!));
-	}, [dispatch]);
+		loadNotification();
+	}, [loadNotification]);
 
 	const onClickCheck = async (id: number, deleted: boolean) => {
 		if (!deleted) {
@@ -133,7 +146,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 						style={{ maxHeight: '350px', overflow: 'auto' }}
 						aria-label="notifications"
 					>
-						{notifications}
+						{loading ? loaderTemplate : notifications}
 					</List>
 				</div>
 			</div>

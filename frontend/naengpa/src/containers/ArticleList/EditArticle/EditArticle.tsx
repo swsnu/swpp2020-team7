@@ -99,7 +99,7 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 	const onClickEditArticle = async () => {
 		// if one of the input field is empty, then the alert modal shows itself
 		if (!images?.length) {
-			toast.error('🦄 사진을 입력해주세요!');
+			toast.error('🦄 사진을 입력해주세요! jpg, jpeg, png 파일 5개만 입력가능합니다. ');
 		} else if (!title) {
 			toast.error('🦄 제목을 입력해주세요!');
 		} else if (!content) {
@@ -135,7 +135,7 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 
 	const image_list = !images.length
 		? []
-		: images.map((img) => {
+		: images.slice(0, 5).map((img) => {
 				return (
 					<div key={`#${img}`} id="delete-image-icon-box">
 						{!onAlert && (
@@ -276,7 +276,7 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 						<TableRow id="article-row-box">
 							<TableCell id="image-box">
 								{image_list}
-								<Box id="add-image-icon-box">
+								{images?.length < 5 && <Box id="add-image-icon-box">
 									<label aria-label="food-image-label" htmlFor="food-image">
 										<AddCircleIcon id="add-image-button" type="button" />
 										<input
@@ -289,7 +289,7 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 										/>
 									</label>
 									<PhotoCameraIcon id="add-image-icon" />
-								</Box>
+								</Box>}
 							</TableCell>
 							<TableCell>
 								<Divider orientation="vertical" />

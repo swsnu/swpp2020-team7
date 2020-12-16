@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import './ChatRoomList.scss';
@@ -7,7 +7,6 @@ import { Button, Divider, Typography, ListItem, ListItemText } from '@material-u
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
 import { Skeleton } from '@material-ui/lab';
-import { toast } from 'react-toastify';
 import Tab from '../../components/Tab/Tab';
 import { getChatRoomList } from '../../store/actions/index';
 import { AppState } from '../../store/store';
@@ -19,41 +18,48 @@ interface ChatRoomListProps {
 const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user);
+	const chatRoomList = useSelector((state: AppState) => state.user.chatRoomList);
 	const [loading, setLoading] = useState(true);
 
 	const loaderTemplate = Array.from(Array(8)).map((_, idx) => {
 		return <Skeleton key={`skeleton-${idx}`} className="skeleton" />;
 	});
 
-	useEffect(() => {
-		if (user) {
-			dispatch(getChatRoomList());
-			setLoading(false);
-		}
-	}, [dispatch, user]);
+	const loadChatRoom = useCallback(() => {
+		setTimeout(async () => {
+			if (user) {
+				await dispatch(getChatRoomList());
+				setLoading(false);
+			}
+		}, 1000);
+	}, [user]);
 
-	const chatRoomCollection = user.chatRoomList?.map((chatRoom: any) => {
+	useEffect(() => {
+		loadChatRoom();
+	}, [loadChatRoom]);
+
+	const chatRoomCollection = chatRoomList?.map((chatRoom: any) => {
 		return (
 			<Button
-				key={chatRoom.id}
+				key={chatRoom?.id}
 				id="chatroom"
 				onClick={(e) => {
 					e.preventDefault();
 					e.stopPropagation();
-					history.push(`/chatrooms/${chatRoom.id}`);
+					history.push(`/chatrooms/${chatRoom?.id}`);
 				}}
 			>
 				<Divider variant="middle" />
 				<div id="chat-member-image">
-					{!chatRoom.memberImage && <AccountCircleIcon id="profile-picture" />}
-					{chatRoom.memberImage && (
-						<Avatar id="profile-picture" src={chatRoom.memberImage as string} />
+					{!chatRoom?.memberImage && <AccountCircleIcon id="profile-picture" />}
+					{chatRoom?.memberImage && (
+						<Avatar id="profile-picture" src={chatRoom?.memberImage as string} />
 					)}
 				</div>
-				<div id="chat-member">{chatRoom.member}</div>
-				<div id="chat-message">{chatRoom.lastChat}</div>
-				<div id="chat-updated-time">{chatRoom.updatedAt}</div>
-				<div id="chat-count">{chatRoom.chatCount}</div>
+				<div id="chat-member">{chatRoom?.member}</div>
+				<div id="chat-message">{chatRoom?.lastChat}</div>
+				<div id="chat-updated-time">{chatRoom?.updatedAt}</div>
+				<div id="chat-count">{chatRoom?.chatCount}</div>
 			</Button>
 		);
 	});
@@ -76,8 +82,8 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 				>
 					{loading ? (
 						loaderTemplate
-					) : !chatRoomCollection ? (
-						<ListItem button onClick={() => toast.info('🐬 행복한 연말되세요!')}>
+					) : chatRoomCollection && !chatRoomCollection.length ? (
+						<ListItem style={{ marginLeft: '30px' }}>
 							<ListItemText
 								primary="🐬 채팅방이 존재하지 않습니다."
 								secondary="채팅을 시작해 보세요!"

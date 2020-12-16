@@ -17,13 +17,13 @@ export type InitialState = {
 };
 
 const RecipeState: InitialState = {
-	recipeList: JSON.parse(window.sessionStorage.getItem('recipeList')!),
+	recipeList: [],
 	todayRecipeList: [],
 	recipe: null,
 	relatedArticles: [],
-	lastPageIndex: JSON.parse(window.sessionStorage.getItem('lastPageIndex')!),
-	createdRecipe: JSON.parse(window.sessionStorage.getItem('createdRecipe')!),
-	userRecipes: JSON.parse(window.sessionStorage.getItem('userRecipes')!),
+	lastPageIndex: 1,
+	createdRecipe: null,
+	userRecipes: [],
 };
 
 interface LocationChangeAction extends Action {
