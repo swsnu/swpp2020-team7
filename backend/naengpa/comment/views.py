@@ -40,7 +40,7 @@ def comment_info(request, cid):
             'userLike': user_like,
             'totalLikes': comment.total_likes,
             'createdAt': comment.created_string,
-        }, status=201)
+        })
 
 
 @ensure_csrf_cookie

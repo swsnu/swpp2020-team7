@@ -85,7 +85,7 @@ class CommentTestCase(TestCase):
             '/api/comments/{}/'.format(self.mock_comment.id), json.dumps({
                 'content': 'new content',
             }), content_type='application/json')
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
         # delete comment
         response = self.client.delete(

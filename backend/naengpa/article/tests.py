@@ -73,13 +73,18 @@ class ArticleTestCase(TestCase):
         response = self.client.get('/api/articles/1/')
         self.assertEqual(response.status_code, 200)
 
+        # put article
+        mock_article = json.dumps({'title': 'test_new', 'content': 'test_new', 'price': 777, 'options': {
+            'isForSale': False, 'isForExchange': True, 'isForShare': False}})
+        response = self.client.put('/api/articles/1/', {
+            'article': mock_article,
+            'image': ''})
+        self.assertEqual(response.status_code, 200)
+
         # delete article
         response = self.client.delete('/api/articles/1/')
         self.assertEqual(response.status_code, 200)
 
         # bad request method
         response = self.client.post('/api/articles/1/')
-        self.assertEqual(response.status_code, 405)
-
-        response = self.client.put('/api/articles/1/')
         self.assertEqual(response.status_code, 405)
