@@ -31,6 +31,7 @@
   #recipe-list-buttons {
     display: flex;
     justify-content: flex-end;
+    margin-right: 3%;
   }
 
   #filter-button-true {
@@ -92,6 +93,7 @@
   flex-direction: row;
   border: solid 1px #696464;
   padding: 2% 4%;
+  margin-left: 9%;
   min-width: 300px;
   align-items: center;
   border-radius: 15px;
