@@ -62,7 +62,10 @@ class ArticleTestCase(TestCase):
         self.assertEqual(response.status_code, 405)
 
     def test_article(self):
-        mock_article_id = Article.objects.values_list('id', flat=True)[0]
+        mock_article = Article.objects.all()[0]
+        mock_article_id = mock_article.id
+        self.assertEqual(str(
+            mock_article), f'[{mock_article_id}] {mock_article.title} by {mock_article.author}')
 
         # user is not defined
         response = self.client.get(
@@ -73,6 +76,10 @@ class ArticleTestCase(TestCase):
         self.client.login(username='test', password='test')
 
         # get article
+        response = self.client.get('/api/articles/{}/'.format(mock_article_id))
+        self.assertEqual(response.status_code, 200)
+
+        # cache test
         response = self.client.get('/api/articles/{}/'.format(mock_article_id))
         self.assertEqual(response.status_code, 200)
 

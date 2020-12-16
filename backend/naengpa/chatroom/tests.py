@@ -68,6 +68,8 @@ class ChatRoomTestCase(TestCase):
         self.assertEqual(response.status_code, 405)
 
     def test_chatroom(self):
+        self.assertEqual(self.mock_chatroom.updated_string, '방금 전')
+
         # user is not defined
         response = self.client.get(
             '/api/chatrooms/{}/'.format(self.mock_chatroom.id), follow=True)

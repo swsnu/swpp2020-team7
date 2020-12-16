@@ -59,6 +59,15 @@ class RecipeTestCase(TestCase):
         response = self.client.get('/api/recipes/')
         self.assertEqual(response.status_code, 200)
 
+        response = self.client.get('/api/recipes/?query=test')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get('/api/recipes/?sort_by=ingredient')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get('/api/recipes/?sort_by=likes')
+        self.assertEqual(response.status_code, 200)
+
         # method post
         recipe_str = json.dumps({'foodName': 'apple', 'cookTime': 1,
                                  'content': 'test', 'foodCategory': '육류', 'ingredients': [{
