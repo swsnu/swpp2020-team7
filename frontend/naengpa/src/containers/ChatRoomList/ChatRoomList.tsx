@@ -80,8 +80,8 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 				>
 					{loading ? (
 						loaderTemplate
-					) : !chatRoomCollection ? (
-						<ListItem button onClick={() => toast.info('🐬 행복한 연말되세요!')}>
+					) : chatRoomCollection && !chatRoomCollection.length ? (
+						<ListItem style={{marginLeft: "30px"}}>
 							<ListItemText
 								primary="🐬 채팅방이 존재하지 않습니다."
 								secondary="채팅을 시작해 보세요!"
