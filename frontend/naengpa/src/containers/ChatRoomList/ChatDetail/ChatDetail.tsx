@@ -100,10 +100,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					<div id="member-info-box">
 						{!user?.chatRoom?.memberImage && <AccountCircleIcon id="profile-picture" />}
 						{user?.chatRoom?.memberImage && (
-							<Avatar
-								id="profile-picture"
-								src={user.chatRoom.memberImage}
-							/>
+							<Avatar id="profile-picture" src={user.chatRoom.memberImage} />
 						)}
 						<div id="chat-member-username">{user.chatRoom?.member}</div>
 					</div>

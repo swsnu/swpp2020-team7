@@ -41,8 +41,8 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if(user) {
-			if (!ingredientList || !ingredientList.length) {			
+		if (user) {
+			if (!ingredientList || !ingredientList.length) {
 				dispatch(getFridge(user!.id));
 			}
 		}

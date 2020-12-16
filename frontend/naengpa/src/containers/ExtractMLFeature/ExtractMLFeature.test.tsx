@@ -51,6 +51,7 @@ const stubInitialState = {
 	foodCategory: {
 		foodCategoryList: ['밥류', '면류', '떡류'],
 	},
+	ingredient: {},
 };
 
 const stubInitialState2 = {
