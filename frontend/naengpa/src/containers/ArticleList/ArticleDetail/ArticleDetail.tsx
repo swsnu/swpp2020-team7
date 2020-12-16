@@ -46,7 +46,6 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 	};
 
 	const onClickEditArticle = () => {
-		dispatch(editArticle(article.id, article));
 		history.push(`/articles/${article.id}/edit`);
 	};
 
