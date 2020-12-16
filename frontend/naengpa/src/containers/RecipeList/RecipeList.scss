@@ -47,9 +47,9 @@
   #recipe-cards {
     display: flex;
     flex-flow: wrap;
-    justify-content: center;
     margin: 3% 0;
     padding: 0;
+    margin-left: 35px;
   }
 
   button {
@@ -110,16 +110,4 @@
   align-items: center;
 }
 
-#loading-bar {
-  margin-top: 150px;
-  font-size: 150%;
-}
 
-#vacant-recipe {
-  display: flex;
-  margin-top: 30%;
-  font-size: 100%;
-  color: #707070;
-  font-family: 'Jua', sans-serif;
-  justify-content: center;
-}
