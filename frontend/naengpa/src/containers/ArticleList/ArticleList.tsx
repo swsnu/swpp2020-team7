@@ -34,9 +34,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 			if (page === 1) {
 				dispatch(getArticleList(query, { isForSale, isForExchange, isForShare }));
 			} else {
-				dispatch(
-					getPageArticleList(query, { isForSale, isForExchange, isForShare }, page),
-				);
+				dispatch(getPageArticleList(query, { isForSale, isForExchange, isForShare }, page));
 			}
 			setLoading(false);
 		}
