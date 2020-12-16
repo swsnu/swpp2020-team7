@@ -86,7 +86,7 @@ class ArticleTestCase(TestCase):
             'isForSale': False, 'isForExchange': True, 'isForShare': False}})
         response = self.client.put('/api/articles/{}/'.format(mock_article_id), {
             'article': mock_article,
-            'image': ''})
+            'image': ''}, content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
         # delete article
