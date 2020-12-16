@@ -62,29 +62,34 @@ class ArticleTestCase(TestCase):
         self.assertEqual(response.status_code, 405)
 
     def test_article(self):
+        mock_article_id = Article.objects.values_list('id', flat=True)[0]
+
         # user is not defined
-        response = self.client.get('/api/articles/1/', follow=True)
+        response = self.client.get(
+            '/api/articles/{}/'.format(mock_article_id), follow=True)
         self.assertEqual(response.status_code, 401)
 
         # with authorization
         self.client.login(username='test', password='test')
 
         # get article
-        response = self.client.get('/api/articles/1/')
+        response = self.client.get('/api/articles/{}/'.format(mock_article_id))
         self.assertEqual(response.status_code, 200)
+
+        # bad request method
+        response = self.client.post(
+            '/api/articles/{}/'.format(mock_article_id))
+        self.assertEqual(response.status_code, 405)
 
         # put article
         mock_article = json.dumps({'title': 'test_new', 'content': 'test_new', 'price': 777, 'options': {
             'isForSale': False, 'isForExchange': True, 'isForShare': False}})
-        response = self.client.put('/api/articles/1/', {
+        response = self.client.put('/api/articles/{}/'.format(mock_article_id), {
             'article': mock_article,
             'image': ''})
         self.assertEqual(response.status_code, 200)
 
         # delete article
-        response = self.client.delete('/api/articles/1/')
+        response = self.client.delete(
+            '/api/articles/{}/'.format(mock_article_id))
         self.assertEqual(response.status_code, 200)
-
-        # bad request method
-        response = self.client.post('/api/articles/1/')
-        self.assertEqual(response.status_code, 405)
