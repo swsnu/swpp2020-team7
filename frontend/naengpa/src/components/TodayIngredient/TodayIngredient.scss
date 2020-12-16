@@ -19,8 +19,6 @@ div#today-ingredient {
       }
 
       #today-ingredient-contents {
-        //min-height: 6vh;
-        //padding-left: 25%;
         margin-left: 35px;
         font-family: 'Nanum Pen Script', cursive;
         flex-direction: row;
@@ -31,20 +29,13 @@ div#today-ingredient {
         max-height: 170px;
         max-width: 250px;
         min-width: 250px;
-        //width: 370px;
         &::-webkit-scrollbar { 
           display: none !important; // 윈도우 크롬 등
         }
-        //width: 300px;
-        //height: 150px;
+       
         padding-left: 25%;
-        //margin-left: 40px;
         
         #today-ingredient-content-each {
-          //font-size: 3vh;
-          //padding-bottom: 0;
-          //margin-bottom: 0;
-          //width: 
           font-size: 20px;
           #today-ingredient-delete {
             font-size: 20px;
@@ -61,7 +52,6 @@ div#today-ingredient {
     #help-today-ingredient-alert {
       position: absolute;
       max-width: 250px;
-      //padding-left: 30%;
       padding: 1%;
       z-index: 1;
       background-color: #ffffff;
