@@ -22,7 +22,6 @@ export const getRecipeList = (
 ) => {
 	return async (dispatch: any) => {
 		try {
-			window.sessionStorage.removeItem('recipeList');
 			const response = await axios.get('/api/recipes/', {
 				params: {
 					query,
@@ -33,8 +32,6 @@ export const getRecipeList = (
 			});
 			const { recipeList, lastPageIndex } = response.data;
 			dispatch(getRecipeList_(recipeList, lastPageIndex));
-			window.sessionStorage.setItem('recipeList', JSON.stringify(recipeList));
-			window.sessionStorage.setItem('lastPageIndex', JSON.stringify(lastPageIndex));
 		} catch {
 			toast.error('🦄 레시피 리스트 정보를 가져오지 못했습니다! 다시 시도해주세요!');
 		}

@@ -17,11 +17,11 @@ export type InitialState = {
 };
 
 const RecipeState: InitialState = {
-	recipeList: JSON.parse(window.sessionStorage.getItem('recipeList')!),
+	recipeList: [],
 	todayRecipeList: [],
 	recipe: null,
 	relatedArticles: [],
-	lastPageIndex: JSON.parse(window.sessionStorage.getItem('lastPageIndex')!),
+	lastPageIndex: 1,
 	createdRecipe: JSON.parse(window.sessionStorage.getItem('createdRecipe')!),
 	userRecipes: JSON.parse(window.sessionStorage.getItem('userRecipes')!),
 };
