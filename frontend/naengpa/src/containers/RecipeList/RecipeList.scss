@@ -32,17 +32,17 @@
   #recipe-list-buttons {
     display: flex;
     justify-content: flex-end;
-    margin-right: 3%;
+    margin-right: 5%;
   }
 
   #filter-button-true {
     color: #ff8a3d !important;
-    font-size: 17px;
+    font-size: 20px;
   }
 
   #filter-button-false {
     color: #707070;
-    font-size: 17px;
+    font-size: 20px;
   }
 
   #recipe-cards {
@@ -94,7 +94,7 @@
   flex-direction: row;
   border: solid 1px #696464;
   padding: 2% 4%;
-  margin-left: 9%;
+  margin-left: 15%;
   min-width: 300px;
   align-items: center;
   border-radius: 15px;

@@ -26,7 +26,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const [sending, setSending] = useState(false);
 
 	const chatMessage =
-		user && chatRoom ? (
+		user && chatRoom && chatMessages ? (
 			chatMessages?.map((message, idx) => {
 				if (message.author === user?.user?.name) {
 					return (
@@ -98,6 +98,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 
 	useEffect(() => {
 		loadChatRoom();
+		return loadChatRoom();
 	}, [loadChatRoom]);
 
 	return (
@@ -121,7 +122,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					<p id="space">채팅정보</p>
 				</Typography>
 				<Divider />
-				<div id="chat-message-box">
+				<div className={(chatMessages && chatMessages?.length >= 7) ? 'chat-message-box' : 'chat-message-box-less-messages'} id="chat-message-box">
 					{!loading && !sending && chatRoom ? chatMessage : loaderTemplate}
 				</div>
 				{!loading && !sending && chatRoom && (
