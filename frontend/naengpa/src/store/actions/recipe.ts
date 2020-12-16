@@ -103,12 +103,25 @@ export const createRecipe = (recipe: RecipeEntity) => {
 			recipe.foodImageFiles!.forEach((image: any) => bodyFormData.append('image', image));
 			const response = await axios.post('/api/recipes/', bodyFormData);
 			dispatch(createRecipe_(response.data));
-			window.sessionStorage.removeItem('createdRecipe');
 			dispatch(push(`/recipes/${response.data.id}`));
-		} catch {
-			toast.error('🦄 레시피를 생성하던 중 문제가 발생했습니다! 다시 시도해주세요!');
+			if(window.sessionStorage.getItem('createdRecipe'))
+				window.sessionStorage.removeItem('createdRecipe');
+	} catch (e) {
+		window.sessionStorage.setItem(
+			'createdRecipe',
+			JSON.stringify({ ...recipe, foodImageFiles: [] }),
+		);
+		if (e?.response && e.response.data.code === 715) {
+			toast.error(`🦄 이미지 파일의 용량이 너무 커요!`);
+		} else if (e?.response && e.response.data.code === 711) {
+			toast.error(`🦄 jpeg, jpg 파일만 허용됩니다!`);
+		} else {
+			toast.error(
+				'🦄 알수없는 이유로 레시피 생성에 실패했습니다. 관리자에게 연락해주세요',
+			);
+			}		
 		}
-	};
+	}
 };
 
 export const extractMLFeatureFromRecipe_ = (recipe: RecipeEntity) => ({

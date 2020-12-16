@@ -22,8 +22,8 @@ const RecipeState: InitialState = {
 	recipe: null,
 	relatedArticles: [],
 	lastPageIndex: 1,
-	createdRecipe: JSON.parse(window.sessionStorage.getItem('createdRecipe')!),
-	userRecipes: JSON.parse(window.sessionStorage.getItem('userRecipes')!),
+	createdRecipe: null,
+	userRecipes: [],
 };
 
 interface LocationChangeAction extends Action {

@@ -122,36 +122,33 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	// need to be directed to recipe detail page, current => recipelist
 	const onClickRegisterRecipe = () => {
-		const func = async () => {
-			if (!foodImageFiles?.length) {
-				toast.error('🦄 사진을 입력해주세요!');
-			} else if (!foodName) {
-				toast.error('🦄 요리 이름을 입력해주세요!');
-			} else if (cookTime < 0) {
-				toast.error('🦄 조리 시간을 입력해주세요! 숫자만 가능합니다!');
-			} else if (!content) {
-				toast.error('🦄 레시피를 입력해주세요!');
-			} else {
-				const newIngredientList: RecipeIngredient[] = ingredients
-					? ingredients?.map((item, idx) => {
-							return { name: item.name, quantity: item.quantity };
-					  })
-					: [];
+		if (!foodImageFiles?.length) {
+			toast.error('🦄 사진을 입력해주세요!');
+		} else if (!foodName) {
+			toast.error('🦄 요리 이름을 입력해주세요!');
+		} else if (cookTime < 0) {
+			toast.error('🦄 조리 시간을 입력해주세요! 숫자만 가능합니다!');
+		} else if (!content) {
+			toast.error('🦄 레시피를 입력해주세요!');
+		} else {
+			const newIngredientList: RecipeIngredient[] = ingredients
+				? ingredients?.map((item, idx) => {
+						return { name: item.name, quantity: item.quantity };
+					})
+				: [];
 
-				const newRecipe: RecipeEntity = {
-					foodName,
-					cookTime,
-					content,
-					foodImageFiles,
-					recipeLike: 0,
-					userLike: 0,
-					foodCategory,
-					ingredients: newIngredientList,
-				};
-				dispatch(createRecipe(newRecipe));
-			}
-		};
-		func();
+			const newRecipe: RecipeEntity = {
+				foodName,
+				cookTime,
+				content,
+				foodImageFiles,
+				recipeLike: 0,
+				userLike: 0,
+				foodCategory,
+				ingredients: newIngredientList,
+			};
+			dispatch(createRecipe(newRecipe));
+		}
 	};
 
 	const onClickExtractMLFeatureAgain = async () => {
