@@ -89,7 +89,7 @@ def article_list_get(request):
     if query:
         q = Q()
         q |= Q(title__icontains=query) | Q(content__icontains=query) | Q(
-            querystring__icontains=F('item__name') | Q(item__name__icontains=query))
+            querystring__icontains=F('item__name')) | Q(item__name__icontains=query)
         filtered_list = filtered_list.annotate(
             querystring=Value(query, output_field=CharField())
         ).filter(q)
