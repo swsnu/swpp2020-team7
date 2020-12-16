@@ -99,7 +99,7 @@ const App: React.FC<AppProps> = ({ history }) => {
 						<Route path="/articles" exact component={ArticleList} />
 						<Route path="/articles/create" exact component={CreateArticle} />
 						<Route path="/articles/:id" exact component={ArticleDetail} />
-						<Route path="/articles/edit" exact component={EditArticle} />
+						<Route path="/articles/:id/edit" exact component={EditArticle} />
 						<Redirect exact to="/fridge" />
 					</Switch>
 				)}

@@ -169,7 +169,7 @@ def article_info(request, aid):
 
     elif request.method == 'PUT':
         ''' PUT /api/articles/:aid/ put article of given id '''
-        article = get_object_or_404(Article, pk=id)
+        article = get_object_or_404(Article, pk=aid)
         if request.user.id != article.author.id:
             return HttpResponseForbidden()
         try:
@@ -193,14 +193,14 @@ def article_info(request, aid):
         images = request.FILES.getlist('image')
         if images:
             images_path = upload_images(
-                images, "article", article.id)
+                images, "article", aid)
             Image.objects.filter(
-                author_id=request.user.id, article_id=article.id).delete()
+                author_id=request.user.id, article_id=aid).delete()
             for path in images_path:
                 Image.objects.create(author_id=request.user.id,
-                                     file_path=path, article_id=article.id)
+                                     file_path=path, article_id=aid)
 
-        return JsonResponse(_get_cache_or_set_article_by_id(article.id), status=201)
+        return JsonResponse(_get_cache_or_set_article_by_id(aid), status=201)
     elif request.method == 'DELETE':
         ''' DELETE /api/articles/:aid/ delete article of given id '''
         try:

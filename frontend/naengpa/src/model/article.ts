@@ -16,6 +16,14 @@ export interface CreateArticleEntity {
 	images: File[];
 }
 
+export interface EditArticleEntity {
+	title: string;
+	content: string;
+	price: number;
+	options: ArticleOptions;
+	images: File[];
+}
+
 export interface ArticleEntity {
 	id: number;
 	authorId: string;

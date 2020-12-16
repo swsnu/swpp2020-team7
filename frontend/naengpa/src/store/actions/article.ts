@@ -3,7 +3,7 @@ import { push } from 'connected-react-router';
 import { Dispatch } from 'redux';
 import { toast } from 'react-toastify';
 import * as actionTypes from './actionTypes';
-import { ArticleEntity, ArticleOptions, CreateArticleEntity } from '../../model/article';
+import { ArticleEntity, ArticleOptions, CreateArticleEntity, EditArticleEntity } from '../../model/article';
 
 /* GET ARTICLE LIST for the first time */
 export const getArticleList_ = (articleList: ArticleEntity[], lastPageIndex: number) => ({
@@ -98,11 +98,16 @@ export const editArticle_ = (article: ArticleEntity) => ({
 	payload: article,
 });
 
-export const editArticle = (id: number, article: ArticleEntity) => {
+export const editArticle = (id: number, article: EditArticleEntity) => {
 	return async (dispatch: Dispatch<any>) => {
-		const response = await axios.put(`/api/articles/${id}/`, article);
+		const form = new FormData();
+		form.append('article', JSON.stringify(article));
+		article.images.forEach((image) => form.append('image', image));
 
-		dispatch(editArticle_(response.data));
+		const response = await axios.put(`/api/articles/${id}/`, form);
+
+		await dispatch(editArticle_(response.data));
+		dispatch(push(`/articles/${response.data.id}`));
 	};
 };
 
