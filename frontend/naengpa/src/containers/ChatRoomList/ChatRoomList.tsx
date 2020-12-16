@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import './ChatRoomList.scss';
@@ -25,12 +25,16 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 		return <Skeleton key={`skeleton-${idx}`} className="skeleton" />;
 	});
 
-	useEffect(() => {
-		if (user) {
-			dispatch(getChatRoomList());
+	const loadChatRoom = useCallback(async () => {
+		if (loading && user) {
+			await dispatch(getChatRoomList());
 			setLoading(false);
 		}
-	}, [dispatch, user]);
+	}, [user]);
+
+	useEffect(() => {
+		loadChatRoom();
+	}, [loadChatRoom]);
 
 	const chatRoomCollection = user.chatRoomList?.map((chatRoom: any) => {
 		return (
