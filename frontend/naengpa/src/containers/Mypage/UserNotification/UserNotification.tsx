@@ -53,8 +53,8 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 		return <Skeleton key={`skeleton-${idx}`} className="skeleton" />;
 	});
 
-	const loadNotification = useCallback(async() => {
-		if(user) {
+	const loadNotification = useCallback(async () => {
+		if (user) {
 			await dispatch(getUser(user!));
 			setLoading(false);
 		}
@@ -146,7 +146,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 						style={{ maxHeight: '350px', overflow: 'auto' }}
 						aria-label="notifications"
 					>
-					{loading ? loaderTemplate : notifications}
+						{loading ? loaderTemplate : notifications}
 					</List>
 				</div>
 			</div>

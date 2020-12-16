@@ -18,7 +18,7 @@ interface ChatRoomListProps {
 const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user);
-	const chatRoomList = useSelector((state:AppState) => state.user.chatRoomList);
+	const chatRoomList = useSelector((state: AppState) => state.user.chatRoomList);
 	const [loading, setLoading] = useState(true);
 
 	const loaderTemplate = Array.from(Array(8)).map((_, idx) => {
@@ -27,7 +27,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 
 	const loadChatRoom = useCallback(() => {
 		setTimeout(async () => {
-			if(user) {
+			if (user) {
 				await dispatch(getChatRoomList());
 				setLoading(false);
 			}
@@ -83,7 +83,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 					{loading ? (
 						loaderTemplate
 					) : chatRoomCollection && !chatRoomCollection.length ? (
-						<ListItem style={{marginLeft: "30px"}}>
+						<ListItem style={{ marginLeft: '30px' }}>
 							<ListItemText
 								primary="🐬 채팅방이 존재하지 않습니다."
 								secondary="채팅을 시작해 보세요!"

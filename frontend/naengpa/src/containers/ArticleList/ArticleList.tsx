@@ -87,7 +87,9 @@ const ArticleList: React.FC<ArticleListProps> = ({ history }) => {
 		} else {
 			totalSkeletons = 6;
 		}
-		return Array.from(Array(totalSkeletons)).map((_, idx) => <FeedLoading key={`loading-${idx}`} attribute="cardList" />);
+		return Array.from(Array(totalSkeletons)).map((_, idx) => (
+			<FeedLoading key={`loading-${idx}`} attribute="cardList" />
+		));
 	};
 
 	const articles = articleList?.map((item: ArticleEntity) => (

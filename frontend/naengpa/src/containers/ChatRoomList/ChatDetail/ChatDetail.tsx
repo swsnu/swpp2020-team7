@@ -89,8 +89,8 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 
 	const loadChatRoom = useCallback(() => {
 		setTimeout(async () => {
-			if(user && !Number.isNaN(chatRoomId)) {
-					await dispatch(getChatRoom(chatRoomId));
+			if (user && !Number.isNaN(chatRoomId)) {
+				await dispatch(getChatRoom(chatRoomId));
 			}
 		}, 1000);
 		setLoading(false);
@@ -121,22 +121,25 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					<p id="space">채팅정보</p>
 				</Typography>
 				<Divider />
-				<div id="chat-message-box">{(!loading && !sending && chatRoom) ? chatMessage : loaderTemplate}</div>
-				{(!loading && !sending && chatRoom) &&
-				 <div id="chat-input-box">
-					<InputBase
-						id="chat-input-field"
-						placeholder="내용을 입력해 주세요."
-						inputProps={{ 'aria-label': 'search' }}
-						value={content}
-						fullWidth
-						onChange={(e) => setContent(e.target.value)}
-						onKeyPress={(e) => onEnterSendMessage(e)}
-					/>
-					<Button id="send-chat-button" onClick={(e) => onClickSendMessage(e)}>
-						보내기
-					</Button>
-				</div>}
+				<div id="chat-message-box">
+					{!loading && !sending && chatRoom ? chatMessage : loaderTemplate}
+				</div>
+				{!loading && !sending && chatRoom && (
+					<div id="chat-input-box">
+						<InputBase
+							id="chat-input-field"
+							placeholder="내용을 입력해 주세요."
+							inputProps={{ 'aria-label': 'search' }}
+							value={content}
+							fullWidth
+							onChange={(e) => setContent(e.target.value)}
+							onKeyPress={(e) => onEnterSendMessage(e)}
+						/>
+						<Button id="send-chat-button" onClick={(e) => onClickSendMessage(e)}>
+							보내기
+						</Button>
+					</div>
+				)}
 			</div>
 		</div>
 	);
