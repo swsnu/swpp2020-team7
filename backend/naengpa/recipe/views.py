@@ -275,6 +275,8 @@ def recipe_info(request, id):
 
         related_article_ids = Article.objects.exclude(
             done=True
+        ).exclude(
+            author_id=request.user.id
         ).filter(
             Q(author__region__id__in=included_region_ids) &
             Q(item__id__in=missing_ingredient_ids)
@@ -291,10 +293,10 @@ def recipe_info(request, id):
         return HttpResponse(status=204)
 
 
-@ensure_csrf_cookie
-@api_view(['PUT'])
-@login_required_401
-@transaction.atomic
+@ ensure_csrf_cookie
+@ api_view(['PUT'])
+@ login_required_401
+@ transaction.atomic
 def recipe_like(request, id):
     """like recipe of given id"""
     user_id = request.user.id
