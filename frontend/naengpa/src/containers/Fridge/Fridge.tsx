@@ -41,11 +41,16 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		// TODO: argument should be user id!
-		dispatch(getFridge(user!.id));
-		setMaxPageIndex(Math.ceil(ingredientList.length / 9.0));
-		setCurrentList(ingredientList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-	}, [dispatch, user, ingredientList.length, dispatch]);
+		if(user) {
+			if (!ingredientList || !ingredientList.length) {			
+				dispatch(getFridge(user!.id));
+			}
+		}
+		if (ingredientList) {
+			setMaxPageIndex(Math.ceil(ingredientList.length / 9.0));
+			setCurrentList(ingredientList.slice((page - 1) * 9, (page - 1) * 9 + 9));
+		}
+	}, [dispatch, user, ingredientList.length]);
 
 	return (
 		<div id="fridge-page">

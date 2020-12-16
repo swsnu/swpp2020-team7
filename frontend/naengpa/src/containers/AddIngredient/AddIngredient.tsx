@@ -57,16 +57,16 @@ const AddIngredient: React.FC = () => {
 
 	useEffect(() => {
 		loadIngredientList();
-	}, [loadIngredientList]);
+	}, []);
 
 	useEffect(() => {
 		setCurrentIngredientList(ingredientList);
 		loadCategoryList();
-	}, [ingredientList, loadCategoryList]);
+	}, [ingredientList]);
 
 	useEffect(() => {
 		loadCategoryList();
-	}, [currentIngredientList, loadCategoryList]);
+	}, [currentIngredientList]);
 
 	useEffect(() => {
 		if (!query) {
