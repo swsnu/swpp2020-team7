@@ -19,7 +19,7 @@ def get_chatroom_list(request):
     try:
         user = request.user
         chatrooms = ChatRoom.objects.filter(
-            chat_members=user).order_by('-updated_at')
+            chat_members=user).distinct().order_by('-updated_at')
     except ChatRoom.DoesNotExist:
         return JsonResponse([], safe=False)
 
@@ -50,8 +50,8 @@ def make_chatroom(request):
     try:
         friend_id = request.data['friend_id']
         friend = User.objects.get(id=friend_id)
-        chatroom = ChatRoom.objects.get(
-            Q(chat_members=user) & Q(chat_members=friend))
+        chatroom = ChatRoom.objects.filter(
+            chat_members=user).get(chat_members=friend)
         chat_user = user.chat_member.get(chatroom_id=chatroom.id)
         chat_user.notice = 0
         chat_user.save()
