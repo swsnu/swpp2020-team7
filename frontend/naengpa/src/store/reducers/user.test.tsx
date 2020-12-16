@@ -27,6 +27,15 @@ const mockChatRoom = {
 	updatedAt: '00',
 	chatCount: 1,
 };
+
+const mockChatRoom2 = {
+	id: '2',
+	lastChat: 'hi',
+	member: 'me',
+	updatedAt: '00',
+	chatCount: 1,
+};
+
 const mockChatRoomList = [
 	mockChatRoom,
 	{
@@ -272,6 +281,22 @@ describe('User Reducer', () => {
 			chatRoom: mockChatRoomList[1],
 		});
 	});
+
+	/*
+	it('should check if create chatroom is already exist', () => {
+		const newState = userReducer(
+			{ ...userState, chatRoomList: [mockChatRoomList] },
+			{
+				type: actionTypes.CREATE_CHATROOM,
+				chatRoom: mockChatRoomList[2],
+			},
+		);
+		expect(newState).toEqual({
+			...userState,
+			chatRoomList: mockChatRoomList,
+			chatRoom: mockChatRoomList[1],
+		});
+	}); */
 
 	it('should check if create chatroom with given chatroom is done correctly', () => {
 		const newState = userReducer(
