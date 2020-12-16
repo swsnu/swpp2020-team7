@@ -58,6 +58,7 @@ const App: React.FC<AppProps> = ({ history }) => {
 				pauseOnFocusLoss
 				draggable
 				pauseOnHover
+				limit={2}
 			/>
 			<ConnectedRouter history={history}>
 				{user && (
