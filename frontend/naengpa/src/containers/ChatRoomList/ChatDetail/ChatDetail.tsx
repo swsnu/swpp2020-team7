@@ -37,7 +37,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					);
 				}
 				return (
-					<Typography id="member-message" gutterBottom>
+					<Typography key={`${message.createdAt}-${message.author}-${idx + 1}`} id="member-message" gutterBottom>
 						<span id="message-content">{message.content}</span>
 						<span id="message-created-time">{message.createdAt}</span>
 					</Typography>
