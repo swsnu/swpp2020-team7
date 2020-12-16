@@ -71,7 +71,7 @@ export const getRecipe = (id: number) => {
 			const response = await axios.get(`/api/recipes/${id}/`);
 			const { recipe, relatedArticles } = response.data;
 			dispatch(getRecipe_(recipe, relatedArticles));
-			dispatch(getCommentList_(response.data.comments));
+			dispatch(getCommentList_(recipe.comments));
 		} catch {
 			dispatch(push('/recipes'));
 			toast.error('🦄 레시피 정보를 가져오지 못했습니다. 다시 시도해주세요!');
