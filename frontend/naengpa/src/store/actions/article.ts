@@ -3,7 +3,12 @@ import { push } from 'connected-react-router';
 import { Dispatch } from 'redux';
 import { toast } from 'react-toastify';
 import * as actionTypes from './actionTypes';
-import { ArticleEntity, ArticleOptions, CreateArticleEntity, EditArticleEntity } from '../../model/article';
+import {
+	ArticleEntity,
+	ArticleOptions,
+	CreateArticleEntity,
+	EditArticleEntity,
+} from '../../model/article';
 
 /* GET ARTICLE LIST for the first time */
 export const getArticleList_ = (articleList: ArticleEntity[], lastPageIndex: number) => ({

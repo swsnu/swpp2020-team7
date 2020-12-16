@@ -5,7 +5,6 @@ import './Loading.scss';
 // var __html = require('../../utils/dinosaurGame.html');
 // var template = { __html: __html };
 
-
 const Loading: React.FC = () => {
 	return (
 		<div id="loading">

@@ -269,7 +269,7 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 									value={loading ? '' : price}
 									id="price-input"
 									inputProps={{ min: '0', step: '100' }}
-									onChange={(e) => setPrice(parseInt(e.target.value), 10)}
+									onChange={(e) => setPrice(parseInt(e.target.value, 10))}
 								/>
 							</TableCell>
 						</TableRow>

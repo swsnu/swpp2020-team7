@@ -56,7 +56,9 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		} else {
 			totalSkeletons = recipeList.length;
 		}
-		return Array.from(Array(totalSkeletons)).map((_, idx) => <FeedLoading key={`loading-${idx}`} attribute="cardList" />);
+		return Array.from(Array(totalSkeletons)).map((_, idx) => (
+			<FeedLoading key={`loading-${idx}`} attribute="cardList" />
+		));
 	};
 
 	useEffect(() => {
