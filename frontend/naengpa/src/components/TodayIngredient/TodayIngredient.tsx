@@ -15,7 +15,9 @@ const TodayIngredient: React.FC = () => {
 	);
 
 	useEffect(() => {
-		dispatch(getFridge(user!.id));
+		if (user && (!ingredientList || !ingredientList.length)) {
+			dispatch(getFridge(user!.id));
+		}
 	}, [dispatch, user]);
 
 	// onClickDeleteTodayIngredient();

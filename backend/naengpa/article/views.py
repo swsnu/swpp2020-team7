@@ -200,7 +200,7 @@ def article_info(request, aid):
                 Image.objects.create(author_id=request.user.id,
                                      file_path=path, article_id=aid)
 
-        return JsonResponse(_get_cache_or_set_article_by_id(aid), status=201)
+        return JsonResponse(_get_cache_or_set_article_by_id(aid))
     elif request.method == 'DELETE':
         ''' DELETE /api/articles/:aid/ delete article of given id '''
         try:

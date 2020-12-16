@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 
 import {
-	getArticleList,
 	getIngredientList,
 	getTodayRecipeList,
 	getUserList,

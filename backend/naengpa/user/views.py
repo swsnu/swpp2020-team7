@@ -209,7 +209,7 @@ def user(request, id):
             'regionRange': user.region_range,
             'profileImage': user.profile_image,
             'totalNotifications': user.total_notifications[0],
-        }, status=201)
+        })
 
 
 @ensure_csrf_cookie
@@ -242,7 +242,7 @@ def change_password(request, id):
             'regionRange': user.region_range,
             'profileImage': user.profile_image,
             'totalNotifications': user.total_notifications[0],
-        }, status=201)
+        })
     return HttpResponseNotAllowed(['PUT'])
 
 

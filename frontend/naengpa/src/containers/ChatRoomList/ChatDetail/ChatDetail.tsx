@@ -23,7 +23,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 
 	const chatMessage =
 		user && user.chatRoom ? (
-			user.chatRoom!.messages!.map((message, idx) => {
+			user.chatRoom.messages!.map((message, idx) => {
 				if (message.author === user?.user?.name) {
 					return (
 						<Typography
@@ -102,7 +102,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 						{user?.chatRoom?.memberImage && (
 							<Avatar
 								id="profile-picture"
-								src={user?.chatRoom?.memberImage as string}
+								src={user.chatRoom.memberImage}
 							/>
 						)}
 						<div id="chat-member-username">{user.chatRoom?.member}</div>

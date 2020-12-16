@@ -59,7 +59,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 			setCommentLike((state) => state + 1);
 			setUserLike(1);
 		}
-		dispatch(toggleCommentLike(comment?.id as number));
+		dispatch(toggleCommentLike(comment?.id));
 	};
 
 	const onClickEditComment = () => {

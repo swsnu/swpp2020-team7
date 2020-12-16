@@ -57,9 +57,9 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 	/* CLICK EVENT - ADD IMAGE */
 	const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
-		const images = target.files as FileList;
+		const fileImages = target.files as FileList;
 		// convert FileList iterable
-		const imageArray = Array.from(images);
+		const imageArray = Array.from(fileImages);
 		imageArray.forEach(async (file) => {
 			await compressImage(file).then((result) => {
 				setImages((state) => [...state, result]);

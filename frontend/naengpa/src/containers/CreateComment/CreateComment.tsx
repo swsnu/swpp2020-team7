@@ -21,7 +21,7 @@ interface CreateCommentProps {
 	recipeId: number;
 }
 
-const Comment: React.FC<CreateCommentProps> = ({ recipeId }) => {
+const CreateComment: React.FC<CreateCommentProps> = ({ recipeId }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const [content, setContent] = useState('');
@@ -62,4 +62,4 @@ const Comment: React.FC<CreateCommentProps> = ({ recipeId }) => {
 	);
 };
 
-export default Comment;
+export default CreateComment;

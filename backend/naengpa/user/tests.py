@@ -149,7 +149,7 @@ class UserTestCase(TestCase):
             "currentPassword": "test",
             "newPassword": "test"
         }, content_type='application/json')
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.put('/api/login/', {
             "username": 'test'
@@ -257,7 +257,7 @@ class UserTestCase(TestCase):
             'user': user_put_data,
             'image': '',
         }, content_type='application/json')
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get(
             '/api/users/{}/fridge/'.format(test_user.id))
@@ -333,7 +333,7 @@ class UserTestCase(TestCase):
             'user': user_put_data,
             'image': '',
         }, content_type='application/json')
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.post('/api/users/{}/'.format(self.test_user.id))
         self.assertEqual(response.status_code, 405)

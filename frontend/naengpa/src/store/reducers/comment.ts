@@ -57,7 +57,7 @@ function commentReducer(
 			commentList = [];
 			if (state.commentList.length) {
 				commentList = state.commentList.map((comment: CommentEntity) => {
-					if ((comment.id as number) === action.payload.id) {
+					if (comment.id === action.payload.id) {
 						comment.userLike = action.payload.userLike;
 						comment.totalLikes = action.payload.totalLikes;
 						return comment;

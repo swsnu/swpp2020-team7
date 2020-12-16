@@ -50,9 +50,9 @@ class Image(models.Model):
         return f'[{self.id}] of {self.article}'
 
     def save(self, *args, **kwargs):
-        cache.delete('article:{}'.format(self.article.id))
+        cache.delete(f'article:{self.article.id}')
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        cache.delete('article:{}'.format(self.article.id))
+        cache.delete(f'article:{self.article.id}')
         super().delete(*args, **kwargs)
