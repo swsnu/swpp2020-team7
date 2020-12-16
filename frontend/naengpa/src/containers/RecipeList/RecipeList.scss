@@ -102,6 +102,12 @@
     min-width: 250px;
     margin-right: 10px;
   }
+  #recipe-search-select {
+    margin-left: -75px;
+    width: 100px;
+    text-align: right;
+    background: #ffffff;
+  }
 }
 
 #recipe-search-box {
@@ -110,4 +116,12 @@
   align-items: center;
 }
 
+#vacant-recipe {
+  display: flex;
+  margin-top: 20%;
+  font-size: 100%;
+  color: #707070;
+  font-family: 'Jua', sans-serif;
+  justify-content: center;
+}
 

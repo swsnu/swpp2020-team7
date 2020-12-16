@@ -334,7 +334,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 											type="number"
 											min="1"
 											value={cookTime}
-											id="cook-time"
+											id="cook-time-for-ml"
 											onChange={(e) =>
 												setCookTime((e.target.value as unknown) as number)
 											}
