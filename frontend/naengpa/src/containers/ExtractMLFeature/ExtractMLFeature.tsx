@@ -94,7 +94,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		const images = target.files as FileList;
 		// compress images
 		const imageArray = Array.from(images);
-		imageArray.forEach(async (file) => {
+		imageArray.slice(0, 5).forEach(async (file) => {
 			await compressImage(file).then((result) => {
 				setFoodImageFiles((state) => [...state, result]);
 			});
@@ -123,7 +123,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	// need to be directed to recipe detail page, current => recipelist
 	const onClickRegisterRecipe = () => {
 		if (!foodImageFiles?.length) {
-			toast.error('🦄 사진을 입력해주세요!');
+			toast.error('🦄 사진을 입력해주세요! jpg, jpeg, png 파일 5개만 입력가능합니다. ');
 		} else if (!foodName) {
 			toast.error('🦄 요리 이름을 입력해주세요!');
 		} else if (cookTime < 0) {
@@ -153,7 +153,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	const onClickExtractMLFeatureAgain = async () => {
 		if (!foodImageFiles?.length) {
-			toast.error('🦄 사진을 입력해주세요!');
+			toast.error('🦄 사진을 입력해주세요! jpg, jpeg, png 파일 5개만 입력가능합니다!');
 		} else if (!foodName) {
 			toast.error('🦄 요리 이름을 입력해주세요!');
 		} else if (cookTime < 0) {
@@ -175,7 +175,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	const imageList = !foodImageFiles?.length
 		? []
-		: foodImageFiles?.map((item, idx) => {
+		: foodImageFiles?.slice(0, 5).map((item, idx) => {
 				return (
 					<div key={`${idx} `} id="delete-image-icon-box">
 						{!alert && (
@@ -354,7 +354,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 								<TableRow id="recipe-row-box">
 									<TableCell id="image-box">
 										{imageList}
-										<Box id="add-image-icon-box">
+										{foodImageFiles.length < 5 && <Box id="add-image-icon-box">
 											<label
 												aria-label="food-image-label"
 												htmlFor="food-image"
@@ -377,6 +377,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 											</label>
 											<PhotoCameraIcon id="add-image-icon" />
 										</Box>
+									}
 									</TableCell>
 									<TableCell>
 										<Divider orientation="vertical" />
