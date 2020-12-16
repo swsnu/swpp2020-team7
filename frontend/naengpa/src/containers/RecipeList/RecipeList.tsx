@@ -1,6 +1,7 @@
 import React, { MouseEvent, useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
+import { makeStyles } from '@material-ui/core/styles';
 import { toast } from 'react-toastify';
 import Pagination from '@material-ui/lab/Pagination';
 import InputBase from '@material-ui/core/InputBase';
@@ -17,6 +18,14 @@ interface RecipeListProps {
 	history: History;
 }
 
+const useStyles = makeStyles((theme) => ({
+	ul: {
+    "& .Mui-selected": {
+      color: " #ff8a3d !important" 
+    }
+  }
+}));
+
 const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const recipeState = useSelector((state: AppState) => state.recipe);
 	const foodCategoryList = useSelector((state: AppState) => state.foodCategory.foodCategoryList);
@@ -32,19 +41,23 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		if (!recipeState.recipeList) setLoading(true);
 	}, [recipeState]);
 
+	const classes = useStyles();
+
 	const onLoadPage = useCallback(async () => {
 		if (loading) {
 			await dispatch(getRecipeList(query, sortBy, searchCategory, page));
-			if (!recipeState.recipeList || !recipeState.recipeList.length) {
-				if (sortBy === 'ingredient') {
+			setMaxPageIndex(() => recipeState.lastPageIndex);
+			setLoading(() => false);
+		} else {
+			if (sortBy === 'ingredient') {
+				if (!recipeState.recipeList || !recipeState.recipeList.length) {
 					toast.info(
 						'🐬 냉장고 속 재료와 오늘의 재료로 추천된 레시피가 없습니다! 인기 레시피를 확인해 보세요!',
 					);
 					setSortBy(() => 'likes');
+					setLoading(true);
 				}
 			}
-			setMaxPageIndex(recipeState.lastPageIndex);
-			setLoading(false);
 		}
 	}, [dispatch, recipeState.lastPageIndex, loading, query, page, sortBy, searchCategory]);
 
@@ -52,7 +65,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		let totalSkeletons = 0;
 		const { recipeList } = recipeState;
 		if (!recipeList || !recipeList.length) {
-			totalSkeletons = 6;
+			totalSkeletons = 9;
 		} else {
 			totalSkeletons = recipeList.length;
 		}
@@ -198,6 +211,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 				(recipeState.recipeList?.length ? (
 					<Pagination
 						id="recipe-list-page"
+						className={classes.ul}
 						page={page}
 						size="large"
 						count={Math.ceil(maxPageIndex / 9.0)}

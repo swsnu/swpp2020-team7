@@ -3,6 +3,7 @@
   padding: 10px 150px;
   min-width: 800px;
   background-color: #ffffff;
+  justify-content: center;
 
   #create-recipe-button {
     display: flex;
@@ -43,10 +44,9 @@
   }
 
   #recipe-cards {
-    min-height: 400px;
     display: flex;
     flex-flow: wrap;
-    justify-content: space-between;
+    justify-content: center;
     margin: 3% 0;
     padding: 0;
   }
