@@ -26,10 +26,7 @@ const FridgeState: InitialState = {
 
 describe('Fridge Reducer', () => {
 	it('should return default state', () => {
-		const newState = fridgeReducer(FridgeState, {
-			type: actionTypes.GET_FRIDGE,
-			ingredientList,
-		});
+		const newState = fridgeReducer(FridgeState);
 		expect(newState).toEqual(FridgeState);
 	});
 

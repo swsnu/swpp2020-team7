@@ -25,7 +25,7 @@ const mockArticle: ArticleEntity = {
 	images: [
 		{
 			id: 2,
-			path: 'path',
+			file_path: 'path',
 		},
 	],
 };
@@ -54,26 +54,25 @@ const mockArticleList: ArticleEntity[] = [
 		images: [
 			{
 				id: 2,
-				path: 'path',
+				file_path: 'path',
 			},
 		],
 	},
 ];
 const stubInitialState: ArticleState = {
 	articleList: mockArticleList,
+	lastPageIndex: mockArticleList.length,
 	article: mockArticle,
 };
 const initialState: ArticleState = {
 	articleList: [],
+	lastPageIndex: 1,
 	article: null,
 };
 
 describe('Article Reducer', () => {
 	it('should return default state correctly', () => {
-		const newState = articleReducer(initialState, {
-			type: actionTypes.GET_ARTICLE_LIST,
-			payload: [],
-		});
+		const newState = articleReducer();
 
 		expect(newState).toEqual(initialState);
 	});
@@ -81,12 +80,28 @@ describe('Article Reducer', () => {
 	it('should get article list correctly', () => {
 		const newState = articleReducer(initialState, {
 			type: actionTypes.GET_ARTICLE_LIST,
-			payload: mockArticleList,
+			articleList: mockArticleList,
+			lastPageIndex: mockArticleList.length,
 		});
 
 		expect(newState).toEqual({
 			...initialState,
 			articleList: mockArticleList,
+			lastPageIndex: 2,
+		});
+	});
+
+	it('should get page article list correctly', () => {
+		const newState = articleReducer({...initialState, articleList: [mockArticleList[0]]}, {
+			type: actionTypes.GET_PAGE_ARTICLE_LIST,
+			pageArticleList: [mockArticleList[1]],
+			lastPageIndex: 2,
+		});
+
+		expect(newState).toEqual({
+			...initialState,
+			articleList: mockArticleList,
+			lastPageIndex: 2,
 		});
 	});
 
@@ -102,7 +117,7 @@ describe('Article Reducer', () => {
 		});
 	});
 
-	it('should create recipe correctly', () => {
+	it('should create article correctly', () => {
 		const newState = articleReducer(stubInitialState, {
 			type: actionTypes.CREATE_ARTICLE,
 			payload: mockArticle,
@@ -112,10 +127,11 @@ describe('Article Reducer', () => {
 			...initialState,
 			articleList: [...mockArticleList, mockArticle],
 			article: mockArticle,
+			lastPageIndex: initialState.lastPageIndex + 1,
 		});
 	});
 
-	it('should edit specific recipe correctly', () => {
+	it('should edit specific article correctly', () => {
 		const modified: ArticleEntity = { ...mockArticleList[0], title: 'modified' };
 		const newState = articleReducer(stubInitialState, {
 			type: actionTypes.EDIT_ARTICLE,
@@ -124,20 +140,20 @@ describe('Article Reducer', () => {
 
 		const expectedList = [modified, mockArticleList[1]];
 		expect(newState).toEqual({
-			...initialState,
+			...stubInitialState,
 			articleList: expectedList,
 			article: modified,
 		});
 	});
 
-	it('should delete specific recipe correctly', () => {
+	it('should delete specific article correctly', () => {
 		const newState = articleReducer(stubInitialState, {
 			type: actionTypes.DELETE_ARTICLE,
 			payload: mockArticleList[0],
 		});
 
 		expect(newState).toEqual({
-			...initialState,
+			...stubInitialState,
 			articleList: mockArticleList.slice(1),
 			article: null,
 		});

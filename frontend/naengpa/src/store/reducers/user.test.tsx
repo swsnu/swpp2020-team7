@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
-import { UserEntity } from '../../model/user';
 import userReducer, { InitialState } from './user';
+import { ChatEntity } from '../../model/chat';
 
 const userState: InitialState = {
 	user: null,
@@ -20,36 +20,27 @@ const mockUser = {
 		name: '관악구 대학동',
 	},
 };
-const mockChatRoom = {
-	id: '1',
+const mockChatRoom: ChatEntity = {
+	id: 1,
 	lastChat: 'hi',
 	member: 'me',
 	updatedAt: '00',
 	chatCount: 1,
 };
 
-const mockChatRoom2 = {
-	id: '2',
+const mockChatRoom2: ChatEntity = {
+	id: 2,
 	lastChat: 'hi',
 	member: 'me',
 	updatedAt: '00',
 	chatCount: 1,
 };
 
-const mockChatRoomList = [
-	mockChatRoom,
-	{
-		id: '2',
-		lastChat: 'hi',
-		member: 'me',
-		updatedAt: '00',
-		chatCount: 1,
-	},
-];
+const mockChatRoomList: ChatEntity[] = [mockChatRoom, mockChatRoom2];
 
 describe('User Reducer', () => {
 	it('should return default state', () => {
-		const newState = userReducer(userState, { type: 'none' });
+		const newState = userReducer(userState);
 		expect(newState).toEqual(userState);
 	});
 
@@ -237,35 +228,35 @@ describe('User Reducer', () => {
 		});
 	});
 
-	it('should check if receive chat is done correctly', () => {
-		const newState = userReducer(
-			{ ...userState, chatRoom: mockChatRoom, chatRoomList: mockChatRoomList },
-			{
-				type: actionTypes.RECEIVE_CHAT,
-				chatRoomList: mockChatRoomList,
-			},
-		);
-		expect(newState).toEqual({
-			...userState,
-			chatRoomList: mockChatRoomList,
-			chatRoom: mockChatRoom,
-		});
-	});
+	// it('should check if receive chat is done correctly', () => {
+	// 	const newState = userReducer(
+	// 		{ ...userState, chatRoom: mockChatRoom, chatRoomList: mockChatRoomList },
+	// 		{
+	// 			type: actionTypes.RECEIVE_CHAT,
+	// 			chatRoomList: mockChatRoomList,
+	// 		},
+	// 	);
+	// 	expect(newState).toEqual({
+	// 		...userState,
+	// 		chatRoomList: mockChatRoomList,
+	// 		chatRoom: mockChatRoom,
+	// 	});
+	// });
 
-	it('should check if receive chat with no chatroom is done correctly', () => {
-		const newState = userReducer(
-			{ ...userState, chatRoomList: mockChatRoomList },
-			{
-				type: actionTypes.RECEIVE_CHAT,
-				chatRoomList: mockChatRoomList,
-			},
-		);
-		expect(newState).toEqual({
-			...userState,
-			chatRoomList: mockChatRoomList,
-			chatRoom: null,
-		});
-	});
+	// it('should check if receive chat with no chatroom is done correctly', () => {
+	// 	const newState = userReducer(
+	// 		{ ...userState, chatRoomList: mockChatRoomList },
+	// 		{
+	// 			type: actionTypes.RECEIVE_CHAT,
+	// 			chatRoomList: mockChatRoomList,
+	// 		},
+	// 	);
+	// 	expect(newState).toEqual({
+	// 		...userState,
+	// 		chatRoomList: mockChatRoomList,
+	// 		chatRoom: null,
+	// 	});
+	// });
 
 	it('should check if create chatroom is done correctly', () => {
 		const newState = userReducer(
@@ -282,21 +273,20 @@ describe('User Reducer', () => {
 		});
 	});
 
-	/*
 	it('should check if create chatroom is already exist', () => {
 		const newState = userReducer(
-			{ ...userState, chatRoomList: [mockChatRoomList] },
+			{ ...userState, chatRoomList: [mockChatRoomList[0]] },
 			{
 				type: actionTypes.CREATE_CHATROOM,
-				chatRoom: mockChatRoomList[2],
+				chatRoom: mockChatRoomList[0],
 			},
 		);
 		expect(newState).toEqual({
 			...userState,
-			chatRoomList: mockChatRoomList,
-			chatRoom: mockChatRoomList[1],
+			chatRoomList: [mockChatRoomList[0]],
+			chatRoom: mockChatRoomList[0],
 		});
-	}); */
+	});
 
 	it('should check if create chatroom with given chatroom is done correctly', () => {
 		const newState = userReducer(
@@ -318,12 +308,13 @@ describe('User Reducer', () => {
 			{ ...userState, chatRoomList: mockChatRoomList },
 			{
 				type: actionTypes.DELETE_CHATROOM,
-				id: '1',
+				id: 1,
 			},
 		);
 		expect(newState).toEqual({
 			...userState,
 			chatRoomList: [mockChatRoomList[1]],
+			chatRoom: null,
 		});
 	});
 });

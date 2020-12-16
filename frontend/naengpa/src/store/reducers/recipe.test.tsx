@@ -1,6 +1,7 @@
 import recipeReducer, { InitialState } from './recipe';
 import * as actionTypes from '../actions/actionTypes';
 import { RecipeEntity } from '../../model/recipe';
+import { LOCATION_CHANGE } from 'connected-react-router';
 
 const image = import('../../../public/icons/boy.png');
 const mockRecipeList: RecipeEntity[] = [
@@ -21,7 +22,7 @@ const mockRecipeList: RecipeEntity[] = [
 		userLike: 1,
 		createdAt: '2000.00.00',
 		foodCategory: '밥류',
-		ingredients: [{ ingredient: '돼지고기' }, { ingredient: '고추장' }],
+		ingredients: [{ name: '돼지고기' }, { name: '고추장' }],
 	},
 	{
 		id: 3,
@@ -40,23 +41,23 @@ const mockRecipeList: RecipeEntity[] = [
 		userLike: 0,
 		createdAt: '2000.00.00',
 		foodCategory: '밥류',
-		ingredients: [{ ingredient: '돼지고기' }, { ingredient: '고추장' }],
+		ingredients: [{ name: '돼지고기' }, { name: '고추장' }],
 	},
 ];
 
 const RecipeState: InitialState = {
 	recipeList: [],
-	recipe: null,
-	createdRecipe: null,
-	lastPageIndex: 0,
 	todayRecipeList: [],
+	recipe: null,
+	relatedArticles: [],
+	lastPageIndex: 0,
+	createdRecipe: null,
+	userRecipes: [],
 };
 
 describe('Recipe Reducer', () => {
 	it('should return default state', () => {
-		const newState = recipeReducer(RecipeState, {
-			type: 'none',
-		});
+		const newState = recipeReducer(RecipeState);
 		expect(newState).toEqual(RecipeState);
 	});
 
@@ -88,10 +89,23 @@ describe('Recipe Reducer', () => {
 		const newState = recipeReducer(RecipeState, {
 			type: actionTypes.GET_RECIPE,
 			recipe: mockRecipeList[0],
+			relatedArticles: []
 		});
 		expect(newState).toEqual({
 			...RecipeState,
 			recipe: mockRecipeList[0],
+			relatedArticles: [],
+		});
+	});
+
+	it('should check if it can get user recipes', () => {
+		const newState = recipeReducer(RecipeState, {
+			type: actionTypes.GET_USER_RECIPES,
+			recipes: mockRecipeList,
+		});
+		expect(newState).toEqual({
+			...RecipeState,
+			userRecipes: mockRecipeList,
 		});
 	});
 
@@ -102,9 +116,10 @@ describe('Recipe Reducer', () => {
 		});
 		expect(newState).toEqual({
 			...RecipeState,
-			lastPageIndex: 1,
+			lastPageIndex: RecipeState.lastPageIndex + 1,
 			recipeList: [...RecipeState.recipeList, mockRecipeList[0]],
 			recipe: mockRecipeList[0],
+			userRecipes: [...RecipeState.userRecipes, mockRecipeList[0]],
 			createdRecipe: null,
 		});
 	});
@@ -199,5 +214,15 @@ describe('Recipe Reducer', () => {
 			lastPageIndex: 2,
 			recipeList: mockRecipeList,
 		});
+	});
+
+	it('should check if recipe be null when location change', () => {
+		const newState = recipeReducer({...RecipeState, recipe: mockRecipeList[0]},
+			{
+				type: LOCATION_CHANGE,
+				payload: null,
+			},
+		);
+		expect(newState).toEqual({...RecipeState, recipe: null});
 	});
 });
