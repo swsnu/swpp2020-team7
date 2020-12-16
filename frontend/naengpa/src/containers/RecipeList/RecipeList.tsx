@@ -1,6 +1,7 @@
 import React, { MouseEvent, useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { History } from 'history';
+import { makeStyles } from '@material-ui/core/styles';
 import { toast } from 'react-toastify';
 import Pagination from '@material-ui/lab/Pagination';
 import InputBase from '@material-ui/core/InputBase';
@@ -12,54 +13,47 @@ import { getRecipeList } from '../../store/actions/index';
 
 import './RecipeList.scss';
 import FeedLoading from '../../components/FeedLoading/FeedLoading';
+import { RecipeEntity } from '../../model/recipe';
 
 interface RecipeListProps {
 	history: History;
 }
 
+const useStyles = makeStyles((theme) => ({
+	ul: {
+		'& .Mui-selected': {
+			color: ' #ff8a3d !important',
+		},
+	},
+}));
+
 const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 	const recipeState = useSelector((state: AppState) => state.recipe);
+	const recipeList = useSelector((state: AppState) => state.recipe.recipeList);
+	const lastPageIndex = useSelector((state: AppState) => state.recipe.lastPageIndex);
 	const foodCategoryList = useSelector((state: AppState) => state.foodCategory.foodCategoryList);
 	const [page, setPage] = useState(1);
-	const [maxPageIndex, setMaxPageIndex] = useState(recipeState.lastPageIndex);
 	const [searchCategory, setSearchCategory] = useState('전체');
 	const [sortBy, setSortBy] = useState('ingredient');
 	const [loading, setLoading] = useState(true);
 	const [query, setQuery] = useState('');
 	const dispatch = useDispatch();
-
-	useEffect(() => {
-		if (!recipeState.recipeList) setLoading(true);
-	}, [recipeState]);
+	const classes = useStyles();
 
 	const onLoadPage = useCallback(async () => {
 		if (loading) {
 			await dispatch(getRecipeList(query, sortBy, searchCategory, page));
-			if (!recipeState.recipeList || !recipeState.recipeList.length) {
-				if (sortBy === 'ingredient') {
-					toast.info(
-						'🐬 냉장고 속 재료와 오늘의 재료로 추천된 레시피가 없습니다! 인기 레시피를 확인해 보세요!',
-					);
-					setSortBy(() => 'likes');
-				}
+			if (!recipeList.length && sortBy == 'ingredient') {
+				toast.info(
+					'🐬 냉장고 속 재료와 오늘의 재료로 추천된 레시피가 없습니다! 인기 레시피를 확인해 보세요!',
+				);
+				setSortBy('likes');
+				await dispatch(getRecipeList(query, 'likes', searchCategory, 1));
+				setPage(1);
 			}
-			setMaxPageIndex(recipeState.lastPageIndex);
 			setLoading(false);
 		}
-	}, [dispatch, recipeState.lastPageIndex, loading, query, page, sortBy, searchCategory]);
-
-	const loadingFeeds = () => {
-		let totalSkeletons = 0;
-		const { recipeList } = recipeState;
-		if (!recipeList || !recipeList.length) {
-			totalSkeletons = 6;
-		} else {
-			totalSkeletons = recipeList.length;
-		}
-		return Array.from(Array(totalSkeletons)).map((_, idx) => (
-			<FeedLoading key={`loading-${idx}`} attribute="cardList" />
-		));
-	};
+	}, [dispatch, loading]);
 
 	useEffect(() => {
 		onLoadPage();
@@ -75,6 +69,23 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 		setPage(value);
 		setLoading(true);
 	};
+
+	const loadingFeeds = () => {
+		let totalSkeletons = 0;
+		const { recipeList } = recipeState;
+		if (!recipeList || !recipeList.length) {
+			totalSkeletons = 9;
+		} else {
+			totalSkeletons = recipeList.length;
+		}
+		return Array.from(Array(totalSkeletons)).map((_, idx) => (
+			<FeedLoading key={`loading-${idx}`} attribute="cardList" />
+		));
+	};
+
+	const recipes = recipeList?.map((item: RecipeEntity) => (
+		<Recipe key={item.id} recipe={item} attribute="recipe-list-child" history={history} />
+	));
 
 	const selectOption = foodCategoryList?.map((item: any, idx) => {
 		return (
@@ -182,30 +193,17 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 					</button>
 				</div>
 			</div>
-			<div id="recipe-cards">
-				{loading
-					? loadingFeeds()
-					: recipeState.recipeList?.map((item: any) => (
-							<Recipe
-								key={item.id}
-								recipe={item}
-								attribute="recipe-list-child"
-								history={history}
-							/>
-					  ))}
-			</div>
-			{!loading &&
-				(recipeState.recipeList?.length ? (
-					<Pagination
-						id="recipe-list-page"
-						page={page}
-						size="large"
-						count={Math.ceil(maxPageIndex / 9.0)}
-						onChange={onChangePage}
-					/>
-				) : (
-					<div id="vacant-recipe"> 해당 조건의 레시피가 존재하지 않습니다!</div>
-				))}
+			<div id="recipe-cards">{!loading ? recipes : loadingFeeds()}</div>
+			{!loading && (
+				<Pagination
+					id="recipe-list-page"
+					className={classes.ul}
+					page={page}
+					size="large"
+					count={Math.ceil(lastPageIndex / 9.0)}
+					onChange={onChangePage}
+				/>
+			)}
 		</div>
 	);
 };

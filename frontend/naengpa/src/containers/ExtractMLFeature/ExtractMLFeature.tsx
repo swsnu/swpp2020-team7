@@ -40,6 +40,8 @@ interface ExtractMLFeatureProps {
 const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const createdRecipe = useSelector((state: AppState) => state.recipe.createdRecipe);
 	const [loading, setLoading] = useState(false);
+	const [createLoading, setCreateLoading] = useState(false);
+
 	const [foodName, setFoodName] = useState('');
 	const [content, setContent] = useState('');
 	const [foodImageFiles, setFoodImageFiles] = useState<File[]>([]);
@@ -51,7 +53,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 	const [alertContent, setAlertContent] = useState(
 		'요리 카테고리와 필요한 재료들이 요리명, 등록된 사진들 그리고 레시피를 기반으로 추천되었습니다. 해당 부분을 수정하거나 레시피등록 버튼을 눌러주세요. 첫번째로 업로드한 사진이 썸네일이 됩니다!',
 	);
-
 	// if the value is false => then each modal pops off.
 	const [showCategoryModal, setShowCategoryModal] = useState(false);
 	const [modifiedCategory, setModifiedCategory] = useState('');
@@ -94,7 +95,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 		const images = target.files as FileList;
 		// compress images
 		const imageArray = Array.from(images);
-		imageArray.forEach(async (file) => {
+		imageArray.slice(0, 5).forEach(async (file) => {
 			await compressImage(file).then((result) => {
 				setFoodImageFiles((state) => [...state, result]);
 			});
@@ -122,42 +123,41 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	// need to be directed to recipe detail page, current => recipelist
 	const onClickRegisterRecipe = () => {
-		const func = async () => {
-			if (!foodImageFiles?.length) {
-				toast.error('🦄 사진을 입력해주세요!');
-			} else if (!foodName) {
-				toast.error('🦄 요리 이름을 입력해주세요!');
-			} else if (cookTime < 0) {
-				toast.error('🦄 조리 시간을 입력해주세요! 숫자만 가능합니다!');
-			} else if (!content) {
-				toast.error('🦄 레시피를 입력해주세요!');
-			} else {
-				const newIngredientList: RecipeIngredient[] = ingredients
-					? ingredients?.map((item, idx) => {
-							return { name: item.name, quantity: item.quantity };
-					  })
-					: [];
+		if (!foodImageFiles?.length) {
+			toast.error('🦄 사진을 입력해주세요! jpg, jpeg, png 파일 5개만 입력가능합니다. ');
+		} else if (!foodName) {
+			toast.error('🦄 요리 이름을 입력해주세요!');
+		} else if (cookTime < 0) {
+			toast.error('🦄 조리 시간을 입력해주세요! 숫자만 가능합니다!');
+		} else if (!content) {
+			toast.error('🦄 레시피를 입력해주세요!');
+		} else {
+			const newIngredientList: RecipeIngredient[] = ingredients
+				? ingredients?.map((item, idx) => {
+						return { name: item.name, quantity: item.quantity };
+					})
+				: [];
 
-				const newRecipe: RecipeEntity = {
-					foodName,
-					cookTime,
-					content,
-					foodImageFiles,
-					recipeLike: 0,
-					userLike: 0,
-					foodCategory,
-					ingredients: newIngredientList,
-				};
-				dispatch(createRecipe(newRecipe));
-				history.push('/recipes');
-			}
-		};
-		func();
+			const newRecipe: RecipeEntity = {
+				foodName,
+				cookTime,
+				content,
+				foodImageFiles,
+				recipeLike: 0,
+				userLike: 0,
+				foodCategory,
+				ingredients: newIngredientList,
+			};
+			dispatch(createRecipe(newRecipe));
+			setCreateLoading(true);
+			setAlert(true);
+			setAlertContent("잠시만 기다려주세요! 레시피가 생성되고 있습니다.")
+		}
 	};
 
 	const onClickExtractMLFeatureAgain = async () => {
 		if (!foodImageFiles?.length) {
-			toast.error('🦄 사진을 입력해주세요!');
+			toast.error('🦄 사진을 입력해주세요! jpg, jpeg, png 파일 5개만 입력가능합니다!');
 		} else if (!foodName) {
 			toast.error('🦄 요리 이름을 입력해주세요!');
 		} else if (cookTime < 0) {
@@ -179,7 +179,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 
 	const imageList = !foodImageFiles?.length
 		? []
-		: foodImageFiles?.map((item, idx) => {
+		: foodImageFiles?.slice(0, 5).map((item, idx) => {
 				return (
 					<div key={`${idx} `} id="delete-image-icon-box">
 						{!alert && (
@@ -234,6 +234,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				onClickOffAlert={(e) => setAlert(false)}
 				goBack={goBackButton}
 				onClickCancelAlert={onClickCancelAlert}
+				createLoading={createLoading}
 			/>
 			{loading && <Loading />}
 			{!loading && (
@@ -358,7 +359,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 								<TableRow id="recipe-row-box">
 									<TableCell id="image-box">
 										{imageList}
-										<Box id="add-image-icon-box">
+										{foodImageFiles.length < 5 && <Box id="add-image-icon-box">
 											<label
 												aria-label="food-image-label"
 												htmlFor="food-image"
@@ -381,6 +382,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 											</label>
 											<PhotoCameraIcon id="add-image-icon" />
 										</Box>
+									}
 									</TableCell>
 									<TableCell>
 										<Divider orientation="vertical" />

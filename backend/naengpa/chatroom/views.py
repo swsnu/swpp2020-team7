@@ -30,7 +30,7 @@ def get_chatroom_list(request):
                 "content": message.content,
                 "author": message.author.name,
                 "createdAt": message.created_string,
-            } for message in chatroom.message_set.select_related('author')],
+            } for message in chatroom.message_set.select_related('author').order_by('-created_at')],
             "lastChat": chatroom.message_set.all().last().content if chatroom.message_set.count() != 0 else LETS_CHAT_MESSAGE,
             "member": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.name,
             "memberImage": ChatMember.objects.filter(chatroom_id=chatroom.id).exclude(member_id=user.id).first().member.profile_image,
@@ -50,8 +50,8 @@ def make_chatroom(request):
     try:
         friend_id = request.data['friend_id']
         friend = User.objects.get(id=friend_id)
-        chatroom = ChatRoom.objects.get(
-            Q(chat_members=user) & Q(chat_members=friend))
+        chatroom = ChatRoom.objects.filter(
+            chat_members=user).get(chat_members=friend)
         chat_user = user.chat_member.get(chatroom_id=chatroom.id)
         chat_user.notice = 0
         chat_user.save()
@@ -67,7 +67,7 @@ def make_chatroom(request):
         return HttpResponseBadRequest()
 
     messages = chatroom.message_set.select_related(
-        'author').all().order_by('created_at')
+        'author').all().order_by('-created_at')
 
     return JsonResponse(data={
         "id": chatroom.id,
@@ -102,7 +102,7 @@ def get_chatroom(request, id):
         user = request.user
         chatroom = ChatRoom.objects.get(id=id)
         messages = chatroom.message_set.select_related(
-            'author').all().order_by('created_at')
+            'author').all().order_by('-created_at')
         chat_user = user.chat_member.get(chatroom_id=chatroom.id)
         chat_user.notice = 0
         chat_user.save()
@@ -137,7 +137,7 @@ def send_message(request, id):
         Message.objects.create(
             author_id=user.id, content=content, chatroom_id=id)
         messages = target_chatroom.message_set.select_related(
-            'author').all().order_by('created_at')
+            'author').all().order_by('-created_at')
         chat_member = ChatMember.objects.select_related('member').filter(
             chatroom_id=target_chatroom.id).exclude(member_id=user.id).first()
         chat_member.notice += 1

@@ -90,7 +90,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 						alt="/icons/boy.png"
 					/>
 				</Grid>
-				<Grid justify="flex-start" item xs zeroMinWidth>
+				<Grid item xs zeroMinWidth>
 					<Grid style={{ display: 'flex', flexDirection: 'column' }}>
 						<Grid id="comment-header">
 							<Grid id="comment-author">

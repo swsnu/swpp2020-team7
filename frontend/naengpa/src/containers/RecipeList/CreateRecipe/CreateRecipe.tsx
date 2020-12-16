@@ -49,7 +49,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		const images = target.files as FileList;
 		// convert FileList iterable
 		const imageArray = Array.from(images);
-		imageArray.forEach(async (file) => {
+		imageArray.slice(0, 5).forEach(async (file) => {
 			await compressImage(file).then((result) => {
 				setFoodImageFiles((state) => [...state, result]);
 			});
@@ -81,7 +81,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		const extractMLFeatureClosure = async () => {
 			// if one of the input field is empty, then the alert modal shows itself
 			if (!foodImageFiles?.length) {
-				toast.error('🦄 사진을 입력해주세요!');
+				toast.error('🦄 사진을 입력해주세요! jpg, jpeg, png 파일 5개만 입력가능합니다. ');
 			} else if (!foodName) {
 				toast.error('🦄 요리 이름을 입력해주세요!');
 			} else if (cookTime <= 0) {
@@ -105,9 +105,9 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 		extractMLFeatureClosure();
 	};
 
-	const image_list = !foodImageFiles.length
+	const image_list = !foodImageFiles?.length
 		? []
-		: foodImageFiles.map((item, idx) => {
+		: foodImageFiles?.slice(0, 5).map((item, idx) => {
 				return (
 					<div key={`#${item}-${idx + 1}`} id="delete-image-icon-box">
 						{!alert && (
@@ -209,7 +209,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 								<TableRow id="recipe-row-box">
 									<TableCell id="image-box">
 										{image_list}
-										<Box id="add-image-icon-box">
+										{foodImageFiles.length < 5 && <Box id="add-image-icon-box">
 											<label
 												aria-label="food-image-label"
 												htmlFor="food-image"
@@ -231,7 +231,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({ history }) => {
 												/>
 											</label>
 											<PhotoCameraIcon id="add-image-icon" />
-										</Box>
+										</Box>}
 									</TableCell>
 									<TableCell>
 										<Divider orientation="vertical" />

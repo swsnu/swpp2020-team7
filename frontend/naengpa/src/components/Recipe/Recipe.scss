@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   height: auto;
-  width: 30%;
+  width:30%;
   margin: 1%;
 
   #recipe-image {
@@ -17,13 +17,11 @@
   }
 
   #recipe-food-name {
-    //font-weight: bold;
     letter-spacing: 1.5px;
     font-size: larger;
     font-family: 'Jua', sans-serif;
   }
   #recipe-food-category {
-    //font-weight: bold;
     font-family: 'Jua', sans-serif;
     letter-spacing: 1px;
   }
@@ -36,6 +34,13 @@
       font-family: 'Jua', sans-serif;
     }
   }
+  #recipe-card-footer {
+    padding: 0;
+  }
+
+  #recipe-content {
+    padding: 0;
+  }
 }
   
 
@@ -45,7 +50,6 @@
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  //min-width: 210px;
   max-height: 310px;
   width: 170px;
   min-width: 140px;
@@ -69,7 +73,6 @@
   
   #recipe-card-footer {
     margin: -30px;
-    //margin-right: 5px;
     margin-right: 0px;
   }
 
