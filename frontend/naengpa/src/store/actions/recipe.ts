@@ -107,6 +107,7 @@ export const createRecipe = (recipe: RecipeEntity) => {
 			const response = await axios.post('/api/recipes/', bodyFormData);
 			dispatch(createRecipe_(response.data));
 			window.sessionStorage.removeItem('createdRecipe');
+			dispatch(push(`/recipes/${response.data.id}`));
 		} catch {
 			toast.error('🦄 레시피를 생성하던 중 문제가 발생했습니다! 다시 시도해주세요!');
 		}

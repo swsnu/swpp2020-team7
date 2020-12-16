@@ -149,7 +149,6 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 					ingredients: newIngredientList,
 				};
 				dispatch(createRecipe(newRecipe));
-				history.push('/recipes');
 			}
 		};
 		func();
