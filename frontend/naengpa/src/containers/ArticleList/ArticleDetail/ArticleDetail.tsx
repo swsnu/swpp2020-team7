@@ -13,7 +13,6 @@ import { Skeleton } from '@material-ui/lab';
 import {
 	createChatRoom,
 	deleteArticle,
-	editArticle,
 	getArticle,
 } from '../../../store/actions/index';
 import { AppState } from '../../../store/store';

@@ -9,7 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { Skeleton } from '@material-ui/lab';
 import { toast } from 'react-toastify';
 import Tab from '../../components/Tab/Tab';
-import { getChatRoomList, getChatRoom } from '../../store/actions/index';
+import { getChatRoomList } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 
 interface ChatRoomListProps {
@@ -30,7 +30,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 			dispatch(getChatRoomList());
 			setLoading(false);
 		}
-	}, [dispatch]);
+	}, [dispatch, user]);
 
 	const chatRoomCollection = user.chatRoomList?.map((chatRoom: any) => {
 		return (

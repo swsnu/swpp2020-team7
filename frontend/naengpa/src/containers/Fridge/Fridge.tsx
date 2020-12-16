@@ -45,7 +45,7 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 		dispatch(getFridge(user!.id));
 		setMaxPageIndex(Math.ceil(ingredientList.length / 9.0));
 		setCurrentList(ingredientList.slice((page - 1) * 9, (page - 1) * 9 + 9));
-	}, [user, ingredientList.length, dispatch]);
+	}, [dispatch, user, ingredientList.length, dispatch]);
 
 	return (
 		<div id="fridge-page">

@@ -49,7 +49,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 
 	useEffect(() => {
 		dispatch(getUser(user!));
-	}, []);
+	}, [dispatch]);
 
 	const onClickCheck = async (id: number, deleted: boolean) => {
 		if (!deleted) {

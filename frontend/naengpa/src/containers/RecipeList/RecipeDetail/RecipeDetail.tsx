@@ -168,7 +168,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 		if (!recipe) {
 			dispatch(getRecipe(recipeId));
 		}
-	}, [dispatch, recipeId]);
+	}, [dispatch, recipe, recipeId]);
 
 	useEffect(() => {
 		setRecipeLike(recipe?.recipeLike);

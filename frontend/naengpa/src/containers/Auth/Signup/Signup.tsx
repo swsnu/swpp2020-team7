@@ -31,7 +31,7 @@ const Signup: React.FC<SignupProps> = ({ history }) => {
 
 	useEffect(() => {
 		if (!regionList) dispatch(getRegionList());
-	}, [regionList]);
+	}, [dispatch, regionList]);
 
 	const onClickSignup = async () => {
 		if (!name) {

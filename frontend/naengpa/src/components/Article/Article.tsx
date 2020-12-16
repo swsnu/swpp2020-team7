@@ -1,7 +1,6 @@
 import React from 'react';
 import { History } from 'history';
-import { Card, CardHeader, Avatar, IconButton, CardMedia, CardContent } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Card, CardHeader, Avatar, CardMedia, CardContent } from '@material-ui/core';
 import { ArticleEntity, ArticleImage } from '../../model/article';
 import { Dictionary } from '../../model/general';
 

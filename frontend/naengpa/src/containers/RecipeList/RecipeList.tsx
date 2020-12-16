@@ -46,7 +46,7 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 			setMaxPageIndex(recipeState.lastPageIndex);
 			setLoading(false);
 		}
-	}, [recipeState.lastPageIndex, loading, query, page, sortBy, searchCategory]);
+	}, [dispatch, recipeState.lastPageIndex, loading, query, page, sortBy, searchCategory]);
 
 	const loadingFeeds = () => {
 		let totalSkeletons = 0;

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { History } from 'history';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -27,29 +27,7 @@ import { ArticleImage, ArticleOptions, EditArticleEntity } from '../../../model/
 import { editArticle, getArticle } from '../../../store/actions/index';
 import { getCurrentTime } from '../../../utils/time';
 import { AppState } from '../../../store/store';
-import compressImage from '../../../utils/compressImage';
 import './EditArticle.scss';
-
-const createFile = async (url: string) => {
-	const response = await fetch(url);
-	const data = await response.blob();
-	const filename = new String(url).substring(url.lastIndexOf('/') + 1); 
-	const ext = filename.substring(filename.lastIndexOf(".") + 1);
-	const metadata = {
-	  type: ext === 'png' ? 'image/png' : 'image/jpeg',
-	};
-	return new File([data], filename, metadata);
-};
-
-const getImageFiles = async (articleImages: ArticleImage[]) => {
-	let img: ArticleImage;
-	let imgFiles: File[] = [];
-	for (img of articleImages) {
-		const file = await createFile(img.file_path);
-		imgFiles.push(file);
-	}
-	return imgFiles;
-};
 
 interface EditArticleProps {
 	history: History;
@@ -57,7 +35,6 @@ interface EditArticleProps {
 
 const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 	const article = useSelector((state: AppState) => state.article.article);
-	const userIngredients = useSelector((state: AppState) => state.fridge.ingredientList);
 	const time = getCurrentTime();
 	const [title, setTitle] = useState(article ? article.title : '');
 	const [content, setContent] = useState(article ? article.content : '');
@@ -74,7 +51,7 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 	const articleId = parseInt(currentPath[currentPath.length - 2], 10);
 
 	// alert state is true if alert is necessary, otherwise false.
-	const [alert, setAlert] = useState('제목, 내용, 가격 및 사진을 모두 입력해 주세요');
+	const alert = '제목, 내용, 가격 및 사진을 모두 입력해 주세요';
 	const [onAlert, setOnAlert] = useState(false);
 	const dispatch = useDispatch();
 
@@ -85,7 +62,7 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 				dispatch(getArticle(articleId));
 			}
 		}
-	}, [dispatch, loading, articleId]);
+	}, [dispatch, loading, article, articleId]);
 
 	useEffect(() => {
 		if (loading && article && !isNaN(articleId) && (article.id === articleId)) {
@@ -96,7 +73,7 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 			setOptions(article.options);
 			setImages(article.images)
 		}
-	}, [article]);
+	}, [loading, article, articleId]);
 
 
 	const onClickOptions = (target: string) => {
@@ -343,4 +320,26 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 		</div>
 	);
 };
+
+// const createFile = async (url: string) => {
+// 	const response = await fetch(url);
+// 	const data = await response.blob();
+// 	const filename = new String(url).substring(url.lastIndexOf('/') + 1); 
+// 	const ext = filename.substring(filename.lastIndexOf(".") + 1);
+// 	const metadata = {
+// 	  type: ext === 'png' ? 'image/png' : 'image/jpeg',
+// 	};
+// 	return new File([data], filename, metadata);
+// };
+
+// const getImageFiles = async (articleImages: ArticleImage[]) => {
+// 	let img: ArticleImage;
+// 	let imgFiles: File[] = [];
+// 	for (img of articleImages) {
+// 		const file = await createFile(img.file_path);
+// 		imgFiles.push(file);
+// 	}
+// 	return imgFiles;
+// };
+
 export default EditArticle;

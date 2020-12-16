@@ -7,7 +7,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import './Recipe.scss';
 import { RecipeEntity } from '../../model/recipe';
-import { getRecipe, toggleRecipe } from '../../store/actions/index';
+import { toggleRecipe } from '../../store/actions/index';
 
 interface RecipeProps {
 	recipe: RecipeEntity;

@@ -17,7 +17,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user.user);
 	useEffect(() => {
 		dispatch(getUser(user!));
-	}, [user]);
+	}, [dispatch, user]);
 
 	return (
 		<div id="mypage">

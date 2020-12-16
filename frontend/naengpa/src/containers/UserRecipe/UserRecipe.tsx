@@ -42,7 +42,7 @@ const UserRecipe: React.FC<UserRecipeProps> = ({ history }) => {
 			await dispatch(getUserRecipes(user?.id));
 			setLoading(false);
 		}
-	}, [recipeList]);
+	}, [dispatch, loading, user]);
 
 	useEffect(() => {
 		loadRecipe();

@@ -1,11 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Box, Grid, Collapse } from '@material-ui/core';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import Alert from '@material-ui/lab/Alert';
+import { Button, Box, Grid } from '@material-ui/core';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
 import { toggleTodayIngredient, getFridge } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 import './TodayIngredient.scss';
@@ -14,14 +10,13 @@ const TodayIngredient: React.FC = () => {
 	const dispatch = useDispatch();
 	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
 	const user = useSelector((state: AppState) => state.user.user);
-	const [alert, setAlert] = useState(false);
 	const todays_ingredient = ingredientList.filter(
 		(ingredient) => ingredient.isTodayIngredient === true,
 	);
 
 	useEffect(() => {
 		dispatch(getFridge(user!.id));
-	}, [user]);
+	}, [dispatch, user]);
 
 	// onClickDeleteTodayIngredient();
 	const onClickDeleteTodayIngredient = (targetId: number) => {

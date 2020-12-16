@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { UserEntity, UserSignupInputDTO } from '../../model/user';
-import { ChatEntity, MessageEntity } from '../../model/chat';
+import { ChatEntity } from '../../model/chat';
 import { UserAction } from '../actions/user';
 import { DefaultAction } from '../actions/index';
 
