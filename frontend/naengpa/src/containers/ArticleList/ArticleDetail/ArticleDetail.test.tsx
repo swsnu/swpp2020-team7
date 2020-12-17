@@ -206,7 +206,6 @@ describe('articleDetail', () => {
 		articleSettingButton.at(0).simulate('click');
 	});
 
-
 	it('should click article-edit button correctly', () => {
 		const component = mount(articleDetail);
 		const articleSettingButton = component.find('#article-setting-button');

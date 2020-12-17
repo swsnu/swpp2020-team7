@@ -152,7 +152,6 @@ describe('CreateArticle', () => {
 		act(() => {
 			const title = component.find('input#title-input').find('input');
 			const priceInput = component.find('input#price-input').find('input');
-			const foodImage = component.find('input#food-image').find('input');
 			const content = component.find('#article-content').find('textarea');
 			// const item = component.find('#create-article-items-사과').at(0);
 			const option = component.find('#create-article-options-share').at(0);
@@ -161,13 +160,11 @@ describe('CreateArticle', () => {
 			title.simulate('change', { target: { value: '소금' } });
 			priceInput.simulate('change', { target: { value: 0 } });
 			content.simulate('change', { target: { value: '공짜로 나눔해볼게요.' } });
-			foodImage.simulate('change', { target: { files: [image] } });
 			// item.simulate('click');
 			option.simulate('click');
 
 			expect(title.length).toBe(1);
 			expect(priceInput.length).toBe(1);
-			expect(foodImage.length).toBe(1);
 			expect(content.length).toBe(1);
 			createArticleButton.simulate('click');
 		});
@@ -179,7 +176,6 @@ describe('CreateArticle', () => {
 		const addFoodImageButton = component.find('#add-image-button').at(0);
 		addFoodImageButton.simulate('click');
 		foodImage.simulate('change', { target: { files: [image] } });
-		console.log(component.debug());
 	});
 
 	it('should go back to article list', async () => {
