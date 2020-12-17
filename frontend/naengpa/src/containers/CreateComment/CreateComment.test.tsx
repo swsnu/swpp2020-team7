@@ -97,4 +97,22 @@ describe('CreateComment', () => {
 		const component = mount(createComment);
 		expect(component.find('CreateComment').length).toBe(1);
 	});
+
+	it('CreateComment works without any problem', () => {
+		const component = mount(createComment);
+		const commentInputButton = component.find('#comment-input-button').at(0);
+		commentInputButton.simulate('click');
+		const commentInput = component.find('#comment-input-field').find('input');
+		commentInput.simulate('change', { target: { value: '와 맛있겠네요!' } });
+		commentInputButton.simulate('click');
+	});
+
+	it('onkeypress - function runs', () => {
+		const component = mount(createComment);
+		const commentInput = component.find('#comment-input-field').find('input');
+		commentInput.simulate('change', { target: { value: '와 맛있겠네요!' } });
+		component.find('input#comment-input-field').simulate('keypress', { key: 'Enter' });
+		commentInput.simulate('change', { target: { value: '와 맛있겠네요!' } });
+		component.find('input#comment-input-field').simulate('keypress', { key: '' });	
+	});
 });

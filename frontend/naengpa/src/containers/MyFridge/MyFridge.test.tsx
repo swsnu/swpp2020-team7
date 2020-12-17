@@ -6,6 +6,8 @@ import configureStore from 'redux-mock-store';
 import MyFridge from './MyFridge';
 import { history } from '../../store/store';
 import { Dictionary } from '../../model/general';
+import * as fridgeActionCreators from '../../store/actions/fridge';
+import * as foodCategoryActionCreators from '../../store/actions/foodCategory';
 
 jest.mock('../../components/TodayIngredient/TodayIngredient', () =>
 	jest.fn(() => <div className="spyTodayIngredient">TodayIngredient</div>),
@@ -69,14 +71,32 @@ const mockStore = store(stubInitialState);
 
 describe('MyFridge', () => {
 	let myFridge: any;
+	let spyGetFridge: any;
+	let spyGetFoodCategoryList: any;
+	let spyHistoryPush: any; 
 
 	beforeEach(() => {
+		jest.mock('react-redux', () => ({
+			useSelector: jest.fn((fn) => fn(mockStore.getState())),
+			useDispatch: () => jest.fn(),
+			connect: () => jest.fn(),
+		}));
 		myFridge = (
 			<Provider store={mockStore}>
 				<MyFridge history={history} />
 			</Provider>
 		);
+		spyGetFridge = jest
+		.spyOn(fridgeActionCreators, 'getFridge')
+		.mockImplementation(() => jest.fn());
+		
+		spyGetFoodCategoryList = jest
+		.spyOn(foodCategoryActionCreators, 'getFoodCategoryList')
+		.mockImplementation(() => jest.fn());
+
+		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 	});
+
 	afterEach(() => {
 		jest.clearAllMocks();
 	});
