@@ -1,9 +1,10 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
 import { History } from 'history';
 import { Card, CardHeader, Avatar, CardMedia, CardContent } from '@material-ui/core';
 import { ArticleEntity, ArticleImage } from '../../model/article';
 import { Dictionary } from '../../model/general';
-
+import {getArticle} from '../../store/actions/index';
 import './Article.scss';
 
 interface ArticleProps {
@@ -12,6 +13,7 @@ interface ArticleProps {
 }
 
 const Article: React.FC<ArticleProps> = ({ article, history }) => {
+	const dispatch = useDispatch();
 	const thumbnail: ArticleImage = article.images[0];
 	const foodCategory: Dictionary<string> = {
 		과일류: 'fruit.png',
@@ -30,12 +32,16 @@ const Article: React.FC<ArticleProps> = ({ article, history }) => {
 		곡류: 'rice.png',
 	};
 	const path = `foodCategory/${foodCategory[article.item.category]}`;
+	const onClickArticle = async () => {
+		await dispatch(getArticle(article.id));
+		history.push(`/articles/${article.id}`);
+	};
 
 	return (
-		<Card id="article-card" onClick={() => history.push(`/articles/${article.id}`)}>
+		<Card id="article-card" onClick={() => onClickArticle()}>
 			<CardHeader
 				id="article-card-header"
-				avatar={<Avatar src={path} variant="rounded" aria-label="article" />}
+				avatar={<Avatar src={path} variant="rounded" alt="foodCategory/meat.png" aria-label="article" />}
 				disableTypography
 				title={article.item.name}
 			/>
