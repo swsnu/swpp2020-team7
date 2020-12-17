@@ -62,7 +62,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 
 	useEffect(() => {
 		loadNotification();
-	}, [loadNotification]);
+	}, []);
 
 	const onClickCheck = async (id: number, deleted: boolean) => {
 		if (!deleted) {
@@ -71,7 +71,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 		}
 	};
 
-	const onClickNotification = async (category: string | null, targetId: number | null) => {
+	const onClickNotification = (category: string | null, targetId: number | null) => {
 		if (category && targetId) {
 			if (category.startsWith('Recipe')) {
 				history.push(`/recipes/${targetId}`);

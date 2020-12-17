@@ -120,9 +120,21 @@ describe('TodayIngredient', () => {
 		const component = mount(todayIngredient);
 
 		expect(component.find('TodayIngredient').length).toBe(1);
-		// expect(spyGetFridge).toBeCalledTimes(1);
+		expect(spyGetFridge).toBeCalledTimes(0);
 		expect(component.find('div#today-ingredient-header').length).toBe(1);
 		expect(component.find('div#today-ingredient-contents').length).toBe(1);
+	});
+
+	it('TodayIngredient renders without crashing with no ingredients', () => {
+		todayIngredient = (
+			<Provider store={store(stubInitialState(true))}>
+				<TodayIngredient />
+			</Provider>
+		);
+		const component = mount(todayIngredient);
+
+		expect(component.find('TodayIngredient').length).toBe(1);
+		expect(spyGetFridge).toBeCalledTimes(1);
 	});
 
 	it('today-ingredient-delete-button should dispatch toggleTodayIngredient correctly', () => {
