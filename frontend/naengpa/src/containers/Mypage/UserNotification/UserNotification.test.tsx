@@ -10,9 +10,9 @@ import { NotificationEntity, UserEntity } from '../../../model/user';
 import * as userActionCreators from '../../../store/actions/user';
 import waitForComponentToPaint from '../../../../test-utils/waitForComponentToPaint';
 
-jest.mock('../../../components/Tab/Tab', () => jest.fn((props) =>
-	<div {...props} className="spyTab" />
-));
+jest.mock('../../../components/Tab/Tab', () =>
+	jest.fn((props) => <div {...props} className="spyTab" />),
+);
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
@@ -90,9 +90,8 @@ const stubInitialState = {
 const initialState = {
 	user: {
 		user: mockUser,
-	}
-}
-
+	},
+};
 
 describe('UserNotification', () => {
 	let userNotification: any;
@@ -101,7 +100,6 @@ describe('UserNotification', () => {
 	let spyReadNotification: any;
 
 	beforeEach(() => {
-
 		userNotification = (
 			<Provider store={store(stubInitialState)}>
 				<UserNotification history={history} />
@@ -110,7 +108,9 @@ describe('UserNotification', () => {
 
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 		spyGetUser = jest.spyOn(userActionCreators, 'getUser').mockImplementation(() => jest.fn());
-		spyReadNotification = jest.spyOn(userActionCreators, 'readNotification').mockImplementation(() => jest.fn());
+		spyReadNotification = jest
+			.spyOn(userActionCreators, 'readNotification')
+			.mockImplementation(() => jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -130,18 +130,20 @@ describe('UserNotification', () => {
 		expect(spyGetUser).toBeCalledTimes(1);
 		expect(component.find('UserNotification').length).toBe(1);
 
-		const items = component.find("div.MuiListItem-root");
+		const items = component.find('div.MuiListItem-root');
 		items.first().simulate('click');
 		expect(items.length).toBe(1);
 	});
 
 	it('UserNotification renders without crashing with no user', async () => {
 		userNotification = (
-			<Provider store={store({
-				user: {
-					user: null,
-				}
-			})}>
+			<Provider
+				store={store({
+					user: {
+						user: null,
+					},
+				})}
+			>
 				<UserNotification history={history} />
 			</Provider>
 		);
@@ -173,7 +175,7 @@ describe('UserNotification', () => {
 		await waitForComponentToPaint(component);
 		expect(component.find('UserNotification').length).toBe(1);
 
-		const items = component.find("div.MuiListItem-root");
+		const items = component.find('div.MuiListItem-root');
 		expect(items.length).toBe(6);
 
 		items.first().simulate('click');

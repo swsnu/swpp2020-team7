@@ -96,7 +96,9 @@ describe('Article', () => {
 
 		mockClick = jest.fn();
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
-		spyGetArticle = jest.spyOn(userActionCreators, 'getArticle').mockImplementation(() => jest.fn());
+		spyGetArticle = jest
+			.spyOn(userActionCreators, 'getArticle')
+			.mockImplementation(() => jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();

@@ -81,7 +81,8 @@ describe('TodayStar', () => {
 		todayStar = (
 			<Provider store={store(initialState)}>
 				<TodayStar />
-			</Provider>);
+			</Provider>
+		);
 		const component = mount(todayStar);
 
 		expect(component.find('TodayStar').length).toBe(1);

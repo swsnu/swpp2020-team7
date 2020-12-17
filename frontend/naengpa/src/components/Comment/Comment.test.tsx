@@ -93,7 +93,7 @@ describe('Comment', () => {
 	it('should edit and delete comment correctly', async () => {
 		const component = mount(comment);
 		await waitForComponentToPaint(component);
-		
+
 		const settingButton = component.find('#comment-setting-button').first();
 		settingButton.simulate('click');
 		settingButton.simulate('mouseover');
@@ -107,23 +107,23 @@ describe('Comment', () => {
 		editButton.simulate('click');
 
 		let editInput = component.find('input#comment-edit-content');
-		editInput.simulate('change', { target: { value: 'new content' }});
-		editInput.simulate('keypress', { key: 'Enter' } );
+		editInput.simulate('change', { target: { value: 'new content' } });
+		editInput.simulate('keypress', { key: 'Enter' });
 		expect(spyEditComment).toBeCalledTimes(1);
 		expect(spyEditComment).toBeCalledWith({
 			...mockComment,
-			content: 'new content'
+			content: 'new content',
 		});
 
 		editButton.simulate('click');
 		editInput = component.find('input#comment-edit-content');
-		editInput.simulate('change', { target: { value: '' }});
+		editInput.simulate('change', { target: { value: '' } });
 		component.find('button#confirm-edit-button').first().simulate('click');
 		expect(spyEditComment).toBeCalledTimes(1);
 
 		editButton.simulate('click');
 		editInput = component.find('input#comment-edit-content');
-		editInput.simulate('keypress', { key: 'not enter' } );
+		editInput.simulate('keypress', { key: 'not enter' });
 
 		editButton.simulate('click');
 		component.find('button#comment-delete').simulate('click');
