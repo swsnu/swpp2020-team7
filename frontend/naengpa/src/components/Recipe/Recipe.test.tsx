@@ -34,20 +34,24 @@ const mockRecipe: RecipeEntity = {
 	foodName: '딸기',
 	cookTime: 100,
 	content: '레시피',
-	foodImagePaths: [{
-		file_path: 'path',
-	}],
+	foodImagePaths: [
+		{
+			file_path: 'path',
+		},
+	],
 	foodImageFiles: [new File([new ArrayBuffer(1)], 'test.jpg')],
 	recipeLike: 1,
 	userLike: 1,
 	createdAt: '2000.00.00',
 	foodCategory: '밥류',
-	ingredients: [{
-		name: '돼지고기'
-	},
-	{
-		name: '고추장'
-	}],
+	ingredients: [
+		{
+			name: '돼지고기',
+		},
+		{
+			name: '고추장',
+		},
+	],
 };
 
 const mockRecipe2: RecipeEntity = {
@@ -62,12 +66,14 @@ const mockRecipe2: RecipeEntity = {
 	userLike: 0,
 	createdAt: '2000.00.00',
 	foodCategory: '밥류',
-	ingredients: [{
-		name: '돼지고기'
-	},
-	{
-		name: '고추장'
-	}],
+	ingredients: [
+		{
+			name: '돼지고기',
+		},
+		{
+			name: '고추장',
+		},
+	],
 };
 
 const stubInitialState = {
@@ -104,7 +110,9 @@ describe('Recipe', () => {
 		);
 
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
-		spyToggleRecipeLike = jest.spyOn(recipeActionCreators, 'toggleRecipe').mockImplementation(() => jest.fn());
+		spyToggleRecipeLike = jest
+			.spyOn(recipeActionCreators, 'toggleRecipe')
+			.mockImplementation(() => jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();

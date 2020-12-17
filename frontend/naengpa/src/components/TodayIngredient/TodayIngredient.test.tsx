@@ -97,7 +97,7 @@ describe('TodayIngredient', () => {
 
 		todayIngredient = (
 			<Provider store={mockStore}>
-				<TodayIngredient loading={false} />
+				<TodayIngredient />
 			</Provider>
 		);
 
@@ -120,7 +120,6 @@ describe('TodayIngredient', () => {
 		const component = mount(todayIngredient);
 
 		expect(component.find('TodayIngredient').length).toBe(1);
-		expect(spyGetFridge).toBeCalledTimes(0);
 		expect(component.find('div#today-ingredient-header').length).toBe(1);
 		expect(component.find('div#today-ingredient-contents').length).toBe(1);
 	});
@@ -134,7 +133,6 @@ describe('TodayIngredient', () => {
 		const component = mount(todayIngredient);
 
 		expect(component.find('TodayIngredient').length).toBe(1);
-		expect(spyGetFridge).toBeCalledTimes(1);
 	});
 
 	it('today-ingredient-delete-button should dispatch toggleTodayIngredient correctly', () => {

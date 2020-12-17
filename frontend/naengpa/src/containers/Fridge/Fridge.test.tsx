@@ -3,7 +3,6 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { IconButton } from '@material-ui/core';
 import { Dictionary } from '../../model/general';
 import * as fridgeActionCreators from '../../store/actions/fridge';
 import Fridge from './Fridge';
@@ -61,7 +60,7 @@ describe('Fridge', () => {
 
 		fridge = (
 			<Provider store={mockStore}>
-				<Fridge history={history} loading={false} />
+				<Fridge history={history} />
 			</Provider>
 		);
 
