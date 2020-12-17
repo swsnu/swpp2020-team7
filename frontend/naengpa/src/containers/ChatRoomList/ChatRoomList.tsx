@@ -27,9 +27,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 
 	const loadChatRoom = useCallback(async () => {
 		if (user) {
-			await Promise.all([
-				dispatch(getChatRoomList()),
-			]);
+			await Promise.all([dispatch(getChatRoomList())]);
 			setLoading(false);
 		}
 	}, [user, dispatch]);

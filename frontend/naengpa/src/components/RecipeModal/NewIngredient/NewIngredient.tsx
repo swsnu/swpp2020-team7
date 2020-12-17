@@ -108,9 +108,7 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 					{...defaultIngredients}
 					id="ingredient-search-input"
 					value={defaultValue}
-					onChange={(event, value) => {
-						onChangeIngredient(event, value);
-					}}
+					onChange={(event, value) => onChangeIngredient(event, value)}
 					renderInput={(params) => (
 						<TextField
 							required
@@ -128,18 +126,14 @@ const NewIngredient: React.FC<NewIngredientProps> = ({
 					id="ingredient-quantity"
 					placeholder="수량: "
 					value={newIngredientQuantity}
-					onChange={(e) => {
-						setNewIngredientQuantity(e.target.value);
-					}}
+					onChange={(e) => setNewIngredientQuantity(e.target.value)}
 				/>
 			)}
 			{newIngredient && newIngredientQuantity && (
 				<AddCircleIcon
 					id="add-ingredient-button"
 					type="button"
-					onClick={() => {
-						onClickAddIngredient();
-					}}
+					onClick={() => onClickAddIngredient()}
 				/>
 			)}
 		</div>

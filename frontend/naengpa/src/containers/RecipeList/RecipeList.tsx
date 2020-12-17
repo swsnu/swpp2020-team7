@@ -41,17 +41,13 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 
 	const onLoadPage = useCallback(async () => {
 		if (loading) {
-			await Promise.all([
-				dispatch(getRecipeList(query, sortBy, searchCategory, page)),
-			]);
+			await Promise.all([dispatch(getRecipeList(query, sortBy, searchCategory, page))]);
 			if (!recipeList.length && sortBy === 'ingredient') {
 				toast.info(
 					'🐬 냉장고 속 재료와 오늘의 재료로 추천된 레시피가 없습니다! 인기 레시피를 확인해 보세요!',
 				);
 				setSortBy('likes');
-				await Promise.all([
-					dispatch(getRecipeList(query, 'likes', searchCategory, 1)),
-				]);
+				await Promise.all([dispatch(getRecipeList(query, 'likes', searchCategory, 1))]);
 				setPage(1);
 			}
 			setLoading(false);

@@ -87,7 +87,6 @@ describe('Fridge Reducer', () => {
 		});
 	});
 
-
 	it('should check if logout clears store out correctly', () => {
 		const newState = fridgeReducer(fridgeState, {
 			type: actionTypes.LOGOUT,

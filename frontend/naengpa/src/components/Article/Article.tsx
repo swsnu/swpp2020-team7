@@ -33,9 +33,7 @@ const Article: React.FC<ArticleProps> = ({ article, history }) => {
 	};
 	const path = `foodCategory/${foodCategory[article.item.category]}`;
 	const onClickArticle = async () => {
-		await Promise.all([
-			dispatch(getArticle(article.id)),
-		]);
+		await Promise.all([dispatch(getArticle(article.id))]);
 		history.push(`/articles/${article.id}`);
 	};
 

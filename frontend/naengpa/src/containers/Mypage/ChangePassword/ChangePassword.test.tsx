@@ -7,6 +7,10 @@ import { history } from '../../../store/store';
 import * as userActionCreators from '../../../store/actions/user';
 import ChangePassword from './ChangePassword';
 
+jest.mock('../../../components/Tab/Tab', () =>
+	jest.fn((props) => <div {...props} className="spyTab" />),
+);
+
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
