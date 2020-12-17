@@ -172,7 +172,9 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 				foodImageFiles,
 			};
 			setLoading(() => true);
-			await dispatch(extractMLFeatureFromRecipe(newRecipe));
+			await Promise.all([
+				dispatch(extractMLFeatureFromRecipe(newRecipe)),
+			]);
 			history.push('/ingredients/extract');
 		}
 	};

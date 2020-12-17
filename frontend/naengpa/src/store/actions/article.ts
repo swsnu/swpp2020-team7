@@ -111,7 +111,9 @@ export const editArticle = (id: number, article: EditArticleEntity) => {
 
 		const response = await axios.put(`/api/articles/${id}/`, form);
 
-		await dispatch(editArticle_(response.data));
+		await Promise.all([
+			dispatch(editArticle_(response.data)),
+		]);
 		dispatch(push(`/articles/${response.data.id}`));
 	};
 };

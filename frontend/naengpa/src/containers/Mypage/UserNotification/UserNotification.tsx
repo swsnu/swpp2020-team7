@@ -55,7 +55,9 @@ const UserNotification: React.FC<UserNotificationProps> = ({ history }) => {
 
 	const loadNotification = useCallback(async () => {
 		if (user) {
-			await dispatch(getUser(user!));
+			await Promise.all([
+				dispatch(getUser(user)),
+			]);
 			setLoading(false);
 		}
 	}, [user]);

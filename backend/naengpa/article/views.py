@@ -157,6 +157,41 @@ def article_list(request):
         return article_list_post(request)
 
 
+def article_info_delete(request, aid):
+    ''' DELETE /api/articles/:aid/ delete article of given id '''
+    try:
+        article = Article.objects.select_related(
+            'author', 'author__region', 'item').get(pk=aid)
+    except Article.DoesNotExist:
+        return HttpResponseNotFound()
+
+    deleted_article = {
+        "id": article.id,
+        "authorId": article.author.id,
+        "author": article.author.username,
+        "region": article.author.region.name,
+        "title": article.title,
+        "content": article.content,
+        "item": {
+            "id": article.item.id,
+            "name": article.item.name,
+            "category": article.item.category.name,
+        },
+        "price": article.price,
+        "views": article.views,
+        "options": {
+            "isForSale": article.is_for_sale,
+            "isForExchange": article.is_for_exchange,
+            "isForShare": article.is_for_share
+        },
+        "images": list(article.images.values('id', 'file_path')),
+        "profileImage": article.author.profile_image,
+        "createdAt": article.created_at,
+    }
+    article.delete()
+    return JsonResponse(data=deleted_article)
+
+
 @ensure_csrf_cookie
 @api_view(['GET', 'PUT', 'DELETE'])
 @login_required_401
@@ -202,36 +237,4 @@ def article_info(request, aid):
 
         return JsonResponse(_get_cache_or_set_article_by_id(aid))
     elif request.method == 'DELETE':
-        ''' DELETE /api/articles/:aid/ delete article of given id '''
-        try:
-            article = Article.objects.select_related(
-                'author', 'author__region', 'item').get(pk=aid)
-        except Article.DoesNotExist:
-            return HttpResponseNotFound()
-
-        deleted_article = {
-            "id": article.id,
-            "authorId": article.author.id,
-            "author": article.author.username,
-            "region": article.author.region.name,
-            "title": article.title,
-            "content": article.content,
-            "item": {
-                "id": article.item.id,
-                "name": article.item.name,
-                "category": article.item.category.name,
-            },
-            "price": article.price,
-            "views": article.views,
-            "options": {
-                "isForSale": article.is_for_sale,
-                "isForExchange": article.is_for_exchange,
-                "isForShare": article.is_for_share
-            },
-            "images": list(article.images.values('id', 'file_path')),
-            "profileImage": article.author.profile_image,
-            "createdAt": article.created_at,
-        }
-        article.delete()
-
-        return JsonResponse(data=deleted_article, status=200)
+        return article_info_delete(request, aid)

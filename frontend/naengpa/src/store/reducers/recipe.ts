@@ -1,4 +1,4 @@
-import { LOCATION_CHANGE, RouterState } from 'connected-react-router';
+import { LOCATION_CHANGE } from 'connected-react-router';
 import { Action } from 'redux';
 import * as actionTypes from '../actions/actionTypes';
 import { RecipeAction } from '../actions/recipe';

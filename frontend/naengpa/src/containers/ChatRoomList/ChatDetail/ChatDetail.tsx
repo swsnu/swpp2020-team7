@@ -63,13 +63,19 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		history.push('/chatrooms');
 	};
 
+	const handleSendMessage = async () => {
+		setSending(true);
+		await Promise.all([
+			dispatch(sendChat(chatRoom!.id, content)),
+		]);
+		setContent('');
+	}
+
 	const onEnterSendMessage = async (e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (e.key === 'Enter' && content !== '' && chatRoom?.id) {
 			e.preventDefault();
 			e.stopPropagation();
-			setSending(true);
-			await dispatch(sendChat(chatRoom?.id, content));
-			setContent('');
+			await handleSendMessage()
 			setSending(false);
 		}
 	};
@@ -78,9 +84,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		if (content !== '' && chatRoom) {
 			e.preventDefault();
 			e.stopPropagation();
-			setSending(true);
-			await dispatch(sendChat(chatRoom?.id, content));
-			setContent('');
+			await handleSendMessage()
 			setSending(false);
 		}
 	};
@@ -89,7 +93,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		if (user) {
 			if (chatRoom) {
 				setTimeout(async () => {
-					await dispatch(getChatRoom(chatRoom?.id));
+					dispatch(getChatRoom(chatRoom?.id));
 				}, 1000);
 			}
 			setLoading(false);
