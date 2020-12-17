@@ -10,7 +10,7 @@ interface TabProps {
 
 const Tab: React.FC<TabProps> = ({ history }) => {
 	const user = useSelector((state: AppState) => state.user.user);
-	const chatRoom = useSelector((state:AppState) => state.user.chatRoom);
+	const chatRoom = useSelector((state: AppState) => state.user.chatRoom);
 
 	return (
 		<div id="button-list">
@@ -65,7 +65,10 @@ const Tab: React.FC<TabProps> = ({ history }) => {
 					type="button"
 					style={{
 						backgroundColor:
-							window.location.pathname === '/chatrooms' || window.location.pathname === `/chatrooms/${chatRoom?.id}` ? 'lightgrey' : 'white',
+							window.location.pathname === '/chatrooms' ||
+							window.location.pathname === `/chatrooms/${chatRoom?.id}`
+								? 'lightgrey'
+								: 'white',
 					}}
 					onClick={() => history.push('/chatrooms')}
 				>
