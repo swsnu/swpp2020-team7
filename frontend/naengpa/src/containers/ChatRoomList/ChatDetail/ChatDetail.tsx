@@ -91,13 +91,13 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 				setTimeout(async () => {
 					await dispatch(getChatRoom(chatRoom?.id));
 				}, 1000);
-			} 
+			}
 			setLoading(false);
 		}
 	}, [dispatch]);
 
 	useEffect(() => {
-			loadChatRoom();
+		loadChatRoom();
 	}, [loadChatRoom]);
 
 	return (

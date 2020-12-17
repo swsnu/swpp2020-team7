@@ -19,13 +19,13 @@ interface MyFridgeProps {
 const MyFridge: React.FC<MyFridgeProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user.user);
-	const ingredientList = useSelector((state:AppState) => state.fridge.ingredientList);
+	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
 	const [loading, setLoading] = useState(true);
 
 	const loadFridge = useCallback(async () => {
-			await dispatch(getFridge(user!.id));
-			setLoading(false);
-	}, [ingredientList, user]); 
+		await dispatch(getFridge(user!.id));
+		setLoading(false);
+	}, [ingredientList, user]);
 
 	useEffect(() => {
 		dispatch(getFoodCategoryList());

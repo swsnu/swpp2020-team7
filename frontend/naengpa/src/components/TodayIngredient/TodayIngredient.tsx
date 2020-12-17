@@ -10,7 +10,7 @@ interface TodayIngredientProps {
 	loading: boolean;
 }
 
-const TodayIngredient: React.FC<TodayIngredientProps> = ({loading: loading}) => {
+const TodayIngredient: React.FC<TodayIngredientProps> = ({ loading }) => {
 	const dispatch = useDispatch();
 	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
 	const user = useSelector((state: AppState) => state.user.user);
@@ -59,7 +59,9 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({loading: loading}) => 
 					-오늘의 재료-
 				</Grid>
 				<Grid item xs className={classes.root}>
-					<Box id="today-ingredient-contents">{!loading && todays_ingredient_contents}</Box>
+					<Box id="today-ingredient-contents">
+						{!loading && todays_ingredient_contents}
+					</Box>
 					{/* <GridList id="today-ingredient-contents" cellHeight={30}>
 						{todays_ingredient_contents}
 					</GridList> */}

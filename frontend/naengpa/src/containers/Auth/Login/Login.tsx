@@ -37,8 +37,7 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 			toast.error('🦄 비밀번호를 입력해주세요!');
 		} else {
 			await dispatch(login({ username, password }));
-			if(user)
-				dispatch(getFridge(user?.id));
+			if (user) dispatch(getFridge(user?.id));
 		}
 	};
 	const onKeyPress = (e: React.KeyboardEvent) => {

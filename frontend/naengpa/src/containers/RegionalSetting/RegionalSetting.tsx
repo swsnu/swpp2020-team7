@@ -10,7 +10,14 @@ import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import getKakaoMap from '../../utils/getKakaoMap';
-import { signup, getRegionList, getUserList, getTodayRecipeList, getFoodCategoryList, getFridge } from '../../store/actions/index';
+import {
+	signup,
+	getRegionList,
+	getUserList,
+	getTodayRecipeList,
+	getFoodCategoryList,
+	getFridge,
+} from '../../store/actions/index';
 import { RegionEntity, UserSignupInputDTO } from '../../model/user';
 import { AppState } from '../../store/store';
 
@@ -117,8 +124,7 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 					regionRange: level - 3,
 				} as UserSignupInputDTO),
 			);
-			if(user)
-				await dispatch(getFridge(user?.id));
+			if (user) await dispatch(getFridge(user?.id));
 		} else {
 			toast.info(`🐬 지역 설정을 완료해주세요`);
 		}
