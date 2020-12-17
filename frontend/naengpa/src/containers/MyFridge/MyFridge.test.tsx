@@ -32,6 +32,12 @@ describe('MyFridge', () => {
 	let myFridge: any;
 
 	beforeEach(() => {
+		jest.mock('react-redux', () => ({
+			useSelector: jest.fn((fn) => fn(mockStore.getState())),
+			useDispatch: () => jest.fn(),
+			connect: () => jest.fn(),
+		}));
+
 		myFridge = (
 			<Provider store={mockStore}>
 				<MyFridge history={history} />
