@@ -43,8 +43,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
 	const images = recipe?.foodImagePaths as RecipeImage[];
 	const ingredients = recipe?.ingredients ? recipe?.ingredients : [];
-	const currentPath = window.location.pathname.split('/');
-	const recipeId = parseInt(currentPath[currentPath.length - 1], 10);
+	const currentPath = window.location.pathname?.split('/');
+	const recipeId = window.location.pathname
+		? parseInt(currentPath[currentPath?.length - 1], 10)
+		: undefined;
 	const [userLike, setUserLike] = useState(recipe?.userLike);
 	const [recipeLike, setRecipeLike] = useState(recipe ? recipe.recipeLike : 0);
 	const dispatch = useDispatch();
@@ -61,7 +63,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	};
 
 	const onClickDeleteRecipe = () => {
-		dispatch(deleteRecipe(recipeId));
+		if (recipeId) dispatch(deleteRecipe(recipeId));
 		history.push('/recipes');
 	};
 
@@ -143,6 +145,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 				{userIngredientNames.includes(item.name) ? (
 					<Button
 						id="ingredient-yes-button"
+						key={`${item.name}-${i + 1}`}
 						onMouseOver={() => onShowQuantity(item, true)}
 						onMouseLeave={() => onShowQuantity(item, false)}
 						onFocus={() => onShowQuantity(item, true)}
@@ -150,7 +153,9 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 						{item.name}
 					</Button>
 				) : (
-					<Button id="ingredient-no-button">{item.name}</Button>
+					<Button id="ingredient-no-button" key={`${item.name}+${i + 1}`}>
+						{item.name}
+					</Button>
 				)}
 			</div>
 		);
@@ -165,7 +170,12 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ history }) => {
 	}, [dispatch, images, page]);
 
 	useEffect(() => {
-		if (!recipe && !Number.isNaN(recipeId) && window.location.pathname.search('recipes') >= 0) {
+		if (
+			!recipe &&
+			recipeId &&
+			!Number.isNaN(recipeId) &&
+			window.location.pathname?.search('recipes') >= 0
+		) {
 			dispatch(getRecipe(recipeId));
 		}
 	}, [dispatch, recipe, recipeId]);
