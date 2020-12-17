@@ -85,15 +85,19 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		}
 	};
 
-	const loadChatRoom = useCallback(async () => {
+	const loadChatRoom = useCallback(() => {
 		if (user) {
-			if (chatRoom) await dispatch(getChatRoom(chatRoom?.id));
+			if (chatRoom) {
+				setTimeout(async () => {
+					await dispatch(getChatRoom(chatRoom?.id));
+				}, 1000);
+			} 
 			setLoading(false);
 		}
 	}, [dispatch]);
 
 	useEffect(() => {
-		loadChatRoom();
+			loadChatRoom();
 	}, [loadChatRoom]);
 
 	return (
