@@ -56,7 +56,7 @@ export {
 /* Comment actions */
 export {
 	getCommentList_,
-	getComment,
+	getComment_,
 	addComment,
 	deleteComment,
 	toggleCommentLike,
