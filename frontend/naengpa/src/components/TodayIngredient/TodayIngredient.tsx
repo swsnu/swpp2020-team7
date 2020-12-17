@@ -6,19 +6,17 @@ import { toggleTodayIngredient, getFridge } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 import './TodayIngredient.scss';
 
-const TodayIngredient: React.FC = () => {
+interface TodayIngredientProps {
+	loading: boolean;
+}
+
+const TodayIngredient: React.FC<TodayIngredientProps> = ({ loading }) => {
 	const dispatch = useDispatch();
 	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
 	const user = useSelector((state: AppState) => state.user.user);
 	const todays_ingredient = ingredientList.filter(
 		(ingredient) => ingredient.isTodayIngredient === true,
 	);
-
-	useEffect(() => {
-		if (user && (!ingredientList || !ingredientList.length)) {
-			dispatch(getFridge(user!.id));
-		}
-	}, [dispatch, user]);
 
 	// onClickDeleteTodayIngredient();
 	const onClickDeleteTodayIngredient = (targetId: number) => {
@@ -61,7 +59,9 @@ const TodayIngredient: React.FC = () => {
 					-오늘의 재료-
 				</Grid>
 				<Grid item xs className={classes.root}>
-					<Box id="today-ingredient-contents">{todays_ingredient_contents}</Box>
+					<Box id="today-ingredient-contents">
+						{!loading && todays_ingredient_contents}
+					</Box>
 					{/* <GridList id="today-ingredient-contents" cellHeight={30}>
 						{todays_ingredient_contents}
 					</GridList> */}

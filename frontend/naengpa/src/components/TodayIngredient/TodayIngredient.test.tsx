@@ -97,7 +97,7 @@ describe('TodayIngredient', () => {
 
 		todayIngredient = (
 			<Provider store={mockStore}>
-				<TodayIngredient />
+				<TodayIngredient loading={false} />
 			</Provider>
 		);
 

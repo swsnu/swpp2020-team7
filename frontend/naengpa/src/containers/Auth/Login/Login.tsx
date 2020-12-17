@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { History } from 'history';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 
 import {
+	getFridge,
 	getIngredientList,
 	getTodayRecipeList,
 	getUserList,
 	login,
 } from '../../../store/actions/index';
 import './Login.scss';
+import { AppState } from '../../../store/store';
 
 interface LoginProps {
 	history: History;
@@ -19,6 +21,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ history }) => {
 	const [username, setUserName] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
+	const user = useSelector((state: AppState) => state.user.user);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -27,13 +30,14 @@ const Login: React.FC<LoginProps> = ({ history }) => {
 		dispatch(getUserList());
 	}, [dispatch]);
 
-	const onClickLogin = () => {
+	const onClickLogin = async () => {
 		if (!username) {
 			toast.error('🦄 아이디를 입력해주세요!');
 		} else if (!password) {
 			toast.error('🦄 비밀번호를 입력해주세요!');
 		} else {
-			dispatch(login({ username, password }));
+			await dispatch(login({ username, password }));
+			if (user) dispatch(getFridge(user?.id));
 		}
 	};
 	const onKeyPress = (e: React.KeyboardEvent) => {
