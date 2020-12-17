@@ -72,9 +72,9 @@ describe('ChatRoomList', () => {
 		expect(component.find('ChatRoomList').length).toBe(1);
 	});
 
-	it('the user should be able to enter the chatRoom', () => {	
+	it('the user should be able to enter the chatRoom', () => {
 		const component = mount(chatRoomList);
 		const chatRoomButton = component.find('button#chatroom');
 		// chatRoomButton.simulate('click');
-	})
+	});
 });

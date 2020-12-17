@@ -64,7 +64,7 @@ describe('ChatDetail', () => {
 	it('should send the chat correctly', () => {
 		const component = mount(chatDetail);
 		const commentInput = component.find('#chat-input-field').find('input');
-		commentInput.simulate('change', {target: {value: "반갑네요"}});
+		commentInput.simulate('change', { target: { value: '반갑네요' } });
 		const sendChatButton = component.find('#send-chat-button').at(0);
 		sendChatButton.simulate('click');
 	});
@@ -72,9 +72,9 @@ describe('ChatDetail', () => {
 	it('onkeypress - function runs', () => {
 		const component = mount(chatDetail);
 		const commentInput = component.find('#chat-input-field').find('input').first();
-		commentInput.simulate('change', {target: {value: "반갑네요"}});
+		commentInput.simulate('change', { target: { value: '반갑네요' } });
 		component.find('input#chat-input-field').simulate('keypress', { key: 'Enter' });
-		commentInput.simulate('change', { target: { value: "반갑네요" } });
+		commentInput.simulate('change', { target: { value: '반갑네요' } });
 		// component.find('input#chat-input-field').simulate('keypress', { key: '' });
 	});
 });
