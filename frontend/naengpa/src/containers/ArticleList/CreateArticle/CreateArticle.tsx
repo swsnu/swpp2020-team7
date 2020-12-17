@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import CancelIcon from '@material-ui/icons/Cancel';
-import LocalDiningIcon from '@material-ui/icons/LocalDining';
-import Alert from '@material-ui/lab/Alert';
+
 import {
 	Button,
 	Collapse,
@@ -50,8 +49,6 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 	const [images, setImages] = useState<File[]>([]);
 
 	// alert state is true if alert is necessary, otherwise false.
-	const alert = '거래품명, 제목, 내용, 가격 및 사진을 모두 입력해 주세요';
-	const [onAlert, setOnAlert] = useState(false);
 	const dispatch = useDispatch();
 
 	/* CLICK EVENT - ADD IMAGE */
@@ -108,7 +105,6 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 		} else if (!options.isForSale && !options.isForExchange && !options.isForShare) {
 			toast.error('🦄 희망 거래 옵션을 선택해주세요.');
 		} else {
-			// setOnAlert(false);
 			const newArticle: CreateArticleEntity = {
 				title,
 				content,
@@ -149,14 +145,12 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 		: images.slice(0, 5).map((img, idx) => {
 				return (
 					<div key={`#${img}`} id="delete-image-icon-box">
-						{!onAlert && (
-							<CancelIcon
-								key={URL.createObjectURL(img)}
-								id="delete-image-button"
-								type="button"
-								onClick={() => onClickDeleteImage(idx)}
-							/>
-						)}
+						<CancelIcon
+							key={URL.createObjectURL(img)}
+							id="delete-image-button"
+							type="button"
+							onClick={() => onClickDeleteImage(idx)}
+						/>
 						<img
 							key={`#${img}`}
 							id="delete-image-icon"
@@ -167,38 +161,8 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 						/>
 					</div>
 				);
-		  });
-
-	const alertBox = (
-		<Collapse className="collapse" in={onAlert}>
-			<Alert id="create-article-alert" icon={false}>
-				<div id="naengpa-logo-box">
-					<div id="naengpa-logo">
-						<LocalDiningIcon id="naengpa-logo-image" />
-						냉파
-					</div>
-					<CancelIcon
-						id="close-alert-button"
-						onClick={() => {
-							setOnAlert(false);
-						}}
-					/>
-				</div>
-				<div id="alert-content">{alert}</div>
-				<div id="confirm-alert-button-box">
-					<Button
-						id="confirm-alert-button"
-						onClick={() => {
-							setOnAlert(false);
-						}}
-					>
-						확인
-					</Button>
-				</div>
-			</Alert>
-		</Collapse>
-	);
-
+			});
+			
 	const itemSet = userIngredients.map((opt) => (
 		<Button
 			key={opt.name}
@@ -228,7 +192,6 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 
 	return (
 		<div id="create-article">
-			{alertBox}
 			<TableContainer id="container">
 				<Table id="create-article-form" aria-label="simple table">
 					<TableHead>
@@ -237,7 +200,6 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 								<Button
 									id="back-to-article-list"
 									type="button"
-									disabled={onAlert}
 									onClick={onClickBackToArticleList}
 								>
 									취소
@@ -245,7 +207,6 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 								<div id="create-article-title">게시글 등록</div>
 								<Button
 									id="create-article-button"
-									disabled={onAlert}
 									onClick={onClickCreateArticle}
 								>
 									등록
@@ -260,7 +221,6 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 									disableUnderline
 									fullWidth
 									required
-									disabled={onAlert}
 									placeholder="제목"
 									id="title-input"
 									style={{ flexGrow: 3 }}
@@ -275,15 +235,6 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 									냉장고 속 재료 중 거래할 품목을 선택해주세요!
 								</div>
 								<div id="create-article-items">{itemSet}</div>
-								{/* <Input
-									disableUnderline
-									fullWidth
-									required
-									disabled={onAlert}
-									placeholder="품목명"
-									id="item-input"
-									onChange={(e) => setItem(e.target.value)}
-								/> */}
 							</TableCell>
 						</TableRow>
 						<TableRow>
@@ -291,7 +242,6 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 								<Input
 									disableUnderline
 									required
-									disabled={onAlert}
 									type="number"
 									placeholder="희망가격 (원)"
 									id="price-input"
@@ -313,7 +263,6 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 												required
 												multiple
 												accept="image/*"
-												disabled={onAlert}
 												onChange={(e: ChangeEvent<HTMLInputElement>) =>
 													onClickAddImage(e)
 												}
@@ -332,7 +281,6 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 									id="article-content"
 									fullWidth
 									required
-									disabled={onAlert}
 									multiline
 									rows={20}
 									type="text"
