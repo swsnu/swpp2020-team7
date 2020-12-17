@@ -30,8 +30,8 @@ const stubInitialState = {
 const initialState = {
 	user: {
 		user: mockUser,
-	}
-}
+	},
+};
 
 describe('ChangePassword', () => {
 	let changePassword: any;
@@ -54,7 +54,9 @@ describe('ChangePassword', () => {
 		);
 
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(() => jest.fn());
-		spyChangePassword = jest.spyOn(userActionCreators, 'changePassword').mockImplementation(() => jest.fn());
+		spyChangePassword = jest
+			.spyOn(userActionCreators, 'changePassword')
+			.mockImplementation(() => jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();

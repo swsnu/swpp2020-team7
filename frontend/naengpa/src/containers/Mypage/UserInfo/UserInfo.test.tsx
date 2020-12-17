@@ -29,14 +29,14 @@ const stubInitialState = {
 		user: {
 			...mockUser,
 			profileImage: 'path',
-		}
+		},
 	},
 };
 const initialState = {
 	user: {
 		user: mockUser,
-	}
-}
+	},
+};
 
 describe('UserInfo', () => {
 	let userInfo: any;

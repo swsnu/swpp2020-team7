@@ -9,9 +9,11 @@ import * as userActionCreators from '../../../store/actions/user';
 import EditUserInfo from './EditUserInfo';
 import waitForComponentToPaint from '../../../../test-utils/waitForComponentToPaint';
 
-jest.mock('../../../utils/compressImage', () => (file: File) => new Promise((resolve, reject) => {
-	resolve(file);
-}));
+jest.mock('../../../utils/compressImage', () => (file: File) =>
+	new Promise((resolve, reject) => {
+		resolve(file);
+	}),
+);
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
@@ -35,9 +37,9 @@ const stubInitialState = {
 };
 const initialState = {
 	user: {
-		user: mockUser
-	}
-}
+		user: mockUser,
+	},
+};
 
 describe('EditUserInfo', () => {
 	let editUserInfo: any;
@@ -157,9 +159,11 @@ describe('EditUserInfo', () => {
 	it('Edit user info should add image correctly', async () => {
 		const component = mount(editUserInfo);
 		const inputList = component.find('div#info').find('input');
-		inputList.find('#profile-image').simulate('change', { target: { files: [new File([new ArrayBuffer(1)], 'file.jpg')] } });
+		inputList.find('#profile-image').simulate('change', {
+			target: { files: [new File([new ArrayBuffer(1)], 'file.jpg')] },
+		});
 		await waitForComponentToPaint(component);
 		component.update();
-		expect(component.find('img#edit-profile-picture').length).toBe(1)
+		expect(component.find('img#edit-profile-picture').length).toBe(1);
 	});
 });
