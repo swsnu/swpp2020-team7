@@ -10,7 +10,7 @@ import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import getKakaoMap from '../../utils/getKakaoMap';
-import { signup, getRegionList } from '../../store/actions/index';
+import { signup, getRegionList, getUserList, getTodayRecipeList, getFoodCategoryList } from '../../store/actions/index';
 import { RegionEntity, UserSignupInputDTO } from '../../model/user';
 import { AppState } from '../../store/store';
 
@@ -125,6 +125,9 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 		if (!regionList || !regionList.length) {
 			dispatch(getRegionList());
 		}
+		dispatch(getFoodCategoryList());
+		dispatch(getTodayRecipeList());
+		dispatch(getUserList());
 	}, [dispatch, regionList]);
 
 	useEffect(() => {
