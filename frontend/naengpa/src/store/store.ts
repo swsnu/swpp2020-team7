@@ -27,17 +27,6 @@ const rootReducer = combineReducers({
 
 export type AppState = ReturnType<typeof rootReducer>;
 
-// const logger = (typeof store): store => {
-//   return next => {
-//     return action => {
-//       console.log('[Middleware] Dispatching', action);
-//       const reusult = next(action);
-//       console.log('[Middleware] Next State', store.getState());
-//       return reusult;
-//     }
-//   }
-// }
-
 export const middlewares = [thunk, routerMiddleware(history)];
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares)));
 

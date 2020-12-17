@@ -9,6 +9,7 @@ import waitForComponentToPaint from '../../../test-utils/waitForComponentToPaint
 import ExtractMLFeature from './ExtractMLFeature';
 import * as recipeActionCreators from '../../store/actions/recipe';
 import * as foodCategoryActionCreators from '../../store/actions/foodCategory';
+import * as ingredientActionCreators from '../../store/actions/ingredient';
 
 jest.mock('@material-ui/icons/AddCircle', () =>
 	jest.fn((props) => <div {...props} className="spyAddCircleIcon" />),
@@ -25,6 +26,18 @@ jest.mock('@material-ui/icons/Cancel', () =>
 jest.mock('@material-ui/icons/LocalDining', () =>
 	jest.fn((props) => <div {...props} className="spyLocalDiningIcon" />),
 );
+
+jest.mock('@material-ui/lab/Autocomplete', () =>
+	jest.fn((props) => <div {...props} className="spyAutoComplete" />),
+);
+
+// jest.mock('../../components/RecipeModal/IngredientListModal/IngredientListModal', () =>
+// 	jest.fn((props) => <div {...props} className="spyIngredientListModal" />),
+// );
+
+// jest.mock('../../components/RecipeModal/FoodCategoryModal/FoodCategoryModal', () =>
+// 	jest.fn((props) => <div {...props} className="spyFoodCategoryModal" />),
+// );
 
 const middleware = [thunk];
 const store = configureStore(middleware);
@@ -43,15 +56,17 @@ const stubInitialState = {
 			recipeLike: 0,
 			foodCategory: '밥류',
 			ingredients: [
-				{ ingredient: '고추장', quantity: '' },
-				{ ingredient: '사과', quantity: '' },
+				{ name: '고추장', quantity: '' },
+				{ name: '사과', quantity: '' },
 			],
 		},
 	},
 	foodCategory: {
 		foodCategoryList: ['밥류', '면류', '떡류'],
 	},
-	ingredient: {},
+	ingredient: {
+		ingredientNames: [[{ name: '고추장' }, { name: '사과' }]],
+	},
 };
 
 const stubInitialState2 = {
@@ -71,6 +86,9 @@ const stubInitialState2 = {
 	foodCategory: {
 		foodCategoryList: ['밥류', '면류', '떡류'],
 	},
+	ingredient: {
+		ingredientNames: [],
+	},
 };
 
 describe('ExtractMLFeature', () => {
@@ -80,6 +98,7 @@ describe('ExtractMLFeature', () => {
 	let spyHistoryGoBack: any;
 	let spyCreateRecipe: any;
 	let spyGetFoodCategory: any;
+	let spyGetIngredientList: any;
 	let spyUseState: any;
 	let spySetState: any;
 	let spyExtractMLFeatureFromRecipe: any;
@@ -117,6 +136,9 @@ describe('ExtractMLFeature', () => {
 		spyExtractMLFeatureFromRecipe = jest
 			.spyOn(recipeActionCreators, 'extractMLFeatureFromRecipe')
 			.mockImplementation(() => jest.fn());
+		spyGetIngredientList = jest
+			.spyOn(ingredientActionCreators, 'getIngredientList')
+			.mockImplementation(() => jest.fn());
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 		spyHistoryGoBack = jest.spyOn(history, 'goBack').mockImplementation(jest.fn());
 		spySetState = jest.fn();
@@ -139,10 +161,8 @@ describe('ExtractMLFeature', () => {
 	it('should work well with the input changes', async () => {
 		const component = mount(extractMLFeature);
 		await waitForComponentToPaint(component);
-		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
 
 		act(() => {
-			confirmAlertButton.simulate('click');
 			expect(spyGetFoodCategory).toBeCalledTimes(1);
 
 			const cookTime = component.find('input#cook-time').find('input');
@@ -173,22 +193,16 @@ describe('ExtractMLFeature', () => {
 
 	it('should close Alert modal when the close button is clicked', () => {
 		const component = mount(extractMLFeature);
-		const closeAlertButton = component.find('#close-alert-button').at(0);
-		closeAlertButton.simulate('click');
-		expect(component.find('.collapse').at(0).props().in).toBe(false);
+		expect(component.find('.collapse').at(0).props().in).toBe(true);
 	});
 
 	it('should close Alert modal when the confirm button is clicked', () => {
 		const component = mount(extractMLFeature);
-		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
-		confirmAlertButton.simulate('click');
-		expect(component.find('.collapse').at(0).props().in).toBe(false);
+		expect(component.find('.collapse').at(0).props().in).toBe(true);
 	});
 
 	it('should alert that the recipe contents are missing', () => {
 		const component = mount(extractMLFeature);
-		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
-		confirmAlertButton.simulate('click');
 		const registerRecipeButton = component.find('#register-recipe-button').at(0);
 		registerRecipeButton.simulate('click');
 		// expect(component.find('.collapse').at(0).props().in).toBe(true);
@@ -196,8 +210,6 @@ describe('ExtractMLFeature', () => {
 
 	it('should go back to create recipe', () => {
 		const component = mount(extractMLFeature);
-		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
-		confirmAlertButton.simulate('click');
 		const backToCreateRecipeButton = component.find('#back-to-create-recipe').at(0);
 		backToCreateRecipeButton.simulate('click');
 	});
@@ -205,10 +217,9 @@ describe('ExtractMLFeature', () => {
 	it('should delete the recipe image', async () => {
 		const component = mount(extractMLFeature);
 		await waitForComponentToPaint(component);
-
+		const closeAlertButton = component.find('#close-alert-button').first();
 		await act(async () => {
-			const confirmAlertButton = component.find('#confirm-alert-button').last();
-			confirmAlertButton.simulate('click');
+			closeAlertButton.simulate('click');
 			const foodImage = component.find('input#food-image').find('input');
 			const addFoodImageButton = component.find('#add-image-button').at(0);
 			addFoodImageButton.simulate('click');
@@ -226,46 +237,40 @@ describe('ExtractMLFeature', () => {
 		});
 	});
 
-	it('should work well with the food Category Modal', () => {
+	it('should work well with the food Category Modal', async () => {
 		const component = mount(extractMLFeature);
+		await waitForComponentToPaint(component);
 		const foodCategoryField = component.find('#food-field').at(0);
 		foodCategoryField.simulate('mouseOver');
 		foodCategoryField.simulate('focus');
 		foodCategoryField.simulate('click');
-		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
-		confirmAlertButton.simulate('click');
 		foodCategoryField.simulate('mouseOver');
 		const foodCategoryModal = component.find('#food-category-modal').at(0);
 		foodCategoryModal.simulate('focus');
 		foodCategoryModal.simulate('click');
-		const confirmModalButton = component.find('#confirm-modal-button').at(0);
-		confirmModalButton.simulate('click');
 		expect(foodCategoryModal.length).toBe(1);
 		foodCategoryField.simulate('focus');
 		foodCategoryField.simulate('mouseLeave');
 		foodCategoryField.simulate('click');
 		foodCategoryModal.simulate('mouseLeave');
 		foodCategoryField.simulate('focus');
-		const closeModalButton = component.find('#close-modal-button').at(0);
-		closeModalButton.simulate('click');
 	});
 
-	it('should work well with the foodcategory change', () => {
+	it('should work well with the foodcategory change', async () => {
 		const component = mount(extractMLFeature);
-		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
-		confirmAlertButton.simulate('click');
+		await waitForComponentToPaint(component);
 		const foodCategoryField = component.find('#food-field').at(0);
 		foodCategoryField.simulate('mouseOver');
 		const categoryButton = component.find('#food-category-button').at(0);
 		expect(categoryButton.length).toBe(1);
 		const newCategoryButton = component.find('.food-category-false').at(0);
+
 		newCategoryButton.simulate('click');
 	});
 
-	it('should work well with the recipe Ingredients Modal', () => {
+	it('should work well with the recipe Ingredients Modal', async () => {
 		const component = mount(extractMLFeature);
-		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
-		confirmAlertButton.simulate('click');
+		await waitForComponentToPaint(component);
 		const ingredientField = component.find('#ingredient-field').at(0);
 		ingredientField.simulate('mouseOver');
 		ingredientField.simulate('mouseLeave');
@@ -285,28 +290,34 @@ describe('ExtractMLFeature', () => {
 	});
 
 	// it('should work well with add ingredient and ingredient quantity', async () => {
-	// 	const component = mount(extractMLFeature2);
+	// 	const component = mount(extractMLFeature);
+	// 	await waitForComponentToPaint(component);
 	// 	const confirmAlertButton = component.find('#confirm-alert-button').at(0);
 	// 	confirmAlertButton.simulate('click');
 	// 	const ingredientField = component.find('#ingredient-field').at(0);
 	// 	ingredientField.simulate('mouseOver');
-	// 	const newIngredient = component.find('#new-ingredient-name').find('input');
-	// 	expect(newIngredient.text()).toBe('');
-	// 	newIngredient.simulate('change', { target: { value: '포도' } });
-	// 	const ingredientQuantity = component.find('#ingredient-quantity').find('input');
+	// 	const spyAutoComplete = component.find('div.spyAutoComplete#ingredient-search-input');
+	// 	expect(spyAutoComplete.props().value?.name).toBe('');
+	// 	spyAutoComplete.simulate('change', [{ target: { value: { name: '사과', quantity: '' } } }, { name: '사과', quantity: '' }]);
+	// 	component.update();
+	// 	await waitForComponentToPaint(component);
+	// 	console.log(component.debug())
+	// 	const ingredientQuantity = component.find('input#ingredient-quantity').last();
 	// 	expect(ingredientQuantity.text()).toBe('');
 	// 	ingredientQuantity.simulate('change', { target: { value: '2개' } });
+	// 	component.update();
+	// 	await waitForComponentToPaint(component);
 	// 	const addIngredientButton = component.find('#add-ingredient-button').at(0);
 	// 	addIngredientButton.simulate('click');
 	// 	expect(ingredientQuantity.text()).toBe('');
-	// 	expect(newIngredient.text()).toBe('');
+	// 	expect(spyAutoComplete.props().value?.name).toBe('');
 	// 	const ingredientModal = component.find('#ingredient-modal');
 	// 	expect(ingredientModal.length).toBe(5);
 	// 	const confirmModalButton = component.find('#confirm-modal-button').at(0);
 	// 	confirmModalButton.simulate('click');
 	// 	ingredientField.simulate('mouseOver');
 	// 	expect(ingredientQuantity.text()).toBe('');
-	// 	expect(newIngredient.text()).toBe('');
+	// 	expect(spyAutoComplete.props().value?.name).toBe('');
 	// 	const ingredientModalElement = component.find('#ingredient-element');
 	// 	expect(ingredientModalElement.length).toBe(2);
 	// });

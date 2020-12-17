@@ -15,7 +15,7 @@ export const GET_CHATROOM_LIST = 'GET_CHATROOM_LIST' as const;
 export const GET_CHATROOM = 'GET_CHATROOM' as const;
 export const CREATE_CHATROOM = 'CREATE_CHATROOM' as const;
 export const SEND_CHAT = 'SEND_CHAT' as const;
-export const RECEIVE_CHAT = 'RECEIVE_CHAT' as const;
+// export const RECEIVE_CHAT = 'RECEIVE_CHAT' as const;
 export const DELETE_CHATROOM = 'DELETE_CHATROOM' as const;
 
 // REGION related ACTIONS

@@ -34,7 +34,7 @@ const mockArticle: ArticleEntity = {
 	images: [
 		{
 			id: 2,
-			path: 'path',
+			file_path: 'path',
 		},
 	],
 };
@@ -77,7 +77,7 @@ const stubInitialState = {
 				images: [
 					{
 						id: 2,
-						path: 'path',
+						file_path: 'path',
 					},
 				],
 			},

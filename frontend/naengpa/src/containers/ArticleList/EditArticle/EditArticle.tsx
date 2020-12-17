@@ -276,20 +276,22 @@ const EditArticle: React.FC<EditArticleProps> = ({ history }) => {
 						<TableRow id="article-row-box">
 							<TableCell id="image-box">
 								{image_list}
-								{images?.length < 5 && <Box id="add-image-icon-box">
-									<label aria-label="food-image-label" htmlFor="food-image">
-										<AddCircleIcon id="add-image-button" type="button" />
-										<input
-											type="file"
-											id="food-image"
-											required
-											multiple
-											accept="image/*"
-											disabled={onAlert}
-										/>
-									</label>
-									<PhotoCameraIcon id="add-image-icon" />
-								</Box>}
+								{images?.length < 5 && (
+									<Box id="add-image-icon-box">
+										<label aria-label="food-image-label" htmlFor="food-image">
+											<AddCircleIcon id="add-image-button" type="button" />
+											<input
+												type="file"
+												id="food-image"
+												required
+												multiple
+												accept="image/*"
+												disabled={onAlert}
+											/>
+										</label>
+										<PhotoCameraIcon id="add-image-icon" />
+									</Box>
+								)}
 							</TableCell>
 							<TableCell>
 								<Divider orientation="vertical" />

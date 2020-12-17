@@ -4,9 +4,17 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { ListItem } from '@material-ui/core';
 import UserRecipe from './UserRecipe';
 import { history } from '../../store/store';
 import * as recipeActionCreators from '../../store/actions/recipe';
+
+jest.mock('../../components/FeedLoading/FeedLoading', () =>
+	jest.fn((props) => <div {...props} className="spyFeedLoading" />),
+);
+jest.mock('../../components/Recipe/Recipe', () =>
+	jest.fn((props) => <div {...props} className="spyRecipe" />),
+);
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
@@ -18,25 +26,20 @@ async function waitForComponentToPaint<P = {}>(wrapper: ReactWrapper<P>, amount 
 	});
 }
 
-const getUserMocked = () => {
-	const user = {
-		id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
-		username: 'test',
-		email: 'test@snu.ac.kr',
-		name: '테스트',
-		dateOfBirth: '20201112',
-		naengpa_score: 100,
-	};
-
-	return user;
+const mockUser = {
+	id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
+	username: 'test',
+	email: 'test@snu.ac.kr',
+	name: '테스트',
+	dateOfBirth: '20201112',
+	naengpa_score: 100,
 };
-
 const stubInitialState = {
 	user: {
-		user: getUserMocked(),
+		user: mockUser,
 	},
 	recipe: {
-		recipeList: [
+		userRecipes: [
 			{
 				id: 1,
 				authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
@@ -93,7 +96,7 @@ jest.mock('../../components/Recipe/Recipe', () =>
 
 describe('UserRecipe', () => {
 	let userRecipe: any;
-	let spyGetRecipeList: any;
+	let spyGetUserRecipes: any;
 	let spyHistoryPush: any;
 
 	beforeEach(() => {
@@ -108,10 +111,9 @@ describe('UserRecipe', () => {
 			</Provider>
 		);
 
-		spyGetRecipeList = jest
-			.spyOn(recipeActionCreators, 'getRecipeList')
+		spyGetUserRecipes = jest
+			.spyOn(recipeActionCreators, 'getUserRecipes')
 			.mockImplementation(() => jest.fn());
-
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 	});
 	afterEach(() => {
@@ -126,10 +128,23 @@ describe('UserRecipe', () => {
 		expect(component.find('UserRecipe').length).toBe(1);
 	});
 
-	it('should check if pagination works', async () => {
+	it('should render message for empty recipe list', async () => {
+		const mockEmptyStore = store({
+			user: stubInitialState.user,
+			recipe: {
+				userRecipes: [],
+			},
+		});
+		userRecipe = (
+			<Provider store={mockEmptyStore}>
+				<UserRecipe history={history} />
+			</Provider>
+		);
 		const component = mount(userRecipe);
 		await waitForComponentToPaint(component);
-		// const wrapper = component.find('#recipe-list-page');
-		// wrapper.find('button').at(2).simulate('click');
+
+		const wrapper = component.find('#info');
+		expect(wrapper.find(ListItem).length).toBe(1);
+		wrapper.find(ListItem).simulate('click');
 	});
 });
