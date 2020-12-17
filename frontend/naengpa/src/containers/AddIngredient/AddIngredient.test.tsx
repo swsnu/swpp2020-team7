@@ -71,7 +71,7 @@ describe('AddIngredient', () => {
 		const mockStore = store(stubInitialState);
 		const mockEmptyStore = store({
 			user: stubInitialState.user,
-			ingredient: { ingredientList: [] },
+			ingredient: { ingredientList: {} },
 		});
 
 		jest.mock('react-redux', () => ({
@@ -111,7 +111,7 @@ describe('AddIngredient', () => {
 		await waitForComponentToPaint(component);
 
 		expect(component.find('AddIngredient').length).toBe(1);
-		expect(spyGetIngredientList).toBeCalledTimes(1);
+		expect(spyGetIngredientList).toBeCalledTimes(0);
 	});
 
 	it('AddIngredient renders without crashing for empty input', async () => {
