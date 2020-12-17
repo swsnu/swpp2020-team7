@@ -63,7 +63,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 	};
 
 	const onClickEditComment = () => {
-		setEditMode((state) => true);
+		setEditMode(true);
 	};
 
 	const onKeyPress = (e: React.KeyboardEvent) => {
@@ -170,9 +170,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 								<Button
 									id="confirm-edit-button"
 									className={classes.button}
-									onClick={(e) => {
-										onClickConfirmEdit();
-									}}
+									onClick={onClickConfirmEdit}
 								>
 									수정하기
 								</Button>
