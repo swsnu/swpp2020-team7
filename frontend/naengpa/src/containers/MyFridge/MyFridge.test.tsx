@@ -73,7 +73,7 @@ describe('MyFridge', () => {
 	let myFridge: any;
 	let spyGetFridge: any;
 	let spyGetFoodCategoryList: any;
-	let spyHistoryPush: any; 
+	let spyHistoryPush: any;
 
 	beforeEach(() => {
 		jest.mock('react-redux', () => ({
@@ -87,12 +87,12 @@ describe('MyFridge', () => {
 			</Provider>
 		);
 		spyGetFridge = jest
-		.spyOn(fridgeActionCreators, 'getFridge')
-		.mockImplementation(() => jest.fn());
-		
+			.spyOn(fridgeActionCreators, 'getFridge')
+			.mockImplementation(() => jest.fn());
+
 		spyGetFoodCategoryList = jest
-		.spyOn(foodCategoryActionCreators, 'getFoodCategoryList')
-		.mockImplementation(() => jest.fn());
+			.spyOn(foodCategoryActionCreators, 'getFoodCategoryList')
+			.mockImplementation(() => jest.fn());
 
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 	});

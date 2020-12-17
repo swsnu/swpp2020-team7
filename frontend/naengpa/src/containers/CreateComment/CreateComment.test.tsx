@@ -113,6 +113,6 @@ describe('CreateComment', () => {
 		commentInput.simulate('change', { target: { value: '와 맛있겠네요!' } });
 		component.find('input#comment-input-field').simulate('keypress', { key: 'Enter' });
 		commentInput.simulate('change', { target: { value: '와 맛있겠네요!' } });
-		component.find('input#comment-input-field').simulate('keypress', { key: '' });	
+		component.find('input#comment-input-field').simulate('keypress', { key: '' });
 	});
 });
