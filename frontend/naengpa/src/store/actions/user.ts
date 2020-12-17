@@ -204,7 +204,6 @@ export const createChatRoom = (id: string) => {
 			dispatch(createChatRoom_(response.data));
 			dispatch(push(`/chatrooms/${response.data.id}`));
 		} catch (e) {
-			console.log(e);
 			toast.error('🦄 채팅방을 만들지 못했습니다! 다시 시도해주세요.');
 		}
 	};

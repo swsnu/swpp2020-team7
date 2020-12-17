@@ -15,10 +15,12 @@ export const getIngredientList = () => {
 		if (!window.localStorage.getItem('ingredients')) {
 			const response = await axios.get('/api/ingredients/');
 			const ingredientList: IngredientCategoryCollection = response.data;
-			const ingredientNames: IngredientEntity[] = Object.values(ingredientList).reduce(
-				(x, y) => x.concat(y.map((item) => item)),
-				[],
-			);
+			const ingredientNames: IngredientEntity[] =
+				ingredientList &&
+				ingredientList.constructor === Object &&
+				Object.keys(ingredientList).length !== 0
+					? Object.values(ingredientList).reduce((x, y) => x.concat(y), [])
+					: [];
 			dispatch(getIngredientList_(ingredientList, ingredientNames));
 			window.localStorage.setItem('ingredients', JSON.stringify(ingredientList));
 			window.localStorage.setItem('ingredientNames', JSON.stringify(ingredientNames));

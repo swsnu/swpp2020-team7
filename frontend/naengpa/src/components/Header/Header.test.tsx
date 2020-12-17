@@ -6,10 +6,25 @@ import thunk from 'redux-thunk';
 import Header from './Header';
 import { history } from '../../store/store';
 
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
+	useLocation: jest
+		.fn()
+		.mockReturnValueOnce({
+			pathname: '/fridge',
+		})
+		.mockReturnValueOnce({
+			pathname: '/recipes',
+		})
+		.mockReturnValue({
+			pathname: '/articles',
+		}),
+}));
+
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
-describe('TodayIngredient', () => {
+describe('Header', () => {
 	let header: any;
 	let spyHistoryPush: any;
 
@@ -31,7 +46,7 @@ describe('TodayIngredient', () => {
 		jest.restoreAllMocks();
 	});
 
-	it('TodayIngredient renders without crashing', () => {
+	it('Header renders without crashing', () => {
 		const component = mount(header);
 		expect(component.find('#header').length).toBe(1);
 	});
@@ -52,7 +67,7 @@ describe('TodayIngredient', () => {
 
 	it('article-tab-button should be clicked correctly', () => {
 		const component = mount(header);
-		const ingredientContentsWrapper = component.find('button#header-tab').at(2);
+		const ingredientContentsWrapper = component.find('button#header-tab').last();
 		ingredientContentsWrapper.simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/articles');
 	});

@@ -10,7 +10,6 @@ ingredients = Ingredient.objects.values_list('name', flat=True)
 
 def extract_ingredients(content):
     noun_list = kkma.nouns(content)
-    print("추출된 명사 리스트: ", noun_list)
 
     ingredient_dict = {}
     # extract nouns only and compare with the ingredient list

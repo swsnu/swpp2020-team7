@@ -18,14 +18,14 @@ import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { toast } from 'react-toastify';
 import Skeleton from '@material-ui/lab/Skeleton';
-import Tab from '../../../components/Tab/Tab';
-import { AppState } from '../../../store/store';
+import { toast } from 'react-toastify';
 import { NotificationEntity } from '../../../model/user';
-import './UserNotification.scss';
 import { getUser } from '../../../store/actions';
 import { readNotification } from '../../../store/actions/user';
+import { AppState } from '../../../store/store';
+import Tab from '../../../components/Tab/Tab';
+import './UserNotification.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({

@@ -28,7 +28,7 @@ const RecipeState: InitialState = {
 
 interface LocationChangeAction extends Action {
 	type: typeof LOCATION_CHANGE;
-	payload: RouterState;
+	payload: any;
 }
 
 function recipeReducer(

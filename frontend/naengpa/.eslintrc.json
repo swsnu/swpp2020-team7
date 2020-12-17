@@ -31,7 +31,8 @@
         "jsx-a11y/label-has-associated-control": 1,
         "jsx-a11y/accessible-emoji": 0,
         "no-nested-ternary": 0,
-        "react/no-array-index-key": 1
+        "react/no-array-index-key": 1,
+        "prefer-promise-reject-errors": 1
     },
     "overrides": [
         {

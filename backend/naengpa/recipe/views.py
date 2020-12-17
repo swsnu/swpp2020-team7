@@ -293,10 +293,10 @@ def recipe_info(request, id):
         return HttpResponse(status=204)
 
 
-@ ensure_csrf_cookie
-@ api_view(['PUT'])
-@ login_required_401
-@ transaction.atomic
+@ensure_csrf_cookie
+@api_view(['PUT'])
+@login_required_401
+@transaction.atomic
 def recipe_like(request, id):
     """like recipe of given id"""
     user_id = request.user.id
