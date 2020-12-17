@@ -194,16 +194,19 @@ const RecipeList: React.FC<RecipeListProps> = ({ history }) => {
 				</div>
 			</div>
 			<div id="recipe-cards">{!loading ? recipes : loadingFeeds()}</div>
-			{!loading && (
-				<Pagination
-					id="recipe-list-page"
-					className={classes.ul}
-					page={page}
-					size="large"
-					count={Math.ceil(lastPageIndex / 9.0)}
-					onChange={onChangePage}
-				/>
-			)}
+			{!loading &&
+				(recipeList?.length ? (
+					<Pagination
+						id="recipe-list-page"
+						className={classes.ul}
+						page={page}
+						size="large"
+						count={Math.ceil(lastPageIndex / 9.0)}
+						onChange={onChangePage}
+					/>
+				) : (
+					<div id="vacant-recipe"> 해당 조건의 레시피가 존재하지 않습니다!</div>
+				))}
 		</div>
 	);
 };

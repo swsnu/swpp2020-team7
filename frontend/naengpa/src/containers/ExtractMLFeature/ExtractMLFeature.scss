@@ -45,13 +45,15 @@
     flex-direction: row;
     font-size: 100%;
 
-    #cook-time {
+    #cook-time-for-ml {
+      text-align: right;
       font-size: 100%;
       width: 7%;
       border: none;
     }
 
-    #cook-time:focus {
+    #cook-time-for-ml:focus {
+      border: none !important;
       outline: 0 !important;
     }
 

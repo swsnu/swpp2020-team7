@@ -107,6 +107,10 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 							</div>
 						</Box>
 						<div id="myinfo-profile-username">{user!.username}</div>
+						<div id="myinfo-naengpa-score">
+							<img id="profile-star" src="/icons/star.png" alt="/icons/star.png" />
+							{user!.naengpaScore}
+						</div>
 					</div>
 					<div id="edit-info-list">
 						<div id="name-part">

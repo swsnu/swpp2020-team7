@@ -48,10 +48,14 @@
       }
     }
 
+    .chat-message-box-less-messages {
+      justify-content: flex-end !important;
+    }
+
     #chat-message-box {
+      display: flex !important;
       height: 500px;
       overflow-y: scroll;
-      display: flex !important;
       flex-direction: column-reverse !important;
 
       .skeleton {
