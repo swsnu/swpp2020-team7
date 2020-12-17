@@ -85,10 +85,9 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		}
 	};
 
-	const loadChatRoom = useCallback(async() => {
+	const loadChatRoom = useCallback(async () => {
 		if (user) {
-			if(chatRoom)
-				await dispatch(getChatRoom(chatRoom?.id));
+			if (chatRoom) await dispatch(getChatRoom(chatRoom?.id));
 			setLoading(false);
 		}
 	}, [dispatch]);
@@ -118,7 +117,14 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 					<p id="space">채팅정보</p>
 				</Typography>
 				<Divider />
-				<div className={(chatMessages && chatMessages?.length >= 7) ? 'chat-message-box' : 'chat-message-box-less-messages'} id="chat-message-box">
+				<div
+					className={
+						chatMessages && chatMessages?.length >= 7
+							? 'chat-message-box'
+							: 'chat-message-box-less-messages'
+					}
+					id="chat-message-box"
+				>
 					{!loading && !sending && chatRoom ? chatMessage : loaderTemplate}
 				</div>
 				{!loading && !sending && chatRoom && (

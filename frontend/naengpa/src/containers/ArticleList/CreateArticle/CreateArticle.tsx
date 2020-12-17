@@ -96,7 +96,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 	const onClickCreateArticle = async () => {
 		// if one of the input field is empty, then the alert modal shows itself
 		if (!images?.length) {
-			toast.error('🦄 사진을 입력해주세요! jpg, jpeg, png 파일 5개만 입력가능합니다. ');	
+			toast.error('🦄 사진을 입력해주세요! jpg, jpeg, png 파일 5개만 입력가능합니다. ');
 		} else if (!item) {
 			toast.error('🦄 거래품목을 선택해주세요!');
 		} else if (!title) {
@@ -303,23 +303,25 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 						<TableRow id="article-row-box">
 							<TableCell id="image-box">
 								{image_list}
-								{images?.length < 5 && <Box id="add-image-icon-box">
-									<label aria-label="food-image-label" htmlFor="food-image">
-										<AddCircleIcon id="add-image-button" type="button" />
-										<input
-											type="file"
-											id="food-image"
-											required
-											multiple
-											accept="image/*"
-											disabled={onAlert}
-											onChange={(e: ChangeEvent<HTMLInputElement>) =>
-												onClickAddImage(e)
-											}
-										/>
-									</label>
-									<PhotoCameraIcon id="add-image-icon" />
-								</Box> }
+								{images?.length < 5 && (
+									<Box id="add-image-icon-box">
+										<label aria-label="food-image-label" htmlFor="food-image">
+											<AddCircleIcon id="add-image-button" type="button" />
+											<input
+												type="file"
+												id="food-image"
+												required
+												multiple
+												accept="image/*"
+												disabled={onAlert}
+												onChange={(e: ChangeEvent<HTMLInputElement>) =>
+													onClickAddImage(e)
+												}
+											/>
+										</label>
+										<PhotoCameraIcon id="add-image-icon" />
+									</Box>
+								)}
 							</TableCell>
 							<TableCell>
 								<Divider orientation="vertical" />

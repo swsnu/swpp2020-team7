@@ -70,7 +70,11 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 	}, [dispatch, images, page]);
 
 	useEffect(() => {
-		if (!article && !Number.isNaN(articleId) && window.location.pathname.search("articles") >= 0) {
+		if (
+			!article &&
+			!Number.isNaN(articleId) &&
+			window.location.pathname.search('articles') >= 0
+		) {
 			dispatch(getArticle(articleId));
 		}
 	}, [dispatch, articleId]);

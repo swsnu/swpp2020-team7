@@ -1,10 +1,10 @@
 import React from 'react';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { History } from 'history';
 import { Card, CardHeader, Avatar, CardMedia, CardContent } from '@material-ui/core';
 import { ArticleEntity, ArticleImage } from '../../model/article';
 import { Dictionary } from '../../model/general';
-import {getArticle} from '../../store/actions/index';
+import { getArticle } from '../../store/actions/index';
 import './Article.scss';
 
 interface ArticleProps {
@@ -41,7 +41,14 @@ const Article: React.FC<ArticleProps> = ({ article, history }) => {
 		<Card id="article-card" onClick={() => onClickArticle()}>
 			<CardHeader
 				id="article-card-header"
-				avatar={<Avatar src={path} variant="rounded" alt="foodCategory/meat.png" aria-label="article" />}
+				avatar={
+					<Avatar
+						src={path}
+						variant="rounded"
+						alt="foodCategory/meat.png"
+						aria-label="article"
+					/>
+				}
 				disableTypography
 				title={article.item.name}
 			/>

@@ -135,7 +135,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 			const newIngredientList: RecipeIngredient[] = ingredients
 				? ingredients?.map((item, idx) => {
 						return { name: item.name, quantity: item.quantity };
-					})
+				  })
 				: [];
 
 			const newRecipe: RecipeEntity = {
@@ -151,7 +151,7 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 			dispatch(createRecipe(newRecipe));
 			setCreateLoading(true);
 			setAlert(true);
-			setAlertContent("잠시만 기다려주세요! 레시피가 생성되고 있습니다.")
+			setAlertContent('잠시만 기다려주세요! 레시피가 생성되고 있습니다.');
 		}
 	};
 
@@ -359,30 +359,31 @@ const ExtractMLFeature: React.FC<ExtractMLFeatureProps> = ({ history }) => {
 								<TableRow id="recipe-row-box">
 									<TableCell id="image-box">
 										{imageList}
-										{foodImageFiles.length < 5 && <Box id="add-image-icon-box">
-											<label
-												aria-label="food-image-label"
-												htmlFor="food-image"
-											>
-												<AddCircleIcon
-													id="add-image-button"
-													type="button"
-												/>
-												<input
-													type="file"
-													id="food-image"
-													required
-													multiple
-													accept="image/*"
-													disabled={alert}
-													onChange={(e: ChangeEvent<HTMLInputElement>) =>
-														onClickAddImage(e)
-													}
-												/>
-											</label>
-											<PhotoCameraIcon id="add-image-icon" />
-										</Box>
-									}
+										{foodImageFiles.length < 5 && (
+											<Box id="add-image-icon-box">
+												<label
+													aria-label="food-image-label"
+													htmlFor="food-image"
+												>
+													<AddCircleIcon
+														id="add-image-button"
+														type="button"
+													/>
+													<input
+														type="file"
+														id="food-image"
+														required
+														multiple
+														accept="image/*"
+														disabled={alert}
+														onChange={(
+															e: ChangeEvent<HTMLInputElement>,
+														) => onClickAddImage(e)}
+													/>
+												</label>
+												<PhotoCameraIcon id="add-image-icon" />
+											</Box>
+										)}
 									</TableCell>
 									<TableCell>
 										<Divider orientation="vertical" />
