@@ -104,7 +104,8 @@ export const createRecipe = (recipe: RecipeEntity) => {
 			const response = await axios.post('/api/recipes/', bodyFormData);
 			dispatch(createRecipe_(response.data));
 			dispatch(push(`/recipes/${response.data.id}`));
-			window.sessionStorage.removeItem('createdRecipe');
+			if (window.sessionStorage.getItem('createdRecipe'))
+				window.sessionStorage.removeItem('createdRecipe');
 		} catch (e) {
 			window.sessionStorage.setItem(
 				'createdRecipe',

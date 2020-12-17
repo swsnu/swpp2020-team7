@@ -165,7 +165,7 @@ describe('ExtractMLFeature', () => {
 		act(() => {
 			expect(spyGetFoodCategory).toBeCalledTimes(1);
 
-			const cookTime = component.find('input#cook-time').find('input');
+			const cookTime = component.find('input#cook-time-for-ml').find('input');
 			const foodImage = component.find('input#food-image').find('input');
 			const content = component.find('#recipe-content').find('textarea');
 			const extractMLFeatureButton = component

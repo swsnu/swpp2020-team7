@@ -13,7 +13,13 @@
   #cook-time {
     text-align: left;
     font-size: 120%;
+    border:none;
+    width: 70px;
   }
+  #cook-time:focus {
+    outline: 0 !important;
+  }
+  
   #ingredient-name {
     font-size: 120%;
   }
