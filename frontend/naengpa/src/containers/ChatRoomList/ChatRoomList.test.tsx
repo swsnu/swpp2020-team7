@@ -6,6 +6,10 @@ import thunk from 'redux-thunk';
 import ChatRoomList from './ChatRoomList';
 import { history } from '../../store/store';
 
+jest.mock('../../components/Tab/Tab', () =>
+	jest.fn((props) => <div {...props} className="spyTab" />),
+);
+
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 

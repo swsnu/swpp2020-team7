@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import './ChatRoomList.scss';
 import '../Mypage/UserInfo/UserInfo.scss';
-import { Button, Divider, Typography, Link, ListItem, ListItemText } from '@material-ui/core';
+import { Button, Divider, Typography, ListItem, ListItemText } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
 import { Skeleton } from '@material-ui/lab';
@@ -27,7 +27,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 
 	const loadChatRoom = useCallback(async () => {
 		if (user) {
-			await dispatch(getChatRoomList());
+			await Promise.all([dispatch(getChatRoomList())]);
 			setLoading(false);
 		}
 	}, [user, dispatch]);

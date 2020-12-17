@@ -138,9 +138,10 @@ const RegionalSetting: React.FC<RegionalSettingProps> = ({ history }) => {
 		getKakaoMap(container, level, latitude, longitude);
 	}, [latitude, longitude, level]);
 
+	const getOptionLabel = (option: RegionEntity) => option.name;
 	const defaultRegions = {
 		options: regionList,
-		getOptionLabel: (option: RegionEntity) => option.name,
+		getOptionLabel,
 	};
 
 	return (

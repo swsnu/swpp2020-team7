@@ -7,6 +7,8 @@ from naengpa.settings.env import LOGMEAL_TOKEN
 
 LOGMEAL_API_URL = 'https://api.logmeal.es/v2/recognition/dish'
 
+TEMP_IMAGE_FILE_NAME = 'test.jpeg'
+
 food_category_result = {
     'meat': '육류',
     'dessert': '디저트류',
@@ -28,12 +30,12 @@ def convert_png_to_jpeg(img_data):
     png = Image.open(img_data)
     jpeg = Image.new('RGB', (png.width, png.height), color=(255, 255, 255))
     jpeg.paste(png, (0, 0), png)
-    jpeg.save('test.jpeg', 'jpeg')
-    saved_jpeg = Image.open('test.jpeg')
+    jpeg.save(TEMP_IMAGE_FILE_NAME, 'jpeg')
+    saved_jpeg = Image.open(TEMP_IMAGE_FILE_NAME)
     new_io = io.BytesIO()
     saved_jpeg.save(new_io, format='JPEG')
-    test = open('test.jpeg', 'rb')
-    return InMemoryUploadedFile(test, None, 'test.jpg', 'image/jpeg',
+    test = open(TEMP_IMAGE_FILE_NAME, 'rb')
+    return InMemoryUploadedFile(test, None, TEMP_IMAGE_FILE_NAME, 'image/jpeg',
                                 new_io.tell, None)
 
 

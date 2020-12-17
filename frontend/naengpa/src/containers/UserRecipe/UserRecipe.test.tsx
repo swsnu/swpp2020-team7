@@ -9,6 +9,9 @@ import UserRecipe from './UserRecipe';
 import { history } from '../../store/store';
 import * as recipeActionCreators from '../../store/actions/recipe';
 
+jest.mock('../../components/Tab/Tab', () =>
+	jest.fn((props) => <div {...props} className="spyTab" />),
+);
 jest.mock('../../components/FeedLoading/FeedLoading', () =>
 	jest.fn((props) => <div {...props} className="spyFeedLoading" />),
 );

@@ -9,6 +9,9 @@ import * as userActionCreators from '../../../store/actions/user';
 import EditUserInfo from './EditUserInfo';
 import waitForComponentToPaint from '../../../../test-utils/waitForComponentToPaint';
 
+jest.mock('../../../components/Tab/Tab', () =>
+	jest.fn((props) => <div {...props} className="spyTab" />),
+);
 jest.mock('../../../utils/compressImage', () => (file: File) =>
 	new Promise((resolve, reject) => {
 		resolve(file);
@@ -44,7 +47,6 @@ const initialState = {
 describe('EditUserInfo', () => {
 	let editUserInfo: any;
 	let spyEditUserAction: any;
-	let spyHistoryPush: any;
 	let spyAlert: any;
 
 	beforeEach(() => {
@@ -65,7 +67,6 @@ describe('EditUserInfo', () => {
 			.spyOn(userActionCreators, 'editUser')
 			.mockImplementation(() => jest.fn());
 		spyAlert = jest.spyOn(toast, 'error').mockImplementation(jest.fn());
-		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
