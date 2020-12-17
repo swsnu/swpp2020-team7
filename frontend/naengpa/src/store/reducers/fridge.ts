@@ -1,4 +1,5 @@
 import { FridgeAction } from '../actions/fridge';
+import { UserAction } from '../actions/user';
 import * as actionTypes from '../actions/actionTypes';
 import { IngredientEntity } from '../../model/ingredient';
 import { DefaultAction } from '../actions/index';
@@ -12,7 +13,7 @@ const FridgeState: InitialState = {
 
 function fridgeReducer(
 	state: InitialState = FridgeState,
-	action: FridgeAction | DefaultAction = { type: 'default' },
+	action: FridgeAction | UserAction | DefaultAction = { type: 'default' },
 ): InitialState {
 	let ingredientList = [];
 	switch (action.type) {
@@ -39,6 +40,10 @@ function fridgeReducer(
 					: ingredient;
 			});
 			return { ...state, ingredientList };
+
+		/* LOGOUT */
+		case actionTypes.LOGOUT:
+			return { ...state, ingredientList: [] };
 
 		default:
 			return state;
