@@ -161,8 +161,8 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 						/>
 					</div>
 				);
-			});
-			
+		  });
+
 	const itemSet = userIngredients.map((opt) => (
 		<Button
 			key={opt.name}
@@ -205,10 +205,7 @@ const CreateArticle: React.FC<CreateArticleProps> = ({ history }) => {
 									취소
 								</Button>
 								<div id="create-article-title">게시글 등록</div>
-								<Button
-									id="create-article-button"
-									onClick={onClickCreateArticle}
-								>
+								<Button id="create-article-button" onClick={onClickCreateArticle}>
 									등록
 								</Button>
 							</TableCell>
