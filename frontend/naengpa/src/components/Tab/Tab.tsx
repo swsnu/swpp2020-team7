@@ -1,6 +1,7 @@
 import React from 'react';
 import { History } from 'history';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router';
 import { AppState } from '../../store/store';
 import './Tab.scss';
 
@@ -9,9 +10,10 @@ interface TabProps {
 }
 
 const Tab: React.FC<TabProps> = ({ history }) => {
+	const location = useLocation();
 	const user = useSelector((state: AppState) => state.user.user);
 	const chatRoom = useSelector((state: AppState) => state.user.chatRoom);
-
+	console.log(location.pathname)
 	return (
 		<div id="button-list">
 			<div id="myinfo-check">
@@ -20,9 +22,9 @@ const Tab: React.FC<TabProps> = ({ history }) => {
 					type="button"
 					style={{
 						backgroundColor:
-							window.location.pathname === `/@${user!.username}/info` ||
-							window.location.pathname === `/@${user!.username}/edit` ||
-							window.location.pathname === `/@${user!.username}/password`
+							location.pathname === `/@${user!.username}/info` ||
+							location.pathname === `/@${user!.username}/edit` ||
+							location.pathname === `/@${user!.username}/password`
 								? 'lightgrey'
 								: 'white',
 					}}
@@ -37,7 +39,7 @@ const Tab: React.FC<TabProps> = ({ history }) => {
 					type="button"
 					style={{
 						backgroundColor:
-							window.location.pathname === `/@${user!.username}/recipes`
+							location.pathname === `/@${user!.username}/recipes`
 								? 'lightgrey'
 								: 'white',
 					}}
@@ -52,7 +54,7 @@ const Tab: React.FC<TabProps> = ({ history }) => {
 					type="button"
 					style={{
 						backgroundColor:
-							window.location.pathname === '/notifications' ? 'lightgrey' : 'white',
+							location.pathname === '/notifications' ? 'lightgrey' : 'white',
 					}}
 					onClick={() => history.push('/notifications')}
 				>
@@ -65,8 +67,8 @@ const Tab: React.FC<TabProps> = ({ history }) => {
 					type="button"
 					style={{
 						backgroundColor:
-							window.location.pathname === '/chatrooms' ||
-							window.location.pathname === `/chatrooms/${chatRoom?.id}`
+							location.pathname === '/chatrooms' ||
+							location.pathname === `/chatrooms/${chatRoom?.id}`
 								? 'lightgrey'
 								: 'white',
 					}}
