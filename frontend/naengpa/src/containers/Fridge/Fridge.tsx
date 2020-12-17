@@ -14,9 +14,10 @@ import './Fridge.scss';
 
 interface FridgeProps {
 	history: History;
+	loading: boolean;
 }
 
-const Fridge: React.FC<FridgeProps> = ({ history }) => {
+const Fridge: React.FC<FridgeProps> = ({ history, loading }) => {
 	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
 	const user = useSelector((state: AppState) => state.user.user);
 	const [page, setPage] = useState(1);
@@ -38,19 +39,12 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 		return <Ingredient key={ingredient.id} ingredient={ingredient} />;
 	});
 
-	const dispatch = useDispatch();
-
 	useEffect(() => {
-		if (user) {
-			if (!ingredientList || !ingredientList.length) {
-				dispatch(getFridge(user!.id));
-			}
-		}
 		if (ingredientList) {
 			setMaxPageIndex(Math.ceil(ingredientList.length / 9.0));
 			setCurrentList(ingredientList.slice((page - 1) * 9, (page - 1) * 9 + 9));
 		}
-	}, [dispatch, user, ingredientList, ingredientList.length]);
+	}, [user, ingredientList, ingredientList.length]);
 
 	return (
 		<div id="fridge-page">
@@ -66,7 +60,7 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 				</Grid>
 				<Grid item xs>
 					<Box id="fridge">
-						<div id="ingredients">{ingredients}</div>
+						<div id="ingredients">{!loading && ingredients}</div>
 					</Box>
 				</Grid>
 				<Grid item>
