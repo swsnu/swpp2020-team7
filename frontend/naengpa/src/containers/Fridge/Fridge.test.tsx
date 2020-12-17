@@ -61,7 +61,7 @@ describe('Fridge', () => {
 
 		fridge = (
 			<Provider store={mockStore}>
-				<Fridge history={history} />
+				<Fridge history={history} loading={false} />
 			</Provider>
 		);
 
