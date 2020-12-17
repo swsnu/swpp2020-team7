@@ -1,7 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { fireEvent } from '@testing-library/react';
-import { findDOMNode } from 'react-dom';
 import * as userActionCreators from '../../../store/actions/user';
 import Login from './Login';
 import { history } from '../../../store/store';
@@ -87,17 +85,17 @@ describe('Login', () => {
 		expect(spyHistoryPush).toBeCalledWith('/fridge');
 	});
 
-	/*
 	it('onkeypress - function runs', () => {
 		const component = mount(login);
 		const inputList = component.find('div#input-list').find('input');
 		inputList.find('#username').simulate('change', { target: { value: mockUser.username } }); // username
 		inputList.find('#password').simulate('change', { target: { value: mockUser.password } }); // password
 
-		fireEvent.keyPress(window, { key: 'Enter', code: 13, charCode: 13 });
+		component.find('input#username').simulate('keypress', { key: 'Enter' });
+		expect(spyLoginAction).toBeCalledTimes(1);
+		expect(spyLoginAction).toBeCalledWith(mockUser);
 
-		//expect(spyLoginAction).toBeCalledTimes(0);
-		//expect(spyLoginAction).toBeCalledWith(mockUser);
+		component.find('input#password').simulate('keypress', { key: 'not Enter' });
+		expect(spyLoginAction).toBeCalledTimes(1);
 	});
-	*/
 });

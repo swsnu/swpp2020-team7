@@ -7,6 +7,8 @@ import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import { history } from '../../store/store';
 import Recipe from './Recipe';
+import { RecipeEntity } from '../../model/recipe';
+import * as recipeActionCreators from '../../store/actions/recipe';
 
 jest.mock('@material-ui/icons/MoreVert', () =>
 	jest.fn((props) => <div {...props} className="spyMoreVertIcon" />),
@@ -24,26 +26,35 @@ jest.mock('@material-ui/icons/Favorite', () =>
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
-const mockRecipe = {
+const mockRecipe: RecipeEntity = {
 	id: 2,
 	authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 	author: 'test',
+	profileImage: 'image',
 	foodName: '딸기',
 	cookTime: 100,
 	content: '레시피',
-	foodImageFiles: [
+	foodImagePaths: [
 		{
-			id: 2,
 			file_path: 'path',
 		},
 	],
+	foodImageFiles: [new File([new ArrayBuffer(1)], 'test.jpg')],
 	recipeLike: 1,
+	userLike: 1,
 	createdAt: '2000.00.00',
 	foodCategory: '밥류',
-	ingredients: ['돼지고기', '고추장'],
+	ingredients: [
+		{
+			name: '돼지고기',
+		},
+		{
+			name: '고추장',
+		},
+	],
 };
 
-const mockRecipe2 = {
+const mockRecipe2: RecipeEntity = {
 	id: 1,
 	authorId: 'f4d49a18-6129-4482-b07f-753a7b9e2f06',
 	author: 'test',
@@ -52,9 +63,17 @@ const mockRecipe2 = {
 	content: '레시피',
 	foodImagePaths: [],
 	recipeLike: 0,
+	userLike: 0,
 	createdAt: '2000.00.00',
 	foodCategory: '밥류',
-	ingredients: ['돼지고기', '고추장'],
+	ingredients: [
+		{
+			name: '돼지고기',
+		},
+		{
+			name: '고추장',
+		},
+	],
 };
 
 const stubInitialState = {
@@ -68,6 +87,7 @@ describe('Recipe', () => {
 	let recipe: any;
 	let recipe2: any;
 	let spyHistoryPush: any;
+	let spyToggleRecipeLike: any;
 
 	const mockAttribute = 'todays-recipe-child';
 
@@ -90,6 +110,9 @@ describe('Recipe', () => {
 		);
 
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
+		spyToggleRecipeLike = jest
+			.spyOn(recipeActionCreators, 'toggleRecipe')
+			.mockImplementation(() => jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -167,6 +190,28 @@ describe('Recipe', () => {
 		const likeCountWrapper2 = component2.find('div#recipe-like-count');
 		expect(likeCountWrapper2.find('div#recipe-like-count-icon').length).toBe(1);
 		expect(likeCountWrapper2.text()).toBe('0');
+	});
+
+	it('should like recipe correctly', () => {
+		const component = mount(recipe);
+		let likeIcon = component.find('#recipe-like-count-icon').first();
+		likeIcon.simulate('click');
+		expect(spyToggleRecipeLike).toBeCalledTimes(1);
+
+		likeIcon = component.find('#recipe-like-count-icon').first();
+		likeIcon.simulate('click');
+		expect(spyToggleRecipeLike).toBeCalledTimes(2);
+	});
+
+	it('should handle click recipe correctly', () => {
+		const component = mount(recipe);
+		component.find('#recipe-content').first().simulate('click');
+		expect(spyHistoryPush).toBeCalledTimes(1);
+		expect(spyHistoryPush).toBeCalledWith('/recipes/2');
+
+		component.find('#recipe-image').first().simulate('click');
+		expect(spyHistoryPush).toBeCalledTimes(2);
+		expect(spyHistoryPush).toBeCalledWith('/recipes/2');
 	});
 
 	it('renders recipe-image correctly', () => {

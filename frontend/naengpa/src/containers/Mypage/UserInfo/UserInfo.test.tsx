@@ -26,6 +26,14 @@ const mockUser = {
 
 const stubInitialState = {
 	user: {
+		user: {
+			...mockUser,
+			profileImage: 'path',
+		},
+	},
+};
+const initialState = {
+	user: {
 		user: mockUser,
 	},
 };
@@ -34,9 +42,11 @@ describe('UserInfo', () => {
 	let userInfo: any;
 	let spyGetUser: any;
 	let spyHistoryPush: any;
+	let mockEmptyStore: any;
 
 	beforeEach(() => {
 		const mockStore = store(stubInitialState);
+		mockEmptyStore = store(initialState);
 
 		jest.mock('react-redux', () => ({
 			useSelector: jest.fn((fn) => fn(mockStore.getState())),
@@ -61,6 +71,16 @@ describe('UserInfo', () => {
 	});
 
 	it('UserInfo renders without crashing', () => {
+		const component = mount(userInfo);
+		expect(component.find('UserInfo').length).toBe(1);
+	});
+
+	it('UserInfo renders without crashing with empty profile image', () => {
+		userInfo = (
+			<Provider store={mockEmptyStore}>
+				<UserInfo history={history} />
+			</Provider>
+		);
 		const component = mount(userInfo);
 		expect(component.find('UserInfo').length).toBe(1);
 	});

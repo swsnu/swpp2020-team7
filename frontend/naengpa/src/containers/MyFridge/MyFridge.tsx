@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import { Grid } from '@material-ui/core';
@@ -20,27 +20,33 @@ const MyFridge: React.FC<MyFridgeProps> = ({ history }) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state: AppState) => state.user.user);
 	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
-	const [loading, setLoading] = useState(true);
+	const foodCategoryList = useSelector((state: AppState) => state.foodCategory.foodCategoryList);
 
 	const loadFridge = useCallback(async () => {
-		await dispatch(getFridge(user!.id));
-		setLoading(false);
+		dispatch(getFridge(user!.id));
 	}, [ingredientList, user]);
 
 	useEffect(() => {
-		dispatch(getFoodCategoryList());
-		loadFridge();
+		if (user && (!ingredientList || !ingredientList.length)) {
+			loadFridge();
+		}
 	}, [loadFridge]);
+
+	useEffect(() => {
+		if (!foodCategoryList) {
+			dispatch(getFoodCategoryList());
+		}
+	});
 
 	return (
 		<div id="my-fridge-page">
 			<Grid id="my-fridge" container spacing={5}>
 				<Grid id="fridge-left-part">
-					<TodayIngredient loading={loading} />
+					<TodayIngredient />
 					<AddIngredient />
 				</Grid>
 				<Grid id="frige-middle-part">
-					<Fridge history={history} loading={loading} />
+					<Fridge history={history} />
 				</Grid>
 				<Grid id="fridge-right-part">
 					<TodayStar />

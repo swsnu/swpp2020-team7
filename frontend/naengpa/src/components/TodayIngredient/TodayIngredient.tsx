@@ -1,20 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Box, Grid } from '@material-ui/core';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-import { toggleTodayIngredient, getFridge } from '../../store/actions/index';
+import { toggleTodayIngredient } from '../../store/actions/index';
 import { AppState } from '../../store/store';
 import './TodayIngredient.scss';
 
-interface TodayIngredientProps {
-	loading: boolean;
-}
-
-const TodayIngredient: React.FC<TodayIngredientProps> = ({ loading }) => {
+const TodayIngredient: React.FC = () => {
 	const dispatch = useDispatch();
 	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
 	const user = useSelector((state: AppState) => state.user.user);
-	const todays_ingredient = ingredientList.filter(
+	const todays_ingredient = ingredientList?.filter(
 		(ingredient) => ingredient.isTodayIngredient === true,
 	);
 
@@ -23,7 +19,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ loading }) => {
 		dispatch(toggleTodayIngredient(user!.id, targetId));
 	};
 
-	const todays_ingredient_contents = todays_ingredient.map((ingredient) => {
+	const todays_ingredient_contents = todays_ingredient?.map((ingredient) => {
 		return (
 			// <GridListTile key={ingredient.id} id="today-ingredient-content-each" cols={1}>
 			<div key={ingredient.id} id="today-ingredient-content-each">
@@ -60,7 +56,7 @@ const TodayIngredient: React.FC<TodayIngredientProps> = ({ loading }) => {
 				</Grid>
 				<Grid item xs className={classes.root}>
 					<Box id="today-ingredient-contents">
-						{!loading && todays_ingredient_contents}
+						{ingredientList && todays_ingredient_contents}
 					</Box>
 					{/* <GridList id="today-ingredient-contents" cellHeight={30}>
 						{todays_ingredient_contents}

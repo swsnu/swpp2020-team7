@@ -13,6 +13,7 @@ describe('Tab', () => {
 	const username = 'test';
 	let tab: any;
 	let spyHistoryPush: any;
+
 	const initialState = {
 		user: {
 			user: {
@@ -60,6 +61,7 @@ describe('Tab', () => {
 		const component = mount(tab);
 		const ingredientContentsWrapper = component.find('button#myrecipe-tab');
 		ingredientContentsWrapper.simulate('click');
+		component.update();
 		expect(spyHistoryPush).toBeCalledWith('/@test/recipes');
 	});
 
@@ -67,6 +69,7 @@ describe('Tab', () => {
 		const component = mount(tab);
 		const ingredientContentsWrapper = component.find('button#notification-tab');
 		ingredientContentsWrapper.simulate('click');
+		component.update();
 		expect(spyHistoryPush).toBeCalledWith('/notifications');
 	});
 
@@ -74,6 +77,7 @@ describe('Tab', () => {
 		const component = mount(tab);
 		const ingredientContentsWrapper = component.find('button#chatting-tab');
 		ingredientContentsWrapper.simulate('click');
+		component.update();
 		expect(spyHistoryPush).toBeCalledWith('/chatrooms');
 	});
 });

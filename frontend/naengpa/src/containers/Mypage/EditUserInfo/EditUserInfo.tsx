@@ -60,9 +60,8 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ history }) => {
 	) => {
 		const target = e.target as HTMLInputElement;
 		const image: File = (target.files as FileList)[0];
-		await compressImage(image).then((result) => {
-			setProfileImage((state) => result);
-		});
+		const compressed = await compressImage(image);
+		setProfileImage(compressed);
 	};
 
 	return (

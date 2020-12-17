@@ -8,6 +8,8 @@ import { Card, CardContent } from '@material-ui/core';
 import Article from './Article';
 import { ArticleEntity } from '../../model/article';
 import { ArticleState } from '../../store/reducers/article';
+import * as userActionCreators from '../../store/actions/article';
+import waitForComponentToPaint from '../../../test-utils/waitForComponentToPaint';
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
@@ -81,6 +83,7 @@ describe('Article', () => {
 	let article: any;
 	let mockClick: any;
 	let spyHistoryPush: any;
+	let spyGetArticle: any;
 
 	beforeEach(() => {
 		const history = createMemoryHistory({ initialEntries: ['/'] });
@@ -93,6 +96,9 @@ describe('Article', () => {
 
 		mockClick = jest.fn();
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
+		spyGetArticle = jest
+			.spyOn(userActionCreators, 'getArticle')
+			.mockImplementation(() => jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -116,7 +122,11 @@ describe('Article', () => {
 	it('Article should be clicked correctly', async () => {
 		const component = mount(article);
 		component.find(Card).simulate('click');
-		// await dispatch(getArticle(id)) is used, as a result it should test "await dispatch ~~" with mock dispatch!!!
-		// expect(spyHistoryPush).toBeCalledTimes(1);
+		await waitForComponentToPaint(component);
+
+		expect(spyGetArticle).toBeCalledTimes(1);
+		expect(spyGetArticle).toBeCalledWith(2);
+		expect(spyHistoryPush).toBeCalledTimes(1);
+		expect(spyHistoryPush).toBeCalledWith('/articles/2');
 	});
 });

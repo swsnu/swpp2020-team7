@@ -7,6 +7,13 @@ import { toast } from 'react-toastify';
 import { history } from '../../../store/store';
 import * as userActionCreators from '../../../store/actions/user';
 import EditUserInfo from './EditUserInfo';
+import waitForComponentToPaint from '../../../../test-utils/waitForComponentToPaint';
+
+jest.mock('../../../utils/compressImage', () => (file: File) =>
+	new Promise((resolve, reject) => {
+		resolve(file);
+	}),
+);
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
@@ -15,13 +22,20 @@ const mockUser = {
 	id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
 	username: 'test',
 	password: 'test',
-	profileImage: null,
 	email: 'test@snu.ac.kr',
 	name: '테스트',
 	dateOfBirth: '201112',
 	naengpaScore: 100,
 };
 const stubInitialState = {
+	user: {
+		user: {
+			...mockUser,
+			profileImage: 'path',
+		},
+	},
+};
+const initialState = {
 	user: {
 		user: mockUser,
 	},
@@ -60,7 +74,17 @@ describe('EditUserInfo', () => {
 		jest.restoreAllMocks();
 	});
 
+	it('EditUserInfo renders without crashing with default profile image', () => {
+		const component = mount(editUserInfo);
+		expect(component.find('EditUserInfo').length).toBe(1);
+	});
+
 	it('EditUserInfo renders without crashing', () => {
+		editUserInfo = (
+			<Provider store={store(initialState)}>
+				<EditUserInfo history={history} />
+			</Provider>
+		);
 		const component = mount(editUserInfo);
 		expect(component.find('EditUserInfo').length).toBe(1);
 	});
@@ -130,5 +154,16 @@ describe('EditUserInfo', () => {
 		expect(spyEditUserAction).toBeCalledTimes(0);
 		expect(spyAlert).toBeCalledTimes(4);
 		expect(spyAlert).lastCalledWith('🦄 잘못된 이메일 주소예요!');
+	});
+
+	it('Edit user info should add image correctly', async () => {
+		const component = mount(editUserInfo);
+		const inputList = component.find('div#info').find('input');
+		inputList.find('#profile-image').simulate('change', {
+			target: { files: [new File([new ArrayBuffer(1)], 'file.jpg')] },
+		});
+		await waitForComponentToPaint(component);
+		component.update();
+		expect(component.find('img#edit-profile-picture').length).toBe(1);
 	});
 });

@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import MyFridge from './MyFridge';
 import { history } from '../../store/store';
+import { Dictionary } from '../../model/general';
 
 jest.mock('../../components/TodayIngredient/TodayIngredient', () =>
 	jest.fn(() => <div className="spyTodayIngredient">TodayIngredient</div>),
@@ -26,18 +27,50 @@ jest.mock('../../components/Footer/Footer', () =>
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
-const mockStore = store({});
+const mockIngredientList: Array<Dictionary<string | number>> = [
+	{ id: 1, category: '채소', name: '양파' },
+	{ id: 2, category: '과일', name: '사과' },
+	{ id: 3, category: '유제품', name: '가' },
+	{ id: 4, category: '채소', name: '나' },
+	{ id: 5, category: '과일', name: '다' },
+	{ id: 6, category: '유제품', name: '라' },
+	{ id: 7, category: '채소', name: '마' },
+	{ id: 8, category: '과일', name: '바' },
+	{ id: 9, category: '유제품', name: '사' },
+	{ id: 10, category: '채소', name: '아' },
+	{ id: 11, category: '과일', name: '자' },
+	{ id: 12, category: '유제품', name: '차' },
+];
+const mockFoodCategoryList = [
+	{
+		id: 1,
+		name: '과일류',
+	},
+];
+const stubInitialState = {
+	user: {
+		user: {
+			id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
+			username: 'test',
+			email: 'test@snu.ac.kr',
+			name: '테스트',
+			dateOfBirth: '20201112',
+		},
+	},
+	fridge: {
+		ingredientList: mockIngredientList,
+	},
+	foodCategory: {
+		foodCategoryList: mockFoodCategoryList,
+	},
+};
+
+const mockStore = store(stubInitialState);
 
 describe('MyFridge', () => {
 	let myFridge: any;
 
 	beforeEach(() => {
-		jest.mock('react-redux', () => ({
-			useSelector: jest.fn((fn) => fn(mockStore.getState())),
-			useDispatch: () => jest.fn(),
-			connect: () => jest.fn(),
-		}));
-
 		myFridge = (
 			<Provider store={mockStore}>
 				<MyFridge history={history} />

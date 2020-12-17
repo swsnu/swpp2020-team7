@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { History } from 'history';
@@ -8,16 +8,14 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Alert from '@material-ui/lab/Alert';
 import Ingredient from '../../components/Ingredient/Ingredient';
 import { AppState } from '../../store/store';
-import { getFridge } from '../../store/actions/index';
 import { IngredientEntity } from '../../model/ingredient';
 import './Fridge.scss';
 
 interface FridgeProps {
 	history: History;
-	loading: boolean;
 }
 
-const Fridge: React.FC<FridgeProps> = ({ history, loading }) => {
+const Fridge: React.FC<FridgeProps> = ({ history }) => {
 	const ingredientList = useSelector((state: AppState) => state.fridge.ingredientList);
 	const user = useSelector((state: AppState) => state.user.user);
 	const [page, setPage] = useState(1);
@@ -60,7 +58,7 @@ const Fridge: React.FC<FridgeProps> = ({ history, loading }) => {
 				</Grid>
 				<Grid item xs>
 					<Box id="fridge">
-						<div id="ingredients">{!loading && ingredients}</div>
+						<div id="ingredients">{ingredientList && ingredients}</div>
 					</Box>
 				</Grid>
 				<Grid item>
