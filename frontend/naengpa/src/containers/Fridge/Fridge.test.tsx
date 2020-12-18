@@ -7,6 +7,7 @@ import { Dictionary } from '../../model/general';
 import * as fridgeActionCreators from '../../store/actions/fridge';
 import Fridge from './Fridge';
 import { history } from '../../store/store';
+import waitForComponentToPaint from '../../../test-utils/waitForComponentToPaint';
 
 jest.mock('../../components/Ingredient/Ingredient', () =>
 	jest.fn((props) => <div {...props} className="ingredient" />),
@@ -28,8 +29,7 @@ const mockIngredientList: Array<Dictionary<string | number>> = [
 	{ id: 10, category: '채소', name: '아' },
 	{ id: 11, category: '과일', name: '자' },
 	{ id: 12, category: '유제품', name: '차' },
-];	
-let isFridgeEmpty = false;
+];
 const stubInitialState = {
 	user: {
 		user: {
@@ -41,16 +41,23 @@ const stubInitialState = {
 		},
 	},
 	fridge: {
-		ingredientList: isFridgeEmpty ? [] : mockIngredientList,
+		ingredientList: mockIngredientList,
 	},
 };
 
+const stubInitialState2 = {
+	...stubInitialState,
+	fridge: {ingredientList: [],}
+}
+
 describe('Fridge', () => {
 	let fridge: any;
+	let fridge2: any;
 	let spyGetFridge: any;
 
 	beforeEach(() => {
 		const mockStore = store(stubInitialState);
+		const mockStore2 = store(stubInitialState2);
 
 		jest.mock('react-redux', () => ({
 			useSelector: jest.fn((fn) => fn(mockStore.getState())),
@@ -64,9 +71,15 @@ describe('Fridge', () => {
 			</Provider>
 		);
 
+		fridge2 = (
+			<Provider store={mockStore2}>
+				<Fridge history={history} />
+			</Provider>
+		);
+
 		spyGetFridge = jest
-			.spyOn(fridgeActionCreators, 'getFridge')
-			.mockImplementation(() => jest.fn());
+		.spyOn(fridgeActionCreators, 'getFridge')
+		.mockImplementation(() => jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -79,12 +92,11 @@ describe('Fridge', () => {
 		const component = mount(fridge);
 
 		expect(component.find('Fridge').length).toBe(1);
-		// expect(spyGetFridge).toBeCalledTimes(1);
 	});
 
 	it('should set page correctly on clicking page', async () => {
 		const component = mount(fridge);
-
+		await waitForComponentToPaint(component);
 		component.find('#next-fridge').first().simulate('click');
 		expect(component.find('div.ingredient').length).toBe(3);
 
@@ -93,9 +105,12 @@ describe('Fridge', () => {
 	});
 
 	it('should alert the information correctly about recipe recommendation', async () => {
-		isFridgeEmpty = true;
-		const component = mount(fridge);
-		component.find('div#fridge-help').find('#help-recommend-recipe').at(0).simulate('mouseOver');
+		const component = mount(fridge2);
+		component
+			.find('div#fridge-help')
+			.find('#help-recommend-recipe')
+			.at(0)
+			.simulate('mouseOver');
 		component.find('#help-recommend-recipe').at(0).simulate('mouseLeave');
 		component.find('#help-recommend-recipe').at(0).simulate('focus');
 		component.find('#recommend-recipe-button').at(0).simulate('click');
