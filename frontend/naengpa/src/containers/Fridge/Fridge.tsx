@@ -38,7 +38,7 @@ const Fridge: React.FC<FridgeProps> = ({ history }) => {
 	});
 
 	useEffect(() => {
-		if (ingredientList) {
+		if (!ingredientList?.length) {
 			setMaxPageIndex(Math.ceil(ingredientList.length / 9.0));
 			setCurrentList(ingredientList.slice((page - 1) * 9, (page - 1) * 9 + 9));
 		}

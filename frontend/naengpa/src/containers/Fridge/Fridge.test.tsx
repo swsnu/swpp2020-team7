@@ -28,8 +28,8 @@ const mockIngredientList: Array<Dictionary<string | number>> = [
 	{ id: 10, category: '채소', name: '아' },
 	{ id: 11, category: '과일', name: '자' },
 	{ id: 12, category: '유제품', name: '차' },
-];
-
+];	
+let isFridgeEmpty = false;
 const stubInitialState = {
 	user: {
 		user: {
@@ -41,7 +41,7 @@ const stubInitialState = {
 		},
 	},
 	fridge: {
-		ingredientList: mockIngredientList,
+		ingredientList: isFridgeEmpty ? [] : mockIngredientList,
 	},
 };
 
@@ -90,5 +90,14 @@ describe('Fridge', () => {
 
 		component.find('#prev-fridge').first().simulate('click');
 		expect(component.find('div.ingredient').length).toBe(9);
+	});
+
+	it('should alert the information correctly about recipe recommendation', async () => {
+		isFridgeEmpty = true;
+		const component = mount(fridge);
+		component.find('div#fridge-help').find('#help-recommend-recipe').at(0).simulate('mouseOver');
+		component.find('#help-recommend-recipe').at(0).simulate('mouseLeave');
+		component.find('#help-recommend-recipe').at(0).simulate('focus');
+		component.find('#recommend-recipe-button').at(0).simulate('click');
 	});
 });
