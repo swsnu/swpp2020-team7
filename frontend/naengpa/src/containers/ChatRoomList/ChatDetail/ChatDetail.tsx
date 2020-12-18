@@ -21,6 +21,7 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 	const chatMessages = useSelector((state: AppState) => state.user?.chatRoom?.messages);
 	const [content, setContent] = useState('');
 	const [loading, setLoading] = useState(true);
+	const [fetching, setFetching] = useState(true);
 	const [sending, setSending] = useState(false);
 
 	const chatMessage =
@@ -87,20 +88,24 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ history }) => {
 		}
 	};
 
-	const loadChatRoom = useCallback(() => {
-		if (user) {
+	const loadChatRoom = useCallback(async () => {
+		if (fetching && user) {
+			setFetching(false);
 			if (chatRoom) {
+				await Promise.all([dispatch(getChatRoom(chatRoom?.id))]);
+				setLoading(false);
 				setTimeout(async () => {
-					dispatch(getChatRoom(chatRoom?.id));
+					setFetching(true);
 				}, 1000);
 			}
-			setLoading(false);
 		}
 	}, [dispatch]);
 
 	useEffect(() => {
-		loadChatRoom();
-	}, [loadChatRoom]);
+		if (fetching) {
+			loadChatRoom();
+		}
+	}, [fetching]);
 
 	return (
 		<div id="mypage">

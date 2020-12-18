@@ -52,7 +52,7 @@ const stubInitialState = {
 const initialState = {
 	region: {
 		regionList: null,
-	}
+	},
 };
 const mockStore = store(stubInitialState);
 const mockEmptyStore = store(initialState);
@@ -155,7 +155,9 @@ describe('Signup', () => {
 		// expect(component.find('p#invalid-name').length).toBe(1); // name
 		inputList.find('#username').simulate('change', { target: { value: mockUser.username } }); // username
 		inputList.find('#password').simulate('change', { target: { value: mockUser.password } });
-		inputList.find('#password-confirm').simulate('change', { target: { value: mockUser.password } });
+		inputList
+			.find('#password-confirm')
+			.simulate('change', { target: { value: mockUser.password } });
 		inputList
 			.find('#date-of-birth')
 			.simulate('change', { target: { value: mockUser.dateOfBirth } }); // date-of-birth
@@ -174,7 +176,7 @@ describe('Signup', () => {
 		signupButton.simulate('click');
 		await waitForComponentToPaint(component);
 		expect(spySaveUserInfoAction).toBeCalledTimes(0);
-	
+
 		inputList.find('#date-of-birth').simulate('change', { target: { value: '' } });
 		signupButton.simulate('click');
 		await waitForComponentToPaint(component);
