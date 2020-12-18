@@ -6,6 +6,8 @@ import configureStore from 'redux-mock-store';
 import MyFridge from './MyFridge';
 import { history } from '../../store/store';
 import { Dictionary } from '../../model/general';
+import * as fridgeActionCreators from '../../store/actions/fridge';
+import * as foodCategoryActionCreators from '../../store/actions/foodCategory';
 import * as foodCategoryActionCreators from '../../store/actions/foodCategory';
 import * as fridgeActionCreators from '../../store/actions/fridge';
 
@@ -93,6 +95,11 @@ describe('MyFridge', () => {
 	let spyGetFridge: any;
 
 	beforeEach(() => {
+		jest.mock('react-redux', () => ({
+			useSelector: jest.fn((fn) => fn(mockStore.getState())),
+			useDispatch: () => jest.fn(),
+			connect: () => jest.fn(),
+		}));
 		myFridge = (
 			<Provider store={mockStore}>
 				<MyFridge history={history} />
@@ -106,6 +113,7 @@ describe('MyFridge', () => {
 			.spyOn(fridgeActionCreators, 'getFridge')
 			.mockImplementation(() => jest.fn());
 	});
+
 	afterEach(() => {
 		jest.clearAllMocks();
 	});

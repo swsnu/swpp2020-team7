@@ -26,8 +26,10 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 	const [maxPageIndex, setMaxPageIndex] = useState(1);
 	const [alert, setAlert] = useState(false);
 	const images = article?.images;
-	const currentPath = window.location.pathname.split('/');
-	const articleId = parseInt(currentPath[currentPath.length - 1], 10);
+	const currentPath = window.location.pathname?.split('/');
+	const articleId = window.location.pathname
+		? parseInt(currentPath[currentPath.length - 1], 10)
+		: NaN;
 	const dispatch = useDispatch();
 
 	const onClickPage = (e: React.ChangeEvent<unknown>, value: number): void => {
@@ -52,7 +54,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 	const image = currentList?.map((value: any, idx: number) => {
 		return (
 			<img
-				key={`#${value}`}
+				key={`#${value}-${idx}`}
 				src={value.file_path}
 				alt="/api/images"
 				width="250px"
@@ -73,7 +75,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 		if (
 			!article &&
 			!Number.isNaN(articleId) &&
-			window.location.pathname.search('articles') >= 0
+			window.location.pathname?.search('articles') >= 0
 		) {
 			dispatch(getArticle(articleId));
 		}
@@ -182,13 +184,13 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ history }) => {
 									<Collapse in={alert}>
 										<Alert id="article-setting-alert" icon={false}>
 											<Button
-												id="recipe-edit"
+												id="article-edit"
 												onClick={() => onClickEditArticle()}
 											>
 												수정
 											</Button>
 											<Button
-												id="recipe-delete"
+												id="article-delete"
 												onClick={() => onClickDeleteArticle()}
 											>
 												삭제
