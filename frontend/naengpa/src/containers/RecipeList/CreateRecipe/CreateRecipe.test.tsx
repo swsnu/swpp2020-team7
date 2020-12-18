@@ -27,10 +27,12 @@ jest.mock('@material-ui/icons/LocalDining', () =>
 const middlewares = [thunk];
 const store = configureStore(middlewares);
 
-const stubInitialState: RecipeState = {
+const stubInitialState: any = {
 	recipeList: [],
 	recipe: null,
 	createdRecipe: null,
+	todayRecipeList: [],
+	lastPageIndex: 1,
 };
 const image = 'sample_img';
 
@@ -78,13 +80,11 @@ describe('CreateRecipe', () => {
 		const component = mount(createRecipe);
 		await waitForComponentToPaint(component);
 
-		act(() => {
 			const confirmAlertButton = component.find('#confirm-alert-button').at(0);
 			confirmAlertButton.simulate('click');
 
 			const foodName = component.find('input#food-name').find('input');
 			const cookTime = component.find('input#cook-time').find('input');
-			const foodImage = component.find('input#food-image').find('input');
 			const content = component.find('#recipe-content').find('textarea');
 			const extractMLFeatureButton = component
 				.find('#extract-ml-feature-button')
@@ -93,14 +93,21 @@ describe('CreateRecipe', () => {
 			foodName.simulate('change', { target: { value: 'ice Cream' } });
 			cookTime.simulate('change', { target: { value: 40 } });
 			content.simulate('change', { target: { value: '아이스크림' } });
-			foodImage.simulate('change', { target: { files: [image] } });
+			await act(async () => {
+					const foodImage = component.find('input#food-image').find('input');
+					const addFoodImageButton = component.find('#add-image-button').at(0);
+					addFoodImageButton.simulate('click');
+
+					foodImage.simulate('change', {
+						target: { files: [new File([new ArrayBuffer(1)], 'file.jpg')] },
+					});
+					await waitForComponentToPaint(component);
+					expect(foodImage.length).toBe(1);					
+			});
 			expect(foodName.length).toBe(1);
 			expect(cookTime.length).toBe(1);
-			expect(foodImage.length).toBe(1);
 			expect(content.length).toBe(1);
 			extractMLFeatureButton.simulate('click');
-			// expect(component.find('Loading').length).toBe(1);
-		});
 	});
 
 	it('should close Alert modal when the close button is clicked', async () => {
@@ -124,16 +131,17 @@ describe('CreateRecipe', () => {
 		await waitForComponentToPaint(component);
 		const confirmAlertButton = component.find('#confirm-alert-button').at(0);
 		confirmAlertButton.simulate('click');
-		const foodImage = component.find('input#food-image').find('input');
-		const addFoodImageButton = component.find('#add-image-button').at(0);
-		addFoodImageButton.simulate('click');
-		foodImage.simulate('change', { target: { files: [image] } });
+		await act(async () => {
+			const foodImage = component.find('input#food-image').find('input');
+			const addFoodImageButton = component.find('#add-image-button').at(0);
+			addFoodImageButton.simulate('click');
+
+			foodImage.simulate('change', {
+				target: { files: [new File([new ArrayBuffer(1)], 'file.jpg')] },
+			});
+			await waitForComponentToPaint(component);
+		});
 		// const deleteFoodImageButton = component.find('#delete-image-button').at(0);
-		// deleteFoodImageButton.simulate('click');
-		// addFoodImageButton.simulate('click');
-		// foodImage.simulate('change', { target: { files: [image] } });
-		const extractMLFeatureButton = component.find('#extract-ml-feature-button').at(0);
-		extractMLFeatureButton.simulate('click');
 		// deleteFoodImageButton.simulate('click');
 	});
 

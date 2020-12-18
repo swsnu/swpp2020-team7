@@ -1,13 +1,14 @@
 import React from 'react';
-import { act } from '@testing-library/react';
 import { mount } from 'enzyme';
 import { createMemoryHistory } from 'history';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { act } from 'react-dom/test-utils';
 import { ArticleEntity } from '../../../model/article';
 import CreateArticle from './CreateArticle';
 import * as articleActionCreators from '../../../store/actions/article';
+import waitForComponentToPaint from '../../../../test-utils/waitForComponentToPaint';
 
 jest.mock('@material-ui/icons/AddCircle', () =>
 	jest.fn((props) => <div {...props} className="spyAddCircleIcon" />),
@@ -149,33 +150,37 @@ describe('CreateArticle', () => {
 	it('should work well with the input changes', async () => {
 		const component = mount(createArticle);
 
-		act(() => {
-			const title = component.find('input#title-input').find('input');
-			const priceInput = component.find('input#price-input').find('input');
-			const content = component.find('#article-content').find('textarea');
-			// const item = component.find('#create-article-items-사과').at(0);
-			const option = component.find('#create-article-options-share').at(0);
-			const createArticleButton = component.find('#create-article-button').find('button');
+		const title = component.find('#title-input').find('input');
+		const priceInput = component.find('#price-input').find('input');
 
-			title.simulate('change', { target: { value: '소금' } });
-			priceInput.simulate('change', { target: { value: 0 } });
-			content.simulate('change', { target: { value: '공짜로 나눔해볼게요.' } });
-			// item.simulate('click');
-			option.simulate('click');
+		const content = component.find('#article-content').find('textarea');
+		// const item = component.find('#create-article-items-사과').find('button').at(0);
+		const option = component.find('#create-article-options-share').find('button').at(0);
+		const createArticleButton = component.find('#create-article-button').find('button');
 
-			expect(title.length).toBe(1);
-			expect(priceInput.length).toBe(1);
-			expect(content.length).toBe(1);
-			createArticleButton.simulate('click');
-		});
+		title.simulate('change', { target: { value: '소금' } });
+		priceInput.simulate('change', { target: { value: 0 } });
+		content.simulate('change', { target: { value: '공짜로 나눔해볼게요.' } });
+		// item.simulate('click');
+		option.simulate('click');
+		expect(title.length).toBe(1);
+		expect(priceInput.length).toBe(1);
+		expect(content.length).toBe(1);
+		createArticleButton.simulate('click');
 	});
 
 	it('should delete the article image', async () => {
 		const component = mount(createArticle);
-		const foodImage = component.find('input#food-image').find('input');
+		const foodImage = component.find('#add-image-icon-box').find('input').find('#food-image');
 		const addFoodImageButton = component.find('#add-image-button').at(0);
 		addFoodImageButton.simulate('click');
-		foodImage.simulate('change', { target: { files: [image] } });
+		foodImage.simulate('change', {
+			target: { files: [new File([new ArrayBuffer(1)], 'file.jpg')] },
+		});
+		await waitForComponentToPaint(component);
+		component.update();
+		const deleteFoodImageButton = component.find('#delete-image-button').at(0);
+		// deleteFoodImageButton.simulate('click');
 	});
 
 	it('should go back to article list', async () => {
