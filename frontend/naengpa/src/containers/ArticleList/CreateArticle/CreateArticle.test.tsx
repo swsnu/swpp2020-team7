@@ -1,12 +1,26 @@
 import React from 'react';
+import { act } from '@testing-library/react';
 import { mount } from 'enzyme';
 import { createMemoryHistory } from 'history';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { ArticleEntity } from '../../../model/article';
-
 import CreateArticle from './CreateArticle';
+import * as articleActionCreators from '../../../store/actions/article';
+
+jest.mock('@material-ui/icons/AddCircle', () =>
+	jest.fn((props) => <div {...props} className="spyAddCircleIcon" />),
+);
+jest.mock('@material-ui/icons/PhotoCamera', () =>
+	jest.fn((props) => <div {...props} className="spyPhotoCameraIcon" />),
+);
+jest.mock('@material-ui/icons/Cancel', () =>
+	jest.fn((props) => <div {...props} className="spyCancelIcon" />),
+);
+jest.mock('@material-ui/icons/LocalDining', () =>
+	jest.fn((props) => <div {...props} className="spyLocalDiningIcon" />),
+);
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
@@ -34,9 +48,10 @@ const mockArticle: ArticleEntity = {
 	images: [
 		{
 			id: 2,
-			path: 'path',
+			file_path: 'path',
 		},
 	],
+	profileImage: 'image.jpeg',
 };
 const stubInitialState = {
 	user: {
@@ -74,7 +89,7 @@ const stubInitialState = {
 				images: [
 					{
 						id: 2,
-						path: 'path',
+						file_path: 'path',
 					},
 				],
 			},
@@ -82,15 +97,30 @@ const stubInitialState = {
 		article: mockArticle,
 	},
 	fridge: {
-		ingredientList: [],
+		ingredientList: [
+			{
+				id: 14,
+				name: '사과',
+				category: '과일',
+				isTodayIngredient: false,
+			},
+		],
 	},
 };
 const mockStore = store(stubInitialState);
+const image = 'sample_img';
 
 describe('CreateArticle', () => {
 	let createArticle: any;
+	let spyCreateArticle: any;
+	let spyHistoryPush: any;
 
 	beforeEach(() => {
+		jest.mock('react-redux', () => ({
+			useSelector: jest.fn((fn) => fn(mockStore.getState())),
+			useDispatch: () => jest.fn(),
+			connect: () => jest.fn(),
+		}));
 		const history = createMemoryHistory({ initialEntries: ['/'] });
 
 		createArticle = (
@@ -98,6 +128,11 @@ describe('CreateArticle', () => {
 				<CreateArticle history={history} />
 			</Provider>
 		);
+		spyCreateArticle = jest
+			.spyOn(articleActionCreators, 'createArticle')
+			.mockImplementation(() => jest.fn());
+
+		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -109,5 +144,44 @@ describe('CreateArticle', () => {
 	it('CreateArticle renders without crashing', () => {
 		const component = mount(createArticle);
 		expect(component.find('CreateArticle').length).toBe(1);
+	});
+
+	it('should work well with the input changes', async () => {
+		const component = mount(createArticle);
+
+		act(() => {
+			const title = component.find('input#title-input').find('input');
+			const priceInput = component.find('input#price-input').find('input');
+			const content = component.find('#article-content').find('textarea');
+			// const item = component.find('#create-article-items-사과').at(0);
+			const option = component.find('#create-article-options-share').at(0);
+			const createArticleButton = component.find('#create-article-button').find('button');
+
+			title.simulate('change', { target: { value: '소금' } });
+			priceInput.simulate('change', { target: { value: 0 } });
+			content.simulate('change', { target: { value: '공짜로 나눔해볼게요.' } });
+			// item.simulate('click');
+			option.simulate('click');
+
+			expect(title.length).toBe(1);
+			expect(priceInput.length).toBe(1);
+			expect(content.length).toBe(1);
+			createArticleButton.simulate('click');
+		});
+	});
+
+	it('should delete the article image', async () => {
+		const component = mount(createArticle);
+		const foodImage = component.find('input#food-image').find('input');
+		const addFoodImageButton = component.find('#add-image-button').at(0);
+		addFoodImageButton.simulate('click');
+		foodImage.simulate('change', { target: { files: [image] } });
+	});
+
+	it('should go back to article list', async () => {
+		const component = mount(createArticle);
+		const backToArticleListButton = component.find('#back-to-article-list').at(0);
+		backToArticleListButton.simulate('click');
+		expect(spyHistoryPush).toBeCalledWith('/articles');
 	});
 });

@@ -4,10 +4,10 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import { Collapse } from '@material-ui/core';
-import { executionAsyncId } from 'async_hooks';
 import { history } from '../../../store/store';
 import RecipeDetail from './RecipeDetail';
 import { ArticleEntity } from '../../../model/article';
+import * as recipeActionCreators from '../../../store/actions/recipe';
 
 const middlewares = [thunk];
 const store = configureStore(middlewares);
@@ -35,7 +35,7 @@ const mockArticle: ArticleEntity = {
 	images: [
 		{
 			id: 2,
-			path: 'path',
+			file_path: 'image2.png',
 		},
 	],
 };
@@ -52,14 +52,26 @@ const stubInitialState = {
 			foodImagePaths: [
 				{
 					id: 2,
-					recipe_id: 2,
-					file_path: 'path',
+					recipeId: 2,
+					file_path: 'image3.jpeg',
 				},
 			],
 			recipeLike: 1,
 			createdAt: '2000.00.00',
 			foodCategory: '밥류',
-			hashtags: ['혼밥', '혼술'],
+			profileImage: 'image.jpeg',
+			ingredients: [
+				{
+					id: 0,
+					name: '사과',
+					quantity: '조금',
+				},
+				{
+					id: 1,
+					name: '설탕',
+					quantity: '약간',
+				},
+			],
 		},
 		createdRecipe: null,
 	},
@@ -89,7 +101,7 @@ const stubInitialState = {
 				images: [
 					{
 						id: 2,
-						path: 'path',
+						file_path: 'image4.jpeg',
 					},
 				],
 			},
@@ -119,12 +131,63 @@ const stubInitialState = {
 	},
 };
 
+const stubInitialState2 = {
+	...stubInitialState,
+	recipe: {
+		recipe: {
+			...stubInitialState.recipe.recipe,
+			userLike: 0,
+			author: 'test2',
+			authorId: 'Dfed418-6129-4482-b07f-753a7b9e2f06',
+			foodImagePaths: [
+				{
+					id: 0,
+					recipeId: 2,
+					file_path: 'image5.jpeg',
+				},
+				{
+					id: 1,
+					recipeId: 2,
+					file_path: 'image6.jpeg',
+				},
+				{
+					id: 2,
+					recipeId: 2,
+					file_path: 'image7.jpeg',
+				},
+				{
+					id: 3,
+					recipeId: 2,
+					file_path: 'image8.jpeg',
+				},
+				{
+					id: 4,
+					recipeId: 2,
+					file_path: 'image9.jpeg',
+				},
+			],
+		},
+	},
+};
+
+const stubInitialState3 = {
+	...stubInitialState,
+	recipe: {
+		recipe: null,
+	},
+};
+
 describe('RecipeDetail', () => {
 	let recipeDetail: any;
+	let recipeDetail2: any;
+	let recipeDetail3: any;
 	let spyHistoryPush: any;
+	let spyGetRecipe: any;
 
 	beforeEach(() => {
 		const mockStore = store(stubInitialState);
+		const mockStore2 = store(stubInitialState2);
+		const mockStore3 = store(stubInitialState3);
 
 		jest.mock('react-redux', () => ({
 			useSelector: jest.fn((fn) => fn(mockStore.getState())),
@@ -132,12 +195,34 @@ describe('RecipeDetail', () => {
 			connect: () => jest.fn(),
 		}));
 
+		global.window = Object.create(window);
+		const url = '/recipes/2';
+		Object.defineProperty(window, 'location', {
+			value: {
+				href: url,
+			},
+		});
+
 		recipeDetail = (
 			<Provider store={mockStore}>
 				<RecipeDetail history={history} />
 			</Provider>
 		);
 
+		recipeDetail2 = (
+			<Provider store={mockStore2}>
+				<RecipeDetail history={history} />
+			</Provider>
+		);
+
+		recipeDetail3 = (
+			<Provider store={mockStore3}>
+				<RecipeDetail history={history} />
+			</Provider>
+		);
+		spyGetRecipe = jest
+			.spyOn(recipeActionCreators, 'getRecipe')
+			.mockImplementation(() => jest.fn());
 		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
 	});
 	afterEach(() => {
@@ -150,10 +235,18 @@ describe('RecipeDetail', () => {
 	it('RecipeDetail renders without crashing', async () => {
 		const wrapper = mount(recipeDetail);
 		expect(wrapper.find('RecipeDetail').length).toBe(1);
+		// expect(spyGetRecipe).toBeCalledWith(1);
+	});
+
+	it('RecipeDetail with loading renders without crashing', async () => {
+		const wrapper = mount(recipeDetail3);
+		expect(wrapper.find('RecipeDetail').length).toBe(1);
 	});
 
 	it('should click delete Recipe button correctly', async () => {
 		const component = mount(recipeDetail);
+		const recipeSettingButton = component.find('#recipe-setting-button');
+		recipeSettingButton.at(0).simulate('click');
 		const wrapper = component.find('#recipe-delete');
 		wrapper.find('button').at(0).simulate('click');
 		expect(spyHistoryPush).toBeCalledWith('/recipes');
@@ -161,16 +254,12 @@ describe('RecipeDetail', () => {
 
 	it('should click edit Recipe button correctly', async () => {
 		const component = mount(recipeDetail);
+		const recipeSettingButton = component.find('#recipe-setting-button');
+		recipeSettingButton.at(0).simulate('click');
 		const wrapper = component.find('#recipe-edit');
 		wrapper.find('button').at(0).simulate('click');
-		expect(spyHistoryPush).toBeCalledWith('/recipes/NaN/edit');
+		expect(spyHistoryPush).toBeCalledWith('/recipes/undefined/edit');
 	});
-
-	// it('should check if pagination works', async () => {
-	// 	const component = mount(recipeDetail);
-	// 	const wrapper = component.find('#recipe-images-page');
-	// 	wrapper.find('button').at(1).simulate('click');
-	// });
 
 	it('Collapse should pop up and out correctly', () => {
 		const component = mount(recipeDetail);
@@ -185,16 +274,54 @@ describe('RecipeDetail', () => {
 
 	it('renders cookTime correctly in hours unit', () => {
 		const component = mount(recipeDetail);
-
 		const cookTimeWrapper = component.find('#recipe-cook-time');
 		expect(cookTimeWrapper.text()).toBe('1H');
 	});
 
 	it('renders recipe-like-count with 1 like correctly', () => {
 		const component = mount(recipeDetail);
+		const likeCountButton = component.find('#recipe-like-count-icon');
+		likeCountButton.at(0).simulate('click');
+	});
 
-		const likeCountWrapper = component.find('#recipe-like');
-		expect(likeCountWrapper.find('#recipe-like-count-icon').at(0).length).toBe(1);
-		expect(likeCountWrapper.text()).toBe('1');
+	it('should click recipe edit button correctly', () => {
+		const component = mount(recipeDetail);
+		const recipeSettingAlert = component.find('#recipe-setting-alert');
+		recipeSettingAlert.at(0).simulate('click');
+	});
+
+	it('should click chatting button correctly', () => {
+		const component = mount(recipeDetail2);
+		const recipeSettingAlert = component.find('#chatting-icon');
+		recipeSettingAlert.at(0).simulate('click');
+	});
+
+	it('renders click recipe-like with user Like correctly', () => {
+		const component = mount(recipeDetail);
+		const likeCountWrapper = component.find('#recipe-like-count-icon');
+		likeCountWrapper.at(0).simulate('click');
+	});
+
+	it('renders click recipe-like correctly', () => {
+		const component = mount(recipeDetail2);
+		const likeCountWrapper = component.find('#recipe-like-count-icon');
+		likeCountWrapper.at(0).simulate('click');
+	});
+
+	it('renders click recipe image pagination correctly', () => {
+		const component = mount(recipeDetail2);
+		const nextPageWrapper = component.find('#next-image');
+		nextPageWrapper.at(0).simulate('click');
+		const prevPageWrapper = component.find('#prev-image');
+		prevPageWrapper.at(0).simulate('click');
+	});
+
+	it('should check ingredient button box correctly', () => {
+		const component = mount(recipeDetail);
+		const ingredientYesButton = component.find('#ingredient-yes-button');
+		ingredientYesButton.at(0).simulate('click');
+		ingredientYesButton.at(0).simulate('mouseOver');
+		ingredientYesButton.at(0).simulate('focus');
+		ingredientYesButton.at(0).simulate('mouseLeave');
 	});
 });
