@@ -8,6 +8,7 @@ import * as userActionCreators from '../../../store/actions/user';
 import * as regionActionCreators from '../../../store/actions/region';
 import Signup from './Signup';
 import { UserSignupInputDTO } from '../../../model/user';
+import waitForComponentToPaint from '../../../../test-utils/waitForComponentToPaint';
 
 const middleware = [thunk];
 const store = configureStore(middleware);
@@ -17,7 +18,7 @@ const mockUser: UserSignupInputDTO = {
 	name: 'test',
 	username: 'test',
 	password: 'test',
-	dateOfBirth: '20201111',
+	dateOfBirth: '201111',
 	email: 'test@snu.ac.kr',
 };
 
@@ -48,14 +49,22 @@ const stubInitialState = {
 		regionList: mockRegionList,
 	},
 };
-
+const initialState = {
+	region: {
+		regionList: null,
+	},
+};
 const mockStore = store(stubInitialState);
+const mockEmptyStore = store(initialState);
 
 describe('Signup', () => {
 	let signup: any;
 	const spySaveUserInfoAction = jest
 		.spyOn(userActionCreators, 'saveUserInfo')
 		.mockImplementation(() => jest.fn());
+	const spyCheckUsernameDuplicate = jest
+		.spyOn(userActionCreators, 'checkUsernameDuplicate')
+		.mockImplementation(jest.fn().mockReturnValueOnce(true).mockReturnValue(false));
 	const spyGetRegionList = jest
 		.spyOn(regionActionCreators, 'getRegionList')
 		.mockImplementation(() => jest.fn());
@@ -88,8 +97,20 @@ describe('Signup', () => {
 		expect(component.find('div#input-list').find('input').length).toBe(6);
 	});
 
-	it('Signup should dispatch signup correctly', () => {
+	it('Signup renders without crashing with empty data', async () => {
+		signup = (
+			<Provider store={mockEmptyStore}>
+				<Signup history={history} />;
+			</Provider>
+		);
 		const component = mount(signup);
+		await waitForComponentToPaint(component);
+		expect(spyGetRegionList).toBeCalled();
+	});
+
+	it('Signup should dispatch signup correctly', async () => {
+		const component = mount(signup);
+		await waitForComponentToPaint(component);
 		const inputList = component.find('div#input-list').find('input');
 		inputList.find('#name').simulate('change', { target: { value: mockUser.name } }); // name
 		inputList.find('#username').simulate('change', { target: { value: mockUser.username } }); // username
@@ -104,28 +125,88 @@ describe('Signup', () => {
 
 		const signupButton = component.find('button#signup-button');
 		signupButton.simulate('click');
+		expect(spyCheckUsernameDuplicate).toBeCalledTimes(1);
 		expect(spySaveUserInfoAction).toBeCalledTimes(0);
-		// expect(spySaveUserInfoAction).toBeCalledWith(mockUser);
+
+		signupButton.simulate('click');
+		await waitForComponentToPaint(component);
+		expect(spySaveUserInfoAction).toBeCalledTimes(1);
+		expect(spySaveUserInfoAction).toBeCalledWith(mockUser);
+
+		inputList.find('#name').simulate('keypress', { key: 'Enter' });
+		inputList.find('#username').simulate('keypress', { key: 'Enter' });
+		inputList.find('#password').simulate('keypress', { key: 'Enter' });
+		inputList.find('#password-confirm').simulate('keypress', { key: 'Enter' });
+		inputList.find('#date-of-birth').simulate('keypress', { key: 'Enter' });
+		inputList.find('#email').simulate('keypress', { key: 'Enter' });
+		await waitForComponentToPaint(component);
+		expect(spySaveUserInfoAction).toBeCalledTimes(7);
+
+		inputList.find('#email').simulate('keypress', { key: 'not enter' });
+		expect(spySaveUserInfoAction).toBeCalledTimes(7);
 	});
 
-	it('Signup should not dispatch save User Info with insufficient inputs', () => {
+	it('Signup should not dispatch save User Info with insufficient inputs', async () => {
 		const component = mount(signup);
 		const inputList = component.find('div#input-list').find('input');
 		const signupButton = component.find('button#signup-button');
 
-		inputList.find('#name').simulate('change', { target: { value: '' } });
+		inputList.find('#name').simulate('change', { target: { value: mockUser.name } });
 		// expect(component.find('p#invalid-name').length).toBe(1); // name
 		inputList.find('#username').simulate('change', { target: { value: mockUser.username } }); // username
+		inputList.find('#password').simulate('change', { target: { value: mockUser.password } });
+		inputList
+			.find('#password-confirm')
+			.simulate('change', { target: { value: mockUser.password } });
 		inputList
 			.find('#date-of-birth')
 			.simulate('change', { target: { value: mockUser.dateOfBirth } }); // date-of-birth
-		inputList.find('#email').simulate('change', { target: { value: 'wrongEmail' } });
+		inputList.find('#email').simulate('change', { target: { value: '** wrongEmail' } });
 		expect(component.find('p#invalidEmail').length).toBe(1); // email
 		signupButton.simulate('click');
+		await waitForComponentToPaint(component);
 		expect(spySaveUserInfoAction).toBeCalledTimes(0);
 
-		inputList.find('#name').simulate('change', { target: { value: '4566' } });
+		inputList.find('#email').simulate('change', { target: { value: null } });
 		signupButton.simulate('click');
+		await waitForComponentToPaint(component);
+		expect(spySaveUserInfoAction).toBeCalledTimes(0);
+
+		inputList.find('#date-of-birth').simulate('change', { target: { value: '00000000' } });
+		signupButton.simulate('click');
+		await waitForComponentToPaint(component);
+		expect(spySaveUserInfoAction).toBeCalledTimes(0);
+
+		inputList.find('#date-of-birth').simulate('change', { target: { value: '' } });
+		signupButton.simulate('click');
+		await waitForComponentToPaint(component);
+		expect(spySaveUserInfoAction).toBeCalledTimes(0);
+
+		inputList.find('#password-confirm').simulate('change', { target: { value: 'not equal' } });
+		signupButton.simulate('click');
+		await waitForComponentToPaint(component);
+		expect(spySaveUserInfoAction).toBeCalledTimes(0);
+
+		inputList.find('#password').simulate('change', { target: { value: '' } });
+		signupButton.simulate('click');
+		await waitForComponentToPaint(component);
+		expect(spySaveUserInfoAction).toBeCalledTimes(0);
+
+		inputList.find('#username').simulate('change', { target: { value: '' } });
+		signupButton.simulate('click');
+		await waitForComponentToPaint(component);
+		expect(spySaveUserInfoAction).toBeCalledTimes(0);
+
+		inputList.find('#name').simulate('change', { target: { value: '' } });
+		signupButton.simulate('click');
+		await waitForComponentToPaint(component);
+		expect(component.find('p#invalid-name').length).toBe(0);
+		expect(spySaveUserInfoAction).toBeCalledTimes(0);
+
+		inputList.find('#name').simulate('change', { target: { value: '&&&' } });
+		signupButton.simulate('click');
+		await waitForComponentToPaint(component);
+		expect(component.find('p#invalid-name').length).toBe(1);
 		expect(spySaveUserInfoAction).toBeCalledTimes(0);
 
 		inputList.find('#name').simulate('change', { target: { value: 'testname' } });
@@ -134,6 +215,8 @@ describe('Signup', () => {
 			.find('#password-confirm')
 			.simulate('change', { target: { value: 'wrongPassword' } }); // password-confirm
 		signupButton.simulate('click');
+		await waitForComponentToPaint(component);
+		expect(component.find('p#invalid-name').length).toBe(0);
 		expect(spySaveUserInfoAction).toBeCalledTimes(0);
 	});
 
@@ -144,5 +227,14 @@ describe('Signup', () => {
 		logoButton.simulate('click');
 		expect(spyHistoryPush).toBeCalledTimes(1);
 		expect(spyHistoryPush).toBeCalledWith('/fridge');
+	});
+
+	it('login button should push to login page', () => {
+		const component = mount(signup);
+		const logoButton = component.find('button#login-button');
+
+		logoButton.simulate('click');
+		expect(spyHistoryPush).toBeCalledTimes(1);
+		expect(spyHistoryPush).toBeCalledWith('/login');
 	});
 });

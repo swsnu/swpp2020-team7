@@ -26,7 +26,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 	});
 
 	const loadChatRoom = useCallback(async () => {
-		if (user) {
+		if (user.user) {
 			await Promise.all([dispatch(getChatRoomList())]);
 			setLoading(false);
 		}
@@ -34,7 +34,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ history }) => {
 
 	useEffect(() => {
 		loadChatRoom();
-	}, [loadChatRoom]);
+	}, []);
 
 	const chatRoomCollection = chatRoomList?.map((chatRoom: any) => {
 		return (

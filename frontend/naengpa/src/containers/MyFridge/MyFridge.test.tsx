@@ -66,14 +66,31 @@ const stubInitialState = {
 		foodCategoryList: mockFoodCategoryList,
 	},
 };
+const initialState = {
+	user: {
+		user: {
+			id: 'c2c13da9-5dcd-44a7-9cb6-92bbcdcf3f55',
+			username: 'test',
+			email: 'test@snu.ac.kr',
+			name: '테스트',
+			dateOfBirth: '20201112',
+		},
+	},
+	fridge: {
+		ingredientList: [],
+	},
+	foodCategory: {
+		foodCategoryList: null,
+	},
+};
 
 const mockStore = store(stubInitialState);
+const mockEmptyStore = store(initialState);
 
 describe('MyFridge', () => {
 	let myFridge: any;
-	let spyGetFridge: any;
 	let spyGetFoodCategoryList: any;
-	let spyHistoryPush: any;
+	let spyGetFridge: any;
 
 	beforeEach(() => {
 		jest.mock('react-redux', () => ({
@@ -86,15 +103,13 @@ describe('MyFridge', () => {
 				<MyFridge history={history} />
 			</Provider>
 		);
-		spyGetFridge = jest
-			.spyOn(fridgeActionCreators, 'getFridge')
-			.mockImplementation(() => jest.fn());
 
 		spyGetFoodCategoryList = jest
 			.spyOn(foodCategoryActionCreators, 'getFoodCategoryList')
 			.mockImplementation(() => jest.fn());
-
-		spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(jest.fn());
+		spyGetFridge = jest
+			.spyOn(fridgeActionCreators, 'getFridge')
+			.mockImplementation(() => jest.fn());
 	});
 
 	afterEach(() => {
@@ -114,5 +129,20 @@ describe('MyFridge', () => {
 		expect(wrapper.find('.spyTodayStar').length).toBe(1);
 		expect(wrapper.find('.spyFridge').length).toBe(1);
 		expect(wrapper.find('.spyFooter').length).toBe(1);
+
+		expect(spyGetFridge).toBeCalledTimes(0);
+		expect(spyGetFoodCategoryList).toBeCalledTimes(0);
+	});
+
+	it('MyFridge renders without crashing with empty data', () => {
+		myFridge = (
+			<Provider store={mockEmptyStore}>
+				<MyFridge history={history} />
+			</Provider>
+		);
+		const wrapper = mount(myFridge);
+
+		expect(spyGetFridge).toBeCalledTimes(1);
+		expect(spyGetFoodCategoryList).toBeCalledTimes(1);
 	});
 });

@@ -13,7 +13,7 @@ const Tab: React.FC<TabProps> = ({ history }) => {
 	const location = useLocation();
 	const user = useSelector((state: AppState) => state.user.user);
 	const chatRoom = useSelector((state: AppState) => state.user.chatRoom);
-	console.log(location.pathname);
+
 	return (
 		<div id="button-list">
 			<div id="myinfo-check">
