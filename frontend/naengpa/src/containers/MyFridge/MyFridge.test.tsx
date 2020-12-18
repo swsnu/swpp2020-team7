@@ -8,8 +8,6 @@ import { history } from '../../store/store';
 import { Dictionary } from '../../model/general';
 import * as fridgeActionCreators from '../../store/actions/fridge';
 import * as foodCategoryActionCreators from '../../store/actions/foodCategory';
-import * as foodCategoryActionCreators from '../../store/actions/foodCategory';
-import * as fridgeActionCreators from '../../store/actions/fridge';
 
 jest.mock('../../components/TodayIngredient/TodayIngredient', () =>
 	jest.fn(() => <div className="spyTodayIngredient">TodayIngredient</div>),
