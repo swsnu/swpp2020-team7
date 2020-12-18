@@ -8,7 +8,6 @@ import CancelIcon from '@material-ui/icons/Cancel';
 
 import {
 	Button,
-	Collapse,
 	Input,
 	Box,
 	Table,
