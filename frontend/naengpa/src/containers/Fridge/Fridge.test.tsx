@@ -47,8 +47,8 @@ const stubInitialState = {
 
 const stubInitialState2 = {
 	...stubInitialState,
-	fridge: {ingredientList: [],}
-}
+	fridge: { ingredientList: [] },
+};
 
 describe('Fridge', () => {
 	let fridge: any;
@@ -78,8 +78,8 @@ describe('Fridge', () => {
 		);
 
 		spyGetFridge = jest
-		.spyOn(fridgeActionCreators, 'getFridge')
-		.mockImplementation(() => jest.fn());
+			.spyOn(fridgeActionCreators, 'getFridge')
+			.mockImplementation(() => jest.fn());
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
