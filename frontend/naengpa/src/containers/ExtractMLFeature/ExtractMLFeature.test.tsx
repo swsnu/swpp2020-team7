@@ -288,37 +288,4 @@ describe('ExtractMLFeature', () => {
 		const closeModalButton = component.find('#close-modal-button').at(0);
 		closeModalButton.simulate('click');
 	});
-
-	// it('should work well with add ingredient and ingredient quantity', async () => {
-	// 	const component = mount(extractMLFeature);
-	// 	await waitForComponentToPaint(component);
-	// 	const confirmAlertButton = component.find('#confirm-alert-button').at(0);
-	// 	confirmAlertButton.simulate('click');
-	// 	const ingredientField = component.find('#ingredient-field').at(0);
-	// 	ingredientField.simulate('mouseOver');
-	// 	const spyAutoComplete = component.find('div.spyAutoComplete#ingredient-search-input');
-	// 	expect(spyAutoComplete.props().value?.name).toBe('');
-	// 	spyAutoComplete.simulate('change', [{ target: { value: { name: '사과', quantity: '' } } }, { name: '사과', quantity: '' }]);
-	// 	component.update();
-	// 	await waitForComponentToPaint(component);
-	// 	console.log(component.debug())
-	// 	const ingredientQuantity = component.find('input#ingredient-quantity').last();
-	// 	expect(ingredientQuantity.text()).toBe('');
-	// 	ingredientQuantity.simulate('change', { target: { value: '2개' } });
-	// 	component.update();
-	// 	await waitForComponentToPaint(component);
-	// 	const addIngredientButton = component.find('#add-ingredient-button').at(0);
-	// 	addIngredientButton.simulate('click');
-	// 	expect(ingredientQuantity.text()).toBe('');
-	// 	expect(spyAutoComplete.props().value?.name).toBe('');
-	// 	const ingredientModal = component.find('#ingredient-modal');
-	// 	expect(ingredientModal.length).toBe(5);
-	// 	const confirmModalButton = component.find('#confirm-modal-button').at(0);
-	// 	confirmModalButton.simulate('click');
-	// 	ingredientField.simulate('mouseOver');
-	// 	expect(ingredientQuantity.text()).toBe('');
-	// 	expect(spyAutoComplete.props().value?.name).toBe('');
-	// 	const ingredientModalElement = component.find('#ingredient-element');
-	// 	expect(ingredientModalElement.length).toBe(2);
-	// });
 });
